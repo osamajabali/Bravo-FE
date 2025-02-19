@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, sans-serif;
+    transition: all 0.3s ease;
+
+    [dir="ltr"] {
+        text-align: left;
+        direction: ltr;
+    }
+
+    [dir="rtl"] {
+        text-align: right;
+        direction: rtl;
+    }
+}

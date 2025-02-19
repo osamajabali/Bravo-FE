@@ -1,0 +1,69 @@
+.custom-container {
+    background-image: url('/assets/images/loginBackground.png');
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    .logo-img {
+        width: 21%;
+    }
+
+    h5 {
+        font-size: 18px;
+    }
+
+    .row {
+        .card {
+            background: radial-gradient(
+                circle, 
+                rgba(47, 89, 127, 0.46) 2%, 
+                rgba(33, 83, 115, 0.68) 79%, 
+                rgba(98, 137, 175, 0.36) 100%, 
+                rgba(255, 255, 255, 1) 100%
+            );           
+        }
+    }
+}
+
+.container {
+    .join {
+        background: linear-gradient(to right, #0087C3, #009F96);
+        border-radius: 10px;
+        border: none;
+        transition: background 0.3s ease-in-out;
+
+        &:hover {
+            background: linear-gradient(to right, #0072A3, #008A80); 
+        }
+
+        &:disabled {
+            background: #B0C4D1;
+            cursor: not-allowed;
+        }
+    }
+}
+
+input {
+    background-color: #2A5275 !important;
+    border-color: aqua;
+    font-size: 12px !important;
+}
+
+.form-label {
+    font-size: 14px;
+}
+
+h5 {
+    font-size: 18px;
+}
+
+.form-control {
+    &::placeholder { 
+        color: white;
+        opacity: 0.8;
+    }
+}
