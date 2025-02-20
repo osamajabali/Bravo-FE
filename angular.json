@@ -111,12 +111,16 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/styles.custom-colors.scss"
             ],
             "scripts": []
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "ffcf8d39-ba9f-4c6e-a6bb-1e1a361ecc2c"
   }
 }

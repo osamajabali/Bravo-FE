@@ -1,0 +1,138 @@
+<div class="container-fluid row gap-4">
+  <section class="status">
+    <h2 class="fs-5 mb-3">Stats</h2>
+    <div class="row g-3">
+      <!-- Active Skills -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div
+          class="card p-4 rounded d-flex justify-content-between card-bg flex-row flex-md-column flex-xl-row text-primary-900"
+        >
+          <div class="d-flex flex-column">
+            <span class="fs-7 fw-bold">Active Skills</span>
+            <span class="fs-1 fw-bold">{{ stats.activeSkills.completed }}</span>
+          </div>
+          <div style="height: 120px; min-width: 120px">
+            <canvas
+              class="status-chart"
+              appDoughnutChart
+              [data]="activeSkillsPieChartData"
+            >
+            </canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Skills -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div
+          class="card p-4 rounded d-flex justify-content-between card-bg flex-row flex-md-column flex-xl-row text-primary-900"
+        >
+          <div class="d-flex flex-column">
+            <span class="fs-7 fw-bold">Total Skills</span>
+            <span class="fs-1 fw-bold">{{ stats.totalSkills.completed }}</span>
+          </div>
+          <div style="height: 120px; min-width: 120px">
+            <canvas
+              class="status-chart"
+              appDoughnutChart
+              [data]="totalSkillsPieChartData"
+            >
+            </canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mastered Skills -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div
+          class="card p-4 rounded d-flex justify-content-between card-bg flex-row flex-md-column flex-xl-row text-primary-900"
+        >
+          <div class="d-flex flex-column">
+            <span class="fs-7 fw-bold">Mastered Skills</span>
+            <span class="fs-1 fw-bold">{{
+              stats.masteredSkills.completed
+            }}</span>
+          </div>
+          <div style="height: 120px; min-width: 120px">
+            <canvas
+              class="status-chart"
+              appDoughnutChart
+              [data]="masteredSkillsPieChartData"
+            >
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="skills row gap-3">
+    <h3 class="fs-5 mb-3">Skills</h3>
+    <div
+      *ngFor="let skill of stats.skills"
+      class="border p-10px d-flex align-items-center w-100"
+      style="border-radius: 15px"
+    >
+      <div class="w-auto me-4 ms-5">
+        <div class="d-flex justify-content-start align-items-center">
+          <h4 class="h4 fs-1 me-5">{{ skill.name }}</h4>
+          <a
+            class="border-style d-flex justify-content-between align-items-center w-100 min-w-5"
+            href="#"
+          >
+            <span class="fs-8 text-decoration-none text-black fw-bold"
+              >See All</span
+            >
+          </a>
+        </div>
+        <canvas
+          class="skill-chart"
+          appDoughnutChart
+          [data]="masteredSkillsPieChartData"
+          [isSkills]="false"
+          [labels]="pieChartLabels"
+        >
+        </canvas>
+      </div>
+      <div class="card w-100 h-100">
+        <div
+          class="d-flex flex-column w-100 justify-content-center align-items-center"
+        >
+          <div class="w-100 d-flex justify-content-center align-items-center">
+            <img
+              src="assets/images/frame-446.svg"
+              class="img-fluid mb-4"
+              alt="image desc"
+              width="100%"
+              height="100%"
+            />
+          </div>
+          <div class="w-100 px-2 py-1">
+            <div
+              class="mb-3 w-100 bg-white quick-border-style d-flex justify-content-between align-items-center"
+            >
+              <p class="mb-0 fs-4 fw-bold">تمييز السُّكون</p>
+              <button
+                class="bg-transparent quick-btn fs-8 fw-bold"
+                type="button"
+              >
+                Button
+              </button>
+            </div>
+            <div
+              class="mb-3w-100 bg-white quick-border-style d-flex justify-content-between align-items-center"
+            >
+              <p class="mb-0 fs-4 fw-bold">تمييز السُّكون</p>
+              <button
+                class="bg-transparent quick-btn fs-8 fw-bold"
+                type="button"
+              >
+                Button
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
