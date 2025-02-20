@@ -2,10 +2,11 @@ import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SidebarComponent } from './features/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet , TranslateModule],
+  imports: [RouterOutlet , TranslateModule, SidebarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

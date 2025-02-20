@@ -1,14 +1,35 @@
+@import "styles.custom-colors.scss";
+
 body {
-    font-family: Arial, sans-serif;
-    transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
+  transition: all 0.3s ease;
 
-    [dir="ltr"] {
-        text-align: left;
-        direction: ltr;
-    }
+  [dir="ltr"] {
+    text-align: left;
+    direction: ltr;
+  }
 
-    [dir="rtl"] {
-        text-align: right;
-        direction: rtl;
-    }
+  [dir="rtl"] {
+    text-align: right;
+    direction: rtl;
+  }
+}
+
+.app-background {
+  background: $primary-primary-100 !important;
+}
+
+.text-primary-900 {
+  color: $primary-primary-900 !important;
+}
+.text-secondery-900 {
+  color: $secondery-secondery-900;
+}
+
+.fs-7 {
+  font-size: 14px !important; // Override Bootstrap's default size
+}
+
+.fs-8 {
+  font-size: 12px !important; // Override Bootstrap's default size
 }
