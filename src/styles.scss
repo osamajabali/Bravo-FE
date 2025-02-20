@@ -1,4 +1,4 @@
-@import "styles.custom-colors.scss";
+@use "./assets/scss/variables" as vars;
 
 body {
   font-family: Arial, sans-serif;
@@ -16,14 +16,14 @@ body {
 }
 
 .app-background {
-  background: $primary-primary-100 !important;
+  background: vars.$primary-primary-100 !important;
 }
 
 .text-primary-900 {
-  color: $primary-primary-900 !important;
+  color: vars.$primary-primary-900 !important;
 }
 .text-secondery-900 {
-  color: $secondery-secondery-900;
+  color: vars.$secondery-secondery-900;
 }
 
 .fs-7 {

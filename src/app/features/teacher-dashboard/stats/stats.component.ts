@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StatsService, Stats } from './service/stats.service';
 import { ChartOptions } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
+import { StatsService } from './stats.service';
+import { Stats } from '../models/stats.model';
 import { DoughnutChartDirective } from '../../../shared/directives/doughnut-chart.directive';
 
 @Component({
   selector: 'app-status',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective, DoughnutChartDirective],
-  templateUrl: './status.component.html',
-  styleUrls: ['./status.component.scss'],
+  imports: [CommonModule, DoughnutChartDirective],
+  templateUrl: './stats.component.html',
+  styleUrls: ['./stats.component.scss'],
 })
-export class StatusComponent implements OnInit {
+export class StatsComponent implements OnInit {
   stats: Stats = {
     activeSkills: { completed: 0, unCompleted: 0 },
     totalSkills: { completed: 0, unCompleted: 0 },
@@ -37,12 +37,15 @@ export class StatusComponent implements OnInit {
     },
   };
 
-  constructor(private statsService: StatsService) {}
+  constructor(private statsService: StatsService) { }
 
   ngOnInit() {
     this.stats = this.statsService.getStats();
 
-    // Populate pie chart data
+    this.getChartData();
+  }
+
+  getChartData = () : void => {
     this.activeSkillsPieChartData = [
       this.stats.activeSkills.completed,
       this.stats.activeSkills.unCompleted,
@@ -57,7 +60,7 @@ export class StatusComponent implements OnInit {
     ];
   }
 
-  onSelect(event: any) {
+  onSelect =(event: any) : void => {
     console.log('Item clicked', event);
   }
 }

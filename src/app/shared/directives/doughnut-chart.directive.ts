@@ -4,8 +4,11 @@ import {
   ElementRef,
   OnChanges,
   SimpleChanges,
+  Inject,
+  PLATFORM_ID
 } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { isPlatformBrowser } from '@angular/common';
 
 @Directive({
   selector: '[appDoughnutChart]',
@@ -17,17 +20,26 @@ export class DoughnutChartDirective implements OnChanges {
 
   private chart: Chart | undefined;
 
-  constructor(private el: ElementRef) {
-    Chart.register(...registerables); // Register Chart.js components
+  constructor(
+    private el: ElementRef,
+    @Inject(PLATFORM_ID) private platformId: Object // Inject platform check
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      Chart.register(...registerables); // Register Chart.js only in the browser
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['data'] || changes['labels']) {
+    if (isPlatformBrowser(this.platformId) && (changes['data'] || changes['labels'])) {
       this.renderChart();
     }
   }
 
   private renderChart(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return; // Prevent execution on the server
+    }
+
     const ctx = this.el.nativeElement.getContext('2d');
 
     if (this.chart) {
@@ -66,6 +78,7 @@ export class DoughnutChartDirective implements OnChanges {
             },
           },
         ];
+    
     this.chart = new Chart(ctx, {
       type: 'doughnut',
       data: {
@@ -81,26 +94,25 @@ export class DoughnutChartDirective implements OnChanges {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        cutout: this.isSkills ? '65%' : '45%', // Adjust for thickness
+        cutout: this.isSkills ? '65%' : '45%',
         plugins: {
           legend: {
             display: true,
-            position: 'right', // Set legend position to the right
-            align: 'center', // Align the legend at the start
+            position: 'right',
+            align: 'center',
             labels: {
-              usePointStyle: true, // Use a pie/point style instead of box
+              usePointStyle: true,
               pointStyle: 'circle',
               boxHeight: 14,
               boxWidth: 14,
-              color: '#000', // Color of legend labels
+              color: '#000',
               font: {
-                size: 10, // Font size for legend labels
+                size: 10,
               },
             },
           },
-          // Add a custom plugin for text rendering
           tooltip: {
-            enabled: this.isSkills ? false : true, // Disable tooltips if desired
+            enabled: this.isSkills ? false : true,
           },
         },
       },

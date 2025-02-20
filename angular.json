@@ -34,6 +34,7 @@
             ],
             "styles": [
               "src/styles.scss",
+              "src/assets/scss/_variables.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": [
@@ -111,8 +112,7 @@
               }
             ],
             "styles": [
-              "src/styles.scss",
-              "src/styles.custom-colors.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           }

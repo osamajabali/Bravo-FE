@@ -25,19 +25,11 @@ export const Features_Routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () =>
-          import('./main-layout/main.routes').then(
-            (m) => m.MainFeatures_Routes
+        loadComponent: () =>
+          import('./teacher-dashboard/stats/stats.component').then(
+            (m) => m.StatsComponent
           ),
       },
     ],
-  },
-  {
-    path: 'dashboard',
-    // canActivate: [authGuard],
-    loadChildren: () =>
-      import('./teacher-dashboard/teacher-dashboard.module').then(
-        (m) => m.TeacherDashboardModule
-      ), // Lazy-load the TeacherDashboardModule
   },
 ];

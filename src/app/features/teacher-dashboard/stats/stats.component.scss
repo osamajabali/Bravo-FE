@@ -1,6 +1,6 @@
-@import "../../../../styles.custom-colors.scss";
+@use "../../../../assets/scss/variables" as vars;
 .card-bg {
-  background-color: $primary-primary-100;
+  background-color: vars.$primary-primary-100;
 }
 
 .status-card {
@@ -8,14 +8,14 @@
 }
 
 .status .card {
-  border: 1px solid $primary-primary-100; // Change border color to blue
+  border: 1px solid vars.$primary-primary-100; // Change border color to blue
   box-shadow: 0px 2px 2px 0px rgba(108, 108, 108, 0.1);
 }
 
 .skills .card {
   border: none;
   box-shadow: 0px 2px 2px 0px rgba(108, 108, 108, 0.1);
-  background-color: $neutral-grey-50;
+  background-color: vars.$neutral-grey-50;
   border-radius: 10px;
   overflow: hidden;
 }
@@ -35,18 +35,18 @@
 }
 
 .border-style {
-  border: 1px solid $primary-primary-500;
+  border: 1px solid vars.$primary-primary-500;
   padding: 10px 20px;
   border-radius: 40px;
 }
 .quick-border-style {
-  border: 1px solid $neutral-grey-200;
+  border: 1px solid vars.$neutral-grey-200;
   padding: 8px 10px;
   border-radius: 10px;
 }
 .quick-btn {
-  border: 1px solid $primary-primary-800;
-  color: $primary-primary-900;
+  border: 1px solid vars.$primary-primary-800;
+  color: vars.$primary-primary-900;
   padding: 8px 10px;
   border-radius: 10px;
 }
