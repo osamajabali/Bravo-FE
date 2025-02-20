@@ -8,7 +8,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ToastrModule } from 'ngx-toastr';
 import { RequestInterceptor } from './core/interceptors/request.interceptor';
-
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch(), withInterceptors([RequestInterceptor])),
     provideAnimations(),
-    
+    provideCharts(withDefaultRegisterables()),
     importProvidersFrom(
       TranslateModule.forRoot({
         loader: {

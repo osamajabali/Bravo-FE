@@ -1,23 +1,63 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { StatsService, Stats } from './service/stats.service';
+import { ChartOptions } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
+import { DoughnutChartDirective } from '../../../shared/directives/doughnut-chart.directive';
 
 @Component({
   selector: 'app-status',
-  standalone: true, // Mark the component as standalone
-  imports: [CommonModule], // Import CommonModule here
+  standalone: true,
+  imports: [CommonModule, BaseChartDirective, DoughnutChartDirective],
   templateUrl: './status.component.html',
-  styleUrls: ['./status.component.scss']
+  styleUrls: ['./status.component.scss'],
 })
-export class StatusComponent {
-  stats = {
-    activeSkills: 14,
-    totalSkills: 564,
-    masteredSkills: 2,
-    skills: [
-      { name: 'Reading', inductive: 432, activated: 8 },
-      { name: 'Grammar', inductive: 432, activated: 8 },
-      { name: 'Spelling', inductive: 432, activated: 8 },
-      { name: 'Writing', inductive: 432, activated: 8 }
-    ]
+export class StatusComponent implements OnInit {
+  stats: Stats = {
+    activeSkills: { completed: 0, unCompleted: 0 },
+    totalSkills: { completed: 0, unCompleted: 0 },
+    masteredSkills: { completed: 0, unCompleted: 0 },
+    skills: [],
   };
+
+  // Pie chart data
+  activeSkillsPieChartData: number[] = []; // Update to an array of numbers for pie chart
+  totalSkillsPieChartData: number[] = []; // Update to an array of numbers for pie chart
+  masteredSkillsPieChartData: number[] = []; // Update to an array of numbers for pie chart
+  pieChartLabels: string[] = ['Activated', 'Inactive'];
+
+  chartOptions: ChartOptions = {
+    maintainAspectRatio: false, // Allows you to manage the aspect ratio directly in CSS
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.raw}%`,
+        },
+      },
+    },
+  };
+
+  constructor(private statsService: StatsService) {}
+
+  ngOnInit() {
+    this.stats = this.statsService.getStats();
+
+    // Populate pie chart data
+    this.activeSkillsPieChartData = [
+      this.stats.activeSkills.completed,
+      this.stats.activeSkills.unCompleted,
+    ];
+    this.totalSkillsPieChartData = [
+      this.stats.totalSkills.completed,
+      this.stats.totalSkills.unCompleted,
+    ];
+    this.masteredSkillsPieChartData = [
+      this.stats.masteredSkills.completed,
+      this.stats.masteredSkills.unCompleted,
+    ];
+  }
+
+  onSelect(event: any) {
+    console.log('Item clicked', event);
+  }
 }

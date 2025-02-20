@@ -25,7 +25,7 @@
 }
 
 .min-w-5 {
-  min-width: 50px;
+  min-width: 82px;
 }
 
 .img-fluid {
@@ -38,4 +38,26 @@
   border: 1px solid $primary-primary-500;
   padding: 10px 20px;
   border-radius: 40px;
+}
+.quick-border-style {
+  border: 1px solid $neutral-grey-200;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+.quick-btn {
+  border: 1px solid $primary-primary-800;
+  color: $primary-primary-900;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+canvas.status-chart {
+  max-width: 120px; // Ensure the canvas fits within the available width
+  max-height: 120px; // Ensure the canvas fits within the available width
+  height: auto; // Maintain aspect ratio
+}
+canvas.skill-chart {
+  max-width: auto; // Ensure the canvas fits within the available width
+  max-height: 120px; // Ensure the canvas fits within the available width
+  height: auto; // Maintain aspect ratio
 }

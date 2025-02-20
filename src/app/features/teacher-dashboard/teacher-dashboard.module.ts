@@ -5,11 +5,7 @@ import { TeacherDashboardModuleRoutingModule } from './teacher-dashboard-routing
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    TeacherDashboardModuleRoutingModule,
-    StatusComponent, // Add the routing module here
-  ],
+  imports: [CommonModule, TeacherDashboardModuleRoutingModule, StatusComponent],
   exports: [StatusComponent],
 })
 export class TeacherDashboardModule {}
