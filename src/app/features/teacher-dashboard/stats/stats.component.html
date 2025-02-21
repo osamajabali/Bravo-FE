@@ -63,7 +63,7 @@
             <span class="fs-8 text-decoration-none text-black fw-bold">See All</span>
           </a>
         </div>
-        <canvas class="skill-chart" appDoughnutChart [data]="masteredSkillsPieChartData" [isSkills]="false"
+        <canvas class="skill-chart" appDoughnutChart [data]="[skill.activated , skill.inactive]" [isSkills]="false"
           [labels]="pieChartLabels">
         </canvas>
       </div>

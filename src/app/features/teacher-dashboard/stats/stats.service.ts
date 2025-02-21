@@ -13,9 +13,9 @@ export class StatsService {
       masteredSkills: {title:'Mastered Skills', completed: 2, unCompleted: 10 },
       skills: [
         { name: 'Reading', inactive: 30, activated: 70 },
-        { name: 'Grammar', inactive: 30, activated: 70 },
-        { name: 'Spelling', inactive: 30, activated: 70 },
-        { name: 'Writing', inactive: 30, activated: 70 },
+        { name: 'Grammar', inactive: 50, activated: 50 },
+        { name: 'Spelling', inactive: 70, activated: 30 },
+        { name: 'Writing', inactive: 100, activated: 0 },
       ],
     };
   }
