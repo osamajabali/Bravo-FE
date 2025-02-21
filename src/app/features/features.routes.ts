@@ -30,6 +30,13 @@ export const Features_Routes: Routes = [
             (m) => m.StatsComponent
           ),
       },
+      {
+        path: 'units',
+        loadComponent: () =>
+          import('./teacher-dashboard/units/units.component').then(
+            (m) => m.UnitsComponent
+          ),
+      },
     ],
   },
 ];
