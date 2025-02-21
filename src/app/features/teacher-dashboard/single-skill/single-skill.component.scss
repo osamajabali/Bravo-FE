@@ -4,7 +4,6 @@
   border-radius: 8px; // Rounded corners
   transition: transform 0.2s; // Smooth animation on hover
   border-color: vars.$neutral-grey-200;
-  cursor: pointer;
 }
 .card-title {
   font-size: 20px;
@@ -27,10 +26,6 @@
 .input-group-text {
   background-color: transparent;
   border-inline-start: none;
-}
-
-.card:hover {
-  transform: scale(1.02); // Slightly enlarge the card on hover
 }
 
 .tag-container {
