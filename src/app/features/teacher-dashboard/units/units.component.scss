@@ -1,0 +1,33 @@
+@use "../../../../assets/scss/variables" as vars;
+
+.card {
+  border-radius: 8px; // Rounded corners
+  transition: transform 0.2s; // Smooth animation on hover
+  border-color: vars.$neutral-grey-200;
+  cursor: pointer;
+}
+.card-title {
+  font-size: 20px;
+  color: vars.$primary-primary-900;
+  font-weight: 700;
+}
+
+.card-text {
+  font-size: 16px;
+  color: vars.$neutral-grey-500;
+  font-weight: 700;
+}
+
+.input-group,
+.search {
+  max-width: 200px;
+  border-inline-end: none;
+}
+.input-group-text {
+  background-color: transparent;
+  border-inline-start: none;
+}
+
+.card:hover {
+  transform: scale(1.02); // Slightly enlarge the card on hover
+}

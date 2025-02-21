@@ -31,6 +31,13 @@ export const Features_Routes: Routes = [
           ),
       },
       {
+        path: 'units',
+        loadComponent: () =>
+          import('./teacher-dashboard/units/units.component').then(
+            (m) => m.UnitsComponent
+          ),
+      },
+      {
         path: 'single-skill',
         loadComponent: () =>
           import(
