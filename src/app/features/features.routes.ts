@@ -30,6 +30,13 @@ export const Features_Routes: Routes = [
             (m) => m.StatsComponent
           ),
       },
+      {
+        path: 'single-skill',
+        loadComponent: () =>
+          import(
+            './teacher-dashboard/single-skill/single-skill.component'
+          ).then((m) => m.SingleSkillComponent),
+      },
     ],
   },
 ];
