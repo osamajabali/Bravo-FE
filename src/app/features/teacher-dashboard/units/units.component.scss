@@ -18,6 +18,16 @@
   font-weight: 700;
 }
 
+.input-group,
+.search {
+  max-width: 200px;
+  border-inline-end: none;
+}
+.input-group-text {
+  background-color: transparent;
+  border-inline-start: none;
+}
+
 .card:hover {
   transform: scale(1.02); // Slightly enlarge the card on hover
 }
