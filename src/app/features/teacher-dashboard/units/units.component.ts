@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Unit } from '../models/units.model';
 import { CommonModule } from '@angular/common';
+import { Unit } from '../../../core/models/teacher-dashboard-models/units.model';
 
 @Component({
   selector: 'app-units',

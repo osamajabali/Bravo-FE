@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { SingleSkill } from '../models/single-skill';
 import { CommonModule } from '@angular/common';
+import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
 
 @Component({
   selector: 'app-single-skill',

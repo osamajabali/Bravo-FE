@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AlertService } from '../services/alert.service';
+import { AlertService } from '../services/shared-services/alert.service';
 
 export const RequestInterceptor: HttpInterceptorFn = (req, next) => {
   const alertService = inject(AlertService);

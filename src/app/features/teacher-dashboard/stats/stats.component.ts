@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartOptions } from 'chart.js';
-import { StatsService } from './stats.service';
-import { Stats } from '../models/stats.model';
-import { DoughnutChartDirective } from '../../../shared/directives/doughnut-chart.directive';
+import { DoughnutChartDirective } from '../../../shared/functions/directives/doughnut-chart.directive';
+import { StatsService } from '../../../core/services/teacher-dashboard-services/stats.service';
+import { Stats } from '../../../core/models/teacher-dashboard-models/stats.model';
 
 @Component({
   selector: 'app-status',

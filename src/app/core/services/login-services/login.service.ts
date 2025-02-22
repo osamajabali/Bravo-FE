@@ -1,13 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LogIn } from '../models/login.model';
-import { LoginResponse, TokenResponse } from '../models/loginResponse';
-import { environment } from '../../../../environments/environment';
-import { AccessToken } from '../models/access-token';
-import { LoggedInUser } from '../models/logged-in-user';
 import { jwtDecode } from 'jwt-decode';
-import { HttpService } from '../../../core/services/http.service';
+import { AccessToken } from '../../models/login-models/access-token';
+import { LoggedInUser } from '../../models/login-models/logged-in-user';
+import { LogIn } from '../../models/login-models/login.model';
+import { HttpService } from '../shared-services/http.service';
 
 @Injectable({
   providedIn: 'root'

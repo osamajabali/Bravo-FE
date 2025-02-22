@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, NgForm, Validators } from '@angular/forms';
-import { LogIn } from '../models/login.model';
-import { LoginService } from './login.service';
-import { finalize } from 'rxjs';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { LogIn } from '../../../core/models/login-models/login.model';
+import { LoginService } from '../../../core/services/login-services/login.service';
 
 @Component({
   selector: 'app-login',

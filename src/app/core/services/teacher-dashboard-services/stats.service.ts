@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Stats } from '../models/stats.model';
+import { Stats } from '../../models/teacher-dashboard-models/stats.model';
 
 
 @Injectable({
