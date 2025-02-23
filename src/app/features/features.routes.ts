@@ -44,6 +44,13 @@ export const Features_Routes: Routes = [
             './teacher-dashboard/leveled-display/leveled-display.component'
           ).then((m) => m.LeveledDisplayComponent),
       },
+      {
+        path: 'questions',
+        loadComponent: () =>
+          import(
+            './teacher-dashboard/questions/questions.component'
+          ).then((m) => m.QuestionsComponent),
+      },
     ],
   },
 ];
