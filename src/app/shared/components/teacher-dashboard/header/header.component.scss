@@ -1,0 +1,25 @@
+@use "../../../../../assets/scss/variables" as vars;
+
+.header-btn {
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+}
+
+.divider-v {
+  height: 17px;
+  width: 1px;
+  background-color: vars.$primary-primary-900;
+}
+
+a {
+  color: vars.$neutral-grey-500;
+  text-decoration: none; // Remove underline by default
+  font-size: 14px;
+  font-weight: 400;
+  &.active {
+    color: vars.$primary-primary-900;
+    text-decoration: underline; // Add underline for active state
+    text-underline-offset: 4px; // Add space between text and underline
+  }
+}
