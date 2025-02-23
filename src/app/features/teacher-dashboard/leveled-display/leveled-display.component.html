@@ -1,0 +1,85 @@
+<div class="leveled-display container d-flex flex-column gap-3">
+  <section>
+    <app-header></app-header>
+    <div class="divider-h"></div>
+  </section>
+  <section class="d-flex justify-content-between align-items-center my-4">
+    <div class="dropdown header-btn">
+      <button
+        class="btn dropdown-toggle d-flex justify-content-between align-items-center"
+        type="button"
+        id="dropdownMenuButton1"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        style="width: 150px"
+      >
+        Select Level
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li><a class="dropdown-item" href="#">Something else here</a></li>
+      </ul>
+    </div>
+    <div class="d-flex justify-content-end align-items-center gap-1">
+      <img
+        src="assets/icons/search-sort/sorting-04.svg"
+        alt="user-multiple"
+        class="me-2 cursor-pointer"
+        width="24px"
+        height="24px"
+      />
+      <img
+        src="assets/icons/search-sort/left-to-right-list-dash.svg"
+        alt="open"
+        class="me-2 cursor-pointer"
+        width="24px"
+        height="24px"
+      />
+      <img
+        src="assets/icons/search-sort/grid-view.svg"
+        alt="view"
+        class="me-2 cursor-pointer"
+        width="24px"
+        height="24px"
+      />
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="d-flex flex-column gap-3">
+      @for (value of values; track $index) {
+      <div class="card d-flex flex-row">
+        <div
+          class="card-body d-flex justify-content-between align-items-center"
+        >
+          <span class="fw-bold fs-7 title">{{ value }}</span>
+          <div class="d-flex justify-content-end align-items-center gap-1">
+            <img
+              src="assets/icons/peroson-chat.svg"
+              alt="grid-view"
+              class="cursor-pointer"
+              width="34px"
+              height="34px"
+            />
+            <img
+              src="assets/icons/single-skill/user-multiple-02.svg"
+              alt="grid-view"
+              class="cursor-pointer"
+              width="34px"
+              height="34px"
+            />
+            <img
+              src="assets/icons/single-skill/view.svg"
+              alt="grid-view"
+              class="cursor-pointer"
+              width="34px"
+              height="34px"
+            />
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </section>
+</div>

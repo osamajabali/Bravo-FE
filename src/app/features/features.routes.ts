@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 
 export const Features_Routes: Routes = [
-
   {
     path: '',
     // canActivate: [authGuard],
@@ -30,6 +29,27 @@ export const Features_Routes: Routes = [
           import(
             './teacher-dashboard/single-skill/single-skill.component'
           ).then((m) => m.SingleSkillComponent),
+      },
+      {
+        path: 'leveled-reading',
+        loadComponent: () =>
+          import(
+            './teacher-dashboard/leveled-reading/leveled-reading.component'
+          ).then((m) => m.LeveledReadingComponent),
+      },
+      {
+        path: 'leveled-display',
+        loadComponent: () =>
+          import(
+            './teacher-dashboard/leveled-display/leveled-display.component'
+          ).then((m) => m.LeveledDisplayComponent),
+      },
+      {
+        path: 'questions',
+        loadComponent: () =>
+          import(
+            './teacher-dashboard/questions/questions.component'
+          ).then((m) => m.QuestionsComponent),
       },
     ],
   },
