@@ -1,63 +1,71 @@
 @use "../../../../assets/scss/variables" as vars;
-.card-bg {
-  background-color: vars.$primary-primary-100;
+
+.dashboard {
+  .status {
+    .status-card {
+      max-width: 380px;
+    }
+    .card-bg {
+      background-color: vars.$primary-primary-100;
+      border: none;
+    }
+    .status .card {
+      border: 1px solid vars.$primary-primary-100;
+      box-shadow: 0px 2px 2px 0px rgba(108, 108, 108, 0.1);
+    }
+    canvas {
+      max-width: 140px;
+      max-height: 120px;
+      height: auto;
+    }
+  }
+
+  .skills {
+    .card {
+      border: none;
+      box-shadow: 0px 2px 2px 0px rgba(108, 108, 108, 0.1);
+      background-color: vars.$neutral-grey-50;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 440px !important;
+    }
+    .img-fluid {
+      background: url("../../../../assets/images/Header.svg") no-repeat;
+      object-fit: cover;
+      max-width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    .text-secondary-900 {
+      color: vars.$secondery-secondery-900;
+    }
+    .border-style {
+      border: 1px solid vars.$primary-primary-500;
+      padding: 10px 20px;
+      border-radius: 40px;
+    }
+    .quick-border-style {
+      border: 1px solid vars.$neutral-grey-200;
+      padding: 8px 10px;
+      border-radius: 10px;
+    }
+    .quick-btn {
+      border: 1px solid vars.$primary-primary-800;
+      color: vars.$primary-primary-900;
+      padding: 8px 10px;
+      border-radius: 10px;
+    }
+    canvas {
+      max-width: 290px;
+      max-height: 120px;
+      height: auto;
+    }
+  }
 }
 
-.status-card {
-  max-width: 380px;
-}
-
-.status .card {
-  border: 1px solid vars.$primary-primary-100; // Change border color to blue
-  box-shadow: 0px 2px 2px 0px rgba(108, 108, 108, 0.1);
-}
-
-.skills .card {
-  border: none;
-  box-shadow: 0px 2px 2px 0px rgba(108, 108, 108, 0.1);
-  background-color: vars.$neutral-grey-50;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.p-10px {
+.padding-10 {
   padding: 10px;
 }
-
 .min-w-5 {
   min-width: 82px;
-}
-
-.img-fluid {
-  max-width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-
-.border-style {
-  border: 1px solid vars.$primary-primary-500;
-  padding: 10px 20px;
-  border-radius: 40px;
-}
-.quick-border-style {
-  border: 1px solid vars.$neutral-grey-200;
-  padding: 8px 10px;
-  border-radius: 10px;
-}
-.quick-btn {
-  border: 1px solid vars.$primary-primary-800;
-  color: vars.$primary-primary-900;
-  padding: 8px 10px;
-  border-radius: 10px;
-}
-
-canvas.status-chart {
-  max-width: 120px; // Ensure the canvas fits within the available width
-  max-height: 120px; // Ensure the canvas fits within the available width
-  height: auto; // Maintain aspect ratio
-}
-canvas.skill-chart {
-  max-width: auto; // Ensure the canvas fits within the available width
-  max-height: 120px; // Ensure the canvas fits within the available width
-  height: auto; // Maintain aspect ratio
 }

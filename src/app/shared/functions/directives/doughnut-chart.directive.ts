@@ -5,9 +5,9 @@ import {
   OnChanges,
   SimpleChanges,
   Inject,
-  PLATFORM_ID
+  PLATFORM_ID,
 } from '@angular/core';
-import { Chart, registerables } from 'chart.js';
+import { Chart, LegendItem, registerables } from 'chart.js';
 import { isPlatformBrowser } from '@angular/common';
 
 @Directive({
@@ -30,7 +30,10 @@ export class DoughnutChartDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (isPlatformBrowser(this.platformId) && (changes['data'] || changes['labels'])) {
+    if (
+      isPlatformBrowser(this.platformId) &&
+      (changes['data'] || changes['labels'])
+    ) {
       this.renderChart();
     }
   }
@@ -69,7 +72,7 @@ export class DoughnutChartDirective implements OnChanges {
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
               ctx.fillStyle = '#1B4D5B'; // Text color
-              const centerX = chart.width / 2.3;
+              const centerX = chart.width / 2.6;
               const centerY = chart.height / 2;
 
               // Draw text
@@ -78,7 +81,7 @@ export class DoughnutChartDirective implements OnChanges {
             },
           },
         ];
-    
+
     this.chart = new Chart(ctx, {
       type: 'doughnut',
       data: {
@@ -107,9 +110,32 @@ export class DoughnutChartDirective implements OnChanges {
               boxWidth: 14,
               color: '#000',
               font: {
-                size: 10,
+                size: 14,
+                weight: 'bold',
+              },
+              padding: 20,
+              generateLabels: (chart) => {
+                const labels = chart.data.labels;
+                const dataValues = chart.data.datasets[0].data;
+                const backgroundColors = chart.data.datasets[0].backgroundColor;
+
+                return labels.map((label, index) => {
+                  const text = label as string;
+                  const count = dataValues[index];
+                  const color = text === 'Activated' ? '#704B1D' : '#171717';
+                  const legendColor = backgroundColors[index] || '#171717';
+                  return {
+                    text: `${count} ${text}`,
+                    fontColor: color,
+                    fillStyle: legendColor,
+                    hidden: false,
+                    index,
+                    lineWidth: 0,
+                  } as LegendItem;
+                });
               },
             },
+            onClick: () => {},
           },
           tooltip: {
             enabled: this.isSkills ? false : true,
