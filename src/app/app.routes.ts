@@ -16,7 +16,7 @@ export const routes: Routes = [
     },
     {
         path: 'features',
-        loadChildren: () => import('./features/features.routes').then(m => m.Features_Routes)
+        loadChildren: () => import('./features/main-layout/main-layout.routes').then(m => m.Main_Layout_Routes)
     },
     {
         path: '**',

@@ -1,4 +1,5 @@
 @use "../../../../assets/scss/variables" as vars;
+@use 'sass:color';
 
 .leveled-reading {
   text-align: start;
@@ -134,8 +135,7 @@
           transition: background 0.3s ease;
 
           &:hover {
-            background-color: darken(vars.$primary-primary-300, 10%);
-          }
+            background-color: color.scale(vars.$primary-primary-300, $lightness: -10%);                      }
         }
       }
     }
