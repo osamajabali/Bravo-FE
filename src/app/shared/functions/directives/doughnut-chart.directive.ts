@@ -72,7 +72,7 @@ export class DoughnutChartDirective implements OnChanges {
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
               ctx.fillStyle = '#1B4D5B'; // Text color
-              const centerX = chart.width / 2.6;
+              const centerX = chart.width / 2.3;
               const centerY = chart.height / 2;
 
               // Draw text
@@ -108,12 +108,11 @@ export class DoughnutChartDirective implements OnChanges {
               pointStyle: 'circle',
               boxHeight: 14,
               boxWidth: 14,
-              color: '#000',
               font: {
                 size: 14,
                 weight: 'bold',
               },
-              padding: 20,
+              padding: 10,
               generateLabels: (chart) => {
                 const labels = chart.data.labels;
                 const dataValues = chart.data.datasets[0].data;
