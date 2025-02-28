@@ -1,0 +1,195 @@
+<div
+  class="app-header d-flex justify-content-between align-items-center py-2 px-3 border-bottom"
+>
+  <h5 class="mb-0 text-primary-900">Skills</h5>
+
+  <div class="d-flex align-items-center gap-3">
+    <div class="filter-modal">
+      <div class="dropdown" (click)="$event.stopPropagation()">
+        <button
+          class="btn dropdown-btn d-flex justify-content-between gap-2 align-items-center"
+          type="button"
+          id="filterDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <span>{{ displayFilter }}</span>
+          <img src="assets/icons/arrow-down-primary.svg" />
+        </button>
+
+        <div
+          class="dropdown-menu py-0"
+          aria-labelledby="filterDropdown"
+          style="min-width: 300px"
+        >
+          <div class="accordion h-100" id="filterAccordion">
+            <!-- Select Grade -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingGrade">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseGrade"
+                  aria-expanded="true"
+                  aria-controls="collapseGrade"
+                >
+                  Select Grade
+                </button>
+              </h2>
+              <div
+                id="collapseGrade"
+                class="accordion-collapse collapse show"
+                aria-labelledby="headingGrade"
+                data-bs-parent="#filterAccordion"
+              >
+                <div class="accordion-body">
+                  <div *ngFor="let grade of grades">
+                    <input
+                      type="radio"
+                      name="gradeGroup"
+                      [value]="grade"
+                      [(ngModel)]="selectedGrade"
+                      (change)="updateDropdownTitle()"
+                    />
+                    {{ grade }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Select Section -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingSection">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseSection"
+                  aria-expanded="false"
+                  aria-controls="collapseSection"
+                >
+                  Select Section
+                </button>
+              </h2>
+              <div
+                id="collapseSection"
+                class="accordion-collapse collapse"
+                aria-labelledby="headingSection"
+                data-bs-parent="#filterAccordion"
+              >
+                <div class="accordion-body">
+                  <div *ngFor="let section of sections">
+                    <input
+                      type="radio"
+                      name="sectionGroup"
+                      [value]="section"
+                      [(ngModel)]="selectedSection"
+                      (change)="updateDropdownTitle()"
+                    />
+                    {{ section }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Select Subject -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingSubject">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseSubject"
+                  aria-expanded="false"
+                  aria-controls="collapseSubject"
+                >
+                  Select Subject
+                </button>
+              </h2>
+              <div
+                id="collapseSubject"
+                class="accordion-collapse collapse"
+                aria-labelledby="headingSubject"
+                data-bs-parent="#filterAccordion"
+              >
+                <div class="accordion-body">
+                  <div *ngFor="let subject of subjects">
+                    <input
+                      type="radio"
+                      name="subjectGroup"
+                      [value]="subject"
+                      [(ngModel)]="selectedSubject"
+                      (change)="updateDropdownTitle()"
+                    />
+                    {{ subject }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Buttons for Clear All and Apply -->
+          <div class="d-flex justify-content-between p-2">
+            <button class="btn secondary-btn btn-sm" (click)="clearAll($event)">
+              Clear All
+            </button>
+            <button
+              class="btn primary-btn btn-sm"
+              (click)="applyFilter($event)"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="position-relative">
+      <img
+        src="assets/icons/setting-07.svg"
+        alt="Settings"
+        class="cursor-pointer"
+      />
+    </div>
+    <div class="position-relative">
+      <img
+        src="assets/icons/notification-03.svg"
+        alt="Notifications"
+        class="cursor-pointer"
+      />
+      <span
+        class="badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+      >
+        {{ notificationCount }}
+      </span>
+    </div>
+
+    <div class="dropdown">
+      <button
+        class="btn d-flex align-items-center gap-3"
+        type="button"
+        id="userMenuButton"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <div class="d-flex align-items-center gap-2">
+          <div
+            class="avatar text-white d-flex align-items-center justify-content-center fs-7"
+          >
+            LA
+          </div>
+          <div class="d-flex flex-column align-items-start">
+            <span class="title">{{ userName }}</span>
+            <span class="subtitle">{{ position }}</span>
+          </div>
+        </div>
+        <img src="assets/icons/arrow-down.svg" />
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="userMenuButton">
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><a class="dropdown-item" href="#">Settings</a></li>
+        <li><a class="dropdown-item" href="#">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
