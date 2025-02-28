@@ -1,69 +1,85 @@
 @use "../../../../assets/scss/variables" as vars;
 
-.card {
-  border-radius: 8px; // Rounded corners
-  transition: transform 0.2s; // Smooth animation on hover
-  border-color: vars.$neutral-grey-200;
-}
-.card-title {
-  font-size: 20px;
-  color: vars.$primary-primary-900;
-  font-weight: 700;
-}
+.single-skill {
+  .card {
+    border-radius: 8px; // Rounded corners
+    transition: transform 0.2s; // Smooth animation on hover
+    border-color: vars.$neutral-grey-200;
+  }
+  .card-title {
+    font-size: 20px;
+    color: vars.$primary-primary-900;
+    font-weight: 700;
+  }
 
-.card-text {
-  font-size: 16px;
-  color: vars.$neutral-grey-500;
-  font-weight: 700;
-}
+  .card-text {
+    font-size: 16px;
+    color: vars.$neutral-grey-500;
+    font-weight: 700;
+  }
+  .tag-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 
-.input-group,
-.search {
-  max-width: 200px;
-  border-inline-end: none;
-}
+  .tags-value {
+    background: vars.$primary-primary-100;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 4px;
+    padding: 4px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: vars.$primary-primary-900;
+  }
 
-.input-group-text {
-  background-color: transparent;
-  border-inline-start: none;
-}
+  .btn-style {
+    background: vars.$primary-primary-300;
+    color: vars.$primary-primary-900;
+    font-size: 12px;
 
-.tag-container {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-}
+    &:hover {
+      background: vars.$primary-primary-400;
+      color: vars.$primary-primary-900;
+    }
+  }
 
-.tags-value {
-  background: vars.$primary-primary-100;
-  font-size: 12px;
-  font-weight: 500;
-  border-radius: 4px;
-  padding: 4px 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: vars.$primary-primary-900;
-}
+  .mobal-btn {
+    width: 60px;
+    background: vars.$primary-primary-300;
+    color: vars.$primary-primary-900;
+    font-size: 16px;
 
-.btn-style {
-  background: vars.$primary-primary-300;
-  color: vars.$primary-primary-900;
-  font-size: 12px;
-}
-.btn-style:hover {
-  background: vars.$primary-primary-400;
-  color: vars.$primary-primary-900;
-}
+    &:hover {
+      background: vars.$primary-primary-400;
+      color: vars.$primary-primary-900;
+    }
+  }
+  .mobal-btn-secondary {
+    width: 60px;
+    background: transparent;
+    border: 1px solid vars.$primary-primary-900;
+    color: vars.$primary-primary-900;
+    font-size: 16px;
 
-.activation {
-  color: vars.$primary-primary-900;
-  font-size: 12px;
-  font-weight: 400;
-  align-self: end;
-}
-
-.search {
-  border-radius: 30px;
+    &:hover {
+      background: vars.$primary-primary-100;
+      color: vars.$primary-primary-900;
+    }
+  }
+  .activation {
+    color: vars.$primary-primary-900;
+    font-size: 12px;
+    font-weight: 400;
+    align-self: end;
+  }
+  .modal-header {
+    border: none;
+  }
+  .modal-footer {
+    border: none;
+  }
 }

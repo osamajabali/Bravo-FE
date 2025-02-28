@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
+import { SearchComponent } from '../../../shared/components/search/search.component';
 
 @Component({
   selector: 'app-single-skill',
-  imports: [CommonModule],
+  imports: [CommonModule, SearchComponent],
   templateUrl: './single-skill.component.html',
   styleUrl: './single-skill.component.scss',
 })
