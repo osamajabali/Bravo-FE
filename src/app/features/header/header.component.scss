@@ -1,0 +1,56 @@
+@use "../../../assets/scss/variables" as vars;
+
+.app-header {
+  .title {
+    font-size: 14px;
+    font-weight: 700;
+    color: vars.$primary-primary-900;
+  }
+  .subtitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: vars.$neutral-grey-500;
+  }
+  .avatar {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    background-color: vars.$primary-primary-900;
+    border-radius: 50%;
+  }
+  .filter-btn {
+    background-color: vars.$primary-primary-50;
+    color: vars.$primary-primary-900;
+  }
+  .primary-btn {
+    width: 121px;
+    height: 31px;
+    background: vars.$primary-primary-300;
+    color: vars.$primary-primary-900;
+    font-size: 12px;
+
+    &:hover {
+      background: vars.$primary-primary-400;
+      color: vars.$primary-primary-900;
+    }
+  }
+  .secondary-btn {
+    width: 121px;
+    height: 31px;
+    background: transparent;
+    border: 1px solid vars.$primary-primary-900;
+    color: vars.$primary-primary-900;
+    font-size: 12px;
+
+    &:hover {
+      background: vars.$primary-primary-100;
+      color: vars.$primary-primary-900;
+    }
+  }
+  .dropdown-btn {
+    background: vars.$primary-primary-50;
+    color: vars.$primary-primary-900;
+    box-shadow: 0px var(--Shadows-XXS, 2px) 0px 0px
+      var(--Primary-Primary-600, #49abc6);
+  }
+}
