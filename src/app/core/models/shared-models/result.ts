@@ -1,6 +1,6 @@
 export class Result<T = any>  {
-    data!: T;
-    isSuccess : boolean ;
-    messages : string ;
-    error : string;
+    result!: T;
+    success : boolean ;
+    message : string ;
+    code : number;
 }

@@ -3,26 +3,29 @@ import { CommonModule } from '@angular/common';
 import { ChartOptions } from 'chart.js';
 import { DoughnutChartDirective } from '../../../shared/functions/directives/doughnut-chart.directive';
 import { StatsService } from '../../../core/services/teacher-dashboard-services/stats.service';
-import { Stats } from '../../../core/models/teacher-dashboard-models/stats.model';
+import { Stats, StatsRequest } from '../../../core/models/teacher-dashboard-models/stats.model';
+import { HeaderService } from '../../../core/services/header-services/header.service';
+import { SkeletonComponent } from "../../../shared/components/skeleton/skeleton.component";
+import { SharedService } from '../../../core/services/shared-services/shared.service';
 
 @Component({
   selector: 'app-status',
   standalone: true,
-  imports: [CommonModule, DoughnutChartDirective],
+  imports: [CommonModule, DoughnutChartDirective, SkeletonComponent],
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss'],
 })
 export class StatsComponent implements OnInit {
-  stats: Stats = {
-    activeSkills: { completed: 0, unCompleted: 0 },
-    totalSkills: { completed: 0, unCompleted: 0 },
-    masteredSkills: { completed: 0, unCompleted: 0 },
-    skills: [],
-  };
 
-  // Pie chart data
-  activeSkillsPieChartData: number[] = []; // Update to an array of numbers for pie chart
-  totalSkillsPieChartData: number[] = []; // Update to an array of numbers for pie chart
+  stats : Stats[] = []
+
+  skills = [
+    { name: 'Reading', inactive: 30, activated: 70 },
+      { name: 'Grammar', inactive: 50, activated: 50 },
+      { name: 'Spelling', inactive: 70, activated: 30 },
+      { name: 'Writing', inactive: 100, activated: 0 },
+  ]
+  
   masteredSkillsPieChartData: number[] = []; // Update to an array of numbers for pie chart
   pieChartLabels: string[] = ['Activated', 'Inactive'];
 
@@ -37,28 +40,31 @@ export class StatsComponent implements OnInit {
     },
   };
 
-  constructor(private statsService: StatsService) { }
+  constructor(private statsService: StatsService , private headerService : HeaderService , private sharedService : SharedService) { }
 
   ngOnInit() {
-    this.stats = this.statsService.getStats();
+    this.sharedService.apiResponse$.subscribe((data) => {
+      if (data) {
+        this.getStats();
+      } else {
+        console.warn('apiResponse$ is null or undefined');
+      }
+    });
+  }
+  
 
-    this.getChartData();
+  getStats() {
+    let model : StatsRequest ={
+      sectionId : this.headerService.selectedSectionId,
+      subjectId: this.headerService.selectedSubjectId
+    };
+    this.statsService.getStats(model).subscribe(res =>{
+      if(res.success){
+        this.stats = res.result.learningOutcomesStats
+      }
+    })
   }
 
-  getChartData = () : void => {
-    this.activeSkillsPieChartData = [
-      this.stats.activeSkills.completed,
-      this.stats.activeSkills.unCompleted,
-    ];
-    this.totalSkillsPieChartData = [
-      this.stats.totalSkills.completed,
-      this.stats.totalSkills.unCompleted,
-    ];
-    this.masteredSkillsPieChartData = [
-      this.stats.masteredSkills.completed,
-      this.stats.masteredSkills.unCompleted,
-    ];
-  }
 
   onSelect =(event: any) : void => {
     console.log('Item clicked', event);

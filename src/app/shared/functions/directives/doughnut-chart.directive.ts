@@ -22,7 +22,7 @@ export class DoughnutChartDirective implements OnChanges {
 
   constructor(
     private el: ElementRef,
-    @Inject(PLATFORM_ID) private platformId: Object // Inject platform check
+    @Inject(PLATFORM_ID) private platformId: Object // Platform check for SSR
   ) {
     if (isPlatformBrowser(this.platformId)) {
       Chart.register(...registerables); // Register Chart.js only in the browser
@@ -49,6 +49,18 @@ export class DoughnutChartDirective implements OnChanges {
       this.chart.destroy();
     }
 
+    let chartData: number[];
+
+    if (this.data.length === 1) {
+      // If a single percentage value is passed, assume it's the active portion
+      const percentage = this.data[0];
+      chartData = [percentage, 100 - percentage]; // Ensure total is 100
+    } else {
+      // Normalize multiple values to ensure they sum to 100
+      const totalValue = this.data.reduce((sum, value) => sum + value, 0);
+      chartData = totalValue > 0 ? this.data.map(value => (value / totalValue) * 100) : [100];
+    }
+
     const backgroundColor = this.isSkills
       ? ['#54C8E8', '#FFFF']
       : ['#54C8E8', '#C9C9C9'];
@@ -60,11 +72,8 @@ export class DoughnutChartDirective implements OnChanges {
             id: 'centerText',
             afterDraw: (chart) => {
               const ctx = chart.ctx;
-              const dataset = chart.data.datasets[0];
-              const total = dataset.data.reduce((acc, value) => acc + value, 0);
-              const activeSkills = dataset.data[0]; // Adjust based on index if needed
-              const text =
-                total > 0 ? `${Math.round((activeSkills / total) * 100)}%` : '';
+              const percentage = chart.data.datasets[0].data[0] as number; // First item as percentage
+              const text = percentage ? `${Math.round(percentage)}%` : '0%';
 
               // Set font properties
               ctx.save();
@@ -88,7 +97,7 @@ export class DoughnutChartDirective implements OnChanges {
         labels: this.data.length > 0 ? this.labels : ['No Data'],
         datasets: [
           {
-            data: this.data,
+            data: chartData, // Use processed percentage data
             backgroundColor: backgroundColor,
             hoverBackgroundColor: backgroundColor,
           },
@@ -114,17 +123,16 @@ export class DoughnutChartDirective implements OnChanges {
               },
               padding: 10,
               generateLabels: (chart) => {
-                const labels = chart.data.labels;
-                const dataValues = chart.data.datasets[0].data;
-                const backgroundColors = chart.data.datasets[0].backgroundColor;
+                const labels = chart.data.labels as string[];
+                const dataValues = chart.data.datasets[0].data as number[];
+                const backgroundColors = chart.data.datasets[0].backgroundColor as string[];
 
                 return labels.map((label, index) => {
-                  const text = label as string;
-                  const count = dataValues[index];
-                  const color = text === 'Activated' ? '#704B1D' : '#171717';
+                  const count = Math.round(dataValues[index]); // Ensure percentage display
+                  const color = label === 'Activated' ? '#704B1D' : '#171717';
                   const legendColor = backgroundColors[index] || '#171717';
                   return {
-                    text: `${count} ${text}`,
+                    text: `${count}% ${label}`,
                     fontColor: color,
                     fillStyle: legendColor,
                     hidden: false,

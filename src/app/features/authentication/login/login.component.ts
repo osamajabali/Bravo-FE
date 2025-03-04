@@ -4,41 +4,50 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { LogIn } from '../../../core/models/login-models/login.model';
 import { LoginService } from '../../../core/services/login-services/login.service';
+import { finalize } from 'rxjs';
 
 @Component({
-  selector: 'app-login',
-  imports: [CommonModule, FormsModule , RouterModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+	selector: 'app-login',
+	imports: [CommonModule, FormsModule, RouterModule],
+	templateUrl: './login.component.html',
+	styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  user: LogIn = new LogIn();
+	user: LogIn = new LogIn();
+	sessionMessage: string | null = null;
 
-	constructor(private router : Router , private loginService : LoginService) {}
-  
+	constructor(private router: Router, private loginService: LoginService) { }
+
 	ngOnInit(): void {
-
+		if (typeof window !== 'undefined' && localStorage) {
+			this.sessionMessage = localStorage.getItem('sessionMessage');
+			if (this.sessionMessage) {
+				alert(this.sessionMessage);
+				localStorage.removeItem('sessionMessage');
+				localStorage.removeItem('sessionMessage');
+			}
+		}
 	}
-  
+
 	// Submit handler for the form
-	onSubmit(loginForm : NgForm): void {
-    this.router.navigate(['/features']);
-    
-		if(loginForm.invalid){
+	onSubmit(loginForm: NgForm): void {
+
+		if (loginForm.invalid) {
 			return
 		}
-		
-		// this.loginService.login(this.user).pipe(
-		// 	finalize(() => {})
-		//   ).subscribe(response => {
-		// 	if (response) {
-		// 	  this.loginService.setUser(response.result.token);
-		// 	  this.router.navigate(['/features'])
-		// 	  }
-		// 	  else{
-		// 		console.log('WRONG_EMAIL_OR_PASSWORD')
-		// 	  }
-		// 	}
-		//   )
+
+		this.loginService.login(this.user).pipe(
+			finalize(() => { })
+		).subscribe(response => {
+			if (response) {
+				this.loginService.setUser(response.result.userToken);
+				localStorage.setItem('roleId', response.result.roles[0].roleId.toString())
+				this.router.navigate(['/features'])
+			}
+			else {
+				console.log('WRONG_EMAIL_OR_PASSWORD')
+			}
+		}
+		)
 	}
 }

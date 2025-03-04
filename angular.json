@@ -72,7 +72,12 @@
               "sourceMap": false
             },
             "development": {
-              "fileReplacements": [],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.prod.ts",
+                  "with": "src/environments/environment.ts"
+                }
+              ],
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
@@ -93,6 +98,7 @@
           },
           "defaultConfiguration": "development"
         },
+
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
         },

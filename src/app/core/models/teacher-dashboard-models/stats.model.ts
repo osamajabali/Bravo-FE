@@ -1,16 +1,21 @@
 export interface Stats {
-  activeSkills: SkillsProps;
-  totalSkills: SkillsProps;
-  masteredSkills: SkillsProps;
-  skills: Skill[];
+  learningOutcomeStatsId: number;
+  name: string;
+  value: number;
+  percentageValue: number;
 }
-interface SkillsProps {
-  title?: string ;
-  completed: number;
-  unCompleted: number;
-}
+
 export interface Skill {
   name: string;
   inactive: number;
   activated: number;
 }
+
+export class StatsRequest {
+  subjectId: number;
+  sectionId: number;
+}
+export class learningOutcomesStats {
+  learningOutcomesStats : Stats[]
+}
+
