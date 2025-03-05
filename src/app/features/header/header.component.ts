@@ -6,6 +6,7 @@ import { HeaderService } from '../../core/services/header-services/header.servic
 import { Classes, ClassesData } from '../../core/models/header-models/header.model';
 import { SharedService } from '../../core/services/shared-services/shared.service';
 import { LoginService } from '../../core/services/login-services/login.service';
+import { ClassesEnum } from '../../core/models/shared-models/enums';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +19,7 @@ export class HeaderComponent implements OnInit {
   selectedGradeId: number;
   selectedSubjectId: number;
   selectedSectionId: number;
+  classesEnum = ClassesEnum;
   constructor(private loginService: LoginService, private headerService: HeaderService, private sharedService: SharedService) { }
 
   notificationCount: number = 3; // Example notification count
@@ -34,9 +36,9 @@ export class HeaderComponent implements OnInit {
 
   getClasses() {
     let model: Classes = {
-      gradeId: 0,
+      gradeId: this.headerService.selectedGradeId ? this.headerService.selectedGradeId : 0 ,
       roleId: parseInt(localStorage.getItem('roleId')),
-      subjectId: 0
+      subjectId: this.headerService.selectedSubjectId ? this.headerService.selectedSubjectId : 0
     }
     this.headerService.getClasses(model).subscribe(res => {
       if (res.success) {
@@ -64,6 +66,7 @@ export class HeaderComponent implements OnInit {
   applyFilter($event) {
     $event.stopPropagation();
     this.dropdownOpen = false; // Optionally close after applying the filter
+    this.sharedService.triggerRefresh();
   }
 
   // Method to clear all selections
@@ -74,8 +77,18 @@ export class HeaderComponent implements OnInit {
   }
 
   // Update dropdown title dynamically (may not be necessary)
-  updateDropdownTitle() {
-    // This method can be used to update logic if needed
+  updateDropdownTitle(id:number , classesEnum : ClassesEnum) {
+    if(this.classesEnum.subject == classesEnum){
+      this.headerService.selectedSubjectId = id;
+      this.headerService.selectedGradeId = 0;
+      this.getClasses();
+    }else if(this.classesEnum.grade == classesEnum){
+      this.headerService.selectedGradeId = id;
+      this.getClasses()
+    }else{
+      this.headerService.selectedSectionId = id;
+      this.getClasses()
+    }
   }
 
   // Toggle dropdown visibility

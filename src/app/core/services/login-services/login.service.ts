@@ -85,7 +85,7 @@ export class LoginService {
 
   // Logout the user and redirect to home
   logout() {
-    if (typeof window !== 'undefined' && localStorage) {
+    if (typeof window !== 'undefined' && localStorage && this.isTokenExpired()) {
       localStorage.removeItem('_accessToken');
       localStorage.setItem('sessionMessage', 'Your session has expired.');
     }

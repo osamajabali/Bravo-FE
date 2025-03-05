@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { LogIn } from '../../../core/models/login-models/login.model';
 import { LoginService } from '../../../core/services/login-services/login.service';
 import { finalize } from 'rxjs';
+import { HeaderService } from '../../../core/services/header-services/header.service';
 
 @Component({
 	selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent {
 	user: LogIn = new LogIn();
 	sessionMessage: string | null = null;
 
-	constructor(private router: Router, private loginService: LoginService) { }
+	constructor(private router: Router, private loginService: LoginService , private headerService : HeaderService) { }
 
 	ngOnInit(): void {
 		if (typeof window !== 'undefined' && localStorage) {
@@ -42,6 +43,8 @@ export class LoginComponent {
 			if (response) {
 				this.loginService.setUser(response.result.userToken);
 				localStorage.setItem('roleId', response.result.roles[0].roleId.toString())
+				this.headerService.selectedGradeId =0;
+				this.headerService.selectedSubjectId =0;
 				this.router.navigate(['/features'])
 			}
 			else {

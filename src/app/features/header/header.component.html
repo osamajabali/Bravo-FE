@@ -53,7 +53,7 @@
                         [value]="subject.subjectId"
                         [(ngModel)]="selectedSubjectId"
                         [checked]="subject.isSelected"
-                        (change)="updateDropdownTitle()"
+                        (change)="updateDropdownTitle(subject.subjectId , classesEnum.subject)"
                       />
                       {{ subject.name }}
                     </div>
@@ -90,7 +90,7 @@
                         name="selectedGrade"
                         [value]="grade.gradeId"
                         [(ngModel)]="selectedGradeId"
-                        (change)="updateDropdownTitle()"
+                        (change)="updateDropdownTitle(grade.gradeId , classesEnum.grade)"
                       />
                       {{ grade.name }}
                     </div>
@@ -128,7 +128,7 @@
                         [value]="section.sectionId"
                         [(ngModel)]="selectedSectionId"
                         [checked]="section.isSelected"
-                        (change)="updateDropdownTitle()"
+                        (change)="updateDropdownTitle(section.sectionId , classesEnum.section)"
                       />
                       {{ section.name }}
                     </div>
