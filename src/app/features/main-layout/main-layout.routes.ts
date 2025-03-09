@@ -24,6 +24,20 @@ export const Main_Layout_Routes: Routes = [
               ),
           },
           {
+            path: 'lessons/:id',
+            loadComponent: () =>
+              import('../teacher-dashboard/lessons/lessons.component').then(
+                (m) => m.LessonsComponent
+              ),
+          },
+          {
+            path: 'lessons-curriculums/:id',
+            loadComponent: () =>
+              import('../teacher-dashboard/lessons-curriculums/lessons-curriculums.component').then(
+                (m) => m.LessonsCurriculumsComponent
+              ),
+          },
+          {
             path: 'single-skill',
             loadComponent: () =>
               import(

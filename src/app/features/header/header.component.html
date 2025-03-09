@@ -120,15 +120,15 @@
                 data-bs-parent="#filterAccordion"
               >
                 <div class="accordion-body">
-                  @for (section of classesData.sections; track section.sectionId) {
+                  @for (section of classesData.courseSections; track section.courseSectionId) {
                     <div>
                       <input
                         type="radio"
                         name="sectionGroup"
-                        [value]="section.sectionId"
+                        [value]="section.courseSectionId"
                         [(ngModel)]="selectedSectionId"
                         [checked]="section.isSelected"
-                        (change)="updateDropdownTitle(section.sectionId , classesEnum.section)"
+                        (change)="updateDropdownTitle(section.courseSectionId , classesEnum.section)"
                       />
                       {{ section.name }}
                     </div>

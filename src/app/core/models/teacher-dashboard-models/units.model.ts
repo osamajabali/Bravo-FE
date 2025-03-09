@@ -1,4 +1,6 @@
 export interface Unit {
-  title: string;
-  description: string;
+  sortOrder: number;
+  unitId: number;
+  unitLabelName: string;
+  unitName: string;
 }

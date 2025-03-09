@@ -11,4 +11,5 @@ export class SkeletonComponent {
   @Input() circles: number = 0;
   @Input() squares: number = 0;
   @Input() rectangles: number = 0;
+  @Input() smallCircles: number = 0;
 }

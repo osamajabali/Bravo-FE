@@ -12,7 +12,7 @@ export class Classes {
   }
   
   export class Section {
-    sectionId: number;
+    courseSectionId: number;
     name: string;
     isSelected: boolean;
   }
@@ -25,7 +25,7 @@ export class Classes {
   
   export class ClassesData {
     grades: Grade[];
-    sections: Section[];
+    courseSections: Section[];
     subjects: Subject[];
   }
   

@@ -5,19 +5,15 @@ import { BehaviorSubject, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class SharedService {
-  private refreshSubject = new Subject<void>();
+  private refreshSubject = new Subject<any>(); // Changed from void to any
   private apiResponseSubject = new BehaviorSubject<any>(null);
+  
   apiResponse$ = this.apiResponseSubject.asObservable();
   refresh$ = this.refreshSubject.asObservable();
 
-
   constructor() { }
-
-  setApiResponse(data: any) {
-    this.apiResponseSubject.next(data);
-  }
-
-  triggerRefresh() {
-    this.refreshSubject.next();
+  
+  triggerRefresh(data: any) { // Accept data as a parameter
+    this.refreshSubject.next(data); // Emit data with the refresh event
   }
 }

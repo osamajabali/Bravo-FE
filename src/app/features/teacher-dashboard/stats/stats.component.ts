@@ -41,15 +41,6 @@ export class StatsComponent implements OnInit , OnDestroy {
   constructor(private statsService: StatsService , private headerService : HeaderService , private sharedService : SharedService) { }
 
   ngOnInit() {
-    this.apiResponseSubscription = this.sharedService.apiResponse$.subscribe((data) => {
-      if (data) {
-        this.getStats();
-        this.getClasses();
-      } else {
-        console.warn('apiResponse$ is null or undefined');
-      }
-    });
-
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
       this.getStats();
       this.getClasses();

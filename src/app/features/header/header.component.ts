@@ -43,6 +43,7 @@ export class HeaderComponent implements OnInit {
     this.headerService.getClasses(model).subscribe(res => {
       if (res.success) {
         this.classesData = res.result
+        
         const selectedGrade = this.classesData.grades.find(grade => grade.isSelected);
         this.selectedGradeId = selectedGrade ? selectedGrade.gradeId : null;
         this.headerService.selectedGradeId = selectedGrade.gradeId;
@@ -51,13 +52,12 @@ export class HeaderComponent implements OnInit {
         this.selectedSubjectId = selectedSubject ? selectedSubject.subjectId : null;
         this.headerService.selectedSubjectId = selectedSubject.subjectId;
 
-        const selectedSection = this.classesData.sections.find(section => section.isSelected);
-        this.selectedSectionId = selectedSection ? selectedSection.sectionId : null;
-        this.headerService.selectedSectionId = selectedSection.sectionId;
+        const selectedSection = this.classesData.courseSections.find(section => section.isSelected);
+        this.selectedSectionId = selectedSection ? selectedSection.courseSectionId : null;
+        this.headerService.selectedSectionId = selectedSection.courseSectionId;
 
         this.displayFilter = `${selectedGrade.name} , ${selectedSubject.name}`
-
-        this.sharedService.setApiResponse(res);
+        this.sharedService.triggerRefresh(res);
       }
     })
   }
@@ -66,7 +66,7 @@ export class HeaderComponent implements OnInit {
   applyFilter($event) {
     $event.stopPropagation();
     this.dropdownOpen = false; // Optionally close after applying the filter
-    this.sharedService.triggerRefresh();
+    this.sharedService.triggerRefresh('trigger');
   }
 
   // Method to clear all selections
@@ -81,13 +81,10 @@ export class HeaderComponent implements OnInit {
     if(this.classesEnum.subject == classesEnum){
       this.headerService.selectedSubjectId = id;
       this.headerService.selectedGradeId = 0;
-      this.getClasses();
     }else if(this.classesEnum.grade == classesEnum){
       this.headerService.selectedGradeId = id;
-      this.getClasses()
     }else{
       this.headerService.selectedSectionId = id;
-      this.getClasses()
     }
   }
 

@@ -1,10 +1,17 @@
 <div class="skeleton-container">
-    <!-- Circle skeletons -->
-    <div *ngFor="let _ of [].constructor(circles)" class="skeleton skeleton-circle"></div>
+    @for (_ of [].constructor(circles); track $index) {
+        <div class="skeleton skeleton-circle"></div>
+    }
 
-    <!-- Square skeletons -->
-    <div *ngFor="let _ of [].constructor(squares)" class="skeleton skeleton-square"></div>
+    @for (_ of [].constructor(squares); track $index) {
+        <div class="skeleton skeleton-square"></div>
+    }
 
-    <!-- Rectangle skeletons -->
-    <div *ngFor="let _ of [].constructor(rectangles)" class="skeleton skeleton-rectangle"></div>
+    @for (_ of [].constructor(smallCircles); track $index) {
+        <div class="skeleton small-circle"></div>
+    }
+
+    @for (_ of [].constructor(rectangles); track $index) {
+        <div class="skeleton skeleton-rectangle"></div>
+    }
 </div>
