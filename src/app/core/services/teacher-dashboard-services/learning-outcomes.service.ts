@@ -13,7 +13,7 @@ export class LearningOutcomesService {
 
   constructor(private apiHlpr: HttpService) { }
 
-  getUnits = (id : number) : Observable<Result<Unit[]>> => {debugger
+  getUnits = (id : number) : Observable<Result<Unit[]>> => {
     return this.apiHlpr.post<Result<Unit[]>>(`learning-outcomes/units`, {courseSectionId : id});
   }
 

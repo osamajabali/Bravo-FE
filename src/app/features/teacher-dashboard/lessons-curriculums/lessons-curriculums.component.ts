@@ -7,7 +7,7 @@ import { UnitCardsComponent } from "../../../shared/components/unit-cards/unit-c
 
 @Component({
   selector: 'app-lessons-curriculums',
-  imports: [SearchComponent, UnitCardsComponent],
+  imports: [UnitCardsComponent],
   templateUrl: './lessons-curriculums.component.html',
   styleUrl: './lessons-curriculums.component.scss'
 })

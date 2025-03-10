@@ -9,11 +9,13 @@ import { SkeletonComponent } from "../../../shared/components/skeleton/skeleton.
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { Skills } from '../../../core/models/teacher-dashboard-models/main-skills.model';
 import { Subscription } from 'rxjs';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-status',
   standalone: true,
-  imports: [CommonModule, DoughnutChartDirective, SkeletonComponent],
+  imports: [CommonModule, DoughnutChartDirective, SkeletonComponent , ButtonModule , CardModule],
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss'],
 })
@@ -24,11 +26,11 @@ export class StatsComponent implements OnInit , OnDestroy {
   skills : Skills[] = []
   private apiResponseSubscription!: Subscription;
 
-  masteredSkillsPieChartData: number[] = []; // Update to an array of numbers for pie chart
+  masteredSkillsPieChartData: number[] = [];
   pieChartLabels: string[] = ['Activated', 'Inactive'];
 
   chartOptions: ChartOptions = {
-    maintainAspectRatio: false, // Allows you to manage the aspect ratio directly in CSS
+    maintainAspectRatio: false,
     plugins: {
       tooltip: {
         callbacks: {

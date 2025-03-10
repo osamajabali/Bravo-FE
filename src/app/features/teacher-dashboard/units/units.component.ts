@@ -10,7 +10,7 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
 
 @Component({
   selector: 'app-units',
-  imports: [CommonModule, SearchComponent, UnitCardsComponent],
+  imports: [CommonModule, UnitCardsComponent],
   templateUrl: './units.component.html',
   styleUrl: './units.component.scss',
 })

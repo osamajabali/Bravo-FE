@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-lessons',
-  imports: [SearchComponent, UnitCardsComponent],
+  imports: [UnitCardsComponent],
   templateUrl: './lessons.component.html',
   styleUrl: './lessons.component.scss'
 })

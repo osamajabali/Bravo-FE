@@ -1,100 +1,110 @@
-<div class="dashboard container-fluid row gap-4">
-  <section class="status">
-    <h2 class="fs-5 mb-3">Stats</h2>
-    <div class="row g-3">
+<div class="all-skills-container">
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <h2 class="section-title">Stats</h2>
+
+    <div class="stats-grid">
       @if(stats.length) {
-        @for (stat of stats; track $index) {
-          <div class="col-12 col-md-6 col-lg-4">
-            <div
-              class="card p-4 rounded d-flex justify-content-between card-bg flex-row flex-md-column flex-xl-row text-primary-900">
-              <div class="d-flex flex-column">
-                <span class="fs-7 fw-bold">{{ stat.name }}</span>
-                <span class="fs-1 fw-bold">{{ stat.value }}</span>
+      @for (stat of stats; track stat.name; let i = $index) {
+      <div class="stat-box">
+        <div class="stat-content">
+          <div class="stat-info">
+            <h3 class="stat-title">{{ stat.name }}</h3>
+            <div class="stat-value">{{ stat.value }}</div>
+          </div>
+
+          <div class="stat-chart-container">
+            <canvas class="status-chart" appDoughnutChart [data]="[stat.percentageValue]"></canvas>
+          </div>
+        </div>
+      </div>
+      }
+    }@else {
+      @for (i of [1,2,3]; track i) {
+        <div class="stat-box">
+          <div class="stat-content">
+            <div class="stat-info">
+              <app-skeleton [circles]="0" [squares]="2" [rectangles]="1"></app-skeleton>
+            </div>
+  
+            <div class="stat-chart-container">
+              <app-skeleton [circles]="1"></app-skeleton>
+            </div>
+          </div>
+        </div>
+      }
+    }
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="skills-section">
+    <h2 class="section-title">Skills</h2>
+
+    <div class="skills-grid">
+      @if (skills.length) {
+        @for (skill of skills; track skill.name; let i = $index) {
+          <div class="skill-card">
+            <div class="skill-card-left">
+              <div class="d-flex justify-content-between gap-4 align-items-center">
+                <h3 class="skill-title">{{ skill.name }}</h3>
+                <button
+                  pButton
+                  label="See All"
+                  class="p-button-outlined see-all-button"
+                ></button>
               </div>
-              <div style="height: 120px; min-width: 120px">
-                <canvas class="status-chart" appDoughnutChart [data]="[stat.percentageValue]"></canvas>
+              <div class="skill-chart-container">
+                <canvas class="skill-chart" appDoughnutChart [data]="[skill.activated, skill.inActive]" [isSkills]="false"
+                  [labels]="pieChartLabels">
+                </canvas>
+              </div>
+            </div>
+      
+            <div class="skill-card-right">
+              <div class="quick-action-title">
+                <div>Quick Action</div>
+              </div>
+              <div class="quick-action-content">
+                @for (quickAction of skill.quickSkills; track quickAction.skillId; let j = $index) {
+                  <div class="quick-action-item">
+                    <div>{{ quickAction.name }}</div>
+                    <button
+                      pButton
+                      [label]="quickAction.skillId ? 'Deactivate' : 'Activate'"
+                      class="p-button-outlined activate-button"
+                    ></button>
+                  </div>
+                }
               </div>
             </div>
           </div>
         }
       } @else {
-        @for (i of [1,2,3]; track i) {
-          <div class="col-12 col-md-6 col-lg-4">
-            <div
-              class="card p-4 rounded d-flex justify-content-between card-bg flex-row flex-md-column flex-xl-row text-primary-900">
-              <div class="d-flex flex-column">
-                <app-skeleton [circles]="0" [squares]="2" [rectangles]="1"></app-skeleton>
-              </div>
-              <div style="height: 120px; min-width: 120px">
-                <app-skeleton [circles]="1"></app-skeleton>
+        <!-- Skeletons Placeholder -->
+        <div class="skill-card" *ngFor="let _ of [0,1,2]; let i = index">
+          <div class="skill-card-left">
+            <div class="d-flex justify-content-between gap-4 align-items-center">
+              <app-skeleton [circles]="0" [squares]="2" [rectangles]="1"></app-skeleton>
+            </div>
+            <div class="skill-chart-container">
+              <app-skeleton [circles]="1" [squares]="0" [rectangles]="0"></app-skeleton>
+            </div>
+          </div>
+      
+          <div class="skill-card-right">
+            <div class="quick-action-title">
+              <app-skeleton [circles]="0" [squares]="2" [rectangles]="0"></app-skeleton>
+            </div>
+            <div class="quick-action-content">
+              <div class="quick-action-item" *ngFor="let _ of [0, 1]">
+                <app-skeleton [circles]="0" [squares]="1" [rectangles]="0"></app-skeleton>
               </div>
             </div>
           </div>
-        }
+        </div>
       }
       
     </div>
-  </section>
-
-  <section class="skills row gap-3">
-    <h3 class="fs-5 mb-3">Skills</h3>
-    @if(skills.length){
-    @for (skill of skills; track $index) {
-    <div class="border padding-10 d-flex align-items-center justify-content-between w-100" style="border-radius: 15px">
-      <div class="w-auto me-4 ms-5">
-        <div class="d-flex justify-content-start align-items-center">
-          <h4 class="h4 fs-1 me-3">{{ skill.name }}</h4>
-          <a class="border-style text-decoration-none d-flex justify-content-between align-items-center w-100 min-w-5"
-            href="#">
-            <span class="fs-8 text-black fw-bold">See All</span>
-          </a>
-        </div>
-        <canvas class="skill-chart" appDoughnutChart [data]="[skill.activated, skill.inActive]" [isSkills]="false"
-          [labels]="pieChartLabels">
-        </canvas>
-      </div>
-      <div class="card w-auto h-100">
-        <div class="d-flex flex-column justify-content-center align-items-center">
-          <div class="w-100 img-fluid text-center fs-2 fw-bold text-secondary-900">
-            Quick Action
-          </div>
-          @for (action of skill.quickSkills; track $index) {
-            <div class="w-100 px-2 py-1">
-              <div class="mb-3 w-100 bg-white quick-border-style d-flex justify-content-between align-items-center">
-                <p class="mb-0 fs-5 fw-bold">{{action.name}}</p>
-                <button class="bg-transparent quick-btn fs-8 fw-bold" type="button">
-                  Button
-                </button>
-              </div>
-            </div>
-          }
-        </div>
-      </div>
-    </div>
-    }
-  }@else {
-    <div
-      class="border padding-10 d-flex align-items-center justify-content-between w-100"
-      style="border-radius: 15px"
-    >
-      <div class="w-auto me-4 ms-5">
-        <app-skeleton [squares]="2"></app-skeleton>
-        <div class="d-flex justify-content-start align-items-center">
-          <app-skeleton [rectangles]="1"></app-skeleton>
-        </div>
-        <app-skeleton [circles]="1"></app-skeleton>
-      </div>
-      <div class="card w-auto h-100">
-        <div class="d-flex flex-column justify-content-center align-items-center">
-          <div class="w-100 img-fluid text-center fs-2 fw-bold text-secondary-900">
-            <app-skeleton [rectangles]="1"></app-skeleton>
-          </div>
-          <div class="w-100 px-2 py-1">
-            <app-skeleton [rectangles]="4"></app-skeleton>
-          </div>
-        </div>
-      </div>
-    </div>
-  }
   </section>
 </div>

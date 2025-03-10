@@ -1,11 +1,19 @@
-<div class="units container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fs-5 text-primary-900">Units</h2>
-    <div class="d-flex align-items-center gap-2">
-      <app-search></app-search>
-      <img src="assets/icons/search-sort/grid-view.svg" alt="grid-view" class="cursor-pointer" width="42px"
-        height="42px" />
+<div class="units-container">
+  <div class="header">
+    <h1 class="page-title">Units</h1>
+    <div class="search-container">
+      <span class="p-input-icon-left d-flex align-items-center position-relative">
+        <input 
+        type="text" 
+        pInputText 
+        placeholder="Search units..." 
+        class="search-input"
+        />
+        <i class="pi pi-search position-absolute end-0 pe-3"></i>
+      </span>
     </div>
   </div>
+  
   <app-unit-cards [cards]="units"></app-unit-cards>
+
 </div>

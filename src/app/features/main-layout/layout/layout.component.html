@@ -1,14 +1,9 @@
-<div class="container-fluid">
-  <div class="d-flex">
-    <!-- Sidebar -->
-    <div class="p-0">
-      <app-sidebar></app-sidebar>
-    </div>
-
-    <!-- Main Content -->
-    <div class="bg-white rounded w-100 my-3">
+<div class="app-container">
+  <app-sidebar></app-sidebar>
+  <div class="content-area">
+    <div class="content-area-white">
       <app-header></app-header>
-      <div class="p-3">
+      <div class="content">
         <router-outlet></router-outlet>
       </div>
     </div>

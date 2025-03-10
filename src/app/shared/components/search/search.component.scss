@@ -1,20 +1,20 @@
-@use "../../../../assets/scss/variables" as vars;
+// @use "../../../../assets/scss/variables" as vars;
 
-.input-group {
-  .search {
-    max-width: 200px;
-    border: 1px solid vars.$primary-primary-400;
-    border-inline-end: none;
-    &::placeholder {
-      color: vars.$neutral-grey-200;
-    }
-    &:focus {
-      box-shadow: none;
-    }
-  }
-}
-.input-group-text {
-  background-color: transparent;
-  border: 1px solid vars.$primary-primary-400;
-  border-inline-start: none;
-}
+// .input-group {
+//   .search {
+//     max-width: 200px;
+//     border: 1px solid vars.$primary-primary-400;
+//     border-inline-end: none;
+//     &::placeholder {
+//       color: vars.$neutral-grey-200;
+//     }
+//     &:focus {
+//       box-shadow: none;
+//     }
+//   }
+// }
+// .input-group-text {
+//   background-color: transparent;
+//   border: 1px solid vars.$primary-primary-400;
+//   border-inline-start: none;
+// }
