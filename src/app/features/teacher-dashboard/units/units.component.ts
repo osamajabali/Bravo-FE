@@ -7,10 +7,11 @@ import { HeaderService } from '../../../core/services/header-services/header.ser
 import { UnitCardsComponent } from "../../../shared/components/unit-cards/unit-cards.component";
 import { LearningOutcomesService } from '../../../core/services/teacher-dashboard-services/learning-outcomes.service';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-units',
-  imports: [CommonModule, UnitCardsComponent],
+  imports: [CommonModule, UnitCardsComponent, TranslateModule],
   templateUrl: './units.component.html',
   styleUrl: './units.component.scss',
 })
