@@ -1,5 +1,10 @@
 export interface SingleSkill {
-  title: string;
-  levels: string[];
-  lastUpdated?: string;
+    activationDate: string;
+    isSkill: boolean;
+    learningOutcomeDisplayName: string;
+    learningOutcomeId: number;
+    noOfStudentsEasy: number;
+    noOfStudentsHard: number;
+    noOfStudentsMedium: number;
+  
 }

@@ -12,11 +12,12 @@ import { Subscription } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-status',
   standalone: true,
-  imports: [CommonModule, DoughnutChartDirective, SkeletonComponent , ButtonModule , CardModule],
+  imports: [CommonModule, DoughnutChartDirective, SkeletonComponent , ButtonModule , CardModule, TranslateModule],
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss'],
 })

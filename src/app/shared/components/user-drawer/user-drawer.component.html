@@ -15,24 +15,24 @@
   </div>
   
   <div class="drawer-content" (click)="$event.stopPropagation()">
-    @for (section of staticsections; track section.title) {
+    @for (section of sections; track section.levelId) {
       <div class="user-section">
         <div class="section-header">
-          <h3 class="section-title">{{ section.title }} ({{ section.users.length }})</h3>
-          <div class="section-status">{{ section.status }}</div>
+          <h3 class="section-title">{{ section.levelName }} ({{ section.students.length }})</h3>
+          <div class="section-status">{{ 'Mastered'}}</div>
         </div>
         
         <div class="user-list">
-          @for (user of section.users; track user.id) {
+          @for (user of section.students; track user.studentName) {
             <div class="user-item">
               <div class="user-info">
                 <div class="user-avatar">
                     <img src="icon-user.svg" alt="User">
                 </div>
-                <span class="user-name">{{ user.name }}</span>
+                <span class="user-name">{{ user.studentName }}</span>
               </div>
               <div class="user-action">
-                @if (user.status === 1) {
+                @if (user.isMastered) {
                   <img src="icon-green-flag.svg" alt="flag">
                 } @else {
                   <img src="icon-red-flag.svg" alt="flag">

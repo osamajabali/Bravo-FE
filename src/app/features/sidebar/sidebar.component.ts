@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { MenuItem } from '../../core/models/shared-models/menu-item.interface';
 import { filter } from 'rxjs';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sidebar', // Ensure this is correct
   standalone : true,
-  imports : [RouterModule],
+  imports : [RouterModule, TranslateModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
@@ -16,52 +17,53 @@ export class SidebarComponent {
   
   menuItems: MenuItem[] = [
     {
-      label: 'Quick Actions',
+      label: 'MENU.QUICK_ACTIONS',
       route: '/ds',
       icon: 'quick-actions'
     },
     {
-      label: 'Skills',
+      label: 'MENU.SKILLS',
       route: '/ds',
       icon: 'skills',
       expanded: false,
       children: [
         {
-          label: 'Units',
+          label: 'MENU.UNITS',
           route: 'features/units',
           icon: 'cubes'
         },
         {
-          label: 'All Skills',
+          label: 'MENU.ALL_SKILLS',
           route: 'features',
           icon: 'list'
         }
       ]
     },
     {
-      label: 'Learn',
+      label: 'MENU.LEARN',
       route: '/ds',
       icon: 'learn',
       expanded: false,
       children: [
         {
-          label: 'Assignments',
+          label: 'MENU.ASSIGNMENTS',
           route: '/ds',
           icon: 'tasks'
         },
         {
-          label: 'Exams',
+          label: 'MENU.EXAMS',
           route: '/ds',
           icon: 'file-alt'
-        },
+        }
       ]
     },
     {
-      label: 'Students',
+      label: 'MENU.STUDENTS',
       route: '/ds',
       icon: 'students'
     }
   ];
+  
 
   constructor(private router: Router) {}
 

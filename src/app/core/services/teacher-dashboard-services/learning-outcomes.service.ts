@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { Unit } from '../../models/teacher-dashboard-models/units.model';
 import { Lessons } from '../../models/teacher-dashboard-models/lessons.model';
 import { LessonsCurriculums } from '../../models/teacher-dashboard-models/lesson-curriculums.model';
+import { SingleSkill } from '../../models/teacher-dashboard-models/single-skill';
+import { Level } from '../../models/teacher-dashboard-models/students.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +27,11 @@ export class LearningOutcomesService {
     return this.apiHlpr.post<Result<LessonsCurriculums[]>>(`learning-outcomes/units/lessons/curriculums`, {lessonId  : id});
   }
 
-  lessonsCurriculumsSkills = (courseSectionId : number , domainId : number ,curriculumLearningOutcomeId : number ) : Observable<Result<any[]>> => {
-    return this.apiHlpr.post<Result<any[]>>(`learning-outcomes/units/lessons/curriculums/skills`, {courseSectionId : courseSectionId , domainId : domainId , curriculumLearningOutcomeId : curriculumLearningOutcomeId});
+  lessonsCurriculumsSkills = (courseSectionId : number , domainId : number ,curriculumLearningOutcomeId : number ) : Observable<Result<SingleSkill[]>> => {
+    return this.apiHlpr.post<Result<SingleSkill[]>>(`learning-outcomes/units/lessons/curriculums/skills`, {courseSectionId : courseSectionId , domainId : domainId , curriculumLearningOutcomeId : curriculumLearningOutcomeId});
+  }
+
+  getStudents = (courseSectionId : number , learningOutcomeId : number ) : Observable<Result<Level[]>> => {
+    return this.apiHlpr.post<Result<Level[]>>(`learning-outcomes/students`, {courseSectionId : courseSectionId , learningOutcomeId : learningOutcomeId });
   }
 }
