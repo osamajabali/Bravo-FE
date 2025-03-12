@@ -2,8 +2,8 @@ import { CommonModule, Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { Subscription } from 'rxjs';
-import { NavigationEnd, Router } from '@angular/router';
+import { filter, Subscription } from 'rxjs';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ButtonModule } from 'primeng/button';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -13,9 +13,7 @@ import { MenuItem } from 'primeng/api';
 import { HeaderService } from '../../core/services/header-services/header.service';
 import { SharedService } from '../../core/services/shared-services/shared.service';
 import { LoginService } from '../../core/services/login-services/login.service';
-import { PageTitleService } from '../../core/services/shared-services/page-title.service';
-import { FilterService } from '../../core/services/shared-services/filter.service';
-import { Classes, ClassesData } from '../../core/models/header-models/header.model';
+import { Classes, ClassesData, Section } from '../../core/models/header-models/header.model';
 import { ClassesEnum } from '../../core/models/shared-models/enums';
 
 @Component({
@@ -38,10 +36,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private readonly loginService = inject(LoginService);
   private readonly headerService = inject(HeaderService);
   private readonly sharedService = inject(SharedService);
-  public readonly pageTitleService = inject(PageTitleService);
-  private readonly filterService = inject(FilterService);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
+  private readonly route = inject(ActivatedRoute);
 
   // Properties
   selectedGradeId: number | null = null;
@@ -49,11 +46,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   selectedSectionId: number | null = null;
   classesEnum = ClassesEnum;
   userMenuItems: MenuItem[] = [];
-  filterSections: FilterSection[] = [];
   selectedFiltersText: string = 'Choose properties';
   overlayVisible = false;
   pageTitle = '';
-  userInitials = 'AS';
+  userInitials = 'LS';
   userRole = 'Teacher';
   userName = 'Laila Aslama';
   position = 'Teacher';
@@ -62,33 +58,55 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // Subscriptions
   private subscriptions = new Subscription();
+  sectionExpanded: boolean;
+  GradesExpanded: boolean;
+  SubjectExpanded: boolean;
+  title: string;
 
   ngOnInit(): void {
-    this.setupPageTitleSubscription();
     this.setupUserMenu();
     this.getClasses();
 
+    // Debugging: Log all route configurations
+    console.log('Current Route Config:', this.router.config);
+
+    this.route.data.subscribe(data => {
+      this.title = data['title'];
+
+    });
+
     // Listen to route changes and refresh classes
     this.subscriptions.add(
-      this.router.events.subscribe(event => {
-        if (event instanceof NavigationEnd) {
-          this.getClasses();
-        }
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe(() => {
+        this.updateTitle();
+        this.getClasses()
       })
     );
+
+    this.updateTitle()
   }
 
-  private setupPageTitleSubscription(): void {
-    this.subscriptions.add(
-      this.pageTitleService.getPageTitle().subscribe(title => {
-        this.pageTitle = title;
-      })
-    );
+  updateTitle() {
+    let activeRoute = this.route;
+    
+    while (activeRoute.firstChild) {
+      activeRoute = activeRoute.firstChild;
+    }
+
+    // Extract title from the active route's data
+    activeRoute.data.subscribe(data => {
+      this.title = data['title'] || 'Default Title';
+      this.title = this.title;
+      console.log('Resolved Page Title:', this.title);
+    });
   }
+
 
   private setupUserMenu(): void {
     this.userMenuItems = [
-      { label: 'Profile', icon: 'pi pi-user', command: () => this.openProfile() },
+      { label: 'Profile', icon: 'pi pi-user', command: () => { } },
       { separator: true },
       { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.logout() }
     ];
@@ -118,10 +136,43 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.subjects)}`;
 
       this.sharedService.triggerRefresh(res);
-      this.updateFilterSections();
-      this.subscribeToFilterChanges();
     });
   }
+
+  private updateClasses(): void {
+    const model: Classes = {
+      gradeId: this.headerService.selectedGradeId ?? 0,
+      roleId: parseInt(localStorage.getItem('roleId') || '0', 10),
+      subjectId: this.headerService.selectedSubjectId ?? 0
+    };
+    debugger
+    this.headerService.getClasses(model).subscribe(res => {
+      if (!res.success) return;
+
+      this.classesData = res.result;
+      this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.subjects)}`;
+      this.sharedService.triggerRefresh(res);
+    });
+  }
+
+  selectedItem(id: number, classesEnum: ClassesEnum) {
+    if (this.classesEnum.subject === classesEnum) {
+      this.headerService.selectedSubjectId = id;
+      this.headerService.selectedGradeId = 0;
+      this.selectedSubjectId = id
+      this.updateClasses();
+    } else if (this.classesEnum.grade === classesEnum) {
+      this.headerService.selectedGradeId = id;
+      this.selectedGradeId = id;
+      this.updateClasses();
+    } else {
+      this.headerService.selectedSectionId = id;
+      this.selectedSectionId = id;
+      this.updateClasses();
+    }
+  }
+
+
 
   private findSelectedId(list: any[], key: string): number | null {
     const selected = list.find(item => item.isSelected);
@@ -133,31 +184,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return selected ? selected.name : '';
   }
 
-  private updateFilterSections(): void {
-    this.filterSections = [
-      { name: 'Grade', expanded: false, options: this.classesData.grades, selectedOption: this.selectedGradeId?.toString() ?? null },
-      { name: 'Section', expanded: false, options: this.classesData.courseSections, selectedOption: this.selectedSectionId?.toString() ?? null },
-      { name: 'Subject', expanded: false, options: this.classesData.subjects, selectedOption: this.selectedSubjectId?.toString() ?? null }
-    ];
+
+  // Method to apply the filter
+  applyFilter($event) {
+    $event.stopPropagation();
+    this.sharedService.triggerRefresh('trigger');
   }
 
-  private subscribeToFilterChanges(): void {
-    this.subscriptions.add(
-      this.filterService.getSelectedFiltersText().subscribe(text => {
-        this.selectedFiltersText = text;
-      })
-    );
-  }
-
-  applyFilters(): void {
-    this.filterService.applyFilters();
-    this.overlayVisible = false;
-  }
-
-  clearAllFilters(): void {
-    this.filterService.clearAllFilters();
-    this.overlayVisible = false;
-    this.displayFilter = 'Select filters';
+  // Method to clear all selections
+  clearAll($event) {
+    $event.stopPropagation();
+    this.displayFilter = 'Select filters'; // Reset display filter
   }
 
   logout(): void {
@@ -168,36 +205,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  private openProfile(): void {
-    console.log('Profile clicked');
-  }
-
-  selectOption(section: FilterSection, value: string): void {
-    this.filterSections = this.filterSections.map(s =>
-      s.name === section.name ? { ...s, selectedOption: s.selectedOption === value ? null : value } : s
-    );
-    this.filterService.updateFilterSections(this.filterSections);
-  }
-
-  
-  toggleFilterSection(section: FilterSection): void {
-    this.filterService.toggleFilterSection(section);
-  }
-
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-}
-
-
-export interface FilterSection {
-  name: string;
-  expanded: boolean;
-  options: any[];
-  selectedOption: string | null;
-}
-
-export interface FilterOption {
-  label: string;
-  value: string;
 }

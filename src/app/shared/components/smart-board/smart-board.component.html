@@ -1,0 +1,64 @@
+<p-dialog 
+  [(visible)]="visible" 
+  [modal]="true"
+  [closable]="false"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+  [maximizable]="false"
+  [resizable]="false"
+  [draggable]="false"
+  styleClass="smart-board-dialog full-screen-dialog"
+  (onHide)="closeBoard()">
+  
+  <ng-template pTemplate="header">
+    <div class="board-header">
+      <button class="close-button" (click)="closeBoard()">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+  </ng-template>
+  <div class="board-content d-flex flex-column align-items-center justify-content-center h-100">
+    <div class="board-title">
+      <h2>{{ skillTitle }}</h2>
+    </div>
+    <div class="d-flex justify-content-center align-items-center mt-3 gap-4">
+      <div class="link">
+        <div class="link-icon">
+          <img src="icon-flash-cards.svg" alt="flash-cards">
+        </div>
+        <div class="link-title">Flash Cards</div>
+        <div class="link-description">23 Flash Cards</div>
+      </div>
+      <div class="link">
+        <div class="link-icon">
+          <img src="icon-video.svg" alt="video">
+        </div>
+        <div class="link-title">Video</div>
+        <div class="link-description">5 Videos</div>
+      </div>
+      <div class="link">
+        <div class="link-icon">
+          <img src="icon-questions.svg" alt="questions">
+        </div>
+        <div class="link-title">Questions</div>
+        <div class="link-description">12 Questions</div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center mt-3 gap-4">
+      <div class="link">
+        <div class="link-icon">
+          <img src="icon-related-books.svg" alt="related-books">
+        </div>
+        <div class="link-title">Related Books</div>
+        <div class="link-description">12 Books</div>
+      </div>
+      <div class="link">
+        <div class="link-icon">
+          <img src="icon-worksheet.svg" alt="worksheets">
+        </div>
+        <div class="link-title">Worksheets</div>
+        <div class="link-description">12 Worksheets</div>
+      </div>
+    </div>
+  </div>
+</p-dialog> 

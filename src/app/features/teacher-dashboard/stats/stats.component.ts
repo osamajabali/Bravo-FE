@@ -11,6 +11,7 @@ import { Skills } from '../../../core/models/teacher-dashboard-models/main-skill
 import { Subscription } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-status',
@@ -20,15 +21,13 @@ import { CardModule } from 'primeng/card';
   styleUrls: ['./stats.component.scss'],
 })
 export class StatsComponent implements OnInit , OnDestroy {
-
+  
   stats : Stats[] = []
   private refreshSubscription!: Subscription;
-  skills : Skills[] = []
-  private apiResponseSubscription!: Subscription;
-
+  skills : Skills[] = []  
   masteredSkillsPieChartData: number[] = [];
   pieChartLabels: string[] = ['Activated', 'Inactive'];
-
+  
   chartOptions: ChartOptions = {
     maintainAspectRatio: false,
     plugins: {
@@ -40,13 +39,17 @@ export class StatsComponent implements OnInit , OnDestroy {
     },
   };
 
-  constructor(private statsService: StatsService , private headerService : HeaderService , private sharedService : SharedService) { }
-
+  constructor(private statsService: StatsService , private headerService : HeaderService , private sharedService : SharedService , private router : Router) { }
+  
   ngOnInit() {
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
       this.getStats();
       this.getClasses();
     });
+  }
+  
+  goToSingleSkill(domainId: number) {
+    this.router.navigate([ '/features/single-skill', domainId,0 ]);
   }
 
   getClasses() {

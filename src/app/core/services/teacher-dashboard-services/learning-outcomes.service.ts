@@ -24,4 +24,8 @@ export class LearningOutcomesService {
   lessonsCurriculums = (id : number) : Observable<Result<LessonsCurriculums[]>> => {
     return this.apiHlpr.post<Result<LessonsCurriculums[]>>(`learning-outcomes/units/lessons/curriculums`, {lessonId  : id});
   }
+
+  lessonsCurriculumsSkills = (courseSectionId : number , domainId : number ,curriculumLearningOutcomeId : number ) : Observable<Result<any[]>> => {
+    return this.apiHlpr.post<Result<any[]>>(`learning-outcomes/units/lessons/curriculums/skills`, {courseSectionId : courseSectionId , domainId : domainId , curriculumLearningOutcomeId : curriculumLearningOutcomeId});
+  }
 }

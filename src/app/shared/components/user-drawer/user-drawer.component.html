@@ -1,0 +1,47 @@
+<p-sidebar 
+  [(visible)]="visible" 
+  position="right" 
+  [style]="{width: '400px'}" 
+  [showCloseIcon]="false"
+  [modal]="true"
+  [closeOnEscape]="false"
+  (onHide)="closeDrawer()"
+  (click)="closeDrawer()">
+  
+  <div class="drawer-header" (click)="$event.stopPropagation()">
+    <button class="close-button" (click)="closeDrawer()">
+      <img src="arrow-left-gray.svg" alt="close">
+    </button>
+  </div>
+  
+  <div class="drawer-content" (click)="$event.stopPropagation()">
+    @for (section of staticsections; track section.title) {
+      <div class="user-section">
+        <div class="section-header">
+          <h3 class="section-title">{{ section.title }} ({{ section.users.length }})</h3>
+          <div class="section-status">{{ section.status }}</div>
+        </div>
+        
+        <div class="user-list">
+          @for (user of section.users; track user.id) {
+            <div class="user-item">
+              <div class="user-info">
+                <div class="user-avatar">
+                    <img src="icon-user.svg" alt="User">
+                </div>
+                <span class="user-name">{{ user.name }}</span>
+              </div>
+              <div class="user-action">
+                @if (user.status === 1) {
+                  <img src="icon-green-flag.svg" alt="flag">
+                } @else {
+                  <img src="icon-red-flag.svg" alt="flag">
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</p-sidebar> 
