@@ -1,15 +1,90 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Book } from '../../../core/models/teacher-dashboard-models/leveled-reading';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../../../shared/components/teacher-dashboard/header/header.component';
+import { PageTitleService } from '../../../core/services/shared-services/page-title.service';
+import { PaginatorModule } from 'primeng/paginator';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-leveled-reading',
-  imports: [CommonModule, HeaderComponent],
+  imports: [
+    CommonModule, 
+    PaginatorModule, 
+    ButtonModule, 
+    DropdownModule, 
+    InputTextModule,
+    FormsModule
+  ],
   templateUrl: './leveled-reading.component.html',
   styleUrl: './leveled-reading.component.scss',
 })
 export class LeveledReadingComponent {
+  pageService = inject(PageTitleService);
+  router = inject(Router);
+  selectedTab = 'book-list';
+  
+  // Search and filters
+  searchQuery: string = '';
+  showAdvancedSearch = false;
+  
+  // Basic filters
+  mainLevels: any[] = [
+    { label: 'All Levels', value: null },
+    { label: 'Beginner', value: 'beginner' },
+    { label: 'Intermediate', value: 'intermediate' },
+    { label: 'Advanced', value: 'advanced' }
+  ];
+  subLevels: any[] = [
+    { label: 'All Sub Levels', value: null },
+    { label: 'أ', value: 'أ' },
+    { label: 'ب', value: 'ب' },
+    { label: 'ت', value: 'ت' },
+    { label: 'ث', value: 'ث' },
+    { label: 'ج', value: 'ج' },
+    { label: 'ح', value: 'ح' },
+    { label: 'خ', value: 'خ' },
+    { label: 'د', value: 'د' }
+  ];
+  selectedMainLevel: any = null;
+  selectedSubLevel: any = null;
+
+  // Advanced filters
+  skills: any[] = [{ label: 'Reading Skills', value: 'reading' }];
+  grades: any[] = [{ label: 'Grade 1', value: 'grade1' }];
+  comprehensionSkills: any[] = [{ label: 'Analysis', value: 'analysis' }];
+  subjects: any[] = [{ label: 'Arabic', value: 'arabic' }];
+  hubs: any[] = [{ label: 'Main Hub', value: 'main' }];
+  ibHubs: any[] = [{ label: 'IB Hub 1', value: 'ib1' }];
+  ibLearnerProfiles: any[] = [{ label: 'Profile 1', value: 'profile1' }];
+  literaryTypes: any[] = [{ label: 'Fiction', value: 'fiction' }];
+  authorNames: any[] = [{ label: 'Ahmed Mohammed', value: 'ahmed' }];
+  publishers: any[] = [{ label: 'Al-Kitab', value: 'alkitab' }];
+  illustrators: any[] = [{ label: 'Sara Ahmed', value: 'sara' }];
+  ageGroups: any[] = [{ label: '5-7 years', value: '5-7' }];
+
+  selectedSkills: any = null;
+  selectedGrade: any = null;
+  selectedComprehensionSkills: any = null;
+  selectedSubject: any = null;
+  selectedHub: any = null;
+  selectedIbHub: any = null;
+  selectedIbLearnerProfile: any = null;
+  selectedLiteraryType: any = null;
+  selectedAuthorName: any = null;
+  selectedPublisher: any = null;
+  selectedIllustrator: any = null;
+  selectedAgeGroup: any = null;
+  
+  // Pagination
+  first: number = 0;
+  rows: number = 9;
+  totalRecords: number = 0;
+  
+  // Books data
   books: Book[] = [
     {
       title: 'من معالم القرآن',
@@ -75,4 +150,53 @@ export class LeveledReadingComponent {
       coverImage: 'assets/images/book-image.svg',
     },
   ];
+
+  ngOnInit(): void {
+    this.pageService.setPageTitle('Leveled Reading');
+    this.pageService.setBackButtonVisibility(false);
+    this.totalRecords = this.books.length;
+  }
+
+  onPageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
+  }
+
+  onSearch() {
+    // TODO: Implement search functionality
+  }
+
+  onMainLevelChange() {
+    // TODO: Implement main level filter
+  }
+
+  onSubLevelChange() {
+    // TODO: Implement sub level filter
+  }
+
+  toggleAdvancedSearch() {
+    this.showAdvancedSearch = !this.showAdvancedSearch;
+  }
+
+  onAdvancedSearch() {
+    // TODO: Implement advanced search
+    this.showAdvancedSearch = false;
+  }
+
+  onCancelAdvancedSearch() {
+    this.showAdvancedSearch = false;
+  }
+
+  onResetAdvancedSearch() {
+    this.selectedSkills = null;
+    this.selectedGrade = null;
+    this.selectedComprehensionSkills = null;
+    this.selectedSubject = null;
+    this.selectedHub = null;
+    this.selectedIbHub = null;
+  }
+
+  showStudentLevel() {
+    this.router.navigate(['/features/student-level']);
+  }
 }

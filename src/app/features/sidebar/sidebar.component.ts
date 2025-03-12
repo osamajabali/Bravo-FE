@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MenuItem } from '../../core/models/shared-models/menu-item.interface';
 import { filter } from 'rxjs';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-
+import { RouteNames } from '../../core/models/shared-models/menu-item.interface';
 @Component({
   selector: 'app-sidebar', // Ensure this is correct
   standalone : true,
@@ -17,7 +17,7 @@ export class SidebarComponent {
   menuItems: MenuItem[] = [
     {
       label: 'Quick Actions',
-      route: '',
+      route: RouteNames.QUICK_ACTIONS,
       icon: 'quick-actions'
     },
     {
@@ -28,12 +28,12 @@ export class SidebarComponent {
       children: [
         {
           label: 'Units',
-          route: 'features/units',
+          route: RouteNames.SKILLS_UNITS,
           icon: 'cubes'
         },
         {
           label: 'All Skills',
-          route: 'features',
+          route: RouteNames.ALL_SKILLS,
           icon: 'list'
         }
       ]
@@ -46,19 +46,19 @@ export class SidebarComponent {
       children: [
         {
           label: 'Assignments',
-          route: '',
+          route: RouteNames.ASSIGNMENTS,
           icon: 'tasks'
         },
         {
           label: 'Exams',
-          route: '',
+          route: RouteNames.EXAMS,
           icon: 'file-alt'
         },
       ]
     },
     {
       label: 'Students',
-      route: '',
+      route: RouteNames.STUDENTS,
       icon: 'students'
     }
   ];

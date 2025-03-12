@@ -52,6 +52,13 @@ export const Main_Layout_Routes: Routes = [
               ).then((m) => m.LeveledReadingComponent),
           },
           {
+            path: 'student-level',
+            loadComponent: () =>
+              import(
+                '../teacher-dashboard/student-level/student-level.component'
+              ).then((m) => m.StudentLevelComponent),
+          },
+          {
             path: 'leveled-display',
             loadComponent: () =>
               import(

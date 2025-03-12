@@ -1,8 +1,20 @@
-import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { HttpClient, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import {
+  provideClientHydration,
+  withEventReplay,
+} from '@angular/platform-browser';
+import {
+  HttpClient,
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -12,15 +24,28 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+import { providePrimeNG } from 'primeng/config';
+import Lara from '@primeng/themes/lara';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }), 
-    provideRouter(routes), 
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch(), withInterceptors([RequestInterceptor])),
     provideAnimations(),
     provideCharts(withDefaultRegisterables()),
+    providePrimeNG({
+      ripple: true,
+      theme: {
+        preset: Lara,
+        options: {
+          prefix: 'p',
+          darkModeSelector: 'light',
+          cssLayer: false,
+        },
+      },
+    }),
     importProvidersFrom(
       TranslateModule.forRoot({
         loader: {
@@ -38,5 +63,5 @@ export const appConfig: ApplicationConfig = {
         preventDuplicates: true, // Prevent duplicate toasts
       })
     ),
-  ]
+  ],
 };
