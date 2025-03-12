@@ -1,7 +1,7 @@
 <div class="all-skills-container">
   <!-- Stats Section -->
   <section class="stats-section">
-    <h2 class="section-title">Stats</h2>
+    <h2 class="section-title">{{ 'STATS' | translate }}</h2>
 
     <div class="stats-grid">
       @if(stats.length) {
@@ -39,7 +39,7 @@
 
   <!-- Skills Section -->
   <section class="skills-section">
-    <h2 class="section-title">Skills</h2>
+    <h2 class="section-title">{{ 'SKILLS' | translate }}</h2>
 
     <div class="skills-grid">
       @if (skills.length) {
@@ -50,7 +50,7 @@
                 <h3 class="skill-title">{{ skill.name }}</h3>
                 <button
                   pButton
-                  label="See All"
+                  [label]="'SEE_ALL' | translate"
                   class="p-button-outlined see-all-button"
                   (click)="goToSingleSkill(skill.domainId)"
                 ></button>
@@ -64,7 +64,7 @@
       
             <div class="skill-card-right">
               <div class="quick-action-title">
-                <div>Quick Action</div>
+                <div>{{ 'QUICK_ACTION' | translate }}</div>
               </div>
               <div class="quick-action-content">
                 @for (quickAction of skill.quickSkills; track quickAction.skillId; let j = $index) {
@@ -72,7 +72,7 @@
                     <div>{{ quickAction.name }}</div>
                     <button
                       pButton
-                      [label]="quickAction.skillId ? 'Deactivate' : 'Activate'"
+                      [label]="quickAction.skillId ? ('DEACTIVATE' | translate) : ('ACTIVATE' | translate)"
                       class="p-button-outlined activate-button"
                     ></button>
                   </div>

@@ -14,6 +14,9 @@ import { SkillSummaryComponent, SkillSummaryData } from "../../../shared/compone
 import { HeaderService } from '../../../core/services/header-services/header.service';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
+import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
+import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
+import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
 
 @Component({
   selector: 'app-single-skill',
@@ -33,7 +36,7 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
   styleUrl: './single-skill.component.scss',
 })
 export class SingleSkillComponent implements OnInit {
-  lessons: Lessons[] = [];
+  skills: SingleSkill[] = [];
   curriculumId: number | null = null;
   activateSkill: boolean;
   showUserDrower: boolean;
@@ -68,24 +71,38 @@ export class SingleSkillComponent implements OnInit {
     timeSpent: 10,
   };
   domainId: number;
+  levels: Level[] = [];
 
-  constructor(private learningOutcomesService: LearningOutcomesService, private route: ActivatedRoute, private headerService: HeaderService, private sharedService : SharedService) { }
+  constructor(private learningOutcomesService: LearningOutcomesService,private sharedService : SharedService, private route: ActivatedRoute, private headerService: HeaderService, private spinnerService : SpinnerService) { }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.domainId = parseInt(params.get('domainId'));
+      this.curriculumId = parseInt(params.get('curriculumId'));
+      console.log('Domain ID:', this.domainId, 'Curriculum ID:', this.curriculumId);
+      this.getSkills();
+    });
+    
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
-      this.route.paramMap.subscribe(params => {
-        this.domainId = parseInt(params.get('domainId'));
-        this.curriculumId = parseInt(params.get('curriculumId'));
-        console.log('Domain ID:', this.domainId, 'Curriculum ID:', this.curriculumId);
-        this.getSkills();
-      });
+      this.getSkills();      
     });
   }
 
   getSkills() {
-    this.learningOutcomesService.lessonsCurriculumsSkills(this.headerService.selectedSectionId, this.domainId ? this.domainId : null, this.curriculumId ? this.curriculumId : null).subscribe(res => {
+    this.learningOutcomesService.lessonsCurriculumsSkills(this.headerService.selectedSectionId, this.domainId ? this.domainId : 0, this.curriculumId ? this.curriculumId : 0).subscribe(res => {
       if (res.success) {
-        this.lessons = res.result;
+        this.skills = res.result;
+      }
+    })
+  }
+
+  getStudents = (lerningOutcomeId : number) =>{
+    this.spinnerService.show();
+    this.learningOutcomesService.getStudents(this.headerService.selectedSectionId , lerningOutcomeId).subscribe(res=>{
+      if(res.success){
+        this.spinnerService.hide()
+        this.showUserDrower = true
+        this.levels = res.result
       }
     })
   }

@@ -1,3 +1,28 @@
 {
-    "HI" : "Hi"
-}
+    "CHOOSE_PROPERTIES": "Choose properties",
+    "SUBJECTS": "Subjects",
+    "GRADES": "Grades",
+    "SECTIONS": "Sections",
+    "CLEAR_ALL": "Clear All",
+    "APPLY": "Apply",
+    "ROLE_TEACHER": "Teacher",
+    "STATS": "Stats",
+    "SKILLS": "Skills",
+    "SEE_ALL": "See All",
+    "QUICK_ACTION": "Quick Action",
+    "ACTIVATE": "Activate",
+    "DEACTIVATE": "Deactivate",
+    "LEARNING_OUTCOMES" : "Learning outcomes",
+
+    "MENU": {
+        "QUICK_ACTIONS": "Quick Actions",
+        "SKILLS": "Skills",
+        "UNITS": "Units",
+        "ALL_SKILLS": "All Skills",
+        "LEARN": "Learn",
+        "ASSIGNMENTS": "Assignments",
+        "EXAMS": "Exams",
+        "STUDENTS": "Students"
+      }
+  }
+  

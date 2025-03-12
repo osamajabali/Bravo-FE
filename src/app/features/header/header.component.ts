@@ -15,6 +15,7 @@ import { SharedService } from '../../core/services/shared-services/shared.servic
 import { LoginService } from '../../core/services/login-services/login.service';
 import { Classes, ClassesData, Section } from '../../core/models/header-models/header.model';
 import { ClassesEnum } from '../../core/models/shared-models/enums';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +27,8 @@ import { ClassesEnum } from '../../core/models/shared-models/enums';
     OverlayPanelModule,
     ButtonModule,
     RadioButtonModule,
-    MenuModule
+    MenuModule,
+    TranslateModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -112,46 +114,47 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private getClasses(): void {
+  getClasses(): void {
     const model: Classes = {
       gradeId: this.headerService.selectedGradeId ?? 0,
       roleId: parseInt(localStorage.getItem('roleId') || '0', 10),
       subjectId: this.headerService.selectedSubjectId ?? 0
     };
-
-    this.headerService.getClasses(model).subscribe(res => {
-      if (!res.success) return;
-
-      this.classesData = res.result;
-
-      this.selectedGradeId = this.findSelectedId(this.classesData.grades, 'gradeId');
-      this.headerService.selectedGradeId = this.selectedGradeId;
-
-      this.selectedSubjectId = this.findSelectedId(this.classesData.subjects, 'subjectId');
-      this.headerService.selectedSubjectId = this.selectedSubjectId;
-
-      this.selectedSectionId = this.findSelectedId(this.classesData.courseSections, 'courseSectionId');
-      this.headerService.selectedSectionId = this.selectedSectionId;
-
-      this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.subjects)}`;
-
-      this.sharedService.triggerRefresh(res);
-    });
+  
+    this.subscriptions.add(
+      this.headerService.getClasses(model).subscribe(res => {
+        if (!res.success) return;
+  
+        this.classesData = res.result;
+  
+        this.selectedGradeId = this.findSelectedId(this.classesData.grades, 'gradeId');
+        this.headerService.selectedGradeId = this.selectedGradeId;
+  
+        this.selectedSubjectId = this.findSelectedId(this.classesData.subjects, 'subjectId');
+        this.headerService.selectedSubjectId = this.selectedSubjectId;
+  
+        this.selectedSectionId = this.findSelectedId(this.classesData.courseSections, 'courseSectionId');
+        this.headerService.selectedSectionId = this.selectedSectionId;
+  
+        this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.subjects)}`;
+  
+        this.sharedService.triggerRefresh(res);
+      })
+    );
   }
-
+  
   private updateClasses(): void {
     const model: Classes = {
       gradeId: this.headerService.selectedGradeId ?? 0,
       roleId: parseInt(localStorage.getItem('roleId') || '0', 10),
       subjectId: this.headerService.selectedSubjectId ?? 0
     };
-    debugger
+    
     this.headerService.getClasses(model).subscribe(res => {
       if (!res.success) return;
 
       this.classesData = res.result;
       this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.subjects)}`;
-      this.sharedService.triggerRefresh(res);
     });
   }
 

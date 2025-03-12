@@ -1,3 +1,29 @@
 {
-    "HI" : "هاي"
-}
+    "DIR" : "rtl",
+    "CHOOSE_PROPERTIES": "اختر الخصائص",
+    "SUBJECTS": "المواد",
+    "GRADES": "الصفوف",
+    "SECTIONS": "الأقسام",
+    "CLEAR_ALL": "مسح الكل",
+    "APPLY": "تطبيق",
+    "ROLE_TEACHER": "المعلم",
+    "STATS": "الإحصائيات",
+    "SKILLS": "المهارات",
+    "SEE_ALL": "عرض الكل",
+    "QUICK_ACTION": "إجراء سريع",
+    "ACTIVATE": "تفعيل",
+    "DEACTIVATE": "إلغاء التفعيل",
+    "LEARNING_OUTCOMES" : "مخرجات التعلم",
+
+    "MENU": {
+        "QUICK_ACTIONS": "الإجراءات السريعة",
+        "SKILLS": "المهارات",
+        "UNITS": "الوحدات",
+        "ALL_SKILLS": "كل المهارات",
+        "LEARN": "التعلم",
+        "ASSIGNMENTS": "الواجبات",
+        "EXAMS": "الاختبارات",
+        "STUDENTS": "الطلاب"
+      }
+  }
+  

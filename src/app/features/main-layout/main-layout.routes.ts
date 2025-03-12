@@ -11,7 +11,7 @@ export const Main_Layout_Routes: Routes = [
         children: [
           {
             path: '',
-            data: { title: 'All Tasks' }, // ✅ Pass title here
+            data: { title: 'LEARNING_OUTCOMES' }, // ✅ Pass title here
             loadComponent: () =>
               import('../teacher-dashboard/stats/stats.component').then(
                 (m) => m.StatsComponent
@@ -19,7 +19,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'units',
-            data: { title: 'Units' }, // ✅ Pass title here
+            data: { title: 'MENU.UNITS' }, // ✅ Pass title here
             loadComponent: () =>
               import('../teacher-dashboard/units/units.component').then(
                 (m) => m.UnitsComponent

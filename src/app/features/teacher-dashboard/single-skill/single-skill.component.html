@@ -3,7 +3,7 @@
   <app-skill-summary [showAssignmentButton]="true" [data]="skillSummaryData"></app-skill-summary>
 
   <div class="header">
-    <h1 class="page-title">{{ lessons.length }} Skills</h1>
+    <h1 class="page-title">{{ skills.length }} Skills</h1>
     <div class="search-container">
       <span class="p-input-icon-left d-flex align-items-center position-relative">
         <input type="text" pInputText placeholder="Search lessons..." class="search-input" />
@@ -16,17 +16,19 @@
   </div>
 
   <div class="units-list">
-    @for (lesson of lessons; track lesson.lessonId) {
+    @for (skill of skills; track skill.learningOutcomeId) {
     <div class="unit-card">
       <div class="unit-content">
-        <h3 class="unit-title">{{ lesson.lessonName }}</h3>
+        <h3 class="unit-title">{{ skill.learningOutcomeDisplayName }}</h3>
         <div class="d-flex gap-3">
-          <div class="badge">Order <span class="number">{{ lesson.sortOrder }}</span></div>
+          <div class="badge">{{skill.noOfStudentsEasy}} easy</div>
+          <div class="badge">{{skill.noOfStudentsMedium}} medium</div>
+          <div class="badge">{{skill.noOfStudentsHard}} hard</div>
         </div>
       </div>
       <div class="d-flex flex-column gap-1 align-items-end justify-content-between">
         <div class="d-flex gap-2 align-items-center justify-content-between">
-          <a (click)="showUserDrower = true">
+          <a (click)="getStudents(skill.learningOutcomeId)">
             <div class="action-icon">
               <img src="icon-multiple-users.svg" alt="users" />
             </div>
@@ -36,14 +38,14 @@
               <img src="icon-cards.svg" alt="cards" />
             </div>
           </a>
-          <button type="button" (click)="activateSkill = true" [ngClass]="{'p-button activate-skill-btn gap-3': true, 'activated': true}">
-            {{ true ? "Activated" : "Activate Skill" }}
-            @if (true) {
+          <button type="button" (click)="activateSkill = true" [ngClass]="{'p-button activate-skill-btn gap-3': true, 'activated': false}">
+            {{ false ? "Activated" : "Activate Skill" }}
+            @if (false) {
               <img src="icon-white-circle-check.svg" alt="check" />
               }
           </button>
         </div>
-        <div class="skill-status">Activation: 22/10/2025</div>
+        <!-- <div class="skill-status">{{skill.activationDate | date :'dd/MM/yyyy' }}</div> -->
       </div>
     </div>
     }
@@ -68,7 +70,7 @@
 <app-smart-board (visibleChange)="showSmartBoard = false" [visible]="showSmartBoard" [skillId]="0" [skillTitle]="'Static Lesson Title'"></app-smart-board>
 
 <!-- User Drawer -->
-<app-user-drawer (visibleChange)="showUserDrower = false" [visible]="showUserDrower" [sections]="[]"></app-user-drawer>
+<app-user-drawer (visibleChange)="showUserDrower = false" [visible]="showUserDrower" [sections]="levels"></app-user-drawer>
 
 <!-- filter panel -->
 <p-overlayPanel

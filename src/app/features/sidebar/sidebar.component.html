@@ -16,12 +16,12 @@
             routerLinkActive="active"
             [class.active]="isActive(item)"
             [class.expanded]="item.expanded"
-            class="nav-link" 
+            class="nav-link xm" 
             (click)="toggleSubMenu(item)">
             <span>
-              <img [src]="'icon-' + item.icon + '.svg'" />
+              <img [src]="'icon-' + item.icon + '.svg'" class="mx-2" />
             </span>
-            <span class="menu-text ms-3">{{ item.label }}</span>
+            <span class="menu-text ms-3">{{ item.label | translate }}</span>
             @if (item.children && item.children.length > 0) {
               <span class="submenu-indicator">
                 <img [src]="item.expanded ? 'arrow-green-up.svg' : 'arrow-gray-down.svg'" alt="arrow">
@@ -37,8 +37,12 @@
                     [routerLink]="['/' + child.route]" 
                     routerLinkActive="active" 
                     class="nav-link">
-                    <span class="menu-text">{{ child.label }}</span>
-                    <img src="arrow-green-right.svg" alt="arrow right">
+                    <span class="menu-text">{{ child.label | translate }}</span>
+                    @if(('DIR'|translate) == 'rtl'){
+                      <i class="pi pi-arrow-left" style="font-size: 1rem"></i>
+                    }@else {
+                      <i class="pi pi-arrow-right" style="font-size: 1rem"></i>
+                    }
                   </a>
                 </li>
               }
