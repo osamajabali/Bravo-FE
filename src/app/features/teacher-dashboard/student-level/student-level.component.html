@@ -1,0 +1,49 @@
+<div class="student-level">
+  <div class="sections-container">
+    <div class="section">
+      <h2 class="section-title">
+        <span>
+          <img src="icon-high-achievers.svg" alt="high achievers" />
+        </span>
+        <span>High Achievers</span>
+      </h2>
+      <div class="students-list">
+        @for (student of highAchievers; track student.id) {
+        <div class="student-row">
+          <div class="student-info">
+            <span class="student-index">{{ student.id }}</span>
+            <div class="student-avatar">
+              {{ getInitials(student.name) }}
+            </div>
+            <span class="student-name">{{ student.name }}</span>
+          </div>
+          <div class="books-count">{{ student.booksCount }} Books</div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">
+        <span>
+          <img src="icon-low-achievers.svg" alt="low achievers" />
+        </span>
+        <span>Low Achievers</span>
+      </h2>
+      <div class="students-list low-achievers">
+        @for (student of lowAchievers; track student.id) {
+        <div class="student-row">
+          <div class="student-info">
+            <span class="student-index">{{ student.id }}</span>
+            <div class="student-avatar">
+              {{ getInitials(student.name) }}
+            </div>
+            <span class="student-name">{{ student.name }}</span>
+          </div>
+          <div class="books-count">{{ student.booksCount }} Books</div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

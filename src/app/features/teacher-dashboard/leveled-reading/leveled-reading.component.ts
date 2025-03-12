@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Book } from '../../../core/models/teacher-dashboard-models/leveled-reading';
 import { CommonModule } from '@angular/common';
-import { PageTitleService } from '../../../core/services/shared-services/page-title.service';
 import { PaginatorModule } from 'primeng/paginator';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
@@ -23,7 +22,6 @@ import { Router } from '@angular/router';
   styleUrl: './leveled-reading.component.scss',
 })
 export class LeveledReadingComponent {
-  pageService = inject(PageTitleService);
   router = inject(Router);
   selectedTab = 'book-list';
   
@@ -152,8 +150,6 @@ export class LeveledReadingComponent {
   ];
 
   ngOnInit(): void {
-    this.pageService.setPageTitle('Leveled Reading');
-    this.pageService.setBackButtonVisibility(false);
     this.totalRecords = this.books.length;
   }
 

@@ -1,4 +1,4 @@
-import { Routes, provideRouter, withComponentInputBinding } from '@angular/router';
+import { Routes } from '@angular/router';
 
 export const Main_Layout_Routes: Routes = [
     {
@@ -48,6 +48,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'leveled-reading',
+            data: { title: 'MENU.LEVELED_READING' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/leveled-reading/leveled-reading.component'

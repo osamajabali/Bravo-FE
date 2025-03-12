@@ -1,0 +1,84 @@
+.student-level {
+  padding: var(--padding-m);
+
+  .sections-container {
+    display: flex;
+    gap: var(--padding-xl);
+
+    .section {
+      flex: 1;
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: var(--padding-s);
+        font-size: var(--font-size-m);
+        color: var(--primary-primary-900);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--padding-m);
+      }
+
+      .students-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--padding-s);
+
+        .student-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: var(--padding-s) var(--padding-m);
+          background-color: var(--neutral-grey-25);
+          border-radius: 8px;
+
+          .student-info {
+            display: flex;
+            align-items: center;
+            gap: var(--padding-m);
+
+            .student-index {
+              font-size: var(--font-size-s);
+              color: var(--primary-primary-500);
+              min-width: 20px;
+              font-weight: var(--font-weight-bold);
+            }
+
+            .student-avatar {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              background-color: var(--primary-primary-100);
+              color: var(--primary-primary-900);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: var(--font-size-s);
+              font-weight: var(--font-weight-bold);
+            }
+
+            .student-name {
+              font-size: var(--font-size-xs);
+              color: #565656;
+            }
+          }
+
+          .books-count {
+            font-size: var(--font-size-s);
+            color: var(--primary-primary-900);
+            font-weight: var(--font-weight-bold);
+          }
+        }
+
+        &.low-achievers {
+          padding: var(--padding-s);
+          border: 1px solid var(--neutral-grey-200);
+          border-radius: 10px;
+
+          .student-index {
+            color: var(--colors-negative-red-40) !important;
+          }
+        }
+      }
+    }
+  }
+}
