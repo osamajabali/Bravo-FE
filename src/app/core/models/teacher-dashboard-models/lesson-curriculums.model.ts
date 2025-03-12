@@ -1,4 +1,4 @@
 export interface LessonsCurriculums {
-    curriculamLearningOutcomeId: number;
+    curriculumLearningOutcomeId: number;
     nameArabic: string;
 }

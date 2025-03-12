@@ -195,7 +195,7 @@
   border-radius: 10px;
 
   &:hover {
-    background-color: var(--primary-primary-900);
-    color: var(--neutral-white);
+    background-color: var(--primary-primary-900) !important;
+    color: var(--neutral-white) !important;
   }
 }

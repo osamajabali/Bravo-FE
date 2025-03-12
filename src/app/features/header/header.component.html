@@ -1,22 +1,17 @@
 <div class="header-container">
   <div class="header-left">
-    @if (pageTitleService.getBackButtonVisibility()) {
-    <div class="header-item" (click)="goBack()">
+    <!-- Static Back Button -->
+    <div class="header-item">
       <img src="arrow-left-gray.svg" alt="arrow left" />
     </div>
-    }
-    <h1 class="page-title">{{ pageTitle }}</h1>
+    <h1 class="page-title">{{title}}</h1>
   </div>
 
   <div class="header-right">
     <!-- Dropdown with overlay icon -->
+    <!-- Dropdown with overlay icon -->
     <div class="header-item">
-      <p-overlayPanel
-        #filterPanel
-        [showCloseIcon]="false"
-        [dismissable]="true"
-        styleClass="filter-overlay"
-      >
+      <p-overlayPanel #filterPanel [showCloseIcon]="false" [dismissable]="true" styleClass="filter-overlay">
         <div class="filter-overlay-content">
           <!-- Header with title and close button -->
           <div class="filter-overlay-header">
@@ -29,89 +24,112 @@
           <!-- Divider -->
           <div class="filter-divider"></div>
 
-          <!-- Filter sections -->
+          <!-- Filter Subjects -->
           <div class="filter-sections">
-            @for (section of filterSections; track section.name) {
+            <!-- Category Subjects (Accordion) -->
             <div class="filter-section">
-              <div
-                class="filter-section-header"
-                (click)="toggleFilterSection(section)"
-              >
-                <span class="filter-section-title">{{ section.name }}</span>
-                <img
-                  [src]="
-                    section.expanded
-                      ? 'arrow-green-up.svg'
-                      : 'arrow-green-down.svg'
-                  "
-                  alt="arrow"
-                />
+              <div class="filter-section-header" (click)="SubjectExpanded = !SubjectExpanded">
+                <span class="filter-section-title">Subjects</span>
+                <img [src]="SubjectExpanded ? 'arrow-green-up.svg' : 'arrow-green-down.svg'" alt="arrow" />
               </div>
 
-              @if (section.expanded) {
-              <div class="filter-section-content">
-                @for (option of section.options; track option.isSelected) {
-                <div class="filter-option">
-                  <div
-                    class="custom-checkbox"
-                    [class.selected]="section.selectedOption === option.isSelected"
-                    (click)="selectOption(section, option.isSelected)"
-                  >
-                    <img 
-                      [src]="section.selectedOption == option.isSelected ?  'icon-tick.svg' : 'icon-tick-empty.svg'"
-                    />
+              <div class="filter-section-content" *ngIf="SubjectExpanded">
+                <div class="filter-section-content" *ngIf="SubjectExpanded">
+                  @for (Subject of classesData.subjects; track $index) {
+                  <div class="filter-option" (click)="selectedItem(Subject.subjectId, classesEnum.subject)">
+                    <div class="custom-checkbox" [ngClass]="Subject.subjectId === selectedSubjectId ? 'selected' : ''">
+                      <img [src]="Subject.subjectId === selectedSubjectId ? 'icon-tick.svg' : 'icon-tick-empty.svg'" />
+                    </div>
+                    <label class="filter-option-label">{{ Subject.name }}</label>
                   </div>
-                  <label
-                    class="filter-option-label"
-                    (click)="selectOption(section, option.isSelected)"
-                  >
-                    {{ option.name }}
-                  </label>
+                  }
                 </div>
-                }
               </div>
-              }
+
 
               <!-- Divider after each section -->
               <div class="filter-divider"></div>
             </div>
-            }
           </div>
+
+          <!-- Filter Grades -->
+          <div class="filter-sections">
+            <!-- Category Grades (Accordion) -->
+            <div class="filter-section">
+              <div class="filter-section-header" (click)="GradesExpanded = !GradesExpanded">
+                <span class="filter-section-title">Grades</span>
+                <img [src]="GradesExpanded ? 'arrow-green-up.svg' : 'arrow-green-down.svg'" alt="arrow" />
+              </div>
+
+              <div class="filter-section-content" *ngIf="GradesExpanded">
+                <div class="filter-section-content" *ngIf="GradesExpanded">
+                  @for (grade of classesData.grades; track $index) {
+                  <div class="filter-option" (click)="selectedItem(grade.gradeId, classesEnum.grade)">
+                    <div class="custom-checkbox" [ngClass]="grade.gradeId === selectedGradeId ? 'selected' : ''">
+                      <img [src]="grade.gradeId === selectedGradeId ? 'icon-tick.svg' : 'icon-tick-empty.svg'" />
+                    </div>
+                    <label class="filter-option-label">{{ grade.name }}</label>
+                  </div>
+                  }
+                </div>
+              </div>
+
+
+              <!-- Divider after each section -->
+              <div class="filter-divider"></div>
+            </div>
+          </div>
+
+          <!-- Filter sections -->
+          <div class="filter-sections">
+            <!-- Category Section (Accordion) -->
+            <div class="filter-section">
+              <div class="filter-section-header" (click)="sectionExpanded = !sectionExpanded">
+                <span class="filter-section-title">Sections</span>
+                <img [src]="sectionExpanded ? 'arrow-green-up.svg' : 'arrow-green-down.svg'" alt="arrow" />
+              </div>
+
+              <div class="filter-section-content" *ngIf="sectionExpanded">
+                <div class="filter-section-content" *ngIf="sectionExpanded">
+                  @for (section of classesData.courseSections; track $index) {
+                  <div class="filter-option" (click)="selectedItem(section.courseSectionId, classesEnum.section)">
+                    <div class="custom-checkbox"
+                      [ngClass]="section.courseSectionId === selectedSectionId ? 'selected' : ''">
+                      <img
+                        [src]="section.courseSectionId === selectedSectionId ? 'icon-tick.svg' : 'icon-tick-empty.svg'" />
+                    </div>
+                    <label class="filter-option-label">{{ section.name }}</label>
+                  </div>
+                  }
+                </div>
+              </div>
+
+
+              <!-- Divider after each section -->
+              <div class="filter-divider"></div>
+            </div>
+          </div>
+
+
 
           <!-- Filter actions -->
           <div class="filter-actions">
-            <button
-              type="button"
-              class="filter-btn filter-btn-clear"
-              (click)="clearAllFilters()"
-            >
+            <button type="button" class="filter-btn filter-btn-clear">
               Clear All
             </button>
-            <button
-              type="button"
-              class="filter-btn filter-btn-apply"
-              (click)="applyFilters()"
-            >
+            <button type="button" class="filter-btn filter-btn-apply" (click)="applyFilter($event);filterPanel.hide()">
               Apply
             </button>
           </div>
         </div>
       </p-overlayPanel>
 
-      <button
-        pButton
-        type="button"
-        class="p-button-text filter-button"
-        (click)="filterPanel.toggle($event)"
-      >
-        <span class="button-label">{{ selectedFiltersText }}</span>
-        <img
-          src="arrow-green-down.svg"
-          alt="filter icon"
-          class="custom-filter-icon"
-        />
+      <button pButton type="button" class="p-button-text filter-button" (click)="filterPanel.toggle($event)">
+        <span class="button-label">{{displayFilter}}</span>
+        <img src="arrow-green-down.svg" alt="filter icon" class="custom-filter-icon" />
       </button>
     </div>
+
 
     <!-- Notification icon -->
     <div class="header-item notification-icon">

@@ -17,12 +17,12 @@ export class SidebarComponent {
   menuItems: MenuItem[] = [
     {
       label: 'Quick Actions',
-      route: '',
+      route: '/ds',
       icon: 'quick-actions'
     },
     {
       label: 'Skills',
-      route: '',
+      route: '/ds',
       icon: 'skills',
       expanded: false,
       children: [
@@ -40,25 +40,25 @@ export class SidebarComponent {
     },
     {
       label: 'Learn',
-      route: '',
+      route: '/ds',
       icon: 'learn',
       expanded: false,
       children: [
         {
           label: 'Assignments',
-          route: '',
+          route: '/ds',
           icon: 'tasks'
         },
         {
           label: 'Exams',
-          route: '',
+          route: '/ds',
           icon: 'file-alt'
         },
       ]
     },
     {
       label: 'Students',
-      route: '',
+      route: '/ds',
       icon: 'students'
     }
   ];

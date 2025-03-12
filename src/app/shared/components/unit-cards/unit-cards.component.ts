@@ -41,6 +41,10 @@ export class UnitCardsComponent {
       this.router.navigate(['/features/lessons', (card as Unit).unitId]);
     }else if((card as Lessons).lessonId){
       this.router.navigate(['/features/lessons-curriculums', (card as Lessons).lessonId]);
+    }else{
+      const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
+      this.router.navigate([ '/features/single-skill', 0,curriculumId ]);
+      
     }
   }
 }

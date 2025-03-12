@@ -1,111 +1,167 @@
-<div class="single-skill container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fs-5 text-primary-900 mb-0">{{ skills.length }} Skills</h2>
-    <div class="d-flex align-items-center gap-2">
-      <app-search></app-search>
-      <img
-        src="assets/icons/search-sort/grid-view.svg"
-        alt="grid-view"
-        class="cursor-pointer"
-        width="42px"
-        height="42px"
-      />
-      <img
-        src="assets/icons/search-sort/filter.svg"
-        alt="grid-view"
-        class="cursor-pointer"
-        width="42px"
-        height="42px"
-      />
+<div class="units-container">
+
+  <app-skill-summary [showAssignmentButton]="true" [data]="skillSummaryData"></app-skill-summary>
+
+  <div class="header">
+    <h1 class="page-title">{{ lessons.length }} Skills</h1>
+    <div class="search-container">
+      <span class="p-input-icon-left d-flex align-items-center position-relative">
+        <input type="text" pInputText placeholder="Search lessons..." class="search-input" />
+        <i class="pi pi-search position-absolute end-0 pe-3"></i>
+      </span>
+      <div class="filter-container" (click)="filterPanel.toggle($event)">
+        <img src="icon-filter.svg" alt="filter" />
+      </div>
     </div>
   </div>
 
-  <div class="row row-cols-1 g-3">
-    @for (skill of skills; track $index) {
-    <div class="card h-100 col">
-      <div class="card-body d-flex justify-content-between align-items-center">
-        <div class="me-2">
-          <h5 class="mb-3 card-title">{{ skill.title }}</h5>
-          <div class="tag-container">
-            @if(skill.levels){ @for (level of skill.levels; track $index) {
-            <div class="tags-value">
-              <span class="fw-bold">{{ level }}</span>
+  <div class="units-list">
+    @for (lesson of lessons; track lesson.lessonId) {
+    <div class="unit-card">
+      <div class="unit-content">
+        <h3 class="unit-title">{{ lesson.lessonName }}</h3>
+        <div class="d-flex gap-3">
+          <div class="badge">Order <span class="number">{{ lesson.sortOrder }}</span></div>
+        </div>
+      </div>
+      <div class="d-flex flex-column gap-1 align-items-end justify-content-between">
+        <div class="d-flex gap-2 align-items-center justify-content-between">
+          <a (click)="showUserDrower = true">
+            <div class="action-icon">
+              <img src="icon-multiple-users.svg" alt="users" />
             </div>
-            } }
-          </div>
+          </a>
+          <a (click)="showSmartBoard = true">
+            <div class="action-icon">
+              <img src="icon-cards.svg" alt="cards" />
+            </div>
+          </a>
+          <button type="button" (click)="activateSkill = true" [ngClass]="{'p-button activate-skill-btn gap-3': true, 'activated': true}">
+            {{ true ? "Activated" : "Activate Skill" }}
+            @if (true) {
+              <img src="icon-white-circle-check.svg" alt="check" />
+              }
+          </button>
         </div>
-        <div class="col-3 d-flex flex-column">
-          <div class="d-flex align-items-center justify-content-end mb-2">
-            <img
-              src="assets/icons/single-skill/user-multiple-02.svg"
-              alt="user-multiple"
-              class="me-2 cursor-pointer"
-              width="34px"
-              height="34px"
-            />
-            <img
-              src="assets/icons/single-skill/open.svg"
-              alt="open"
-              class="me-2 cursor-pointer"
-              width="34px"
-              height="34px"
-            />
-            <img
-              src="assets/icons/single-skill/view.svg"
-              alt="view"
-              class="me-2 cursor-pointer"
-              width="34px"
-              height="34px"
-            />
-            <button
-              type="button"
-              class="btn btn-style"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
-              Activate Skill
-            </button>
-          </div>
-
-          @if(skill.lastUpdated){
-          <div class="activation">Activation: {{ skill.lastUpdated }}</div>
-          }
-        </div>
+        <div class="skill-status">Activation: 22/10/2025</div>
       </div>
     </div>
     }
   </div>
-  <div
-    class="modal fade"
-    id="exampleModal"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body text-center mb-4">
-          <div class="mb-4"> Are you sure you want to activate this skill? </div>
-          <div class="d-flex justify-content-center gap-2">
-            <button
-              type="button"
-              class="btn mobal-btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              No
-            </button>
-            <button type="button" class="btn mobal-btn">Yes</button>
+
+</div>
+
+
+<!-- Custom Dialog -->
+<p-dialog [(visible)]="activateSkill" [style]="{ width: '450px' }" [modal]="true" [closable]="true" [closeOnEscape]="true"
+  header="">
+  <div class="dialog-content">
+    <span class="dialog-message">Are you sure you want to activate this skill?</span>
+  </div>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton label="No" class="p-button-secondary"></button>
+    <button type="button" pButton label="Yes" class="p-button-primary"></button>
+  </ng-template>
+</p-dialog>
+
+<!-- Smart Board -->
+<app-smart-board (visibleChange)="showSmartBoard = false" [visible]="showSmartBoard" [skillId]="0" [skillTitle]="'Static Lesson Title'"></app-smart-board>
+
+<!-- User Drawer -->
+<app-user-drawer (visibleChange)="showUserDrower = false" [visible]="showUserDrower" [sections]="[]"></app-user-drawer>
+
+<!-- filter panel -->
+<p-overlayPanel
+#filterPanel
+[showCloseIcon]="false"
+[dismissable]="true"
+styleClass="filter-overlay"
+>
+<div class="filter-overlay-content">
+  <!-- Header with title and close button -->
+  <div class="filter-overlay-header">
+    <h3 class="filter-overlay-title">Filter Sub Skills</h3>
+    <button class="filter-overlay-close" (click)="filterPanel.hide()">
+      <i class="pi pi-times"></i>
+    </button>
+  </div>
+
+  <!-- Divider -->
+  <div class="filter-divider"></div>
+
+  <!-- Filter sections -->
+  <div class="filter-sections">
+    @for (section of filterSections; track section.title) {
+    <div class="filter-section">
+      <div
+        class="filter-section-header"
+        (click)="toggleFilterSection(section)"
+      >
+        <span class="filter-section-title">{{ section.title }}</span>
+        <i
+          class="pi"
+          [ngClass]="section.expanded ? 'pi-chevron-up' : 'pi-chevron-down'"
+        ></i>
+      </div>
+
+      @if (section.expanded) {
+      <div class="filter-section-content">
+        @for (option of section.options; track option.value) {
+        <div class="filter-option">
+          <div class="custom-checkbox">
+            <input
+              type="checkbox"
+              [id]="option.value"
+              [name]="section.title"
+              [value]="option.value"
+              [checked]="section.selectedOptions.includes(option.value)"
+              (change)="toggleCheckbox(section, option.value)"
+              class="visually-hidden"
+            />
+            <label [for]="option.value" class="checkbox-label">
+              <span class="checkbox-icon">
+                @if (section.selectedOptions.includes(option.value)) {
+                <img
+                  src="icon-checkbox-checked.svg"
+                  alt="Checked"
+                  class="checkbox-checked"
+                />
+                } @else {
+                <img
+                  src="icon-checkbox-unchecked.svg"
+                  alt="Unchecked"
+                  class="checkbox-unchecked"
+                />
+                }
+              </span>
+              <span class="filter-option-label">{{ option.label }}</span>
+            </label>
           </div>
         </div>
+        }
       </div>
+      }
+
+      <!-- Divider after each section -->
+      <div class="filter-divider"></div>
     </div>
+    }
+  </div>
+
+  <!-- Filter actions -->
+  <div class="filter-actions">
+    <button
+      type="button"
+      class="filter-btn filter-btn-clear"
+    >
+      Clear All
+    </button>
+    <button
+      type="button"
+      class="filter-btn filter-btn-apply"
+    >
+      Apply
+    </button>
   </div>
 </div>
+</p-overlayPanel>

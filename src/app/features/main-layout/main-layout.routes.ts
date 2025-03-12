@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Routes, provideRouter, withComponentInputBinding } from '@angular/router';
 
 export const Main_Layout_Routes: Routes = [
     {
@@ -11,6 +11,7 @@ export const Main_Layout_Routes: Routes = [
         children: [
           {
             path: '',
+            data: { title: 'All Tasks' }, // ✅ Pass title here
             loadComponent: () =>
               import('../teacher-dashboard/stats/stats.component').then(
                 (m) => m.StatsComponent
@@ -18,6 +19,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'units',
+            data: { title: 'Units' }, // ✅ Pass title here
             loadComponent: () =>
               import('../teacher-dashboard/units/units.component').then(
                 (m) => m.UnitsComponent
@@ -38,7 +40,7 @@ export const Main_Layout_Routes: Routes = [
               ),
           },
           {
-            path: 'single-skill',
+            path: 'single-skill/:domainId/:curriculumId',
             loadComponent: () =>
               import(
                 '../teacher-dashboard/single-skill/single-skill.component'
