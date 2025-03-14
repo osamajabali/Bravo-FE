@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MenuItem } from '../../core/models/shared-models/menu-item.interface';
 import { filter } from 'rxjs';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { RouteNames } from '../../core/models/shared-models/menu-item.interface';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -14,10 +15,10 @@ import { TranslateModule } from '@ngx-translate/core';
 export class SidebarComponent {
   activeMenuItem: MenuItem | null = null;
   currentUrl: string = '';
-  
+
   menuItems: MenuItem[] = [
     {
-      label: 'QUICK_ACTIONS',
+      label: 'MENU.QUICK_ACTIONS',
       route: '/ds',
       icon: 'quick-actions'
     },
@@ -28,12 +29,12 @@ export class SidebarComponent {
       expanded: false,
       children: [
         {
-          label: 'UNITS',
+          label: 'MENU.UNITS',
           route: 'features/units',
           icon: 'cubes'
         },
         {
-          label: 'ALL_SKILLS',
+          label: 'MENU.ALL_SKILLS',
           route: 'features',
           icon: 'list'
         }
@@ -46,34 +47,34 @@ export class SidebarComponent {
       expanded: false,
       children: [
         {
-          label: 'ASSIGNMENTS',
+          label: 'MENU.ASSIGNMENTS',
           route: '/ds',
           icon: 'tasks'
         },
         {
-          label: 'EXAMS',
+          label: 'MENU.EXAMS',
           route: '/ds',
           icon: 'file-alt'
         }
       ]
     },
     {
-      label: 'STUDENTS',
+      label: 'MENU.STUDENTS',
       route: '/ds',
       icon: 'students'
     }
   ];
-  
+
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
     // Set initial URL
     this.currentUrl = this.router.url;
-    
+
     // Update active menu item based on current URL
     this.setActiveItemByUrl(this.currentUrl);
-    
+
     // Subscribe to router events to update active menu item when URL changes
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -90,7 +91,7 @@ export class SidebarComponent {
       this.collapseAllItems();
       return;
     }
-    
+
     // If the item has children, toggle its expanded state
     // and collapse all other items
     if (item.children && item.children.length > 0) {
@@ -100,13 +101,13 @@ export class SidebarComponent {
           menuItem.expanded = false;
         }
       });
-      
+
       // Toggle the current item's expanded state
       item.expanded = !item.expanded;
-      
+
       // If expanding, check if any child matches current URL and set as active
       if (item.expanded && item.children) {
-        const activeChild = item.children.find(child => 
+        const activeChild = item.children.find(child =>
           this.currentUrl.includes('/' + child.route)
         );
         if (activeChild) {
@@ -115,7 +116,7 @@ export class SidebarComponent {
       }
     }
   }
-  
+
   private collapseAllItems(): void {
     this.menuItems.forEach(item => {
       if (item.expanded) {
@@ -123,40 +124,40 @@ export class SidebarComponent {
       }
     });
   }
-  
+
   isActive(item: MenuItem): boolean {
     // For parent items without children, check if the route matches exactly
     if (!item.children) {
       return this.currentUrl === '/' + item.route;
     }
-    
+
     // For parent items with children, check if any child route is active
     if (item.children) {
       return item.children.some(child => this.currentUrl.includes('/' + child.route));
     }
-    
+
     return this.activeMenuItem === item;
   }
-  
+
   private setActiveItemByUrl(url: string): void {
     // First check top-level items
-    const topLevelMatch = this.menuItems.find(item => 
+    const topLevelMatch = this.menuItems.find(item =>
       !item.children && url === '/' + item.route
     );
-    
+
     if (topLevelMatch) {
       this.activeMenuItem = topLevelMatch;
       this.collapseAllItems();
       return;
     }
-    
+
     // Then check items with children
     for (const item of this.menuItems) {
       if (item.children) {
-        const childMatch = item.children.find(child => 
+        const childMatch = item.children.find(child =>
           url.includes('/' + child.route)
         );
-        
+
         if (childMatch) {
           this.activeMenuItem = childMatch;
           // Expand the parent

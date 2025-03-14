@@ -1,0 +1,19 @@
+.skills-list {
+  padding: var(--padding-m);
+
+  .skill-item {
+    padding: var(--padding-m);
+    border-bottom: 1px solid var(--neutral-grey-200);
+    font-size: var(--font-size-s);
+    color: var(--primary-primary-900);
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: var(--neutral-grey-25);
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}

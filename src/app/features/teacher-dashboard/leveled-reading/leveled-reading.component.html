@@ -1,160 +1,45 @@
-<div class="leveled-reading container">
-  <app-header></app-header>
-
-  <hr class="my-3" />
-  <div class="d-flex align-items-center gap-3 mb-4 flex-wrap">
-    <!-- Search Container -->
-    <div class="d-flex search-container align-items-center">
-      <input
-        type="search"
-        placeholder="Search for book title"
-        aria-label="Search"
-      />
-      <img
-        src="assets/icons/search-sort/search-01.svg"
-        alt="search"
-        width="18px"
-        height="18px"
-      />
-    </div>
-
-    <!-- First Dropdown -->
-    <div class="dropdown header-btn">
-      <button
-        class="btn dropdown-toggle d-flex justify-content-between align-items-center"
-        type="button"
-        id="dropdownMenuButton1"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        style="width: 150px"
+<div class="leveled-reading">
+  <div class="header">
+    <div class="tabs">
+      <div
+        class="tab"
+        [class.selected]="selectedTab === 'book-list'"
+        (click)="selectedTab = 'book-list'"
       >
-        Main level
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
-      </ul>
-    </div>
-
-    <!-- Second Dropdown -->
-    <div class="dropdown header-btn">
-      <button
-        class="btn dropdown-toggle d-flex justify-content-between align-items-center"
-        type="button"
-        id="dropdownMenuButton2"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        style="width: 150px"
-      >
-        Sub level
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
-      </ul>
-    </div>
-
-    <!-- filter button -->
-    <button
-      class="btn"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#collapseExample"
-      aria-expanded="false"
-      aria-controls="collapseExample"
-    >
-      <img
-        src="assets/icons/leveled-reading/filter-horizontal.svg"
-        alt="search"
-        class="cursor-pointer"
-        width="24px"
-        height="24px"
-      />
-    </button>
-    <!-- filter content -->
-    <div class="collapse w-100" id="collapseExample">
-      <div class="card card-body flex-row align-items-center gap-3 flex-wrap">
-        <div class="dropdown header-btn">
-          <button
-            class="btn dropdown-toggle d-flex justify-content-between align-items-center"
-            type="button"
-            id="dropdownMenuButton2"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style="width: 170px"
-          >
-            Sub level
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div>
-        <div class="dropdown header-btn">
-          <button
-            class="btn dropdown-toggle d-flex justify-content-between align-items-center"
-            type="button"
-            id="dropdownMenuButton2"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style="width: 170px"
-          >
-            Sub level
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div>
-        <div class="dropdown header-btn">
-          <button
-            class="btn dropdown-toggle d-flex justify-content-between align-items-center"
-            type="button"
-            id="dropdownMenuButton2"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style="width: 170px"
-          >
-            Sub level
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div>
+        Book List
       </div>
+      <div
+        class="tab"
+        [class.selected]="selectedTab === 'leveled-reading'"
+        (click)="selectedTab = 'leveled-reading'"
+      >
+        Leveled Reading
+      </div>
+    </div>
+    <div class="buttons">
+      <button
+        pButton
+        label=""
+        class="p-button-outlined show-button"
+        (click)="showStudentLevel()"
+      >
+        <span>Show Student Level</span>
+      </button>
+      <button
+        pButton
+        label=""
+        class="p-button-outlined show-button"
+        (click)="showCriteria()"
+      >
+        <span>Show Criteria</span>
+      </button>
     </div>
   </div>
-
-  <h2 class="mb-4 section-title">{{ books.length }} Books</h2>
-  <div class="book-list">
-    @for (book of books; track $index) {
-    <div class="card shadow-sm">
-      <img
-        [src]="book.coverImage"
-        alt="Book Cover"
-        class="card-img-top book-cover"
-      />
-      <div class="card-body">
-        <h5 class="book-desc-title fs-6 mb-0">{{ book.title }}</h5>
-        <p class="book-desc-author mb-0">
-          <span class="fw-bold">Sub level:</span> {{ book.subLevel }}
-        </p>
-        <p class="book-desc-author mb-0">
-          <span class="fw-bold">Author name:</span> {{ book.author }}
-        </p>
-        <p class="book-desc-student mb-0">
-          <span class="fw-bold">Student Level:</span> {{ book.studentLevel }}
-        </p>
-
-        <button class="btn view-book w-100">View Book</button>
-      </div>
-    </div>
+  <div class="content">
+    @if(selectedTab === 'book-list') {
+      <app-book-list-view />
+    } @else {
+      <app-leveled-reading-view />
     }
   </div>
 </div>
