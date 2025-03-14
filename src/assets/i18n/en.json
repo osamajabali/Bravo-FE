@@ -23,7 +23,10 @@
         "ASSIGNMENTS": "Assignments",
         "EXAMS": "Exams",
         "STUDENTS": "Students",
-        "LEVELED_READING": "Leveled Reading"
+        "LEVELED_READING": "Leveled Reading",
+        "STUDENT_LEVEL": "Student Level",
+        "READING_CRITERIA": "Reading Criteria",
+        "BOOK_DETAILS": "Book Details"
       }
   }
   

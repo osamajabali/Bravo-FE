@@ -1,0 +1,22 @@
+<div class="reading-criteria">
+    <div class="title">
+        <div>Level A - المبتدئ الأدنى , الصف 1</div>
+    </div>
+  <div class="criteria-grid">
+    @for (section of criteriaSections; track section.title) {
+      <div class="criteria-section">
+        <h2 class="section-title">
+            <img [src]="section.icon" alt="icon-criteria">
+            <div>
+                {{section.title}}
+            </div>
+        </h2>
+        <ul class="criteria-points">
+          @for (point of section.points; track point) {
+            <li>{{point}}</li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</div> 

@@ -1,0 +1,81 @@
+.leveled-reading-view {
+  padding: var(--padding-m);
+
+  .filter-section {
+    margin-bottom: var(--padding-m);
+
+    ::ng-deep {
+      .level-dropdown {
+        min-width: 200px;
+
+        .p-dropdown {
+          border: 1px solid var(--primary-primary-900);
+
+          .p-dropdown-label {
+            padding: var(--padding-xs) var(--padding-m);
+            font-size: var(--font-size-xs);
+            color: var(--primary-primary-900);
+          }
+
+          &:not(.p-disabled).p-focus {
+            border-color: var(--primary-primary-500);
+            box-shadow: 0 0 0 2px var(--primary-primary-100);
+          }
+        }
+      }
+    }
+  }
+
+  .books-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-s);
+
+    .book-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--padding-m);
+      border: 1px solid var(--neutral-grey-200);
+      border-radius: 8px;
+      background-color: var(--neutral-white);
+      transition: transform 0.2s, box-shadow 0.2s;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .book-title {
+        font-size: var(--font-size-xs);
+        color: var(--primary-primary-900);
+        font-weight: var(--font-weight-bold);
+        margin: 0;
+      }
+
+      .book-buttons {
+        display: flex;
+        gap: var(--padding-s);
+
+        .icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 10px;
+          border: 1px solid var(--primary-primary-900);
+          padding: var(--padding-xs);
+        }
+      }
+
+      button {
+        min-width: 120px;
+        color: var(--primary-primary-900);
+        border: none;
+
+        &:hover {
+          background-color: var(--primary-primary-50);
+        }
+      }
+    }
+  }
+} 

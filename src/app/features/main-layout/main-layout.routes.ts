@@ -56,10 +56,27 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'student-level',
+            data: { title: 'MENU.STUDENT_LEVEL' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/student-level/student-level.component'
               ).then((m) => m.StudentLevelComponent),
+          },
+          {
+            path: 'reading-criteria',
+            data: { title: 'MENU.READING_CRITERIA' },
+            loadComponent: () =>
+              import(
+                '../teacher-dashboard/reading-criteria/reading-criteria.component'
+              ).then((m) => m.ReadingCriteriaComponent),
+          },
+          {
+            path: 'book-details',
+            data: { title: 'MENU.BOOK_DETAILS' },
+            loadComponent: () =>
+              import(
+                '../teacher-dashboard/leveled-reading/book-details/book-details.component'
+              ).then((m) => m.BookDetailsComponent),
           },
           {
             path: 'leveled-display',

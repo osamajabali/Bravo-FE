@@ -1,0 +1,13 @@
+<div class="questions-list">
+  @for (question of questions; track question.id) {
+    <div class="question-item">
+      <div class="question-title">{{ question.title }}</div>
+      <button 
+        pButton 
+        label="View Question" 
+        class="p-button-primary"
+        (click)="viewQuestion(question)"
+      ></button>
+    </div>
+  }
+</div>

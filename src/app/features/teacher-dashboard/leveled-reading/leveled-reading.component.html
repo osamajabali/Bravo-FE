@@ -17,103 +17,29 @@
       </div>
     </div>
     <div class="buttons">
-      <button pButton label="" class="p-button-outlined show-button" (click)="showStudentLevel()">
+      <button
+        pButton
+        label=""
+        class="p-button-outlined show-button"
+        (click)="showStudentLevel()"
+      >
         <span>Show Student Level</span>
       </button>
-      <button pButton label="" class="p-button-outlined show-button">
+      <button
+        pButton
+        label=""
+        class="p-button-outlined show-button"
+        (click)="showCriteria()"
+      >
         <span>Show Criteria</span>
       </button>
     </div>
   </div>
   <div class="content">
-    <div class="filters">
-      <div class="search-box">
-        <span class="p-input-icon-left">
-          <i class="pi pi-search"></i>
-          <input
-            type="text"
-            pInputText
-            [(ngModel)]="searchQuery"
-            placeholder="Search books..."
-            (input)="onSearch()"
-          />
-        </span>
-      </div>
-      <div class="level-filters">
-        <p-dropdown
-          [options]="mainLevels"
-          [(ngModel)]="selectedMainLevel"
-          placeholder="Select Main Level"
-          [showClear]="true"
-          (onChange)="onMainLevelChange()"
-          styleClass="main-level-dropdown"
-        >
-        </p-dropdown>
-        <p-dropdown
-          [options]="subLevels"
-          [(ngModel)]="selectedSubLevel"
-          placeholder="Select Sub Level"
-          [showClear]="true"
-          (onChange)="onSubLevelChange()"
-          styleClass="sub-level-dropdown"
-        >
-        </p-dropdown>
-        <div class="filter-container" (click)="toggleAdvancedSearch()">
-          <img src="icon-filter.svg" alt="filter" />
-        </div>
-      </div>
-    </div>
-
-    <div class="advanced-search" *ngIf="showAdvancedSearch">
-      <div class="advanced-filters">
-        <p-dropdown [options]="skills" [(ngModel)]="selectedSkills" placeholder="Skills" [showClear]="true"></p-dropdown>
-        <p-dropdown [options]="grades" [(ngModel)]="selectedGrade" placeholder="Grade" [showClear]="true"></p-dropdown>
-        <p-dropdown [options]="comprehensionSkills" [(ngModel)]="selectedComprehensionSkills" placeholder="Comprehension Skills" [showClear]="true"></p-dropdown>
-        <p-dropdown [options]="subjects" [(ngModel)]="selectedSubject" placeholder="Subject" [showClear]="true"></p-dropdown>
-        <p-dropdown [options]="hubs" [(ngModel)]="selectedHub" placeholder="Hub" [showClear]="true"></p-dropdown>
-        <p-dropdown [options]="ibHubs" [(ngModel)]="selectedIbHub" placeholder="IB Hub" [showClear]="true"></p-dropdown>
-        <p-dropdown [options]="ibLearnerProfiles" [(ngModel)]="selectedIbLearnerProfile" placeholder="IB Learner Profile" [showClear]="true"></p-dropdown>
-        <p-dropdown [options]="literaryTypes" [(ngModel)]="selectedLiteraryType" placeholder="Literary Type" [showClear]="true"></p-dropdown>
-        <p-dropdown [options]="authorNames" [(ngModel)]="selectedAuthorName" placeholder="Author Name" [showClear]="true"></p-dropdown>
-        <p-dropdown [options]="publishers" [(ngModel)]="selectedPublisher" placeholder="Publisher" [showClear]="true"></p-dropdown>
-        <p-dropdown [options]="illustrators" [(ngModel)]="selectedIllustrator" placeholder="Illustrator" [showClear]="true"></p-dropdown>
-        <p-dropdown [options]="ageGroups" [(ngModel)]="selectedAgeGroup" placeholder="Age Group" [showClear]="true"></p-dropdown>
-      </div>
-      <div class="advanced-search-actions">
-        <div class="reset-button" (click)="onResetAdvancedSearch()">
-          <img src="icon-trash.svg" alt="reset" />
-        </div>
-        <button pButton label="Cancel" class="p-button-outlined" (click)="onCancelAdvancedSearch()"></button>
-        <button pButton label="Search" class="p-button-primary" (click)="onAdvancedSearch()"></button>
-      </div>
-    </div>
-
-    <div class="books-number">{{ books.length }} Books</div>
-    <div class="books-grid">
-      @for (book of books; track book.title) {
-      <div class="book-card">
-        <div class="book-cover">
-          <img [src]="book.coverImage" [alt]="book.title" />
-        </div>
-        <div class="book-details">
-          <h3 class="title">{{ book.title }}</h3>
-          <p class="sub-level">Sub Level: {{ book.subLevel }}</p>
-          <p class="author">Author: {{ book.author }}</p>
-          <p class="student-level">Student Level: {{ book.studentLevel }}</p>
-          <button pButton class="p-button-primary">View Book</button>
-        </div>
-      </div>
-      }
-    </div>
-    <div class="pagination-info">
-      Showing 1-{{ rows }} of {{ books.length }} books
-    </div>
-    <p-paginator
-      [first]="first"
-      [rows]="rows"
-      [totalRecords]="totalRecords"
-      (onPageChange)="onPageChange($event)"
-      class="paginator"
-    ></p-paginator>
+    @if(selectedTab === 'book-list') {
+      <app-book-list-view />
+    } @else {
+      <app-leveled-reading-view />
+    }
   </div>
 </div>
