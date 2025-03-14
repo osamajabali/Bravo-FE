@@ -19,8 +19,8 @@ export class AppComponent {
     @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
-    this.translate.setDefaultLang('ar');
-    this.setDirection('ar');
+    this.translate.setDefaultLang('en');
+    this.setDirection('en');
     this.authService.autoLogout();
   }
 

@@ -3,9 +3,9 @@
     <!-- Static Back Button -->
     <div class="header-item">
       @if(('DIR'|translate) == 'rtl'){
-        <i class="pi pi-arrow-left" style="font-size: 1rem"></i>
+        <a (click)="goBack()"><i class="pi pi-arrow-right" style="font-size: 1rem"></i></a>
       }@else {
-        <i class="pi pi-arrow-right" style="font-size: 1rem"></i>
+        <a (click)="goBack()"><i class="pi pi-arrow-left" style="font-size: 1rem"></i></a>
       }
     </div>
     <h1 class="page-title">{{ title | translate }}</h1>

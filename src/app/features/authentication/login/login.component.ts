@@ -43,6 +43,7 @@ export class LoginComponent {
 			if (response) {
 				this.loginService.setUser(response.result.userToken);
 				localStorage.setItem('roleId', response.result.roles[0].roleId.toString())
+				localStorage.setItem('userName', response.result.userFullName)
 				this.headerService.selectedGradeId =0;
 				this.headerService.selectedSubjectId =0;
 				this.router.navigate(['/features'])

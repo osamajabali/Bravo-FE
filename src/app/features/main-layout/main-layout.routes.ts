@@ -19,7 +19,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'units',
-            data: { title: 'MENU.UNITS' }, // ✅ Pass title here
+            data: { title: 'UNITS' }, // ✅ Pass title here
             loadComponent: () =>
               import('../teacher-dashboard/units/units.component').then(
                 (m) => m.UnitsComponent
@@ -27,6 +27,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'lessons/:id',
+            data: { title: 'LESSONS' },
             loadComponent: () =>
               import('../teacher-dashboard/lessons/lessons.component').then(
                 (m) => m.LessonsComponent
@@ -34,6 +35,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'lessons-curriculums/:id',
+            data: { title: 'CURRICULUMS' },
             loadComponent: () =>
               import('../teacher-dashboard/lessons-curriculums/lessons-curriculums.component').then(
                 (m) => m.LessonsCurriculumsComponent

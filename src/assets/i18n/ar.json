@@ -1,5 +1,5 @@
 {
-    "DIR" : "rtl",
+    "DIR": "rtl",
     "CHOOSE_PROPERTIES": "اختر الخصائص",
     "SUBJECTS": "المواد",
     "GRADES": "الصفوف",
@@ -13,17 +13,17 @@
     "QUICK_ACTION": "إجراء سريع",
     "ACTIVATE": "تفعيل",
     "DEACTIVATE": "إلغاء التفعيل",
-    "LEARNING_OUTCOMES" : "مخرجات التعلم",
-
-    "MENU": {
-        "QUICK_ACTIONS": "الإجراءات السريعة",
-        "SKILLS": "المهارات",
-        "UNITS": "الوحدات",
-        "ALL_SKILLS": "كل المهارات",
-        "LEARN": "التعلم",
-        "ASSIGNMENTS": "الواجبات",
-        "EXAMS": "الاختبارات",
-        "STUDENTS": "الطلاب"
-      }
-  }
-  
+    "LEARNING_OUTCOMES": "مخرجات التعلم",
+    "QUICK_ACTIONS": "الإجراءات السريعة",
+    "UNITS": "الوحدات",
+    "ALL_SKILLS": "كل المهارات",
+    "LEARN": "التعلم",
+    "ASSIGNMENTS": "الواجبات",
+    "EXAMS": "الاختبارات",
+    "STUDENTS": "الطلاب",
+    "LESSONS": "الدروس",
+    "CURRICULUMS": "المناهج الدراسية",
+    "CHANGE_LANGUAGE" : "تغيير اللغة",
+    "PROFILE": "الملف الشخصي",
+    "LOGOUT": "تسجيل الخروج"
+}

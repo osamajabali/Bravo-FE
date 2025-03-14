@@ -4,10 +4,11 @@ import { UnitCardsComponent } from "../../../shared/components/unit-cards/unit-c
 import { Lessons } from '../../../core/models/teacher-dashboard-models/lessons.model';
 import { LearningOutcomesService } from '../../../core/services/teacher-dashboard-services/learning-outcomes.service';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-lessons',
-  imports: [UnitCardsComponent],
+  imports: [UnitCardsComponent, TranslateModule],
   templateUrl: './lessons.component.html',
   styleUrl: './lessons.component.scss'
 })
@@ -28,7 +29,7 @@ export class LessonsComponent implements OnInit {
   getLessons() {
     this.learningOutcomesService.getUnitsLessons(this.unitId).subscribe(res => {
       if(res.success){
-        this.lessons = res.result;
+        this.lessons = res.result.lessons;
       }
     })
   }

@@ -1,3 +1,5 @@
+import { PaginationFilter } from "../shared-models/pagination.model";
+
 export interface SingleSkill {
     activationDate: string;
     isSkill: boolean;
@@ -6,5 +8,8 @@ export interface SingleSkill {
     noOfStudentsEasy: number;
     noOfStudentsHard: number;
     noOfStudentsMedium: number;
-  
+    
+}
+export interface SingleSkillPagination extends PaginationFilter {
+    learningOutcomes : SingleSkill[];
 }

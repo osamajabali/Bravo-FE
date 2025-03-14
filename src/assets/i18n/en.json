@@ -12,17 +12,17 @@
     "QUICK_ACTION": "Quick Action",
     "ACTIVATE": "Activate",
     "DEACTIVATE": "Deactivate",
-    "LEARNING_OUTCOMES" : "Learning outcomes",
-
-    "MENU": {
-        "QUICK_ACTIONS": "Quick Actions",
-        "SKILLS": "Skills",
-        "UNITS": "Units",
-        "ALL_SKILLS": "All Skills",
-        "LEARN": "Learn",
-        "ASSIGNMENTS": "Assignments",
-        "EXAMS": "Exams",
-        "STUDENTS": "Students"
-      }
-  }
-  
+    "LEARNING_OUTCOMES": "Learning outcomes",
+    "QUICK_ACTIONS": "Quick Actions",
+    "UNITS": "Units",
+    "ALL_SKILLS": "All Skills",
+    "LEARN": "Learn",
+    "ASSIGNMENTS": "Assignments",
+    "EXAMS": "Exams",
+    "STUDENTS": "Students",
+    "LESSONS": "Lessons",
+    "CURRICULUMS": "Curriculums",
+    "CHANGE_LANGUAGE" : "Change language",
+    "PROFILE": "Profile",
+    "LOGOUT": "Logout"
+}

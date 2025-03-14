@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { LearningOutcomesService } from '../../../core/services/teacher-dashboard-services/learning-outcomes.service';
 import { ActivatedRoute } from '@angular/router';
 import { LessonsCurriculums } from '../../../core/models/teacher-dashboard-models/lesson-curriculums.model';
-import { SearchComponent } from "../../../shared/components/search/search.component";
 import { UnitCardsComponent } from "../../../shared/components/unit-cards/unit-cards.component";
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-lessons-curriculums',
-  imports: [UnitCardsComponent],
+  imports: [UnitCardsComponent,TranslateModule],
   templateUrl: './lessons-curriculums.component.html',
   styleUrl: './lessons-curriculums.component.scss'
 })
@@ -28,7 +28,7 @@ export class LessonsCurriculumsComponent implements OnInit {
   getCurriculums() {
     this.learningOutcomesService.lessonsCurriculums(this.lessonId).subscribe(res => {
       if (res) {
-        this.curriculums = res.result
+        this.curriculums = res.result.curriculums;
       }
     })
   }

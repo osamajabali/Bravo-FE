@@ -1,8 +1,9 @@
 @use "./assets/scss/variables" as vars;
-@import "../node_modules/@ng-select/ng-select/themes/default.theme.css";
+@use "./assets/scss/fonts";
+@use "../node_modules/@ng-select/ng-select/themes/default.theme.css" as *; // Use `as *` to avoid namespace issues
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Space Grotesk", sans-serif !important;
   transition: all 0.3s ease;
 
   [dir="ltr"] {
@@ -24,7 +25,7 @@ body {
 }
 
 body {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Space Grotesk", sans-serif !important;
   font-size: 16px;
   line-height: 1.5;
   color: #333;

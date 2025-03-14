@@ -22,15 +22,15 @@ export class UnitsComponent implements OnInit, OnDestroy {
   units: Unit[] = [];
 
   constructor(
-    private headerService: HeaderService, 
-    private learningOutcomesService: LearningOutcomesService, 
+    private headerService: HeaderService,
+    private learningOutcomesService: LearningOutcomesService,
     private sharedService: SharedService
   ) {
     if (!this.sharedService) {
       this.sharedService = new SharedService();
     }
   }
-  
+
   ngOnInit(): void {
     this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
       if (res) {
@@ -46,7 +46,7 @@ export class UnitsComponent implements OnInit, OnDestroy {
   getUnits(id: number) {
     this.learningOutcomesService.getUnits(id).subscribe(res => {
       if (res.success) {
-        this.units = res.result
+        this.units = res.result.units
       }
     })
   }

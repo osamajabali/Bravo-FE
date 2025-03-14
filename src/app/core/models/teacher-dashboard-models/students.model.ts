@@ -1,3 +1,5 @@
+import { PaginationFilter } from "../shared-models/pagination.model";
+
 export class Student {
     studentName: string;
     currentLevelId: number;
@@ -11,3 +13,6 @@ export class Student {
     students: Student[];
   }
   
+  export class LevelPagination extends PaginationFilter {
+    students : Level[];
+  }

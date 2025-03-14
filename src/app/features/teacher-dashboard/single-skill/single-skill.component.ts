@@ -91,7 +91,7 @@ export class SingleSkillComponent implements OnInit {
   getSkills() {
     this.learningOutcomesService.lessonsCurriculumsSkills(this.headerService.selectedSectionId, this.domainId ? this.domainId : 0, this.curriculumId ? this.curriculumId : 0).subscribe(res => {
       if (res.success) {
-        this.skills = res.result;
+        this.skills = res.result.learningOutcomes;
       }
     })
   }
@@ -102,7 +102,7 @@ export class SingleSkillComponent implements OnInit {
       if(res.success){
         this.spinnerService.hide()
         this.showUserDrower = true
-        this.levels = res.result
+        this.levels = res.result.students;
       }
     })
   }
