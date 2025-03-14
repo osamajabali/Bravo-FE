@@ -1,4 +1,4 @@
-import { Routes, provideRouter, withComponentInputBinding } from '@angular/router';
+import { Routes } from '@angular/router';
 
 export const Main_Layout_Routes: Routes = [
     {
@@ -48,10 +48,35 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'leveled-reading',
+            data: { title: 'MENU.LEVELED_READING' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/leveled-reading/leveled-reading.component'
               ).then((m) => m.LeveledReadingComponent),
+          },
+          {
+            path: 'student-level',
+            data: { title: 'MENU.STUDENT_LEVEL' },
+            loadComponent: () =>
+              import(
+                '../teacher-dashboard/student-level/student-level.component'
+              ).then((m) => m.StudentLevelComponent),
+          },
+          {
+            path: 'reading-criteria',
+            data: { title: 'MENU.READING_CRITERIA' },
+            loadComponent: () =>
+              import(
+                '../teacher-dashboard/reading-criteria/reading-criteria.component'
+              ).then((m) => m.ReadingCriteriaComponent),
+          },
+          {
+            path: 'book-details',
+            data: { title: 'MENU.BOOK_DETAILS' },
+            loadComponent: () =>
+              import(
+                '../teacher-dashboard/leveled-reading/book-details/book-details.component'
+              ).then((m) => m.BookDetailsComponent),
           },
           {
             path: 'leveled-display',

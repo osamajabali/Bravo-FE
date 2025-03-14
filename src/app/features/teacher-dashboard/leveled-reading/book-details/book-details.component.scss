@@ -1,0 +1,189 @@
+.book-details {
+  padding: var(--padding-m);
+
+  .header {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: var(--padding-xl) 0;
+    margin-bottom: var(--padding-m);
+    border-bottom: 1px solid var(--neutral-grey-200);
+
+    .buttons {
+      display: flex;
+      gap: var(--padding-s);
+
+      .show-button {
+        padding: var(--padding-xs);
+        border-radius: 10px;
+        border: 1px solid var(--primary-primary-900);
+        color: var(--primary-primary-900);
+        font-size: var(--font-size-xxs);
+        font-weight: var(--font-weight-bold);
+
+        &:hover {
+          background-color: var(--primary-primary-100);
+        }
+      }
+    }
+  }
+
+  .upper-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--padding-xl);
+    padding: var(--padding-m);
+
+    .book-info {
+      .subject {
+        font-size: var(--font-size-xs);
+        color: var(--primary-primary-900);
+        margin-bottom: var(--padding-xs);
+      }
+
+      .title {
+        font-size: var(--font-size-m);
+        color: var(--primary-primary-900);
+        font-weight: var(--font-weight-bold);
+        margin: 0;
+      }
+    }
+
+    .book-cover {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--padding-m);
+
+      img {
+        width: 200px;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .read-button {
+        min-width: 150px;
+      }
+    }
+
+    .summary {
+      display: flex;
+      justify-content: end;
+      gap: var(--padding-l);
+      padding: var(--padding-l) 0;
+
+      .box {
+        display: flex;
+        flex-direction: column;
+        color: var(--primary-primary-800);
+        padding: var(--padding-xxs) var(--padding-s);
+        border-radius: 10px;
+        width: 160px;
+
+        &.filled {
+          background-color: var(--primary-primary-100);
+        }
+
+        &.outlined {
+          border: 1px solid var(--primary-primary-400);
+        }
+
+        .text {
+          font-size: var(--font-size-xxs);
+        }
+
+        .number {
+          color: var(--primary-primary-900);
+          font-size: var(--font-size-xs);
+          font-weight: var(--font-weight-bold);
+        }
+      }
+    }
+  }
+
+  .lower-section {
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--neutral-grey-200);
+      margin-bottom: var(--padding-xl);
+
+      .tab {
+        height: 28px;
+        padding: 0 var(--padding-m);
+        text-align: center;
+        color: var(--neutral-grey-600);
+        font-size: var(--font-size-s);
+        cursor: pointer;
+
+        &.selected {
+          font-weight: var(--font-weight-bold);
+          color: var(--primary-primary-900);
+          border-bottom: 1px solid var(--primary-primary-900);
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .p-dialog {
+    .p-dialog-header {
+      padding: var(--padding-m);
+
+      .p-dialog-title {
+        color: var(--primary-primary-900);
+        font-size: var(--font-size-m);
+        font-weight: var(--font-weight-bold);
+      }
+    }
+
+    .p-dialog-content {
+      padding: var(--padding-m);
+
+      .p-galleria {
+        border: none;
+
+        .p-galleria-item-wrapper {
+          background-color: var(--neutral-white);
+          padding: var(--padding-m);
+          border-radius: 8px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .p-galleria-item-nav {
+          background: var(--primary-primary-500);
+          border-radius: 50%;
+          margin: 0 var(--padding-m);
+          width: 3rem;
+          height: 3rem;
+          transition: background-color 0.2s;
+
+          &:hover {
+            background: var(--primary-primary-600);
+          }
+        }
+
+        .p-galleria-items {
+          button {
+            color: var(--neutral-black);
+            border: 1px solid var(--neutral-grey-200);
+            width: 50px;
+            aspect-ratio: 1;
+            border-radius: 10px;
+          }
+        }
+      }
+
+      .book-title {
+        font-size: var(--font-size-xxl);
+        font-weight: var(--font-weight-bold);
+        color: var(--primary-primary-900);
+        margin-top: var(--padding-m);
+        text-align: center;
+      }
+    }
+  }
+}

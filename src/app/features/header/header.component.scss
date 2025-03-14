@@ -150,6 +150,7 @@
     .p-menu-item-content {
       padding: var(--padding-s);
       background-color: var(--neutral-white) !important;
+      color: var(--neutral-grey-900) !important;
     }
 
     .p-menuitem-link {
@@ -159,8 +160,8 @@
         background-color: var(--neutral-grey-100);
       }
 
-      .p-menuitem-icon {
-        color: var(--primary-primary-500);
+      .p-menu-item-icon {
+        color: var(--primary-primary-500) !important;
         margin-right: 0.75rem;
       }
 

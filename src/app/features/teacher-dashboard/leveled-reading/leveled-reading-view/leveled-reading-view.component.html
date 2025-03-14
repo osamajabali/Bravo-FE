@@ -1,0 +1,35 @@
+<div class="leveled-reading-view">
+  <div class="filter-section mb-4">
+    <p-dropdown
+      [options]="levels"
+      [(ngModel)]="selectedLevel"
+      placeholder="Select Level"
+      [showClear]="true"
+      (onChange)="onLevelChange()"
+      styleClass="level-dropdown"
+    >
+    </p-dropdown>
+  </div>
+
+  <div class="books-list">
+    @for (book of books; track book.title) {
+      <div class="book-item">
+        <div class="book-title">{{ book.title }}</div>
+        <div class="book-buttons">
+          <div class="icon">
+            <img src="icon-quora.svg" alt="qoura">
+          </div>
+          <div class="icon">
+            <img src="icon-multiple-users.svg" alt="multiple users">
+          </div>
+          <button 
+          pButton 
+          label="View Book" 
+          class="p-button-primary"
+          (click)="viewBook(book)"
+        ></button>
+        </div>
+      </div>
+    }
+  </div>
+</div> 

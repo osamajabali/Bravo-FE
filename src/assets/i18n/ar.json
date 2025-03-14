@@ -23,7 +23,11 @@
         "LEARN": "التعلم",
         "ASSIGNMENTS": "الواجبات",
         "EXAMS": "الاختبارات",
-        "STUDENTS": "الطلاب"
+        "STUDENTS": "الطلاب",
+        "LEVELED_READING": "القراءة المستوية",
+        "STUDENT_LEVEL": "مستوى الطلاب",
+        "READING_CRITERIA": "معايير القراءة",
+        "BOOK_DETAILS": "تفاصيل الكتاب"
       }
   }
   
