@@ -32,3 +32,25 @@
     }
   }
 }
+
+::ng-deep {
+  .p-dialog {
+    .p-dialog-content {
+      padding: var(--padding-m);
+      
+      .question-image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        img {
+          height: 100%;
+          max-width: 100%;
+          max-height: 70vh;
+          object-fit: contain;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+}

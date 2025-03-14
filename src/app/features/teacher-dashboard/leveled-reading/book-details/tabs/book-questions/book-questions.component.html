@@ -11,3 +11,20 @@
     </div>
   }
 </div>
+
+<p-dialog 
+  [(visible)]="showQuestionDialog"
+  [modal]="true"
+  [style]="{width: '50vw', height: '80vh'}"
+  [draggable]="false"
+  [resizable]="false"
+  [showHeader]="false"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+>
+  @if (selectedQuestion) {
+    <div class="question-image-container">
+      <img [src]="selectedQuestion.imageUrl" [alt]="selectedQuestion.title" />
+    </div>
+  }
+</p-dialog>
