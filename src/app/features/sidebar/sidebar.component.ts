@@ -30,7 +30,7 @@ export class SidebarComponent {
       children: [
         {
           label: 'MENU.UNITS',
-          route: 'features/units',
+          route: 'features/units-stats',
           icon: 'cubes'
         },
         {
@@ -41,7 +41,7 @@ export class SidebarComponent {
       ]
     },
     {
-      label: 'LEARN',
+      label: 'MENU.LEARN',
       route: '/ds',
       icon: 'learn',
       expanded: false,
@@ -62,7 +62,12 @@ export class SidebarComponent {
       label: 'MENU.STUDENTS',
       route: '/ds',
       icon: 'students'
-    }
+    },
+    {
+      label: 'MENU.LEVELED_READING',
+      route: '/features/leveled-reading',
+      icon: 'leveled-reading'
+    },
   ];
 
 

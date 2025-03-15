@@ -1,169 +1,101 @@
-<div class="units-container">
-
-  <app-skill-summary [showAssignmentButton]="true" [data]="skillSummaryData"></app-skill-summary>
-
-  <div class="header">
-    <h1 class="page-title">{{ skills.length }} Skills</h1>
-    <div class="search-container">
-      <span class="p-input-icon-left d-flex align-items-center position-relative">
-        <input type="text" pInputText placeholder="Search lessons..." class="search-input" />
-        <i class="pi pi-search position-absolute end-0 pe-3"></i>
-      </span>
-      <div class="filter-container" (click)="filterPanel.toggle($event)">
-        <img src="icon-filter.svg" alt="filter" />
-      </div>
+<div>
+  <app-skill-summary
+    [showAssignmentButton]="false"
+    [data]="skillSummaryData"
+  ></app-skill-summary>
+  <div class="units-container">
+    <div class="header">
+      <h1 class="page-title">{{ skills.length }} Skills</h1>
     </div>
-  </div>
 
-  <div class="units-list">
-    @for (skill of skills; track skill.learningOutcomeId) {
-    <div class="unit-card">
-      <div class="unit-content">
-        <h3 class="unit-title">{{ skill.learningOutcomeDisplayName }}</h3>
-        <div class="d-flex gap-3">
-          <div class="badge">{{skill.noOfStudentsEasy}} easy</div>
-          <div class="badge">{{skill.noOfStudentsMedium}} medium</div>
-          <div class="badge">{{skill.noOfStudentsHard}} hard</div>
-        </div>
-      </div>
-      <div class="d-flex flex-column gap-1 align-items-end justify-content-between">
-        <div class="d-flex gap-2 align-items-center justify-content-between">
-          <a (click)="getStudents(skill.learningOutcomeId)">
-            <div class="action-icon">
-              <img src="icon-multiple-users.svg" alt="users" />
+    <div class="units-list">
+      @for (skill of skills; track skill.learningOutcomeId) {
+      <div class="unit-card">
+        <div class="unit-content">
+          <h3 class="unit-title">{{ skill.learningOutcomeDisplayName }}</h3>
+          <div class="d-flex gap-3">
+            <div class="badge">
+              Beginner <span class="number">{{ skill.noOfStudentsEasy || 0 }}</span>
             </div>
-          </a>
-          <a (click)="showSmartBoard = true">
-            <div class="action-icon">
-              <img src="icon-cards.svg" alt="cards" />
+            <div class="badge">
+              Average <span class="number">{{ skill.noOfStudentsMedium || 0 }}</span>
             </div>
-          </a>
-          <button type="button" (click)="activateSkill = true" [ngClass]="{'p-button activate-skill-btn gap-3': true, 'activated': false}">
-            {{ false ? "Activated" : "Activate Skill" }}
-            @if (false) {
-              <img src="icon-white-circle-check.svg" alt="check" />
-              }
-          </button>
-        </div>
-        <!-- <div class="skill-status">{{skill.activationDate | date :'dd/MM/yyyy' }}</div> -->
-      </div>
-    </div>
-    }
-  </div>
-
-</div>
-
-
-<!-- Custom Dialog -->
-<p-dialog [(visible)]="activateSkill" [style]="{ width: '450px' }" [modal]="true" [closable]="true" [closeOnEscape]="true"
-  header="">
-  <div class="dialog-content">
-    <span class="dialog-message">Are you sure you want to activate this skill?</span>
-  </div>
-  <ng-template pTemplate="footer">
-    <button type="button" pButton label="No" class="p-button-secondary"></button>
-    <button type="button" pButton label="Yes" class="p-button-primary"></button>
-  </ng-template>
-</p-dialog>
-
-<!-- Smart Board -->
-<app-smart-board (visibleChange)="showSmartBoard = false" [visible]="showSmartBoard" [skillId]="0" [skillTitle]="'Static Lesson Title'"></app-smart-board>
-
-<!-- User Drawer -->
-<app-user-drawer (visibleChange)="showUserDrower = false" [visible]="showUserDrower" [sections]="levels"></app-user-drawer>
-
-<!-- filter panel -->
-<p-overlayPanel
-#filterPanel
-[showCloseIcon]="false"
-[dismissable]="true"
-styleClass="filter-overlay"
->
-<div class="filter-overlay-content">
-  <!-- Header with title and close button -->
-  <div class="filter-overlay-header">
-    <h3 class="filter-overlay-title">Filter Sub Skills</h3>
-    <button class="filter-overlay-close" (click)="filterPanel.hide()">
-      <i class="pi pi-times"></i>
-    </button>
-  </div>
-
-  <!-- Divider -->
-  <div class="filter-divider"></div>
-
-  <!-- Filter sections -->
-  <div class="filter-sections">
-    @for (section of filterSections; track section.title) {
-    <div class="filter-section">
-      <div
-        class="filter-section-header"
-        (click)="toggleFilterSection(section)"
-      >
-        <span class="filter-section-title">{{ section.title }}</span>
-        <i
-          class="pi"
-          [ngClass]="section.expanded ? 'pi-chevron-up' : 'pi-chevron-down'"
-        ></i>
-      </div>
-
-      @if (section.expanded) {
-      <div class="filter-section-content">
-        @for (option of section.options; track option.value) {
-        <div class="filter-option">
-          <div class="custom-checkbox">
-            <input
-              type="checkbox"
-              [id]="option.value"
-              [name]="section.title"
-              [value]="option.value"
-              [checked]="section.selectedOptions.includes(option.value)"
-              (change)="toggleCheckbox(section, option.value)"
-              class="visually-hidden"
-            />
-            <label [for]="option.value" class="checkbox-label">
-              <span class="checkbox-icon">
-                @if (section.selectedOptions.includes(option.value)) {
-                <img
-                  src="icon-checkbox-checked.svg"
-                  alt="Checked"
-                  class="checkbox-checked"
-                />
-                } @else {
-                <img
-                  src="icon-checkbox-unchecked.svg"
-                  alt="Unchecked"
-                  class="checkbox-unchecked"
-                />
-                }
-              </span>
-              <span class="filter-option-label">{{ option.label }}</span>
-            </label>
+            <div class="badge">
+              Advanced <span class="number">{{ skill.noOfStudentsHard || 0 }}</span>
+            </div>
           </div>
         </div>
-        }
+        <div
+          class="d-flex flex-column gap-1 align-items-end justify-content-between"
+        >
+          <div class="d-flex gap-2 align-items-center justify-content-between">
+            <a (click)="getStudents(skill.learningOutcomeId)">
+              <div class="action-icon">
+                <img src="icon-multiple-users.svg" alt="users" />
+                <span class="action-icon-text">Students</span>
+              </div>
+            </a>
+            <a (click)="showSmartBoard = true">
+              <div class="action-icon">
+                <img src="icon-cards.svg" alt="cards" />
+                <span class="action-icon-text">Cards</span>
+              </div>
+            </a>
+            <button pButton label="" class="assignment-button">
+              <img src="icon-plus.svg" alt="plus" />
+              <span>Assignment</span>
+            </button>
+            <div>
+              <div
+                class="custom-radio"
+                [class.active]="skill.isActive"
+                (click)="toggleActive(skill)"
+              >
+                <div class="radio-content" [class.reverse]="!skill.isActive">
+                  <span class="status-text">{{
+                    skill.isActive ? "ACTIVE" : "OFF"
+                  }}</span>
+                  <img
+                    [src]="
+                      skill.isActive
+                        ? 'icon-radio-checked.svg'
+                        : 'icon-radio-unchecked.svg'
+                    "
+                    alt="check"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="skill-status">{{skill.activationDate | date :'dd/MM/yyyy' }}</div> -->
+        </div>
       </div>
       }
-
-      <!-- Divider after each section -->
-      <div class="filter-divider"></div>
     </div>
-    }
-  </div>
-
-  <!-- Filter actions -->
-  <div class="filter-actions">
-    <button
-      type="button"
-      class="filter-btn filter-btn-clear"
-    >
-      Clear All
-    </button>
-    <button
-      type="button"
-      class="filter-btn filter-btn-apply"
-    >
-      Apply
-    </button>
   </div>
 </div>
-</p-overlayPanel>
+
+<!-- Custom Dialog -->
+<app-skill-activation-modal
+  [(visible)]="activateSkill"
+  [style]="{ width: '450px' }"
+  [modal]="true"
+  [closable]="true"
+  [closeOnEscape]="true"
+  (activateSkill)="_activateSkill()"
+></app-skill-activation-modal>
+
+<!-- Smart Board -->
+<app-smart-board
+  (visibleChange)="showSmartBoard = false"
+  [visible]="showSmartBoard"
+  [skillId]="0"
+  [skillTitle]="'Static Lesson Title'"
+></app-smart-board>
+
+<!-- User Drawer -->
+<app-user-drawer
+  (visibleChange)="showUserDrower = false"
+  [visible]="showUserDrower"
+  [sections]="levels"
+></app-user-drawer>

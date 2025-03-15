@@ -1,25 +1,37 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Unit } from '../../../core/models/teacher-dashboard-models/units.model';
-import { SearchComponent } from '../../../shared/components/search/search.component';
 import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header-services/header.service';
-import { UnitCardsComponent } from "../../../shared/components/unit-cards/unit-cards.component";
+import { UnitCardsComponent } from '../../../shared/components/unit-cards/unit-cards.component';
 import { LearningOutcomesService } from '../../../core/services/teacher-dashboard-services/learning-outcomes.service';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { TranslateModule } from '@ngx-translate/core';
-
+import {
+  SkillSummaryComponent,
+  SkillSummaryData,
+} from '../../../shared/components/skill-summary/skill-summary.component';
 @Component({
   selector: 'app-units',
-  imports: [CommonModule, UnitCardsComponent, TranslateModule],
+  imports: [
+    CommonModule,
+    UnitCardsComponent,
+    TranslateModule,
+    SkillSummaryComponent,
+  ],
   templateUrl: './units.component.html',
   styleUrl: './units.component.scss',
 })
 export class UnitsComponent implements OnInit, OnDestroy {
-
   refreshSubscription!: Subscription;
 
   units: Unit[] = [];
+  summaryData: SkillSummaryData = {
+    allSkills: 0,
+    activeSkills: 0,
+    questionSolved: 0,
+    timeSpent: 0,
+  };
 
   constructor(
     private headerService: HeaderService,
@@ -32,23 +44,23 @@ export class UnitsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
       if (res) {
-        this.getUnits(this.headerService.selectedSectionId)
+        this.getUnits(this.headerService.selectedSectionId);
       }
     });
 
     if (this.headerService.selectedSectionId) {
-      this.getUnits(this.headerService.selectedSectionId)
+      this.getUnits(this.headerService.selectedSectionId);
     }
   }
 
   getUnits(id: number) {
-    this.learningOutcomesService.getUnits(id).subscribe(res => {
+    this.learningOutcomesService.getUnits(id).subscribe((res) => {
       if (res.success) {
-        this.units = res.result.units
+        this.units = res.result.units;
       }
-    })
+    });
   }
 
   ngOnDestroy(): void {

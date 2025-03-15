@@ -13,7 +13,9 @@
     "ACTIVATE": "Activate",
     "DEACTIVATE": "Deactivate",
     "LEARNING_OUTCOMES" : "Learning outcomes",
-
+    "UNITS": "Units",
+    "LESSONS": "Lessons",
+    "CURRICULUMS": "Curriculums",
     "MENU": {
         "QUICK_ACTIONS": "Quick Actions",
         "SKILLS": "Skills",

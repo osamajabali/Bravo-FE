@@ -1,0 +1,71 @@
+<div class="units-list">
+  @if (cards.length) { @for (card of cards; track $index) {
+  <a class="text-decoration-none" role="button" tabindex="0">
+    <div class="unit-card">
+      <div class="unit-content">
+        <h3 class="unit-title">
+          {{ isLesson(card) ? card.lessonName : card.nameArabic }}
+        </h3>
+      </div>
+      <div class="unit-actions">
+        <button pButton label="" class="assignment-button">
+          <img src="icon-plus.svg" alt="plus" />
+          <span>Assignment</span>
+        </button>
+        <button
+          pButton
+          label=""
+          class="p-button-primary view-button"
+          (click)="clickedCard(card)"
+        >
+          <span>{{ getViewButtonText(card) }}</span>
+          <img src="arrow-small-right.svg" alt="view" />
+        </button>
+        <div>
+          <div class="custom-radio" [class.active]="card.isActive" (click)="toggleActive(card)">
+            <div class="radio-content" [class.reverse]="!card.isActive">
+              <span class="status-text">{{ card.isActive ? 'ACTIVE' : 'OFF' }}</span>
+              <img [src]="card.isActive ? 'icon-radio-checked.svg' : 'icon-radio-unchecked.svg'" alt="check">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+  } } @else {
+  <!-- Skeleton Loader -->
+  @for (_ of [1, 2, 3, 4]; track $index) {
+  <div class="card h-100">
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <div>
+        <app-skeleton
+          [circles]="0"
+          [squares]="1"
+          [rectangles]="0"
+        ></app-skeleton>
+        <div class="my-2">
+          <app-skeleton
+            [circles]="0"
+            [squares]="0"
+            [rectangles]="1"
+          ></app-skeleton>
+        </div>
+      </div>
+      <app-skeleton
+        [smallCircles]="0"
+        [squares]="1"
+        [rectangles]="0"
+      ></app-skeleton>
+    </div>
+  </div>
+  } }
+</div>
+
+<app-skill-activation-modal
+  [(visible)]="activateSkill"
+  [style]="{ width: '450px' }"
+  [modal]="true"
+  [closable]="true"
+  [closeOnEscape]="true"
+  (activateSkill)="_activateSkill()"
+></app-skill-activation-modal>

@@ -3,9 +3,13 @@
     <!-- Static Back Button -->
     <div class="header-item">
       @if(('DIR'|translate) == 'rtl'){
-        <a (click)="goBack()"><i class="pi pi-arrow-right" style="font-size: 1rem"></i></a>
+      <a (click)="goBack()">
+        <img src="arrow-left-dark.svg" alt="arrow" class="rotate-180" />
+      </a>
       }@else {
-        <a (click)="goBack()"><i class="pi pi-arrow-left" style="font-size: 1rem"></i></a>
+      <a (click)="goBack()">
+        <img src="arrow-left-dark.svg" alt="arrow" />
+      </a>
       }
     </div>
     <h1 class="page-title">{{ title | translate }}</h1>
@@ -14,11 +18,18 @@
   <div class="header-right">
     <!-- Dropdown with overlay icon -->
     <div class="header-item">
-      <p-overlayPanel #filterPanel [showCloseIcon]="false" [dismissable]="true" styleClass="filter-overlay">
+      <p-overlayPanel
+        #filterPanel
+        [showCloseIcon]="false"
+        [dismissable]="true"
+        styleClass="filter-overlay"
+      >
         <div class="filter-overlay-content">
           <!-- Header with title and close button -->
           <div class="filter-overlay-header">
-            <h3 class="filter-overlay-title">{{ 'CHOOSE_PROPERTIES' | translate }}</h3>
+            <h3 class="filter-overlay-title">
+              {{ "CHOOSE_PROPERTIES" | translate }}
+            </h3>
             <button class="filter-overlay-close" (click)="filterPanel.hide()">
               <img src="icon-green-close.svg" alt="close" />
             </button>
@@ -31,19 +42,55 @@
           <div class="filter-sections">
             <!-- Category Subjects (Accordion) -->
             <div class="filter-section">
-              <div class="filter-section-header" (click)="SubjectExpanded = !SubjectExpanded; GradesExpanded = false; sectionExpanded = false">
-                <span class="filter-section-title">{{ 'SUBJECTS' | translate }}</span>
-                <img [src]="SubjectExpanded ? 'arrow-green-up.svg' : 'arrow-green-down.svg'" alt="arrow" />
+              <div
+                class="filter-section-header"
+                (click)="
+                  SubjectExpanded = !SubjectExpanded;
+                  GradesExpanded = false;
+                  sectionExpanded = false
+                "
+              >
+                <span class="filter-section-title">{{
+                  "SUBJECTS" | translate
+                }}</span>
+                <img
+                  [src]="
+                    SubjectExpanded
+                      ? 'arrow-green-up.svg'
+                      : 'arrow-green-down.svg'
+                  "
+                  alt="arrow"
+                />
               </div>
 
               <div class="filter-section-content" *ngIf="SubjectExpanded">
                 <div class="filter-section-content" *ngIf="SubjectExpanded">
                   @for (Subject of classesData.subjects; track $index) {
-                  <div class="filter-option" (click)="selectedItem(Subject.subjectId, classesEnum.subject)">
-                    <div class="custom-checkbox" [ngClass]="Subject.subjectId === selectedSubjectId ? 'selected' : ''">
-                      <img [src]="Subject.subjectId === selectedSubjectId ? 'icon-tick.svg' : 'icon-tick-empty.svg'" />
+                  <div
+                    class="filter-option"
+                    (click)="
+                      selectedItem(Subject.subjectId, classesEnum.subject)
+                    "
+                  >
+                    <div
+                      class="custom-checkbox"
+                      [ngClass]="
+                        Subject.subjectId === selectedSubjectId
+                          ? 'selected'
+                          : ''
+                      "
+                    >
+                      <img
+                        [src]="
+                          Subject.subjectId === selectedSubjectId
+                            ? 'icon-tick.svg'
+                            : 'icon-tick-empty.svg'
+                        "
+                      />
                     </div>
-                    <label class="filter-option-label">{{ Subject.name }}</label>
+                    <label class="filter-option-label">{{
+                      Subject.name
+                    }}</label>
                   </div>
                   }
                 </div>
@@ -58,17 +105,47 @@
           <div class="filter-sections">
             <!-- Category Grades (Accordion) -->
             <div class="filter-section">
-              <div class="filter-section-header" (click)="GradesExpanded = !GradesExpanded; sectionExpanded = false; SubjectExpanded = false">
-                <span class="filter-section-title">{{ 'GRADES' | translate }}</span>
-                <img [src]="GradesExpanded ? 'arrow-green-up.svg' : 'arrow-green-down.svg'" alt="arrow" />
+              <div
+                class="filter-section-header"
+                (click)="
+                  GradesExpanded = !GradesExpanded;
+                  sectionExpanded = false;
+                  SubjectExpanded = false
+                "
+              >
+                <span class="filter-section-title">{{
+                  "GRADES" | translate
+                }}</span>
+                <img
+                  [src]="
+                    GradesExpanded
+                      ? 'arrow-green-up.svg'
+                      : 'arrow-green-down.svg'
+                  "
+                  alt="arrow"
+                />
               </div>
 
               <div class="filter-section-content" *ngIf="GradesExpanded">
                 <div class="filter-section-content" *ngIf="GradesExpanded">
                   @for (grade of classesData.grades; track $index) {
-                  <div class="filter-option" (click)="selectedItem(grade.gradeId, classesEnum.grade)">
-                    <div class="custom-checkbox" [ngClass]="grade.gradeId === selectedGradeId ? 'selected' : ''">
-                      <img [src]="grade.gradeId === selectedGradeId ? 'icon-tick.svg' : 'icon-tick-empty.svg'" />
+                  <div
+                    class="filter-option"
+                    (click)="selectedItem(grade.gradeId, classesEnum.grade)"
+                  >
+                    <div
+                      class="custom-checkbox"
+                      [ngClass]="
+                        grade.gradeId === selectedGradeId ? 'selected' : ''
+                      "
+                    >
+                      <img
+                        [src]="
+                          grade.gradeId === selectedGradeId
+                            ? 'icon-tick.svg'
+                            : 'icon-tick-empty.svg'
+                        "
+                      />
                     </div>
                     <label class="filter-option-label">{{ grade.name }}</label>
                   </div>
@@ -85,19 +162,55 @@
           <div class="filter-sections">
             <!-- Category Section (Accordion) -->
             <div class="filter-section">
-              <div class="filter-section-header" (click)="sectionExpanded = !sectionExpanded; GradesExpanded = false; SubjectExpanded = false">
-                <span class="filter-section-title">{{ 'SECTIONS' | translate }}</span>
-                <img [src]="sectionExpanded ? 'arrow-green-up.svg' : 'arrow-green-down.svg'" alt="arrow" />
+              <div
+                class="filter-section-header"
+                (click)="
+                  sectionExpanded = !sectionExpanded;
+                  GradesExpanded = false;
+                  SubjectExpanded = false
+                "
+              >
+                <span class="filter-section-title">{{
+                  "SECTIONS" | translate
+                }}</span>
+                <img
+                  [src]="
+                    sectionExpanded
+                      ? 'arrow-green-up.svg'
+                      : 'arrow-green-down.svg'
+                  "
+                  alt="arrow"
+                />
               </div>
 
               <div class="filter-section-content" *ngIf="sectionExpanded">
                 <div class="filter-section-content" *ngIf="sectionExpanded">
                   @for (section of classesData.courseSections; track $index) {
-                  <div class="filter-option" (click)="selectedItem(section.courseSectionId, classesEnum.section)">
-                    <div class="custom-checkbox" [ngClass]="section.courseSectionId === selectedSectionId ? 'selected' : ''">
-                      <img [src]="section.courseSectionId === selectedSectionId ? 'icon-tick.svg' : 'icon-tick-empty.svg'" />
+                  <div
+                    class="filter-option"
+                    (click)="
+                      selectedItem(section.courseSectionId, classesEnum.section)
+                    "
+                  >
+                    <div
+                      class="custom-checkbox"
+                      [ngClass]="
+                        section.courseSectionId === selectedSectionId
+                          ? 'selected'
+                          : ''
+                      "
+                    >
+                      <img
+                        [src]="
+                          section.courseSectionId === selectedSectionId
+                            ? 'icon-tick.svg'
+                            : 'icon-tick-empty.svg'
+                        "
+                      />
                     </div>
-                    <label class="filter-option-label">{{ section.name }}</label>
+                    <label class="filter-option-label">{{
+                      section.name
+                    }}</label>
                   </div>
                   }
                 </div>
@@ -111,18 +224,31 @@
           <!-- Filter Actions -->
           <div class="filter-actions">
             <button type="button" class="filter-btn filter-btn-clear">
-              {{ 'CLEAR_ALL' | translate }}
+              {{ "CLEAR_ALL" | translate }}
             </button>
-            <button type="button" class="filter-btn filter-btn-apply" (click)="applyFilter($event); filterPanel.hide()">
-              {{ 'APPLY' | translate }}
+            <button
+              type="button"
+              class="filter-btn filter-btn-apply"
+              (click)="applyFilter($event); filterPanel.hide()"
+            >
+              {{ "APPLY" | translate }}
             </button>
           </div>
         </div>
       </p-overlayPanel>
 
-      <button pButton type="button" class="p-button-text filter-button" (click)="filterPanel.toggle($event)">
+      <button
+        pButton
+        type="button"
+        class="p-button-text filter-button"
+        (click)="filterPanel.toggle($event)"
+      >
         <span class="button-label">{{ displayFilter | translate }}</span>
-        <img src="arrow-green-down.svg" alt="filter icon" class="custom-filter-icon" />
+        <img
+          src="arrow-green-down.svg"
+          alt="filter icon"
+          class="custom-filter-icon"
+        />
       </button>
     </div>
 
@@ -141,7 +267,7 @@
         </div>
         <div class="user-details">
           <span class="user-name">{{ userName }}</span>
-          <span class="user-role">{{ 'ROLE_TEACHER' | translate }}</span>
+          <span class="user-role">{{ "ROLE_TEACHER" | translate }}</span>
         </div>
         <i class="pi pi-chevron-down"></i>
       </div>

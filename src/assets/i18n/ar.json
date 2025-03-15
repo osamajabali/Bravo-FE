@@ -14,7 +14,9 @@
     "ACTIVATE": "تفعيل",
     "DEACTIVATE": "إلغاء التفعيل",
     "LEARNING_OUTCOMES" : "مخرجات التعلم",
-
+    "UNITS": "الوحدات",
+    "LESSONS": "الدروس",
+    "CURRICULUMS": "المناهج",
     "MENU": {
         "QUICK_ACTIONS": "الإجراءات السريعة",
         "SKILLS": "المهارات",

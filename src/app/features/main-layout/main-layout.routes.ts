@@ -18,6 +18,14 @@ export const Main_Layout_Routes: Routes = [
               ),
           },
           {
+            path: 'units-stats',
+            data: { title: 'SKILLS' }, // ✅ Pass title here
+            loadComponent: () =>
+              import('../teacher-dashboard/stats/stats.component').then(
+                (m) => m.StatsComponent
+              ),
+          },
+          {
             path: 'units',
             data: { title: 'UNITS' }, // ✅ Pass title here
             loadComponent: () =>
