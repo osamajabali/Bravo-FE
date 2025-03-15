@@ -128,12 +128,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--primary-primary-200);
-    border-radius: 0; // Explicitly remove border-radius from submenu links
+    margin: var(--padding-xs) 0;
+    padding: 12px var(--padding-s);
+
+    .menu-text {
+      color: var(--primary-primary-900);
+    }
     
-    &.active {
-      color: var(--primary-primary-500);
-      font-weight: 500;
+    &.active, &:hover {
+      background-color: var(--primary-primary-50);
+      border-radius: 10px;
+      color: var(--primary-primary-900);
     }
   }
 }

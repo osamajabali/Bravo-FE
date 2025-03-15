@@ -5,6 +5,7 @@ export class Student {
     currentLevelId: number;
     isMastered: boolean;
     isInProgress: boolean;
+    isSelected?: boolean;
   }
   
   export class Level {

@@ -180,7 +180,6 @@
   background-color: var(--neutral-white);
   border: 1px solid var(--neutral-grey-200);
   border-radius: var(--radius-m);
-  padding: var(--padding-m);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -221,6 +220,7 @@
 
 .unit-content {
   flex: 1;
+  padding: var(--padding-m);
 
   .badge {
     background-color: var(--secondery-secondery-100);
@@ -325,15 +325,25 @@
 }
 
 .assignment-button {
-  background-color: var(--neutral-grey-25);
-  color: var(--primary-primary-900);
-  border: 1px solid var(--neutral-grey-100);
+  background-color: var(--neutral-grey-25) !important;
+  color: var(--primary-primary-900) !important;
+  border: 1px solid var(--neutral-grey-100) !important;
   font-size: var(--font-size-xs);
   padding: var(--padding-xxs) var(--padding-s);
   display: flex;
   align-items: center;
   gap: var(--padding-xs);
   border-radius: var(--radius-s);
+}
+
+.custom-radio-container {
+  background: var(--primary-primary-50);
+  height: 98px;
+  margin: -20px 0;
+  border-radius: 0 10px 10px 0;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
 }
 
 .custom-radio {

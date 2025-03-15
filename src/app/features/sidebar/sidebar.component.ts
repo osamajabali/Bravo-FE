@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { MenuItem } from '../../core/models/shared-models/menu-item.interface';
 import { filter } from 'rxjs';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { RouteNames } from '../../core/models/shared-models/menu-item.interface';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -147,7 +146,7 @@ export class SidebarComponent {
   private setActiveItemByUrl(url: string): void {
     // First check top-level items
     const topLevelMatch = this.menuItems.find(item =>
-      !item.children && url === '/' + item.route
+      !item.children && url === item.route
     );
 
     if (topLevelMatch) {

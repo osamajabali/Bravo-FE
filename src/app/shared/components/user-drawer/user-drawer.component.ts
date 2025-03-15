@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FormsModule } from '@angular/forms';
 import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
 
 export interface UserSection {
@@ -18,10 +20,22 @@ interface User {
   status: number;
 }
 
+interface Student {
+  studentName: string;
+  isMastered: boolean;
+  isSelected?: boolean;
+}
+
+interface Section {
+  levelId: number;
+  levelName: string;
+  studentsOfLevel: Student[];
+}
+
 @Component({
   selector: 'app-user-drawer',
   standalone: true,
-  imports: [CommonModule, SidebarModule, ButtonModule],
+  imports: [CommonModule, SidebarModule, ButtonModule, CheckboxModule, FormsModule],
   templateUrl: './user-drawer.component.html',
   styleUrl: './user-drawer.component.scss',
 })

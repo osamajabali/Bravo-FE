@@ -9,8 +9,13 @@
   (click)="closeDrawer()"
 >
   <div class="drawer-header" (click)="$event.stopPropagation()">
-    <button class="close-button" (click)="closeDrawer()">
+    <button class="close-button gap-3" (click)="closeDrawer()">
       <img src="arrow-left-gray.svg" alt="close" />
+      <span>Students</span>
+    </button>
+    <button pButton label="" class="assignment-button">
+      <img src="icon-plus.svg" alt="plus" />
+      <span>Send Assignment</span>
     </button>
   </div>
 
@@ -29,6 +34,11 @@
         @for (user of section.studentsOfLevel; track user.studentName) {
         <div class="user-item">
           <div class="user-info">
+            <p-checkbox 
+              [(ngModel)]="user.isSelected" 
+              [binary]="true"
+              inputId="user-{{user.studentName}}"
+            ></p-checkbox>
             <div class="user-avatar">
               <img src="icon-user.svg" alt="User" />
             </div>

@@ -6,6 +6,7 @@
         <h3 class="unit-title">
           {{ isLesson(card) ? card.lessonName : card.nameArabic }}
         </h3>
+        <p class="unit-description">Number of Skills: 20</p>
       </div>
       <div class="unit-actions">
         <button pButton label="" class="assignment-button">
@@ -21,7 +22,7 @@
           <span>{{ getViewButtonText(card) }}</span>
           <img src="arrow-small-right.svg" alt="view" />
         </button>
-        <div>
+        <div class="custom-radio-container">
           <div class="custom-radio" [class.active]="card.isActive" (click)="toggleActive(card)">
             <div class="radio-content" [class.reverse]="!card.isActive">
               <span class="status-text">{{ card.isActive ? 'ACTIVE' : 'OFF' }}</span>
