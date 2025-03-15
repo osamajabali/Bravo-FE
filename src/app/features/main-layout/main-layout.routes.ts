@@ -43,6 +43,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'single-skill/:domainId/:curriculumId',
+            data: { title: 'MENU.SKILLS' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/single-skill/single-skill.component'

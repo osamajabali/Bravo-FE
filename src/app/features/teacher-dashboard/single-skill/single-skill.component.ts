@@ -17,6 +17,7 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
 import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
 import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
 import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-single-skill',
@@ -30,7 +31,8 @@ import { SpinnerService } from '../../../core/services/shared-services/spinner.s
     DialogModule,
     UserDrawerComponent,
     SmartBoardComponent,
-    SkillSummaryComponent
+    SkillSummaryComponent,
+    TranslateModule
   ],
   templateUrl: './single-skill.component.html',
   styleUrl: './single-skill.component.scss',
@@ -101,8 +103,8 @@ export class SingleSkillComponent implements OnInit {
     this.learningOutcomesService.getStudents(this.headerService.selectedSectionId , lerningOutcomeId).subscribe(res=>{
       if(res.success){
         this.spinnerService.hide()
-        this.showUserDrower = true
         this.levels = res.result.students;
+        this.showUserDrower = true
       }
     })
   }

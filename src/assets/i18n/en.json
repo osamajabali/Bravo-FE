@@ -13,7 +13,13 @@
     "ACTIVATE": "Activate",
     "DEACTIVATE": "Deactivate",
     "LEARNING_OUTCOMES" : "Learning outcomes",
-
+    "CHANGE_LANGUAGE" : "Change language",
+    "PROFILE": "Profile",
+    "LOGOUT": "Logout",
+    "LEARN": "Learn",
+    "UNITS" : "Units",
+    "LESSONS" : "Lessons",
+    "CURRICULUMS" : "Curriculums",
     "MENU": {
         "QUICK_ACTIONS": "Quick Actions",
         "SKILLS": "Skills",

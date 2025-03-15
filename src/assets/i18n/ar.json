@@ -14,6 +14,13 @@
     "ACTIVATE": "تفعيل",
     "DEACTIVATE": "إلغاء التفعيل",
     "LEARNING_OUTCOMES" : "مخرجات التعلم",
+    "CHANGE_LANGUAGE" : "تغيير اللغة",
+    "PROFILE": "الملف الشخصي",
+    "LOGOUT": "تسجيل الخروج",
+    "LEARN": "التعلم",
+    "UNITS" :"الوحدات",
+    "LESSONS" : "الدروس",
+    "CURRICULUMS" : "المناهج الدراسية",
 
     "MENU": {
         "QUICK_ACTIONS": "الإجراءات السريعة",

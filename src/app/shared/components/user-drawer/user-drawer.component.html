@@ -18,12 +18,12 @@
     @for (section of sections; track section.levelId) {
       <div class="user-section">
         <div class="section-header">
-          <h3 class="section-title">{{ section.levelName }} ({{ section.students.length }})</h3>
+          <h3 class="section-title">{{ section.levelName }} ({{ section.studentsCount }})</h3>
           <div class="section-status">{{ 'Mastered'}}</div>
         </div>
         
         <div class="user-list">
-          @for (user of section.students; track user.studentName) {
+          @for (user of section.studentsOfLevel; track user.studentName) {
             <div class="user-item">
               <div class="user-info">
                 <div class="user-avatar">
