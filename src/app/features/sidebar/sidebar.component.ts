@@ -29,7 +29,7 @@ export class SidebarComponent {
       children: [
         {
           label: 'MENU.UNITS',
-          route: 'features/units-stats',
+          route: 'features/units',
           icon: 'cubes'
         },
         {

@@ -11,14 +11,6 @@ export const Main_Layout_Routes: Routes = [
         children: [
           {
             path: '',
-            data: { title: 'LEARNING_OUTCOMES' }, // ✅ Pass title here
-            loadComponent: () =>
-              import('../teacher-dashboard/stats/stats.component').then(
-                (m) => m.StatsComponent
-              ),
-          },
-          {
-            path: 'units-stats',
             data: { title: 'SKILLS' }, // ✅ Pass title here
             loadComponent: () =>
               import('../teacher-dashboard/stats/stats.component').then(

@@ -19,6 +19,7 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
 import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
 import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
 import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
+import { SkillActivationModalComponent } from "../../../shared/components/skill-activation-modal/skill-activation-modal.component";
 
 @Component({
   selector: 'app-single-skill',
@@ -32,8 +33,9 @@ import { SpinnerService } from '../../../core/services/shared-services/spinner.s
     DialogModule,
     UserDrawerComponent,
     SmartBoardComponent,
-    SkillSummaryComponent
-  ],
+    SkillSummaryComponent,
+    SkillActivationModalComponent
+],
   templateUrl: './single-skill.component.html',
   styleUrl: './single-skill.component.scss',
 })
@@ -135,6 +137,5 @@ export class SingleSkillComponent implements OnInit {
 interface FilterSection {
   title: string;
   expanded: boolean;
-  options: FilterOption[];
   selectedOptions: string[];
 }
