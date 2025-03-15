@@ -17,6 +17,7 @@
         <a
           [routerLink]="item.children ? null : [item.route]"
           routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
           [class.active]="isActive(item)"
           [class.expanded]="item.expanded"
           class="nav-link xm"
@@ -45,6 +46,7 @@
             <a
               [routerLink]="['/' + child.route]"
               routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
               class="nav-link"
             >
               <span class="menu-text">{{ child.label | translate }}</span>
