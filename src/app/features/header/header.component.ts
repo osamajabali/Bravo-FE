@@ -97,11 +97,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getInitials(name: string): string {
-    const words = name.trim().split(/\s+/); // Split by spaces
-    if (words.length < 2) return ''; // Ensure at least two words exist
+    const words = name?.trim()?.split(/\s+/); // Split by spaces
+    if (words?.length < 2) return ''; // Ensure at least two words exist
 
-    const firstInitial = words[0].charAt(0).toUpperCase();
-    const secondInitial = words[1].charAt(0).toUpperCase();
+    const firstInitial = words ? words[0]?.charAt(0)?.toUpperCase() : '';
+    const secondInitial = words ? words[1]?.charAt(0)?.toUpperCase() : '';
 
     return firstInitial + secondInitial;
   }

@@ -23,16 +23,16 @@ interface User {
   standalone: true,
   imports: [CommonModule, SidebarModule, ButtonModule],
   templateUrl: './user-drawer.component.html',
-  styleUrl: './user-drawer.component.scss'
+  styleUrl: './user-drawer.component.scss',
 })
 export class UserDrawerComponent {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>();
-  
-  @Input() sections: Level[]  = []
-  
+
+  @Input() sections: Level[] = [];
+
   closeDrawer(): void {
     this.visible = false;
     this.visibleChange.emit(this.visible);
   }
-} 
+}

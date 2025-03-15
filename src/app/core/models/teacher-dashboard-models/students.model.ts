@@ -10,7 +10,7 @@ export class Student {
   export class Level {
     levelId: number;
     levelName: string;
-    students: Student[];
+    studentsOfLevel: Student[];
   }
   
   export class LevelPagination extends PaginationFilter {

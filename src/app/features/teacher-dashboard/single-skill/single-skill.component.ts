@@ -101,8 +101,8 @@ export class SingleSkillComponent implements OnInit {
     this.learningOutcomesService.getStudents(this.headerService.selectedSectionId , lerningOutcomeId).subscribe(res=>{
       if(res.success){
         this.spinnerService.hide()
-        this.showUserDrower = true
         this.levels = res.result.students;
+        this.showUserDrower = true
       }
     })
   }

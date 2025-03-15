@@ -1,47 +1,50 @@
-<p-sidebar 
-  [(visible)]="visible" 
-  position="right" 
-  [style]="{width: '400px'}" 
+<p-sidebar
+  [(visible)]="visible"
+  position="right"
+  [style]="{ width: '400px' }"
   [showCloseIcon]="false"
   [modal]="true"
   [closeOnEscape]="false"
   (onHide)="closeDrawer()"
-  (click)="closeDrawer()">
-  
+  (click)="closeDrawer()"
+>
   <div class="drawer-header" (click)="$event.stopPropagation()">
     <button class="close-button" (click)="closeDrawer()">
-      <img src="arrow-left-gray.svg" alt="close">
+      <img src="arrow-left-gray.svg" alt="close" />
     </button>
   </div>
-  
+
   <div class="drawer-content" (click)="$event.stopPropagation()">
-    @for (section of sections; track section.levelId) {
-      <div class="user-section">
-        <div class="section-header">
-          <h3 class="section-title">{{ section.levelName }} ({{ section.students.length }})</h3>
-          <div class="section-status">{{ 'Mastered'}}</div>
-        </div>
-        
-        <div class="user-list">
-          @for (user of section.students; track user.studentName) {
-            <div class="user-item">
-              <div class="user-info">
-                <div class="user-avatar">
-                    <img src="icon-user.svg" alt="User">
-                </div>
-                <span class="user-name">{{ user.studentName }}</span>
-              </div>
-              <div class="user-action">
-                @if (user.isMastered) {
-                  <img src="icon-green-flag.svg" alt="flag">
-                } @else {
-                  <img src="icon-red-flag.svg" alt="flag">
-                }
-              </div>
-            </div>
-          }
-        </div>
+    @for (section of sections; track section.levelId) { @if
+    (section?.studentsOfLevel?.length) {
+    <div class="user-section">
+      <div class="section-header">
+        <h3 class="section-title">
+          {{ section?.levelName }} ({{ section?.studentsOfLevel?.length }})
+        </h3>
+        <div class="section-status">{{ "Mastered" }}</div>
       </div>
-    }
+
+      <div class="user-list">
+        @for (user of section.studentsOfLevel; track user.studentName) {
+        <div class="user-item">
+          <div class="user-info">
+            <div class="user-avatar">
+              <img src="icon-user.svg" alt="User" />
+            </div>
+            <span class="user-name">{{ user.studentName }}</span>
+          </div>
+          <div class="user-action">
+            @if (user.isMastered) {
+            <img src="icon-green-flag.svg" alt="flag" />
+            } @else {
+            <img src="icon-red-flag.svg" alt="flag" />
+            }
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    } }
   </div>
-</p-sidebar> 
+</p-sidebar>
