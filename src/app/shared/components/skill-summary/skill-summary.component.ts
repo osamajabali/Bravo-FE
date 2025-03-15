@@ -1,15 +1,17 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
-@Component({
-  selector: 'app-skill-summary',
-  imports: [ButtonModule],
-  templateUrl: './skill-summary.component.html',
-  styleUrl: './skill-summary.component.scss',
-})
-export class SkillSummaryComponent {
-  showAssignmentButton = input<boolean>(false);
-  data = input<SkillSummaryData>();
+interface FilterSection {
+  title: string;
+  expanded: boolean;
+  options: FilterOption[];
+  selectedOptions: string[];
+}
+
+interface FilterOption {
+  label: string;
+  value: string;
 }
 
 export interface SkillSummaryData {
@@ -17,4 +19,59 @@ export interface SkillSummaryData {
   activeSkills: number;
   questionSolved: number;
   timeSpent: number;
+}
+
+@Component({
+  selector: 'app-skill-summary',
+  imports: [ButtonModule, OverlayPanelModule],
+  templateUrl: './skill-summary.component.html',
+  styleUrl: './skill-summary.component.scss',
+})
+export class SkillSummaryComponent {
+  showAssignmentButton = input<boolean>(false);
+  data = input<SkillSummaryData>();
+  onSearchChange = output<string>();
+  searchTerm = '';
+
+  filterSections: FilterSection[] = [
+    {
+      title: 'Level',
+      expanded: true,
+      options: [
+        { label: 'Beginner', value: 'Beginner' },
+        { label: 'Average', value: 'Average' },
+        { label: 'Advanced', value: 'Advanced' },
+      ],
+      selectedOptions: [],
+    },
+    {
+      title: 'Status',
+      expanded: true,
+      options: [
+        { label: 'Active', value: 'active' },
+        { label: 'Inactive', value: 'inactive' },
+      ],
+      selectedOptions: [],
+    },
+  ];
+
+  _onSearchChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.searchTerm = inputElement.value;
+    this.onSearchChange.emit(this.searchTerm);
+  }
+
+  toggleFilterSection(section: FilterSection): void {
+    section.expanded = !section.expanded;
+  }
+
+  toggleCheckbox(section: FilterSection, value: string): void {
+    const index = section.selectedOptions.indexOf(value);
+
+    if (index !== -1) {
+      section.selectedOptions.splice(index, 1);
+    } else {
+      section.selectedOptions.push(value);
+    }
+  }
 }

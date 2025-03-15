@@ -1,10 +1,15 @@
-import { PaginationFilter } from "../shared-models/pagination.model";
+import { PaginationFilter } from '../shared-models/pagination.model';
 
 export interface LessonsCurriculums {
-    curriculumLearningOutcomeId: number;
-    nameArabic: string;
+  curriculumLearningOutcomeId: number;
+  nameArabic: string;
+  lessonName?: string;
 }
 
 export interface LessonsCurriculumsPagination extends PaginationFilter {
-    curriculums : LessonsCurriculums[]
+  curriculums: LessonsCurriculums[];
+}
+
+export interface CurriculumWithActive extends LessonsCurriculums {
+  isActive?: boolean;
 }

@@ -1,44 +1,154 @@
-<div class="summary">
-  <div class="box filled">
-    <div class="d-flex justify-content-between items-center gap-4">
-      <div class="text">All Skills</div>
-      <div class="icon">
-        <img src="icon-green-bulb.svg" alt="arrow-right" />
-      </div>
+<div class="summary-container">
+  <div class="search-container">
+    <span
+      dir="ltr"
+      class="p-input-icon-left d-flex align-items-center position-relative"
+    >
+      <input
+        type="text"
+        pInputText
+        placeholder="Search"
+        class="search-input"
+        (change)="_onSearchChange($event)"
+        [value]="searchTerm"
+      />
+      <i class="pi pi-search position-absolute end-0 pe-3"></i>
+    </span>
+    <div class="filter-container" (click)="filterPanel.toggle($event)">
+      <img src="icon-filter.svg" alt="filter" />
     </div>
-    <div class="number">{{ data()?.allSkills }}</div>
   </div>
-  <div class="box outlined">
-    <div class="d-flex justify-content-between items-center gap-4">
-      <div class="text">Active Skills</div>
-      <div class="icon">
-        <img src="icon-orange-bulb.svg" alt="arrow-right" />
+  <div class="summary">
+    <div class="box filled">
+      <div class="d-flex justify-content-between items-center gap-4">
+        <div class="text">All Skills</div>
+        <div class="icon">
+          <img src="icon-green-bulb.svg" alt="arrow-right" />
+        </div>
       </div>
+      <div class="number">{{ data()?.allSkills }}</div>
     </div>
-    <div class="number">{{ data()?.activeSkills }}</div>
-  </div>
-  <div class="box outlined">
-    <div class="d-flex justify-content-between items-center gap-4">
-      <div class="text">Question Solved</div>
-      <div class="icon">
-        <img src="icon-light-green-bulb.svg" alt="arrow-right" />
+    <div class="box outlined">
+      <div class="d-flex justify-content-between items-center gap-4">
+        <div class="text">Active Skills</div>
+        <div class="icon">
+          <img src="icon-orange-bulb.svg" alt="arrow-right" />
+        </div>
       </div>
+      <div class="number">{{ data()?.activeSkills }}</div>
     </div>
-    <div class="number">{{ data()?.questionSolved }}</div>
-  </div>
-  <div class="box outlined">
-    <div class="d-flex justify-content-between items-center gap-4">
-      <div class="text">Time Spent</div>
-      <div class="icon">
-        <img src="icon-sand-watch.svg" alt="arrow-right" />
+    <div class="box outlined">
+      <div class="d-flex justify-content-between items-center gap-4">
+        <div class="text">Question Solved</div>
+        <div class="icon">
+          <img src="icon-light-green-bulb.svg" alt="arrow-right" />
+        </div>
       </div>
+      <div class="number">{{ data()?.questionSolved }}</div>
     </div>
-    <div class="number">{{ data()?.timeSpent }}</div>
+    <div class="box outlined">
+      <div class="d-flex justify-content-between items-center gap-4">
+        <div class="text">Time Spent</div>
+        <div class="icon">
+          <img src="icon-sand-watch.svg" alt="arrow-right" />
+        </div>
+      </div>
+      <div class="number">{{ data()?.timeSpent }}</div>
+    </div>
+    @if (showAssignmentButton()) {
+    <button pButton label="" class="p-button-outlined assignment-button">
+      <span>New Assignment</span>
+      <img src="icon-plus.svg" alt="arrow-right" />
+    </button>
+    }
   </div>
-  @if (showAssignmentButton()) {
-  <button pButton label="" class="p-button-outlined assignment-button">
-    <span>New Assignment</span>
-    <img src="icon-plus.svg" alt="arrow-right" />
-  </button>
-  }
 </div>
+
+<!-- filter panel -->
+<p-overlayPanel
+  #filterPanel
+  [showCloseIcon]="false"
+  [dismissable]="true"
+  styleClass="filter-overlay"
+>
+  <div class="filter-overlay-content">
+    <!-- Header with title and close button -->
+    <div class="filter-overlay-header">
+      <h3 class="filter-overlay-title">Filter Sub Skills</h3>
+      <button class="filter-overlay-close" (click)="filterPanel.hide()">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+
+    <!-- Divider -->
+    <div class="filter-divider"></div>
+
+    <!-- Filter sections -->
+    <div class="filter-sections">
+      @for (section of filterSections; track section.title) {
+      <div class="filter-section">
+        <div
+          class="filter-section-header"
+          (click)="toggleFilterSection(section)"
+        >
+          <span class="filter-section-title">{{ section.title }}</span>
+          <i
+            class="pi"
+            [class.pi-chevron-up]="section.expanded"
+            [class.pi-chevron-down]="!section.expanded"
+          ></i>
+        </div>
+
+        @if (section.expanded) {
+        <div class="filter-section-content">
+          @for (option of section.options; track option.value) {
+          <div class="filter-option">
+            <div class="custom-checkbox">
+              <input
+                type="checkbox"
+                [id]="option.value"
+                [name]="section.title"
+                [value]="option.value"
+                [checked]="section.selectedOptions.includes(option.value)"
+                (change)="toggleCheckbox(section, option.value)"
+                class="visually-hidden"
+              />
+              <label [for]="option.value" class="checkbox-label">
+                <span class="checkbox-icon">
+                  @if (section.selectedOptions.includes(option.value)) {
+                  <img
+                    src="icon-checkbox-checked.svg"
+                    alt="Checked"
+                    class="checkbox-checked"
+                  />
+                  } @else {
+                  <img
+                    src="icon-checkbox-unchecked.svg"
+                    alt="Unchecked"
+                    class="checkbox-unchecked"
+                  />
+                  }
+                </span>
+                <span class="filter-option-label">{{ option.label }}</span>
+              </label>
+            </div>
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Divider after each section -->
+        <div class="filter-divider"></div>
+      </div>
+      }
+    </div>
+
+    <!-- Filter actions -->
+    <div class="filter-actions">
+      <button type="button" class="filter-btn filter-btn-clear">
+        Clear All
+      </button>
+      <button type="button" class="filter-btn filter-btn-apply">Apply</button>
+    </div>
+  </div>
+</p-overlayPanel>

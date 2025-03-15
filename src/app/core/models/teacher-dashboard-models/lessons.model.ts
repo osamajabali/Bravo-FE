@@ -9,3 +9,7 @@ export interface Lessons {
 export interface LessonsPagination extends PaginationFilter {
     lessons : Lessons[];
 }
+
+export interface LessonWithActive extends Lessons {
+    isActive?: boolean;
+  }

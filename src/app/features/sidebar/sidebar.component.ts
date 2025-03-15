@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { MenuItem } from '../../core/models/shared-models/menu-item.interface';
+import { MenuItem, RouteNames } from '../../core/models/shared-models/menu-item.interface';
 import { filter } from 'rxjs';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { RouteNames } from '../../core/models/shared-models/menu-item.interface';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -30,7 +29,7 @@ export class SidebarComponent {
       children: [
         {
           label: 'MENU.UNITS',
-          route: RouteNames.SKILLS_UNITS,
+          route: 'features/units-stats',
           icon: 'cubes'
         },
         {
@@ -41,7 +40,7 @@ export class SidebarComponent {
       ]
     },
     {
-      label: 'LEARN',
+      label: 'MENU.LEARN',
       route: '/ds',
       icon: 'learn',
       expanded: false,
@@ -62,7 +61,12 @@ export class SidebarComponent {
       label: 'MENU.STUDENTS',
       route: RouteNames.STUDENTS,
       icon: 'students'
-    }
+    },
+    {
+      label: 'MENU.LEVELED_READING',
+      route: '/features/leveled-reading',
+      icon: 'leveled-reading'
+    },
   ];
 
 
@@ -142,7 +146,7 @@ export class SidebarComponent {
   private setActiveItemByUrl(url: string): void {
     // First check top-level items
     const topLevelMatch = this.menuItems.find(item =>
-      !item.children && url === '/' + item.route
+      !item.children && url === item.route
     );
 
     if (topLevelMatch) {

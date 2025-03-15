@@ -50,6 +50,7 @@ body {
   font-size: var(--font-size-xxs) !important;
   padding: var(--padding-xs) var(--padding-l) !important;
   border-radius: var(--radius-m) !important;
+  border: none !important;
 }
 
 .p-button-secondary:not(.p-dialog-close-button) {

@@ -1,19 +1,13 @@
-<div class="units-container">
-  <div class="header">
-    <h1 class="page-title">{{'CURRICULUMS' | translate}}</h1>
-    <div class="search-container">
-      <span dir="LTR" class="p-input-icon-left d-flex align-items-center position-relative">
-        <input 
-        type="text" 
-        pInputText 
-        placeholder="Search..." 
-        class="search-input"
-        />
-        <i class="pi pi-search position-absolute end-0 pe-3"></i>
-      </span>
+<div>
+  <app-skill-summary
+    [showAssignmentButton]="false"
+    [data]="summaryData"
+  ></app-skill-summary>
+  <div class="units-container">
+    <div class="header">
+      <h1 class="page-title">{{ "CURRICULUMS" | translate }}</h1>
     </div>
-  </div>
-  
-  <app-unit-cards [cards]="curriculums"></app-unit-cards>
 
+    <app-lesson-cards [cards]="curriculums"></app-lesson-cards>
+  </div>
 </div>
