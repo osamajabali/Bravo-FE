@@ -1,0 +1,124 @@
+<div class="all-skills-container">
+  <!-- Stats Section -->
+  <section class="stats-section">
+      <h2 class="section-title">{{ "STATS" | translate }}</h2>
+
+      <div class="stats-grid">
+          @if (stats?.length) {
+              @for (stat of stats; track stat.name; let i = $index) {
+                  <div class="stat-box">
+                      <div class="stat-content">
+                          <div class="stat-info">
+                              <h3 class="stat-title">{{ stat.name }}</h3>
+                              <div class="stat-value">{{ i === 1 ? stat.value + '%' : stat.value }}</div>
+                          </div>
+
+                          @if (i === 0) {
+                              <div class="stat-chart-container">
+                                  <canvas
+                                      class="status-chart"
+                                      appDoughnutChart
+                                      [isSkills]="false"
+                                      [data]="[stat.percentageValue]"
+                                  ></canvas>
+                              </div>
+                          }
+                      </div>
+                  </div>
+              }
+          } @else {
+              @for (i of [1,2,3]; track i) {
+                  <div class="stat-box">
+                      <div class="stat-content">
+                          <div class="stat-info">
+                              <app-skeleton [circles]="0" [squares]="2" [rectangles]="1"></app-skeleton>
+                          </div>
+                          <div class="stat-chart-container">
+                              <app-skeleton [circles]="1"></app-skeleton>
+                          </div>
+                      </div>
+                  </div>
+              }
+          }
+      </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="skills-section">
+      <h2 class="section-title">{{ title | translate }}</h2>
+
+      <div class="skills-grid">
+          @if (items?.length) {
+              @for (item of items; track item.name; let i = $index) {
+                  <div class="skill-card">
+                      <div class="skill-card-left">
+                          <div class="d-flex justify-content-between gap-4 align-items-center">
+                              <h3 class="skill-title">{{ item.name }}</h3>
+                              <button
+                                  pButton
+                                  [label]="'SEE_ALL' | translate"
+                                  class="p-button-outlined see-all-button"
+                                  (click)="goToSingleSkill(isSkill(item) ? item.domainId : item.semesterId)"
+                              ></button>
+                          </div>
+                          <div class="skill-chart-container">
+                              <canvas
+                                  class="skill-chart"
+                                  appDoughnutChart
+                                  [data]="[isSkill(item) ? item.activated : item.activeSkills , isSkill(item) ? item.inActive : item.inActiveSkills]"
+                                  [isSkills]="true"
+                                  [labels]="pieChartLabels"
+                              ></canvas>
+                          </div>
+                      </div>
+
+                      <div class="skill-card-right">
+                          <div class="quick-action-title">
+                              <div>{{ "QUICK_ACTION" | translate }}</div>
+                          </div>
+                          <div class="quick-action-content">
+                              @for (quickAction of item.quickSkills; track quickAction.skillId; let j = $index) {
+                                  <div class="quick-action-item">
+                                      <div>{{ quickAction.name }}</div>
+                                      <button
+                                          pButton
+                                          [label]="quickAction.skillId ? ('DEACTIVATE' | translate) : ('ACTIVATE' | translate)"
+                                          class="p-button-outlined activate-button"
+                                      ></button>
+                                  </div>
+                              }
+                          </div>
+                      </div>
+                  </div>
+              }
+          } @else {
+              <!-- Skeletons Placeholder -->
+              @for (_ of [0, 1, 2]; track $index) {
+                  <div class="skill-card">
+                      <div class="skill-card-left">
+                          <div class="d-flex justify-content-between gap-4 align-items-center">
+                              <app-skeleton [circles]="0" [squares]="2" [rectangles]="1"></app-skeleton>
+                          </div>
+                          <div class="skill-chart-container">
+                              <app-skeleton [circles]="1"></app-skeleton>
+                          </div>
+                      </div>
+
+                      <div class="skill-card-right">
+                          <div class="quick-action-title">
+                              <app-skeleton [circles]="0" [squares]="2"></app-skeleton>
+                          </div>
+                          <div class="quick-action-content">
+                              @for (_ of [0, 1]; track $index) {
+                                  <div class="quick-action-item">
+                                      <app-skeleton [circles]="0" [squares]="1"></app-skeleton>
+                                  </div>
+                              }
+                          </div>
+                      </div>
+                  </div>
+              }
+          }
+      </div>
+  </section>
+</div>

@@ -1,6 +1,8 @@
+/* ✅ Import Space Grotesk Font Correctly */
+
 @font-face {
   font-family: 'Space Grotesk';
-  src: url('/fonts/Space_Grotesk/SpaceGrotesk-Regular.ttf') format('truetype');
+  src: url('/assets/fonts/Space_Grotesk/SpaceGrotesk-Regular.ttf') format('truetype'); // Ensure correct path
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -8,7 +10,7 @@
 
 @font-face {
   font-family: 'Space Grotesk';
-  src: url('/fonts/Space_Grotesk/SpaceGrotesk-Bold.ttf') format('truetype');
+  src: url('/assets/fonts/Space_Grotesk/SpaceGrotesk-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -16,7 +18,7 @@
 
 @font-face {
   font-family: 'Space Grotesk';
-  src: url('/fonts/Space_Grotesk/SpaceGrotesk-Light.ttf') format('truetype');
+  src: url('/assets/fonts/Space_Grotesk/SpaceGrotesk-Light.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -24,8 +26,35 @@
 
 @font-face {
   font-family: 'Space Grotesk';
-  src: url('/fonts/Space_Grotesk/SpaceGrotesk-Medium.ttf') format('truetype');
+  src: url('/assets/fonts/Space_Grotesk/SpaceGrotesk-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
+}
+
+/* ✅ Global Styling to Apply Font */
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: normal;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* ✅ Utility Classes */
+.font-bold {
+  font-weight: bold;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+/* ✅ Ensure Font Loads Correctly */
+h1, h2, h3 {
+  font-family: 'Space Grotesk', sans-serif;
 }

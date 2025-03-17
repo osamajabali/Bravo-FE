@@ -1,0 +1,202 @@
+.all-skills-container {
+    padding: var(--padding-l);
+  }
+  
+  .section-title {
+    font-size: var(--font-size-l);
+    color: var(--neutral-black);
+    margin-bottom: var(--padding-m);
+    font-weight: var(--font-weight-bold);
+  }
+  
+  /* Stats Section */
+  .stats-section {
+    margin-bottom: var(--padding-2xl);
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .stat-box {
+    background-color: var(--primary-primary-50);
+    border-radius: var(--radius-m);
+    padding: var(--padding-m);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .stat-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .stat-info {
+    flex: 1;
+  }
+  
+  .stat-title {
+    font-size: var(--font-size-xs);
+    color: var(--primary-primary-900);
+    margin: 0 0 var(--margin-xs) 0;
+    font-weight: var(--font-weight-medium);
+  }
+  
+  .stat-value {
+    font-size: var(--font-size-question-h2);
+    color: var(--primary-primary-900);
+    font-weight: var(--font-weight-bold);
+  }
+  
+  .stat-chart-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .stat-percentage {
+    position: absolute;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-primary-900);
+  }
+  
+  /* Skills Section */
+  .skills-section {
+    margin-bottom: var(--padding-xl);
+  }
+  
+  .skills-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-l);
+  }
+  
+  .skill-card {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--neutral-white);
+    border: 1px solid var(--neutral-grey-200);
+    border-radius: var(--radius-m);
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: var(--padding-m);
+  
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
+  
+  .skill-card-left {
+    padding: var(--padding-m) var(--padding-m) var(--padding-m) var(--padding-xl);
+    display: flex;
+    flex-direction: column;
+  
+    @media (max-width: 768px) {
+      border-right: none;
+      border-bottom: 1px solid var(--neutral-grey-200);
+    }
+  }
+  
+  .skill-title {
+    font-size: var(--font-size-h3);
+    color: var(--primary-primary-900);
+    margin: 0 0 var(--padding-m) 0;
+    font-weight: var(--font-weight-bold);
+  }
+  
+  .skill-chart-container {
+    position: relative;
+    width: 200px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .skill-card-right {
+    padding: var(--padding-m);
+    display: flex;
+    flex-direction: column;
+    min-width: 400px;
+  }
+  
+  .quick-action-title {
+    font-size: var(--font-size-question-h1);
+    color: var(--secondery-secondery-900);
+    font-weight: var(--font-weight-medium);
+    padding: var(--padding-2xs);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-image: url("/quick-action-bg.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .quick-action-content {
+    border-radius: 15px;
+    height: 100%;
+    background: var(--neutral-grey-50);
+    padding: 10px;
+  
+    & .quick-action-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--neutral-white);
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #d8d8d8;
+      margin-bottom: var(--padding-xs);
+    }
+  }
+  
+  .skill-description {
+    color: var(--neutral-grey-800);
+    margin-bottom: var(--margin-m);
+    font-size: var(--font-size-xs);
+  }
+  
+  .see-all-button {
+    border-color: var(--primary-primary-500);
+    color: var(--neutral-black);
+    min-width: 100px;
+    height: 50px;
+    font-size: var(--font-size-xs);
+    border-radius: 30px;
+  
+    &:hover {
+      background-color: var(--primary-primary-900) !important;
+      color: var(--neutral-white) !important;
+    }
+  }
+  
+  .activate-button {
+    border: 1px solid var(--primary-primary-900);
+    color: var(--primary-primary-900);
+    min-width: 100px;
+    font-size: var(--font-size-xs);
+    padding: 5px;
+    height: 30px;
+    border-radius: 10px;
+  
+    &:hover {
+      background-color: var(--primary-primary-900) !important;
+      color: var(--neutral-white) !important;
+    }
+  }
+  

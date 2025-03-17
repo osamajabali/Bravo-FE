@@ -11,15 +11,23 @@ export const Main_Layout_Routes: Routes = [
         children: [
           {
             path: '',
-            data: { title: 'SKILLS' }, // ✅ Pass title here
+            data: { title: 'SKILLS' },
             loadComponent: () =>
               import('../teacher-dashboard/stats/stats.component').then(
                 (m) => m.StatsComponent
               ),
           },
           {
-            path: 'units',
-            data: { title: 'UNITS' }, // ✅ Pass title here
+            path: 'semesters',
+            data: { title: 'SEMESTERS' },
+            loadComponent: () =>
+              import('../teacher-dashboard/semesters/semesters.component').then(
+                (m) => m.SemestersComponent
+              ),
+          },
+          {
+            path: 'units/:semesterId',
+            data: { title: 'UNITS' },
             loadComponent: () =>
               import('../teacher-dashboard/units/units.component').then(
                 (m) => m.UnitsComponent

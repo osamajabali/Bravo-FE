@@ -28,8 +28,8 @@ export class SidebarComponent {
       expanded: false,
       children: [
         {
-          label: 'MENU.UNITS',
-          route: 'features/units',
+          label: 'SEMESTERS',
+          route: 'features/semesters',
           icon: 'cubes'
         },
         {

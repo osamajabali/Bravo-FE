@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Unit } from '../../../core/models/teacher-dashboard-models/units.model';
+import { Unit, UnitPayload } from '../../../core/models/teacher-dashboard-models/units.model';
 import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header-services/header.service';
 import { UnitCardsComponent } from '../../../shared/components/unit-cards/unit-cards.component';
@@ -11,6 +11,7 @@ import {
   SkillSummaryComponent,
   SkillSummaryData,
 } from '../../../shared/components/skill-summary/skill-summary.component';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-units',
   imports: [
@@ -32,11 +33,14 @@ export class UnitsComponent implements OnInit, OnDestroy {
     questionSolved: 0,
     timeSpent: 0,
   };
+  semesterId: number;
+  unitPayload : UnitPayload = new UnitPayload();
 
   constructor(
     private headerService: HeaderService,
     private learningOutcomesService: LearningOutcomesService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private route: ActivatedRoute,
   ) {
     if (!this.sharedService) {
       this.sharedService = new SharedService();
@@ -44,19 +48,26 @@ export class UnitsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    
     this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
       if (res) {
-        this.getUnits(this.headerService.selectedSectionId);
+        this.route.paramMap.subscribe((params) => {
+          this.semesterId = parseInt(params.get('semesterId'));
+          this.getUnits();
+        });
       }
     });
 
     if (this.headerService.selectedSectionId) {
-      this.getUnits(this.headerService.selectedSectionId);
+      this.getUnits();
     }
   }
 
-  getUnits(id: number) {
-    this.learningOutcomesService.getUnits(id).subscribe((res) => {
+  getUnits() {
+      this.unitPayload.courseSectionId = this.headerService.selectedSectionId,
+      this.unitPayload.semesterId = this.semesterId
+
+    this.learningOutcomesService.getUnits(this.unitPayload).subscribe((res) => {
       if (res.success) {
         this.units = res.result.units;
       }

@@ -7,18 +7,18 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Stats, StatsRequest } from 'c:/Users/osama/Desktop/bravo-FE/src/app/core/models/teacher-dashboard-models/stats.model';
 import { Skills } from '../../../core/models/teacher-dashboard-models/main-skills.model';
+import { Semester } from '../../../core/models/teacher-dashboard-models/semesters.model';
 
 @Component({
-  selector: 'app-status',
-  standalone: true,
+  selector: 'app-semesters',
   imports: [DashboardComponent],
-  templateUrl: './stats.component.html',
-  styleUrls: ['./stats.component.scss'],
+  templateUrl: './semesters.component.html',
+  styleUrl: './semesters.component.scss'
 })
-export class StatsComponent implements OnInit {
+export class SemestersComponent {
 
   private refreshSubscription!: Subscription;
-  skills: Skills[] = [];
+  skills: Semester[] = [];
   stats: Stats[] = [];
 
   constructor(
@@ -42,9 +42,9 @@ export class StatsComponent implements OnInit {
       subjectId: this.headerService.selectedSubjectId,
     };
 
-    this.statsService.getMainSkills(model).subscribe((res) => {
+    this.statsService.getSemesters(this.headerService.selectedSectionId).subscribe((res) => {
       if (res) {
-        this.skills = res.result.domains;
+        this.skills = res.result;
       }
     });
   }
@@ -61,12 +61,8 @@ export class StatsComponent implements OnInit {
     });
   }
 
-  goToSingleSkill(domainId: number) {
-    if (this.router.url.includes('units')) {
-      this.router.navigate(['/features/units']);
-    } else {
-      this.router.navigate(['/features/single-skill', domainId, 0]);
-    }
+  goToSingleSkill(semesterId: number) {
+    this.router.navigate(['/features/units', semesterId]);
   }
 
 }

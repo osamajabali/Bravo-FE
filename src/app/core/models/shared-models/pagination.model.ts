@@ -3,4 +3,7 @@ export class PaginationFilter {
     pageSize: number = 10;
     totalRecords: number;
     totalPages: number;
+    sortColumn: string;
+    sortColumnDirection: string;
+    searchValue: string;
 }

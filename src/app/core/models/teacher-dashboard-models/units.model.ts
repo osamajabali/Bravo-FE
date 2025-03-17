@@ -7,6 +7,13 @@ export interface Unit {
   unitName: string;
 }
 
-export interface UnitsPagination extends PaginationFilter {
-  units : Unit[]
+export class UnitPayload extends PaginationFilter {
+  courseSectionId: number;
+  semesterId: number;
+
 }
+
+export interface UnitsPagination extends PaginationFilter {
+  units: Unit[]
+}
+

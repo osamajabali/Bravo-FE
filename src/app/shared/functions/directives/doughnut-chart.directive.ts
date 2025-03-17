@@ -7,8 +7,34 @@ import {
   Inject,
   PLATFORM_ID,
 } from '@angular/core';
-import { Chart, LegendItem, registerables } from 'chart.js';
+import { Chart, Plugin, registerables, ChartOptions } from 'chart.js';
 import { isPlatformBrowser } from '@angular/common';
+
+// ✅ Center Percentage Text Plugin
+const CenterTextPlugin: Plugin = {
+  id: 'centerText',
+  afterDraw(chart) {
+    const { ctx, chartArea } = chart;
+    const dataset = chart.data.datasets[0];
+
+    if (!dataset || dataset.data.length === 0) return;
+
+    const percentage = dataset.data[0] as number;
+    const text = `${Math.round(percentage)}%`;
+
+    ctx.save();
+    ctx.font = 'bold 14px Space Grotesk';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#1B4D5B';
+
+    const centerX = (chartArea.left + chartArea.right) / 2;
+    const centerY = (chartArea.top + chartArea.bottom) / 2;
+
+    ctx.fillText(text, centerX, centerY);
+    ctx.restore();
+  },
+};
 
 @Directive({
   selector: '[appDoughnutChart]',
@@ -16,23 +42,24 @@ import { isPlatformBrowser } from '@angular/common';
 export class DoughnutChartDirective implements OnChanges {
   @Input() data: number[] = [];
   @Input() labels: string[] = [];
-  @Input() isSkills: boolean = true;
+  @Input() color: string = '#54C8E8'; // ✅ Uses the same color as `AllSkillsComponent`
+  @Input() isSkills: boolean = true; // ✅ Determines if it's a skill or stat chart
 
   private chart: Chart | undefined;
 
   constructor(
     private el: ElementRef,
-    @Inject(PLATFORM_ID) private platformId: Object // Platform check for SSR
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     if (isPlatformBrowser(this.platformId)) {
-      Chart.register(...registerables); // Register Chart.js only in the browser
+      Chart.register(...registerables);
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (
       isPlatformBrowser(this.platformId) &&
-      (changes['data'] || changes['labels'])
+      (changes['data'] || changes['labels'] || changes['color'])
     ) {
       this.renderChart();
     }
@@ -40,7 +67,7 @@ export class DoughnutChartDirective implements OnChanges {
 
   private renderChart(): void {
     if (!isPlatformBrowser(this.platformId)) {
-      return; // Prevent execution on the server
+      return;
     }
 
     const ctx = this.el.nativeElement.getContext('2d');
@@ -50,106 +77,58 @@ export class DoughnutChartDirective implements OnChanges {
     }
 
     let chartData: number[];
+    const backgroundColor = [this.color, '#E0E0E0']; // ✅ Matches `AllSkillsComponent`
 
     if (this.data.length === 1) {
-      // If a single percentage value is passed, assume it's the active portion
       const percentage = this.data[0];
-      chartData = [percentage, 100 - percentage]; // Ensure total is 100
+      chartData = [percentage, 100 - percentage];
     } else {
-      // Normalize multiple values to ensure they sum to 100
       const totalValue = this.data.reduce((sum, value) => sum + value, 0);
       chartData = totalValue > 0 ? this.data.map(value => (value / totalValue) * 100) : [100];
     }
 
-    const backgroundColor = this.isSkills
-      ? ['#54C8E8', '#FFFF']
-      : ['#54C8E8', '#C9C9C9'];
-
-    const plugins = !this.isSkills
-      ? []
-      : [
-          {
-            id: 'centerText',
-            afterDraw: (chart) => {
-              const ctx = chart.ctx;
-              const percentage = chart.data.datasets[0].data[0] as number; // First item as percentage
-              const text = percentage ? `${Math.round(percentage)}%` : '0%';
-
-              // Set font properties
-              ctx.save();
-              ctx.font = 'bold 16px Arial';
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'middle';
-              ctx.fillStyle = '#1B4D5B'; // Text color
-              const centerX = chart.width / 2.3;
-              const centerY = chart.height / 2;
-
-              // Draw text
-              ctx.fillText(text, centerX, centerY);
-              ctx.restore();
+    // ✅ Explicitly type `options` to avoid `cutout` error
+    const chartOptions: ChartOptions<'doughnut'> = {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '75%', // ✅ Now TypeScript recognizes `cutout`
+      plugins: {
+        legend: {
+          display: this.isSkills, // ✅ Legend only for skill charts
+          position: 'right',
+          labels: {
+            boxWidth: 12,
+            padding: 15,
+            font: {
+              size: 12,
             },
           },
-        ];
+        },
+        tooltip: {
+          enabled: this.isSkills, // ✅ Tooltips only for skill charts
+          callbacks: {
+            label: function (context) {
+              return `${context.label}: ${Math.round(context.raw as number)}%`;
+            },
+          },
+        },
+      },
+    };
 
     this.chart = new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: this.data.length > 0 ? this.labels : ['No Data'],
+        labels: this.isSkills ? ['Active', 'Inactive'] : [],
         datasets: [
           {
-            data: chartData, // Use processed percentage data
+            data: chartData,
             backgroundColor: backgroundColor,
-            hoverBackgroundColor: backgroundColor,
+            borderWidth: 0, // ✅ Correct placement
           },
         ],
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: this.isSkills ? '65%' : '45%',
-        plugins: {
-          legend: {
-            display: true,
-            position: 'right',
-            align: 'center',
-            labels: {
-              usePointStyle: true,
-              pointStyle: 'circle',
-              boxHeight: 14,
-              boxWidth: 14,
-              font: {
-                size: 14,
-                weight: 'bold',
-              },
-              padding: 10,
-              generateLabels: (chart) => {
-                const labels = chart.data.labels as string[];
-                const dataValues = chart.data.datasets[0].data as number[];
-                const backgroundColors = chart.data.datasets[0].backgroundColor as string[];
-
-                return labels.map((label, index) => {
-                  const count = Math.round(dataValues[index]); // Ensure percentage display
-                  const color = label === 'Activated' ? '#704B1D' : '#171717';
-                  const legendColor = backgroundColors[index] || '#171717';
-                  return {
-                    text: `${count}% ${label}`,
-                    fontColor: color,
-                    fillStyle: legendColor,
-                    hidden: false,
-                    index,
-                    lineWidth: 0,
-                  } as LegendItem;
-                });
-              },
-            },
-            onClick: () => {},
-          },
-          tooltip: {
-            enabled: this.isSkills ? false : true,
-          },
-        },
-      },
-      plugins: plugins,
+      options: chartOptions, // ✅ Now correctly typed
+      plugins: !this.isSkills ? [CenterTextPlugin] : [], // ✅ Center text only for skill charts
     });
   }
 }

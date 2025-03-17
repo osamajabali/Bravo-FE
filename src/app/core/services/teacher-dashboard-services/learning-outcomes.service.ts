@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../shared-services/http.service';
 import { Result } from '../../models/shared-models/result';
 import { Observable } from 'rxjs';
-import { UnitsPagination } from '../../models/teacher-dashboard-models/units.model';
+import { UnitPayload, UnitsPagination } from '../../models/teacher-dashboard-models/units.model';
 import { LessonsPagination } from '../../models/teacher-dashboard-models/lessons.model';
 import { LessonsCurriculumsPagination } from '../../models/teacher-dashboard-models/lesson-curriculums.model';
 import { SingleSkillPagination } from '../../models/teacher-dashboard-models/single-skill';
@@ -16,8 +16,8 @@ export class LearningOutcomesService {
 
   constructor(private apiHlpr: HttpService, private sharedService : SharedService) { }
 
-  getUnits = (id : number) : Observable<Result<UnitsPagination>> => {
-    return this.apiHlpr.post<Result<UnitsPagination>>(`learning-outcomes/units`, {courseSectionId : id, pageSize : this.sharedService.pagination.pageSize});
+  getUnits = (unitPayload : UnitPayload) : Observable<Result<UnitsPagination>> => {
+    return this.apiHlpr.post<Result<UnitsPagination>>(`learning-outcomes/units`, unitPayload);
   }
 
   getUnitsLessons = (id : number) : Observable<Result<LessonsPagination>> => {
