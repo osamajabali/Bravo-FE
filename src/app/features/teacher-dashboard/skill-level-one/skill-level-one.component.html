@@ -1,0 +1,126 @@
+<div>
+  <app-skill-summary
+    [showAssignmentButton]="false"
+    [data]="skillSummaryData"
+  ></app-skill-summary>
+  <div class="units-container">
+    <div class="header">
+      <h1 class="page-title">{{ skills.length }} Skills</h1>
+    </div>
+
+    <div class="units-list">
+      @for (skill of skills; track skill.learningOutcomeId) {
+      <div class="unit-card">
+        <div class="unit-content">
+          <h3 class="unit-title">{{ skill.learningOutcomeDisplayName }}</h3>
+          @if (skill.numberOfSkills) {
+          <div class="unit-info">
+            {{ "NUMBER_OF_SKILLS" | translate }}:
+            <span class="unit-info-number">{{ skill.numberOfSkills }}</span>
+          </div>
+          } @else {
+          <div class="d-flex gap-3">
+            <div class="badge">
+              {{ "BEGINNER" | translate }}
+              <span class="number">{{ skill.noOfStudentsEasy || 0 }}</span>
+            </div>
+            <div class="badge">
+              {{ "AVERAGE" | translate }}
+              <span class="number">{{ skill.noOfStudentsMedium || 0 }}</span>
+            </div>
+            <div class="badge">
+              {{ "ADVANCED" | translate }}
+              <span class="number">{{ skill.noOfStudentsHard || 0 }}</span>
+            </div>
+          </div>
+          }
+        </div>
+        <div
+          class="d-flex flex-column gap-1 align-items-end justify-content-between"
+        >
+          <div class="d-flex gap-2 align-items-center justify-content-between">
+            @if (!skill.numberOfSkills) {
+            <a (click)="getStudents(skill.learningOutcomeId)">
+              <div class="action-icon">
+                <img src="icon-multiple-users.svg" alt="users" />
+                <span class="action-icon-text">{{
+                  "STUDENTS" | translate
+                }}</span>
+              </div>
+            </a>
+            <a (click)="showSmartBoard = true">
+              <div class="action-icon">
+                <img src="icon-cards.svg" alt="cards" />
+                <span class="action-icon-text">{{ "CARDS" | translate }}</span>
+              </div>
+            </a>
+            }
+            <button pButton label="" class="assignment-button">
+              <img src="icon-plus.svg" alt="plus" />
+              <span>{{ "ASSIGNMENT" | translate }}</span>
+            </button>
+            @if (skill.numberOfSkills) {
+            <button
+              pButton
+              label=""
+              class="p-button-primary"
+              (click)="viewAllSkills(skill.learningOutcomeId)"
+            >
+              {{ "VIEW_ALL_SKILLS" | translate }}
+              <img src="arrow-small-right.svg" alt="view" />
+            </button>
+            }
+            <div class="custom-radio-container">
+              <div
+                class="custom-radio"
+                [class.active]="skill.isActive"
+                (click)="toggleActive(skill)"
+              >
+                <div class="radio-content" [class.reverse]="!skill.isActive">
+                  <span class="status-text">{{
+                    skill.isActive ? "ACTIVE" : "OFF"
+                  }}</span>
+                  <img
+                    [src]="
+                      skill.isActive
+                        ? 'icon-radio-checked.svg'
+                        : 'icon-radio-unchecked.svg'
+                    "
+                    alt="check"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="skill-status">{{skill.activationDate | date :'dd/MM/yyyy' }}</div> -->
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Custom Dialog -->
+<app-skill-activation-modal
+  [(visible)]="activateSkill"
+  [style]="{ width: '450px' }"
+  [modal]="true"
+  [closable]="true"
+  [closeOnEscape]="true"
+  (activateSkill)="_activateSkill()"
+></app-skill-activation-modal>
+
+<!-- Smart Board -->
+<app-smart-board
+  (visibleChange)="showSmartBoard = false"
+  [visible]="showSmartBoard"
+  [skillId]="0"
+  [skillTitle]="'Static Lesson Title'"
+></app-smart-board>
+
+<!-- User Drawer -->
+<app-user-drawer
+  (visibleChange)="showUserDrower = false"
+  [visible]="showUserDrower"
+  [sections]="levels"
+></app-user-drawer>

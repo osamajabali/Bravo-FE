@@ -1,0 +1,27 @@
+.pagination-info {
+  text-align: center;
+  color: var(--primary-primary-900);
+  margin-bottom: var(--padding-s);
+}
+
+.paginator {
+  display: flex;
+  justify-content: center;
+
+  ::ng-deep {
+    .p-paginator-pages .p-paginator-page {
+      border-radius: 5px;
+    }
+
+    .p-paginator-first,
+    .p-paginator-last {
+      display: none;
+    }
+
+    .p-paginator-prev,
+    .p-paginator-next {
+      border: 1px solid var(--neutral-grey-200);
+      border-radius: 5px;
+    }
+  }
+}

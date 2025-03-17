@@ -5,7 +5,7 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
 import { StatsService } from '../../../core/services/teacher-dashboard-services/stats.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Stats, StatsRequest } from 'c:/Users/osama/Desktop/bravo-FE/src/app/core/models/teacher-dashboard-models/stats.model';
+import { Stats, StatsRequest } from '../../../core/models/teacher-dashboard-models/stats.model';
 import { Skills } from '../../../core/models/teacher-dashboard-models/main-skills.model';
 
 @Component({
@@ -65,8 +65,7 @@ export class StatsComponent implements OnInit {
     if (this.router.url.includes('units')) {
       this.router.navigate(['/features/units']);
     } else {
-      this.router.navigate(['/features/single-skill', domainId, 0]);
+      this.router.navigate(['/features/skills-level-one']);
     }
   }
-
 }

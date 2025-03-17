@@ -5,8 +5,7 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
 import { StatsService } from '../../../core/services/teacher-dashboard-services/stats.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Stats, StatsRequest } from 'c:/Users/osama/Desktop/bravo-FE/src/app/core/models/teacher-dashboard-models/stats.model';
-import { Skills } from '../../../core/models/teacher-dashboard-models/main-skills.model';
+import { Stats, StatsRequest } from '../../../core/models/teacher-dashboard-models/stats.model';
 import { Semester } from '../../../core/models/teacher-dashboard-models/semesters.model';
 
 @Component({

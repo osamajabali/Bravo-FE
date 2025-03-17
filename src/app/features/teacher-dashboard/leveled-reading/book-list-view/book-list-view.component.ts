@@ -1,22 +1,23 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PaginatorModule } from 'primeng/paginator';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Book } from '../../../../core/models/teacher-dashboard-models/leveled-reading';
 import { Router } from '@angular/router';
+import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
+
 @Component({
   selector: 'app-book-list-view',
   standalone: true,
   imports: [
     CommonModule, 
-    PaginatorModule, 
     ButtonModule, 
     DropdownModule, 
     InputTextModule,
-    FormsModule
+    FormsModule,
+    PaginationComponent
   ],
   templateUrl: './book-list-view.component.html',
   styleUrl: './book-list-view.component.scss'

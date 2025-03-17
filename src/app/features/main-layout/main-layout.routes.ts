@@ -66,6 +66,22 @@ export const Main_Layout_Routes: Routes = [
               ).then((m) => m.LeveledReadingComponent),
           },
           {
+            path: 'skills-level-one',
+            data: { title: 'MENU.SKILLS_LEVEL_ONE' },
+            loadComponent: () =>
+              import(
+                '../teacher-dashboard/skill-level-one/skill-level-one.component'
+              ).then((m) => m.SkillLevelOneComponent),
+          },
+          {
+            path: 'skills-level-two',
+            data: { title: 'MENU.SKILLS_LEVEL_TWO' },
+            loadComponent: () =>
+              import(
+                '../teacher-dashboard/skill-level-two/skill-level-two.component'
+              ).then((m) => m.SkillLevelTwoComponent),
+          },
+          {
             path: 'student-level',
             data: { title: 'MENU.STUDENT_LEVEL' },
             loadComponent: () =>

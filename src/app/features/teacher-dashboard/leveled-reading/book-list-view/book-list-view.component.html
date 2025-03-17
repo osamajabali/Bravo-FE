@@ -146,13 +146,10 @@
   </div>
   }
 </div>
-<div class="pagination-info">
-  Showing 1-{{ rows }} of {{ books.length }} books
-</div>
-<p-paginator
+<app-pagination
   [first]="first"
   [rows]="rows"
   [totalRecords]="totalRecords"
-  (onPageChange)="onPageChange($event)"
-  class="paginator"
-></p-paginator> 
+  itemLabel="books"
+  (pageChange)="onPageChange($event)"
+></app-pagination>

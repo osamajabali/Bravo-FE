@@ -19,7 +19,7 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
 import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
 import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
 import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
-import { SkillActivationModalComponent } from "../../../shared/components/skill-activation-modal/skill-activation-modal.component";
+import { SkillActivationModalComponent } from '../../../shared/components/skill-activation-modal/skill-activation-modal.component';
 
 @Component({
   selector: 'app-single-skill',
@@ -34,8 +34,8 @@ import { SkillActivationModalComponent } from "../../../shared/components/skill-
     UserDrawerComponent,
     SmartBoardComponent,
     SkillSummaryComponent,
-    SkillActivationModalComponent
-],
+    SkillActivationModalComponent,
+  ],
   templateUrl: './single-skill.component.html',
   styleUrl: './single-skill.component.scss',
 })
@@ -47,7 +47,6 @@ export class SingleSkillComponent implements OnInit {
   showSmartBoard: boolean;
   currentSkillUsers: any = null;
   private refreshSubscription!: Subscription;
-
 
   skillSummaryData: SkillSummaryData = {
     allSkills: 25,
@@ -70,12 +69,6 @@ export class SingleSkillComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.domainId = parseInt(params.get('domainId'));
       this.curriculumId = parseInt(params.get('curriculumId'));
-      console.log(
-        'Domain ID:',
-        this.domainId,
-        'Curriculum ID:',
-        this.curriculumId
-      );
       this.getSkills();
     });
 
@@ -110,14 +103,16 @@ export class SingleSkillComponent implements OnInit {
 
   getStudents = (lerningOutcomeId: number) => {
     this.spinnerService.show();
-    this.learningOutcomesService.getStudents(this.headerService.selectedSectionId , lerningOutcomeId).subscribe(res=>{
-      if(res.success){
-        this.spinnerService.hide()
-        this.showUserDrower = true
-        this.levels = res.result.students;
-      }
-    })
-  }
+    this.learningOutcomesService
+      .getStudents(this.headerService.selectedSectionId, lerningOutcomeId)
+      .subscribe((res) => {
+        if (res.success) {
+          this.spinnerService.hide();
+          this.showUserDrower = true;
+          this.levels = res.result.students;
+        }
+      });
+  };
 
   toggleFilterSection(section: FilterSection): void {
     section.expanded = !section.expanded;

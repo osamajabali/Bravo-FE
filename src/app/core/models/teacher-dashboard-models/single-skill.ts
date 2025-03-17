@@ -9,6 +9,7 @@ export interface SingleSkill {
   noOfStudentsHard: number;
   noOfStudentsMedium: number;
   isActive?: boolean;
+  numberOfSkills?: number;
 }
 export interface SingleSkillPagination extends PaginationFilter {
   learningOutcomes: SingleSkill[];

@@ -204,6 +204,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.selectedGradeId = id;
       this.updateClasses();
     } else {
+      console.log('section id', id);
       this.headerService.selectedSectionId = id;
       this.selectedSectionId = id;
       this.updateClasses();
