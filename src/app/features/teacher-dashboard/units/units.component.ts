@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Unit, UnitPayload } from '../../../core/models/teacher-dashboard-models/units.model';
+import { Unit, UnitPayload, UnitsPagination } from '../../../core/models/teacher-dashboard-models/units.model';
 import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header-services/header.service';
 import { UnitCardsComponent } from '../../../shared/components/unit-cards/unit-cards.component';
@@ -26,7 +26,7 @@ import { ActivatedRoute } from '@angular/router';
 export class UnitsComponent implements OnInit, OnDestroy {
   refreshSubscription!: Subscription;
 
-  units: Unit[] = [];
+  unitsPagination: UnitsPagination = new UnitsPagination();
   summaryData: SkillSummaryData = {
     allSkills: 0,
     activeSkills: 0,
@@ -39,7 +39,7 @@ export class UnitsComponent implements OnInit, OnDestroy {
   constructor(
     private headerService: HeaderService,
     private learningOutcomesService: LearningOutcomesService,
-    private sharedService: SharedService,
+    public sharedService: SharedService,
     private route: ActivatedRoute,
   ) {
     if (!this.sharedService) {
@@ -69,7 +69,7 @@ export class UnitsComponent implements OnInit, OnDestroy {
 
     this.learningOutcomesService.getUnits(this.unitPayload).subscribe((res) => {
       if (res.success) {
-        this.units = res.result.units;
+        this.unitsPagination = res.result;
       }
     });
   }

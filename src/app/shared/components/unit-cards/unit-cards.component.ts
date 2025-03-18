@@ -4,23 +4,30 @@ import { Lessons } from '../../../core/models/teacher-dashboard-models/lessons.m
 import { Router } from '@angular/router';
 import { LessonsCurriculums } from '../../../core/models/teacher-dashboard-models/lesson-curriculums.model';
 import { SkeletonComponent } from "../skeleton/skeleton.component";
+import { PaginationComponent } from "../pagination/pagination.component";
 
 @Component({
   selector: 'app-unit-cards',
-  imports: [SkeletonComponent],
+  imports: [SkeletonComponent, PaginationComponent],
   templateUrl: './unit-cards.component.html',
   styleUrl: './unit-cards.component.scss'
 })
 export class UnitCardsComponent {
   
   @Input() cards: (Unit | Lessons | LessonsCurriculums)[] = [];
-
-  constructor(private router : Router){
-    if(this.cards.length){
+  @Input() first: number = 0;
+  @Input() rows: number = 0;
+  @Input() totalRecords: number = 0;
+  
+  constructor(private router: Router) {
+    if (this.cards.length) {
       this.checkType(this.cards[0])
     }
   }
-
+  
+  onPageChange($event: { first: number; rows: number; }) {
+  throw new Error('Method not implemented.');
+  }
 
   checkType(card: Unit | Lessons | LessonsCurriculums): 'unit' | 'lesson' | 'curriculum' {
     if (this.isUnit(card)) return 'unit';
@@ -36,15 +43,15 @@ export class UnitCardsComponent {
     return 'lessonName' in card; // Type guard to check if card is a Lesson
   }
 
-  clickedCard(card : Unit | Lessons | LessonsCurriculums ) {
-    if((card as Unit).unitId){
+  clickedCard(card: Unit | Lessons | LessonsCurriculums) {
+    if ((card as Unit).unitId) {
       this.router.navigate(['/features/lessons', (card as Unit).unitId]);
-    }else if((card as Lessons).lessonId){
+    } else if ((card as Lessons).lessonId) {
       this.router.navigate(['/features/lessons-curriculums', (card as Lessons).lessonId]);
-    }else{
+    } else {
       const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
-      this.router.navigate([ '/features/single-skill', 0,curriculumId ]);
-      
+      this.router.navigate(['/features/single-skill', 0, curriculumId]);
+
     }
   }
 }

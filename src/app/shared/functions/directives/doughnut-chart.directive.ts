@@ -44,6 +44,8 @@ export class DoughnutChartDirective implements OnChanges {
   @Input() labels: string[] = [];
   @Input() color: string = '#54C8E8'; // ✅ Uses the same color as `AllSkillsComponent`
   @Input() isSkills: boolean = true; // ✅ Determines if it's a skill or stat chart
+  @Input() activeCount: number = 0;
+  @Input() inactiveCount: number = 0;
 
   private chart: Chart | undefined;
 
@@ -76,7 +78,7 @@ export class DoughnutChartDirective implements OnChanges {
       this.chart.destroy();
     }
 
-    let chartData: number[];
+    let chartData: number[]; 
     const backgroundColor = [this.color, '#E0E0E0']; // ✅ Matches `AllSkillsComponent`
 
     if (this.data.length === 1) {
@@ -118,17 +120,19 @@ export class DoughnutChartDirective implements OnChanges {
     this.chart = new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: this.isSkills ? ['Active', 'Inactive'] : [],
+        labels: this.isSkills 
+          ? [` ${this.activeCount} Active`, `${this.inactiveCount} Inactive`]
+          : [], // Use active/inactive counts as labels
         datasets: [
           {
             data: chartData,
             backgroundColor: backgroundColor,
-            borderWidth: 0, // ✅ Correct placement
+            borderWidth: 0,
           },
         ],
       },
-      options: chartOptions, // ✅ Now correctly typed
-      plugins: !this.isSkills ? [CenterTextPlugin] : [], // ✅ Center text only for skill charts
+      options: chartOptions,
+      plugins: !this.isSkills ? [CenterTextPlugin] : [],
     });
   }
 }

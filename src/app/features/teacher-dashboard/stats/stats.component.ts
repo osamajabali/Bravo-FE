@@ -65,7 +65,7 @@ export class StatsComponent implements OnInit {
     if (this.router.url.includes('units')) {
       this.router.navigate(['/features/units']);
     } else {
-      this.router.navigate(['/features/skills-level-one']);
+      this.router.navigate(['/features/skills-level-one' , domainId]);
     }
   }
 }

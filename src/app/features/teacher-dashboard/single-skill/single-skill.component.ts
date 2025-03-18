@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { LearningOutcomesService } from '../../../core/services/teacher-dashboard-services/learning-outcomes.service';
@@ -14,7 +14,7 @@ import {
   SkillSummaryData,
 } from '../../../shared/components/skill-summary/skill-summary.component';
 import { HeaderService } from '../../../core/services/header-services/header.service';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
 import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
@@ -39,7 +39,7 @@ import { SkillActivationModalComponent } from '../../../shared/components/skill-
   templateUrl: './single-skill.component.html',
   styleUrl: './single-skill.component.scss',
 })
-export class SingleSkillComponent implements OnInit {
+export class SingleSkillComponent implements OnInit, OnDestroy {
   skills: SingleSkill[] = [];
   curriculumId: number | null = null;
   activateSkill: boolean;
@@ -57,6 +57,7 @@ export class SingleSkillComponent implements OnInit {
   domainId: number;
   levels: Level[] = [];
   skillToActivate: SingleSkill | null = null;
+
   constructor(
     private learningOutcomesService: LearningOutcomesService,
     private sharedService: SharedService,
@@ -66,15 +67,22 @@ export class SingleSkillComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      this.domainId = parseInt(params.get('domainId'));
-      this.curriculumId = parseInt(params.get('curriculumId'));
+    // Subscribe to both paramMap and refresh$
+    this.refreshSubscription = combineLatest([
+      this.route.paramMap,
+      this.sharedService.refresh$,
+    ]).subscribe(([params]) => {
+      this.domainId = parseInt(params.get('domainId') || '0');
+      this.curriculumId = parseInt(params.get('curriculumId') || '0');
       this.getSkills();
     });
+  }
 
-    this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
-      this.getSkills();
-    });
+  ngOnDestroy(): void {
+    // Unsubscribe from any subscriptions to avoid memory leaks
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
   }
 
   toggleActive(skill: SingleSkill) {
@@ -84,7 +92,9 @@ export class SingleSkillComponent implements OnInit {
 
   _activateSkill() {
     this.activateSkill = !this.activateSkill;
-    this.skillToActivate.isActive = !this.skillToActivate.isActive;
+    if (this.skillToActivate) {
+      this.skillToActivate.isEnabled = !this.skillToActivate.isEnabled;
+    }
   }
 
   getSkills() {
