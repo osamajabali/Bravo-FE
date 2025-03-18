@@ -15,7 +15,7 @@ import { Skills } from '../../../core/models/teacher-dashboard-models/main-skill
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss'],
 })
-export class StatsComponent implements OnInit {
+export class StatsComponent implements OnInit, OnDestroy {
 
   private refreshSubscription!: Subscription;
   skills: Skills[] = [];
@@ -35,6 +35,11 @@ export class StatsComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
+  }
 
   getClasses() {
     let model: StatsRequest = {
@@ -65,7 +70,7 @@ export class StatsComponent implements OnInit {
     if (this.router.url.includes('units')) {
       this.router.navigate(['/features/units']);
     } else {
-      this.router.navigate(['/features/skills-level-one' , domainId]);
+      this.router.navigate(['/features/skills-level-one', domainId]);
     }
   }
 }

@@ -6,6 +6,7 @@ import { PaginationFilter } from '../../models/shared-models/pagination.model';
   providedIn: 'root'
 })
 export class SharedService {
+  nextRoute : string;
   pagination : PaginationFilter = new PaginationFilter();
   private refreshSubject = new Subject<any>(); // Changed from void to any
   private apiResponseSubject = new BehaviorSubject<any>(null);

@@ -12,9 +12,9 @@ import { Semester } from '../../../core/models/teacher-dashboard-models/semester
   selector: 'app-semesters',
   imports: [DashboardComponent],
   templateUrl: './semesters.component.html',
-  styleUrl: './semesters.component.scss'
+  styleUrls: ['./semesters.component.scss']  // Fixed typo here (should be styleUrls)
 })
-export class SemestersComponent {
+export class SemestersComponent implements OnInit, OnDestroy {
 
   private refreshSubscription!: Subscription;
   skills: Semester[] = [];
@@ -34,6 +34,12 @@ export class SemestersComponent {
     });
   }
 
+  ngOnDestroy(): void {
+    // Unsubscribing to avoid memory leaks
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
+  }
 
   getClasses() {
     let model: StatsRequest = {

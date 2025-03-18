@@ -6,6 +6,7 @@ export interface SingleSkill {
   isSkill: boolean;
   learningOutcomeDisplayName: string;
   learningOutcomeId: number;
+  id?: number;
   noOfStudentsEasy: number;
   noOfStudentsHard: number;
   noOfStudentsMedium: number;

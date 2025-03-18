@@ -12,6 +12,7 @@ import {
   SkillSummaryData,
 } from '../../../shared/components/skill-summary/skill-summary.component';
 import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-units',
   imports: [
@@ -21,11 +22,10 @@ import { ActivatedRoute } from '@angular/router';
     SkillSummaryComponent,
   ],
   templateUrl: './units.component.html',
-  styleUrl: './units.component.scss',
+  styleUrls: ['./units.component.scss'], // Corrected styleUrl to styleUrls (plural)
 })
 export class UnitsComponent implements OnInit, OnDestroy {
-  refreshSubscription!: Subscription;
-
+  private refreshSubscription!: Subscription; // Mark subscription as private to avoid accidental changes
   unitsPagination: UnitsPagination = new UnitsPagination();
   summaryData: SkillSummaryData = {
     allSkills: 0,
@@ -34,7 +34,7 @@ export class UnitsComponent implements OnInit, OnDestroy {
     timeSpent: 0,
   };
   semesterId: number;
-  unitPayload : UnitPayload = new UnitPayload();
+  unitPayload: UnitPayload = new UnitPayload();
 
   constructor(
     private headerService: HeaderService,
@@ -48,24 +48,25 @@ export class UnitsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    
+    // Subscribing to the refresh event
     this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
       if (res) {
         this.route.paramMap.subscribe((params) => {
-          this.semesterId = parseInt(params.get('semesterId'));
+          this.semesterId = parseInt(params.get('semesterId')!); // Using '!' to assert non-null value
           this.getUnits();
         });
       }
     });
 
+    // If section ID is available, fetch units immediately
     if (this.headerService.selectedSectionId) {
       this.getUnits();
     }
   }
 
   getUnits() {
-      this.unitPayload.courseSectionId = this.headerService.selectedSectionId,
-      this.unitPayload.semesterId = this.semesterId
+    this.unitPayload.courseSectionId = this.headerService.selectedSectionId;
+    this.unitPayload.semesterId = this.semesterId;
 
     this.learningOutcomesService.getUnits(this.unitPayload).subscribe((res) => {
       if (res.success) {
@@ -74,7 +75,13 @@ export class UnitsComponent implements OnInit, OnDestroy {
     });
   }
 
+  nextPage($event: number) {
+    this.unitPayload.pageNumber = $event;
+    this.getUnits();
+  }
+
   ngOnDestroy(): void {
+    // Unsubscribing from any active subscriptions
     if (this.refreshSubscription) {
       this.refreshSubscription.unsubscribe();
     }

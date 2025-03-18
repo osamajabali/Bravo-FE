@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { LessonWithActive } from '../../../core/models/teacher-dashboard-models/lessons.model';
+import { LessonsPagination, LessonsPayload, LessonWithActive } from '../../../core/models/teacher-dashboard-models/lessons.model';
 import { LearningOutcomesService } from '../../../core/services/teacher-dashboard-services/learning-outcomes.service';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { LessonCardsComponent } from '../../../shared/components/lesson-cards/lesson-cards.component';
 import { SkillSummaryComponent, SkillSummaryData } from '../../../shared/components/skill-summary/skill-summary.component';
+import { SharedService } from '../../../core/services/shared-services/shared.service';
 @Component({
   selector: 'app-lessons',
   imports: [LessonCardsComponent, TranslateModule, SkillSummaryComponent],
@@ -12,8 +13,8 @@ import { SkillSummaryComponent, SkillSummaryData } from '../../../shared/compone
   styleUrl: './lessons.component.scss',
 })
 export class LessonsComponent implements OnInit {
-  lessons: LessonWithActive[] = [];
-  unitId: number | null = null;
+  lessons: LessonsPagination = new LessonsPagination();
+  lessonPayload: LessonsPayload = new LessonsPayload();
   summaryData: SkillSummaryData = {
     allSkills: 0,
     activeSkills: 0,
@@ -23,23 +24,30 @@ export class LessonsComponent implements OnInit {
 
   constructor(
     private learningOutcomesService: LearningOutcomesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sharedService : SharedService
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.unitId = parseInt(params.get('id'));
+      this.lessonPayload.unitId = parseInt(params.get('id'));
       this.getLessons();
     });
   }
 
   getLessons() {
+    this.lessonPayload.pageSize = this.sharedService.pagination.pageSize;
     this.learningOutcomesService
-      .getUnitsLessons(this.unitId)
+      .getUnitsLessons(this.lessonPayload)
       .subscribe((res) => {
         if (res.success) {
-          this.lessons = res.result.lessons;
+          this.lessons = res.result;
         }
       });
+  }
+
+  nextPage($event: number) {
+    this.lessonPayload.pageNumber = $event;
+    this.getLessons();
   }
 }

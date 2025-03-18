@@ -1,41 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { LearningOutcomesService } from '../../../core/services/teacher-dashboard-services/learning-outcomes.service';
-import { InputTextModule } from 'primeng/inputtext';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { SmartBoardComponent } from '../../../shared/components/smart-board/smart-board.component';
-import { UserDrawerComponent } from '../../../shared/components/user-drawer/user-drawer.component';
-import { FormsModule } from '@angular/forms';
-import {
-  SkillSummaryComponent,
-  SkillSummaryData,
-} from '../../../shared/components/skill-summary/skill-summary.component';
 import { HeaderService } from '../../../core/services/header-services/header.service';
 import { combineLatest, Subscription } from 'rxjs';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
 import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
 import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
-import { SkillActivationModalComponent } from '../../../shared/components/skill-activation-modal/skill-activation-modal.component';
+import { SkillsCardsComponent } from "../../../shared/components/skills-cards/skills-cards.component";
 
 @Component({
   selector: 'app-single-skill',
   imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    InputTextModule,
-    OverlayPanelModule,
-    ButtonModule,
-    DialogModule,
-    UserDrawerComponent,
-    SmartBoardComponent,
-    SkillSummaryComponent,
-    SkillActivationModalComponent,
-  ],
+    SkillsCardsComponent
+],
   templateUrl: './single-skill.component.html',
   styleUrl: './single-skill.component.scss',
 })
@@ -48,12 +26,6 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
   currentSkillUsers: any = null;
   private refreshSubscription!: Subscription;
 
-  skillSummaryData: SkillSummaryData = {
-    allSkills: 25,
-    activeSkills: 10,
-    questionSolved: 10,
-    timeSpent: 10,
-  };
   domainId: number;
   levels: Level[] = [];
   skillToActivate: SingleSkill | null = null;
@@ -85,18 +57,6 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleActive(skill: SingleSkill) {
-    this.skillToActivate = skill;
-    this.activateSkill = !this.activateSkill;
-  }
-
-  _activateSkill() {
-    this.activateSkill = !this.activateSkill;
-    if (this.skillToActivate) {
-      this.skillToActivate.isEnabled = !this.skillToActivate.isEnabled;
-    }
-  }
-
   getSkills() {
     this.learningOutcomesService
       .lessonsCurriculumsSkills(
@@ -110,37 +70,4 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
         }
       });
   }
-
-  getStudents = (lerningOutcomeId: number) => {
-    this.spinnerService.show();
-    this.learningOutcomesService
-      .getStudents(this.headerService.selectedSectionId, lerningOutcomeId)
-      .subscribe((res) => {
-        if (res.success) {
-          this.spinnerService.hide();
-          this.showUserDrower = true;
-          this.levels = res.result.students;
-        }
-      });
-  };
-
-  toggleFilterSection(section: FilterSection): void {
-    section.expanded = !section.expanded;
-  }
-
-  toggleCheckbox(section: FilterSection, value: string): void {
-    const index = section.selectedOptions.indexOf(value);
-
-    if (index !== -1) {
-      section.selectedOptions.splice(index, 1);
-    } else {
-      section.selectedOptions.push(value);
-    }
-  }
-}
-
-interface FilterSection {
-  title: string;
-  expanded: boolean;
-  selectedOptions: string[];
 }

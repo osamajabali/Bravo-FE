@@ -11,7 +11,7 @@
       @for (item of menuItems; track item.label) {
       <li
         class="nav-item parent"
-        [class.has-submenu]="item.children && item.children.length > 0"
+        [class.has-submenu]="item.children && item.children?.length > 0"
         [class.expanded]="item.expanded"
       >
         <a
@@ -27,7 +27,7 @@
             <img [src]="'icon-' + item.icon + '.svg'" class="me-2" />
           </span>
           <span class="menu-text ms-1">{{ item.label | translate }}</span>
-          @if (item.children && item.children.length > 0) {
+          @if (item.children && item.children?.length > 0) {
           <span class="submenu-indicator">
             <img
               [src]="
@@ -39,7 +39,7 @@
           }
         </a>
 
-        @if (item.children && item.children.length > 0 && item.expanded) {
+        @if (item.children && item.children?.length > 0 && item.expanded) {
         <ul class="submenu">
           @for (child of item.children; track child.label) {
           <li class="nav-item">

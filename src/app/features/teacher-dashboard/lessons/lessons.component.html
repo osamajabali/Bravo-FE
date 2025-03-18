@@ -8,6 +8,6 @@
       <h1 class="page-title">{{ "LESSONS" | translate }}</h1>
     </div>
 
-    <app-lesson-cards [cards]="lessons"></app-lesson-cards>
+    <app-lesson-cards [cards]="lessons.lessons" [showPagination]="true" [rows]="lessons.pageSize" [first]="1" [totalRecords]="lessons.totalRecords" (pageNumber)="nextPage($event)"></app-lesson-cards>
   </div>
 </div>

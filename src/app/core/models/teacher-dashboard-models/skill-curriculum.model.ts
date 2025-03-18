@@ -10,3 +10,7 @@ export interface SkillCurriculum {
     noOfStudentsMedium: number;
     numberOfSkills: number;
   }
+
+  export interface SkillCurriculumResponse{
+    learningOutcomes : SkillCurriculum[]
+  }

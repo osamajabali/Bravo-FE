@@ -15,14 +15,11 @@ export class PaginationComponent {
   @Input() totalRecords: number = 0;
   @Input() itemLabel: string = 'items';
 
-  @Output() pageChange = new EventEmitter<{ first: number; rows: number }>();
+  @Output() pageChange = new EventEmitter<number>();
 
   protected Math = Math;
 
   onPageChange(event: any) {
-    this.pageChange.emit({
-      first: event.first,
-      rows: event.rows,
-    });
+    this.pageChange.emit(event.page + 1);
   }
 }

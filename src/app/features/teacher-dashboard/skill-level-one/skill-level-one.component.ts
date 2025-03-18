@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
@@ -20,6 +20,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { StatsService } from '../../../core/services/teacher-dashboard-services/stats.service';
 import { DomainRequest } from '../../../core/models/teacher-dashboard-models/stats.model';
 import { HeaderService } from '../../../core/services/header-services/header.service';
+import { SkillsCardsComponent } from "../../../shared/components/skills-cards/skills-cards.component";
+import { LessonCardsComponent } from "../../../shared/components/lesson-cards/lesson-cards.component";
+import { SharedService } from '../../../core/services/shared-services/shared.service';
 
 @Component({
   selector: 'app-skill-level-one',
@@ -31,16 +34,14 @@ import { HeaderService } from '../../../core/services/header-services/header.ser
     OverlayPanelModule,
     ButtonModule,
     DialogModule,
-    UserDrawerComponent,
-    SmartBoardComponent,
-    SkillSummaryComponent,
-    SkillActivationModalComponent,
     TranslateModule,
-  ],
+    SkillsCardsComponent,
+    LessonCardsComponent
+],
   templateUrl: './skill-level-one.component.html',
   styleUrl: './skill-level-one.component.scss',
 })
-export class SkillLevelOneComponent {
+export class SkillLevelOneComponent implements OnInit{
   skills: SingleSkill[] = [];
   curriculumId: number | null = null;
   activateSkill: boolean = false;
@@ -48,6 +49,7 @@ export class SkillLevelOneComponent {
   showSmartBoard: boolean = false;
   currentSkillUsers: any = null;
   domainSkillsRequest: DomainRequest = new DomainRequest();
+  nextRoute : string = '/features/skills-level-two';
   private refreshSubscription!: Subscription;
 
   skillSummaryData: SkillSummaryData = {
@@ -61,37 +63,32 @@ export class SkillLevelOneComponent {
   skillToActivate: SingleSkill | null = null;
   router: Router = inject(Router);
   skillCurriculum: import("c:/Users/osama/Desktop/bravo-FE/src/app/core/models/teacher-dashboard-models/skill-curriculum.model").SkillCurriculum[];
-  skillArray: any;
-  curriculumArray: any;
+  skillArray: any[] = [];
+  curriculumArray: any[] = [];
 
-  constructor(private statsService: StatsService, private headerService: HeaderService, private route: ActivatedRoute) { }
+  constructor(private statsService: StatsService, private headerService: HeaderService, private route: ActivatedRoute, private sharedService : SharedService) { }
 
   ngOnInit(): void {
-    this.getSkills();
-  }
-
-  toggleActive(skill: SingleSkill) {
-    this.skillToActivate = skill;
-    this.activateSkill = !this.activateSkill;
-  }
-
-  _activateSkill() {
-    this.activateSkill = !this.activateSkill;
-    if (this.skillToActivate) {
-      this.skillToActivate.isEnabled = !this.skillToActivate.isEnabled;
-    }
+    this.sharedService.nextRoute = this.nextRoute;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
+      if (res) {
+        this.route.paramMap.subscribe((params) => {
+          this.getSkills();           
+        });
+      }
+    });
   }
 
   getSkills() {
     this.route.paramMap.subscribe(params => {
       this.domainId = parseInt(params.get('domainId') || '0');
       console.log('domainId:', this.domainId);
+      this.domainSkillsRequest.domainId = this.domainId;
     });
     this.domainSkillsRequest.courseSectionId = this.headerService.selectedSectionId;
-    this.domainSkillsRequest.domainId = this.domainId;
     this.statsService.getDomainSkills(this.domainSkillsRequest).subscribe(res => {
       if (res.success) {
-        this.skillCurriculum = res.result;
+        this.skillCurriculum = res.result.learningOutcomes;
         this.skillCurriculum.forEach(item => {
           if (item.isSkill) {
             this.skillArray.push(item); // Add to skillArray if isSkill is true
@@ -102,34 +99,4 @@ export class SkillLevelOneComponent {
       }
     })
   }
-
-
-  getStudents = (learningOutcomeId: number) => {
-    this.showUserDrower = true;
-    this.levels = [];
-  };
-
-  viewAllSkills(learningOutcomeId: number) {
-    this.router.navigate(['/features/skills-level-two']);
-  }
-
-  toggleFilterSection(section: FilterSection): void {
-    section.expanded = !section.expanded;
-  }
-
-  toggleCheckbox(section: FilterSection, value: string): void {
-    const index = section.selectedOptions.indexOf(value);
-
-    if (index !== -1) {
-      section.selectedOptions.splice(index, 1);
-    } else {
-      section.selectedOptions.push(value);
-    }
-  }
-}
-
-interface FilterSection {
-  title: string;
-  expanded: boolean;
-  selectedOptions: string[];
 }

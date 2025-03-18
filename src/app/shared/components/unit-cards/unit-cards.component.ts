@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Unit } from '../../../core/models/teacher-dashboard-models/units.model';
 import { Lessons } from '../../../core/models/teacher-dashboard-models/lessons.model';
 import { Router } from '@angular/router';
@@ -18,6 +18,7 @@ export class UnitCardsComponent {
   @Input() first: number = 0;
   @Input() rows: number = 0;
   @Input() totalRecords: number = 0;
+  @Output() pageNumber = new EventEmitter<number>();
   
   constructor(private router: Router) {
     if (this.cards.length) {
@@ -25,8 +26,8 @@ export class UnitCardsComponent {
     }
   }
   
-  onPageChange($event: { first: number; rows: number; }) {
-  throw new Error('Method not implemented.');
+  onPageChange($event: number) {
+  this.pageNumber.emit($event)
   }
 
   checkType(card: Unit | Lessons | LessonsCurriculums): 'unit' | 'lesson' | 'curriculum' {

@@ -74,7 +74,7 @@ export const Main_Layout_Routes: Routes = [
               ).then((m) => m.SkillLevelOneComponent),
           },
           {
-            path: 'skills-level-two',
+            path: 'skills-level-two/:domainId',
             data: { title: 'MENU.SKILLS_LEVEL_TWO' },
             loadComponent: () =>
               import(

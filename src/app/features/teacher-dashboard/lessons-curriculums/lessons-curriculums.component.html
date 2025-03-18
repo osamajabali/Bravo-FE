@@ -8,6 +8,6 @@
       <h1 class="page-title">{{ "CURRICULUMS" | translate }}</h1>
     </div>
 
-    <app-lesson-cards [cards]="curriculums"></app-lesson-cards>
+    <app-lesson-cards [cards]="curriculums.curriculums" [showPagination]="true" [rows]="curriculums.pageSize" [first]="1" [totalRecords]="curriculums.totalRecords" (pageNumber)="nextPage($event)"></app-lesson-cards>
   </div>
 </div>

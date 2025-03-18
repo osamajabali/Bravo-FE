@@ -1,10 +1,10 @@
 <div class="units-list">
-  @if (cards.length) { @for (card of cards; track $index) {
+  @if (cards?.length) { @for (card of cards; track $index) {
   <a class="text-decoration-none" role="button" tabindex="0">
     <div class="unit-card">
       <div class="unit-content">
         <h3 class="unit-title">
-          {{ isLesson(card) ? card.lessonName : card.nameArabic }}
+          {{ isLesson(card) ? card.lessonName : card.name }}
         </h3>
         <p class="unit-description">Number of Skills: {{ card.skillsCount }}</p>
       </div>
@@ -35,7 +35,14 @@
       </div>
     </div>
   </a>
-  } } @else {
+
+  }
+  @if(showPagination){
+    <app-pagination [first]="first" [rows]="rows" [totalRecords]="totalRecords" itemLabel="books"
+    (pageChange)="onPageChange($event)"></app-pagination>
+  }
+
+  } @else {
   <!-- Skeleton Loader -->
   @for (_ of [1, 2, 3, 4]; track $index) {
   <div class="card h-100">

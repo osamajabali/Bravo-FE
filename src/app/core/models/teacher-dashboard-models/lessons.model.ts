@@ -7,8 +7,11 @@ export interface Lessons {
     skillsCount: number;
 }
 
-export interface LessonsPagination extends PaginationFilter {
+export class LessonsPagination extends PaginationFilter {
     lessons: Lessons[];
+}
+export class LessonsPayload extends PaginationFilter {
+    unitId: number;
 }
 
 export interface LessonWithActive extends Lessons {
