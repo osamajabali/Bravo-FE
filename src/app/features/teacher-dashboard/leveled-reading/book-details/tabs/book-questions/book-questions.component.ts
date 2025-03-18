@@ -7,6 +7,7 @@ interface Question {
   id: number;
   title: string;
   imageUrl?: string;
+  comprehensionSkill: string;
 }
 
 @Component({
@@ -24,17 +25,20 @@ export class BookQuestionsComponent {
     {
       id: 1,
       title: 'ما هي الشخصيات الرئيسية في القصة وما هي صفاتها؟',
-      imageUrl: 'assets/images/book-image.svg' // Using the same image for demo
+      imageUrl: 'assets/images/book-image.svg',
+      comprehensionSkill: 'Comprehension Skill 1'
     },
     {
       id: 2,
       title: 'ما هو الدرس المستفاد من هذه القصة؟',
-      imageUrl: 'assets/images/book-image.svg'
+      imageUrl: 'assets/images/book-image.svg',
+      comprehensionSkill: 'Comprehension Skill 2'
     },
     {
       id: 3,
       title: 'كيف تغيرت الشخصية الرئيسية من بداية القصة إلى نهايتها؟',
-      imageUrl: 'assets/images/book-image.svg'
+      imageUrl: 'assets/images/book-image.svg',
+      comprehensionSkill: 'Comprehension Skill 3'
     }
   ];
 

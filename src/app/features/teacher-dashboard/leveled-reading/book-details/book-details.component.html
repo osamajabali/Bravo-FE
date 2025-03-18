@@ -1,20 +1,47 @@
 <div class="book-details">
   <div class="header">
-    <div class="buttons">
-      <button
-        pButton
-        label=""
-        class="p-button-outlined show-button"
-      >
-        <span>Quick Assignment</span>
-      </button>
-    </div>
+    <div class="buttons"></div>
   </div>
   <div class="upper-section">
-    <div class="book-info">
-      <div class="subject">Subject</div>
-      <h1 class="title">{{ book.title }}</h1>
+    <div class="book-cover-container">
+      <div class="book-cover">
+        <img [src]="book.coverImage" [alt]="book.title" />
+      </div>
+      <div class="book-info">
+        <div>
+          <div class="subject">Subject</div>
+          <h1 class="title">{{ book.title }}</h1>
+        </div>
+        <div class="buttons">
+          <button
+            pButton
+            label=""
+            class="p-button-primary read-button"
+            (click)="readNow()"
+          >
+            <span>Read</span>
+            <img src="arrow-small-right.svg" alt="arrow" />
+          </button>
+          <button pButton label="" class="p-button-outlined show-button">
+            <span>Hide</span>
+            <img src="icon-eye.svg" alt="hide" />
+          </button>
+          <button pButton label="" class="p-button-outlined show-button">
+            <span>Quick Assignment</span>
+            <img src="icon-plus.svg" alt="arrow-right" />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="quick-stats">
+      <div class="title">Quick Stats</div>
       <div class="summary">
+        <div class="send-assignment">
+          <button pButton label="" class="send-assignment-button">
+            <img src="icon-send.svg" alt="send" />
+            <span>Send as Assignment</span>
+          </button>
+        </div>
         <div class="box outlined">
           <div class="d-flex justify-content-between items-center gap-4">
             <div class="text">Read</div>
@@ -43,16 +70,6 @@
           <div class="number">10</div>
         </div>
       </div>
-      
-    </div>
-    <div class="book-cover">
-      <img [src]="book.coverImage" [alt]="book.title" />
-      <button
-        pButton
-        label="Read Now"
-        class="p-button-primary read-button"
-        (click)="readNow()"
-      ></button>
     </div>
   </div>
 
@@ -72,13 +89,6 @@
       >
         Questions
       </div>
-      <div
-        class="tab"
-        [class.selected]="activeTab === 'comprehension-skills'"
-        (click)="activeTab = 'comprehension-skills'"
-      >
-        Comprehension Skills
-      </div>
     </div>
 
     <div class="tab-content">
@@ -86,46 +96,55 @@
       <app-book-info />
       } @case ('questions') {
       <app-book-questions />
-      } @case ('comprehension-skills') {
-      <app-book-comprehension />
       } }
     </div>
   </div>
 </div>
 
-<p-dialog 
-  [(visible)]="showReader" 
-  [modal]="true" 
-  [style]="{width: '60vw', height: '90vh'}"
+<p-dialog
+  [(visible)]="showReader"
+  [modal]="true"
+  [style]="{ width: '60vw', height: '90vh' }"
   [draggable]="false"
   [resizable]="false"
   [closeOnEscape]="true"
   [showHeader]="false"
 >
-  <p-galleria 
-    [value]="bookPages" 
-    [showItemNavigators]="true"
-    [showThumbnails]="false"
-    [showIndicators]="false"
-    [circular]="true"
-    [responsiveOptions]="responsiveOptions"
-    [containerStyle]="{ 'max-width': '700px', 'margin': 'auto' }"
-    [(activeIndex)]="activeIndex"
-  >
-    <ng-template pTemplate="item" let-item>
-      <img [src]="item.source" [alt]="item.alt" style="width: 100%; height: auto; max-height: 70vh; object-fit: contain;" />
-    </ng-template>
-    <ng-template pTemplate="indicator" let-index>
-      <div class="custom-indicator" [class.active]="activeIndex === index">
-        <span class="page-number">{{ index + 1 }}</span>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="previousitemicon">
-      <img src="arrow-left-gray.svg" alt="">
-    </ng-template>
-    <ng-template pTemplate="nextitemicon">
-      <i class="pi pi-chevron-right custom-nav-icon"></i>
-    </ng-template>
-  </p-galleria>
-  <div class="book-title">{{ book.title }}</div>
+  <div class="book-reader">
+    <div class="book-title">{{ book.title }}</div>
+    <p-galleria
+      [value]="bookPages"
+      [showItemNavigators]="true"
+      [showThumbnails]="false"
+      [showIndicators]="false"
+      [circular]="true"
+      [responsiveOptions]="responsiveOptions"
+      [containerStyle]="{ 'max-width': '700px', margin: 'auto' }"
+      [(activeIndex)]="activeIndex"
+    >
+      <ng-template pTemplate="item" let-item>
+        <img
+          [src]="item.source"
+          [alt]="item.alt"
+          style="
+            width: 100%;
+            height: auto;
+            max-height: 70vh;
+            object-fit: contain;
+          "
+        />
+      </ng-template>
+      <ng-template pTemplate="previousitemicon">
+        <img src="arrow-left-gray.svg" alt="" />
+      </ng-template>
+      <ng-template pTemplate="nextitemicon">
+        <i class="pi pi-chevron-right custom-nav-icon"></i>
+      </ng-template>
+    </p-galleria>
+    <div class="custom-indicator">
+      <span class="page-number"
+        >{{ activeIndex + 1 }}/{{ bookPages.length }}</span
+      >
+    </div>
+  </div>
 </p-dialog>

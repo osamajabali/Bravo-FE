@@ -1,38 +1,40 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FormsModule } from '@angular/forms';
 
 interface Student {
   id: number;
   name: string;
-  booksCount: number;
+  level: string;
+  selected?: boolean;
 }
 
 @Component({
   selector: 'app-student-level',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CheckboxModule, FormsModule],
   templateUrl: './student-level.component.html',
   styleUrl: './student-level.component.scss'
 })
 export class StudentLevelComponent {
-
-  ngOnInit() {
-  }
+  selectedHighAchievers: number[] = [];
+  selectedLowAchievers: number[] = [];
 
   highAchievers: Student[] = [
-    { id: 1, name: 'Ahmed Mohammed', booksCount: 15 },
-    { id: 2, name: 'Sara Ali', booksCount: 12 },
-    { id: 3, name: 'Omar Hassan', booksCount: 14 },
-    { id: 4, name: 'Fatima Ibrahim', booksCount: 13 },
-    { id: 5, name: 'Youssef Ahmad', booksCount: 11 }
+    { id: 1, name: 'Ahmed Mohammed', level: 'Level 1', selected: false },
+    { id: 2, name: 'Sara Ali', level: 'Level 2', selected: false },
+    { id: 3, name: 'Omar Hassan', level: 'Level 3', selected: false },
+    { id: 4, name: 'Fatima Ibrahim', level: 'Level 4', selected: false },
+    { id: 5, name: 'Youssef Ahmad', level: 'Level 5', selected: false }
   ];
 
   lowAchievers: Student[] = [
-    { id: 1, name: 'Layla Mahmoud', booksCount: 3 },
-    { id: 2, name: 'Karim Samir', booksCount: 4 },
-    { id: 3, name: 'Nour Hasan', booksCount: 2 },
-    { id: 4, name: 'Zainab Ali', booksCount: 5 },
-    { id: 5, name: 'Mohammed Khaled', booksCount: 3 }
+    { id: 1, name: 'Layla Mahmoud', level: 'Level 1', selected: false },
+    { id: 2, name: 'Karim Samir', level: 'Level 2', selected: false },
+    { id: 3, name: 'Nour Hasan', level: 'Level 3', selected: false },
+    { id: 4, name: 'Zainab Ali', level: 'Level 4', selected: false },
+    { id: 5, name: 'Mohammed Khaled', level: 'Level 5', selected: false }
   ];
 
   getInitials(name: string): string {
@@ -41,5 +43,22 @@ export class StudentLevelComponent {
       .map(part => part[0])
       .join('')
       .toUpperCase();
+  }
+
+  onStudentSelect(student: Student, isHighAchiever: boolean): void {
+    const selectedArray = isHighAchiever ? this.selectedHighAchievers : this.selectedLowAchievers;
+    
+    if (student.selected) {
+      selectedArray.push(student.id);
+    } else {
+      const index = selectedArray.indexOf(student.id);
+      if (index > -1) {
+        selectedArray.splice(index, 1);
+      }
+    }
+  }
+
+  get selectedStudentsCount(): number {
+    return this.selectedHighAchievers.length + this.selectedLowAchievers.length;
   }
 } 

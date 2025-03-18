@@ -1,3 +1,21 @@
+.empty-space {
+  width: 150px;
+}
+
+.title {
+  font-size: var(--font-size-s);
+  color: var(--neutral-grey-900);
+  font-weight: var(--font-weight-bold);
+  width: 50%;
+}
+
+.comprehension-skills {
+  font-size: var(--font-size-s);
+  color: var(--neutral-grey-900);
+  font-weight: var(--font-weight-bold);
+  width: 50%;
+}
+
 .questions-list {
   padding: var(--padding-m);
   display: flex;
@@ -20,6 +38,7 @@
     }
 
     .question-title {
+      width: 50%;
       font-size: var(--font-size-s);
       color: var(--primary-primary-900);
       font-weight: var(--font-weight-bold);
@@ -27,8 +46,31 @@
       margin-right: var(--padding-m);
     }
 
+    .question-comprehension-skill {
+      width: 50%;
+      font-size: var(--font-size-s);
+      color: var(--primary-primary-900);
+    }
+
     button {
       min-width: 150px;
+    }
+
+    &.questions-header {
+      padding: 0 var(--padding-m);
+      border: none;
+
+      .question-title,
+      .question-comprehension-skill {
+        font-size: var(--font-size-s);
+        color: var(--neutral-grey-900);
+        font-weight: var(--font-weight-bold);
+      }
+
+      &:hover {
+        transform: translateY(0);
+        box-shadow: none;
+      }
     }
   }
 }

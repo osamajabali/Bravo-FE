@@ -1,5 +1,5 @@
 <div class="book-info-grid">
-  <!-- First Row - Highlighted -->
+  <!-- First Row - Highlighted Boxes -->
   <div class="info-box highlighted">
     <div class="title">Literary Type</div>
     <div class="d-flex justify-content-between">
@@ -22,7 +22,19 @@
     </div>
   </div>
 
-  <!-- Second Row -->
+  <!-- Regular Info Boxes -->
+  <div class="info-box">
+    <div class="title">Main Level</div>
+    <div class="value">{{ bookDetails.mainLevel }}</div>
+  </div>
+  <div class="info-box">
+    <div class="title">Sub Level</div>
+    <div class="value">{{ bookDetails.subLevel }}</div>
+  </div>
+  <div class="info-box">
+    <div class="title">Age Group</div>
+    <div class="value">{{ bookDetails.ageGroup }}</div>
+  </div>
   <div class="info-box">
     <div class="title">Author Name</div>
     <div class="value">{{ bookDetails.authorName }}</div>
@@ -35,8 +47,6 @@
     <div class="title">Illustrator</div>
     <div class="value">{{ bookDetails.illustrator }}</div>
   </div>
-
-  <!-- Third Row -->
   <div class="info-box">
     <div class="title">Hub</div>
     <div class="value">{{ bookDetails.hub }}</div>
@@ -49,18 +59,64 @@
     <div class="title">IB Learner Profile</div>
     <div class="value">{{ bookDetails.ibLearnerProfile }}</div>
   </div>
+</div>
 
-  <!-- Fourth Row -->
-  <div class="info-box">
-    <div class="title">Age Group</div>
-    <div class="value">{{ bookDetails.ageGroup }}</div>
+<div class="worksheet-section">
+  <div class="section-header">
+    <h3 class="section-title">Upload Work Sheet</h3>
+    <input
+      type="file"
+      #fileInput
+      (change)="onFileSelected($event)"
+      accept=".pdf,.doc,.docx,.xls,.xlsx"
+      style="display: none"
+    />
+    <button pButton class="p-button-outlined show-button" (click)="fileInput.click()">
+      <img src="icon-plus.svg" alt="plus" />
+      <span>Upload File</span>
+    </button>
   </div>
-  <div class="info-box">
-    <div class="title">Main Level</div>
-    <div class="value">{{ bookDetails.mainLevel }}</div>
+
+  <p-toast position="top-right"></p-toast>
+
+  <div class="worksheet-grid">
+    <div class="grid-header">
+      <div class="column-name">File Name</div>
+      <div class="column-name">Upload Date</div>
+      <div class="column-name">Size</div>
+      <div class="column-actions"></div>
+    </div>
+    <div class="grid-body">
+      @for (file of uploadedFiles; track file.name) {
+      <div class="grid-row">
+        <div class="column-data">
+          <img [src]="getFileIcon(file)" [alt]="file.type || 'file'" />
+          {{ file.name }}
+        </div>
+        <div class="column-data">{{ file.uploadDate }}</div>
+        <div class="column-data">{{ file.size }}</div>
+        <div class="column-actions">
+          <img
+            src="icon-download.svg"
+            alt="download"
+            (click)="downloadFile(file)"
+          />
+          <img
+            src="icon-trash-red.svg"
+            alt="trash"
+            (click)="deleteFile(file)"
+          />
+        </div>
+      </div>
+      }
+    </div>
   </div>
-  <div class="info-box">
-    <div class="title">Sub Level</div>
-    <div class="value">{{ bookDetails.subLevel }}</div>
+
+  <div class="grid-footer">
+    <div class="total-files">Total Files: {{ numberOfUploadedFiles }}</div>
+    <div class="upload-status">
+      <img src="icon-verified.svg" alt="check" />
+      All files uploaded successfully
+    </div>
   </div>
 </div>

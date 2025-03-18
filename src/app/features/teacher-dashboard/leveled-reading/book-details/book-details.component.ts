@@ -7,7 +7,6 @@ import { GalleriaModule } from 'primeng/galleria';
 import { MenuItem } from 'primeng/api';
 import { BookInfoComponent } from './tabs/book-info/book-info.component';
 import { BookQuestionsComponent } from './tabs/book-questions/book-questions.component';
-import { BookComprehensionComponent } from './tabs/book-comprehension/book-comprehension.component';
 
 interface BookDetail {
   subject: string;
@@ -25,8 +24,7 @@ interface BookDetail {
     DialogModule,
     GalleriaModule,
     BookInfoComponent,
-    BookQuestionsComponent,
-    BookComprehensionComponent
+    BookQuestionsComponent
   ],
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.scss'

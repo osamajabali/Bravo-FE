@@ -9,27 +9,46 @@
       styleClass="level-dropdown"
     >
     </p-dropdown>
+    <div class="search-container">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          placeholder="Search"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange()"
+          class="search-input"
+        />
+      </span>
+    </div>
   </div>
 
   <div class="books-list">
     @for (book of books; track book.title) {
-      <div class="book-item">
-        <div class="book-title">{{ book.title }}</div>
-        <div class="book-buttons">
-          <div class="icon">
-            <img src="icon-quora.svg" alt="qoura">
-          </div>
-          <div class="icon">
-            <img src="icon-multiple-users.svg" alt="multiple users">
-          </div>
-          <button 
-          pButton 
-          label="View Book" 
-          class="p-button-primary"
-          (click)="viewBook(book)"
-        ></button>
+    <div class="book-item">
+      <div class="book-title">{{ book.title }}</div>
+      <div class="book-buttons">
+        <div class="icon">
+          <img src="icon-book.svg" alt="book" />
+          <span class="text">Show Criteria</span>
         </div>
+        <div class="icon">
+          <img src="icon-multiple-users.svg" alt="multiple users" />
+          <span class="text">23 Students</span>
+        </div>
+        <div class="icon assignment-icon">
+          <img src="icon-plus.svg" alt="plus" />
+          <span class="text">Assignment</span>
+        </div>
+        <button
+          pButton
+          label="View Books"
+          class="p-button-primary"
+          (click)="viewBooks(book)"
+        ></button>
       </div>
+    </div>
     }
   </div>
-</div> 
+</div>

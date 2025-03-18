@@ -1,12 +1,32 @@
 .student-level {
   padding: var(--padding-m);
 
+  .show-button {
+    padding: var(--padding-xs);
+    border-radius: 10px;
+    border: 1px solid var(--primary-primary-900);
+    color: var(--primary-primary-900);
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-bold);
+
+    &:hover {
+      background-color: var(--primary-primary-100);
+    }
+  }
+
   .sections-container {
-    display: flex;
-    gap: var(--padding-xl);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--padding-m);
+
+    @media screen and (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
 
     .section {
-      flex: 1;
+      background-color: var(--neutral-white);
+      border-radius: 8px;
+      padding: var(--padding-m);
 
       .section-title {
         display: flex;
@@ -14,7 +34,6 @@
         gap: var(--padding-s);
         font-size: var(--font-size-m);
         color: var(--primary-primary-900);
-        font-weight: var(--font-weight-bold);
         margin-bottom: var(--padding-m);
       }
 
@@ -23,59 +42,80 @@
         flex-direction: column;
         gap: var(--padding-s);
 
+        &.low-achievers {
+          .student-avatar {
+            background-color: var(--error-error-100);
+            color: var(--error-error-500);
+          }
+        }
+
         .student-row {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: var(--padding-s) var(--padding-m);
-          background-color: var(--neutral-grey-25);
+          padding: var(--padding-s);
           border-radius: 8px;
+          background-color: var(--neutral-grey-25);
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: var(--neutral-grey-50);
+          }
 
           .student-info {
             display: flex;
             align-items: center;
-            gap: var(--padding-m);
+            gap: var(--padding-s);
 
-            .student-index {
-              font-size: var(--font-size-s);
-              color: var(--primary-primary-500);
-              min-width: 20px;
-              font-weight: var(--font-weight-bold);
+            ::ng-deep {
+              .p-checkbox {
+                width: 20px;
+                height: 20px;
+
+                .p-checkbox-box {
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 4px;
+                  border: 2px solid var(--neutral-grey-300);
+
+                  &.p-highlight {
+                    border-color: var(--primary-primary-500);
+                    background-color: var(--primary-primary-500);
+                  }
+
+                  .p-checkbox-icon {
+                    font-size: 12px;
+                  }
+                }
+              }
             }
 
             .student-avatar {
-              width: 40px;
-              height: 40px;
+              width: 32px;
+              height: 32px;
               border-radius: 50%;
               background-color: var(--primary-primary-100);
-              color: var(--primary-primary-900);
+              color: var(--primary-primary-500);
               display: flex;
               align-items: center;
               justify-content: center;
-              font-size: var(--font-size-s);
+              font-size: var(--font-size-xs);
               font-weight: var(--font-weight-bold);
             }
 
             .student-name {
-              font-size: var(--font-size-xs);
-              color: #565656;
+              font-size: var(--font-size-s);
+              color: var(--primary-primary-900);
             }
           }
 
-          .books-count {
+          .books-level {
             font-size: var(--font-size-s);
             color: var(--primary-primary-900);
+            background-color: var(--primary-primary-200);
+            padding: var(--padding-xs);
+            border-radius: 10px;
             font-weight: var(--font-weight-bold);
-          }
-        }
-
-        &.low-achievers {
-          padding: var(--padding-s);
-          border: 1px solid var(--neutral-grey-200);
-          border-radius: 10px;
-
-          .student-index {
-            color: var(--colors-negative-red-40) !important;
           }
         }
       }
