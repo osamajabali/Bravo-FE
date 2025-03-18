@@ -23,7 +23,6 @@ import { HeaderService } from '../../../core/services/header-services/header.ser
 import { SkillsCardsComponent } from "../../../shared/components/skills-cards/skills-cards.component";
 import { LessonCardsComponent } from "../../../shared/components/lesson-cards/lesson-cards.component";
 import { SharedService } from '../../../core/services/shared-services/shared.service';
-import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
 
 @Component({
   selector: 'app-skill-level-one',
@@ -63,17 +62,11 @@ export class SkillLevelOneComponent implements OnInit{
   levels: Level[] = [];
   skillToActivate: SingleSkill | null = null;
   router: Router = inject(Router);
+  skillCurriculum: import("c:/Users/osama/Desktop/bravo-FE/src/app/core/models/teacher-dashboard-models/skill-curriculum.model").SkillCurriculum[];
+  skillArray: any[] = [];
+  curriculumArray: any[] = [];
 
-  skillCurriculum: SkillCurriculum[] = [];
-  skillArray: any;
-  curriculumArray: any;
-
-  constructor(
-    private statsService: StatsService,
-    private headerService: HeaderService,
-    private route: ActivatedRoute,
-    private sharedService : SharedService
-  ) {}
+  constructor(private statsService: StatsService, private headerService: HeaderService, private route: ActivatedRoute, private sharedService : SharedService) { }
 
   ngOnInit(): void {
     this.sharedService.nextRoute = this.nextRoute;
@@ -87,7 +80,7 @@ export class SkillLevelOneComponent implements OnInit{
   }
 
   getSkills() {
-    this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe(params => {
       this.domainId = parseInt(params.get('domainId') || '0');
       console.log('domainId:', this.domainId);
       this.domainSkillsRequest.domainId = this.domainId;
