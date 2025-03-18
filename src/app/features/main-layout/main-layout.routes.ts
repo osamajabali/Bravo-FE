@@ -66,6 +66,14 @@ export const Main_Layout_Routes: Routes = [
               ).then((m) => m.LeveledReadingComponent),
           },
           {
+            path: 'leveled-reading/books-grid',
+            data: { title: 'MENU.LEVELED_READING' },
+            loadComponent: () =>
+              import(
+                '../teacher-dashboard/leveled-reading/books-grid/books-grid.component'
+              ).then((m) => m.BooksGridComponent),
+          },
+          {
             path: 'skills-level-one/:domainId',
             data: { title: 'MENU.SKILLS_LEVEL_ONE' },
             loadComponent: () =>

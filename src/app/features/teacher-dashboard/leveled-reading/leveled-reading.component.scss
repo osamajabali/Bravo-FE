@@ -3,8 +3,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--padding-xl) var(--padding-m);
-    margin-bottom: var(--padding-m);
+    padding: var(--padding-m) 0 0;
+    margin: var(--padding-2xl) 0;
     border-bottom: 1px solid var(--neutral-grey-200);
 
     .tabs {
@@ -12,20 +12,16 @@
 
       .tab {
         height: 17px;
-        padding: 0 var(--padding-m);
+        padding: var(--padding-xl);
         text-align: center;
         color: var(--neutral-grey-600);
         font-size: var(--font-size-xs);
         cursor: pointer;
 
-        &:nth-child(1) {
-          border-right: 1px solid var(--primary-primary-900);
-          padding-left: 0;
-        }
-
         &.selected {
           color: var(--primary-primary-900);
-          text-decoration: underline;
+          font-weight: var(--font-weight-bold);
+          border-bottom: 2px solid var(--primary-primary-900);
         }
       }
     }

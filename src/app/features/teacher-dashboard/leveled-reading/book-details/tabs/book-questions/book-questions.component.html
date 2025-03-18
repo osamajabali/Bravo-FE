@@ -1,7 +1,13 @@
 <div class="questions-list">
+  <div class="question-item questions-header">
+    <div class="question-title">{{ questions.length }} Questions</div>
+    <div class="question-comprehension-skill">Comprehension Skills</div>
+    <div class="empty-space"></div>
+  </div>
   @for (question of questions; track question.id) {
     <div class="question-item">
       <div class="question-title">{{ question.title }}</div>
+      <div class="question-comprehension-skill">{{ question.comprehensionSkill }}</div>
       <button 
         pButton 
         label="View Question" 

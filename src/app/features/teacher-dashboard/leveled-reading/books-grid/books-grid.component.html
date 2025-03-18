@@ -1,0 +1,56 @@
+<app-leveled-book-summary [data]="bookSummaryData"></app-leveled-book-summary>
+<div class="books-grid">
+  <div class="grid-header">
+    <div class="header-cell">Book</div>
+    <div class="header-cell">Title</div>
+    <div class="header-cell">Author Name</div>
+    <div class="header-cell">Status</div>
+    <div class="header-cell">No. of Pages</div>
+    <div class="header-cell">Actions</div>
+  </div>
+
+  <div class="grid-body">
+    @for (book of books; track book.id) {
+    <div class="grid-row" [class.disabled]="book.isDisabled">
+      <div class="grid-cell book-image">
+        <img [src]="book.image" [alt]="book.title" />
+      </div>
+      <div class="grid-cell book-title">{{ book.title }}</div>
+      <div class="grid-cell author-name">{{ book.authorName }}</div>
+      <div class="grid-cell status">
+        <span class="status-badge" [class.disabled]="book.isDisabled">
+          {{ book.status }}
+        </span>
+      </div>
+      <div class="grid-cell pages">{{ book.numberOfPages }}</div>
+      <div class="grid-cell actions">
+        <button
+          pButton
+          label=""
+          class="p-button-outlined"
+          [disabled]="book.isDisabled"
+          (click)="sendAssignment(book.id)"
+        >
+          <span>Send Assignment</span>
+          <img src="icon-assignment-dark.svg" alt="Assignment" />
+        </button>
+        <button
+          pButton
+          label="View"
+          class="p-button-primary"
+          [disabled]="book.isDisabled"
+          (click)="viewBook(book.id)"
+        ></button>
+      </div>
+    </div>
+    }
+  </div>
+
+  <app-pagination
+    [first]="first"
+    [rows]="rows"
+    [totalRecords]="books.length"
+    itemLabel="books"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
+</div> 
