@@ -20,7 +20,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { StatsService } from '../../../core/services/teacher-dashboard-services/stats.service';
 import { DomainRequest } from '../../../core/models/teacher-dashboard-models/stats.model';
 import { HeaderService } from '../../../core/services/header-services/header.service';
-
+import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
 @Component({
   selector: 'app-skill-level-one',
   imports: [
@@ -60,11 +60,15 @@ export class SkillLevelOneComponent {
   levels: Level[] = [];
   skillToActivate: SingleSkill | null = null;
   router: Router = inject(Router);
-  skillCurriculum: import("c:/Users/osama/Desktop/bravo-FE/src/app/core/models/teacher-dashboard-models/skill-curriculum.model").SkillCurriculum[];
+  skillCurriculum: SkillCurriculum[] = [];
   skillArray: any;
   curriculumArray: any;
 
-  constructor(private statsService: StatsService, private headerService: HeaderService, private route: ActivatedRoute) { }
+  constructor(
+    private statsService: StatsService,
+    private headerService: HeaderService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.getSkills();
@@ -83,26 +87,28 @@ export class SkillLevelOneComponent {
   }
 
   getSkills() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       this.domainId = parseInt(params.get('domainId') || '0');
       console.log('domainId:', this.domainId);
     });
-    this.domainSkillsRequest.courseSectionId = this.headerService.selectedSectionId;
+    this.domainSkillsRequest.courseSectionId =
+      this.headerService.selectedSectionId;
     this.domainSkillsRequest.domainId = this.domainId;
-    this.statsService.getDomainSkills(this.domainSkillsRequest).subscribe(res => {
-      if (res.success) {
-        this.skillCurriculum = res.result;
-        this.skillCurriculum.forEach(item => {
-          if (item.isSkill) {
-            this.skillArray.push(item); // Add to skillArray if isSkill is true
-          } else {
-            this.curriculumArray.push(item); // Add to curriculumArray if isSkill is false
-          }
-        })
-      }
-    })
+    this.statsService
+      .getDomainSkills(this.domainSkillsRequest)
+      .subscribe((res) => {
+        if (res.success) {
+          this.skillCurriculum = res.result;
+          this.skillCurriculum.forEach((item) => {
+            if (item.isSkill) {
+              this.skillArray.push(item); // Add to skillArray if isSkill is true
+            } else {
+              this.curriculumArray.push(item); // Add to curriculumArray if isSkill is false
+            }
+          });
+        }
+      });
   }
-
 
   getStudents = (learningOutcomeId: number) => {
     this.showUserDrower = true;
