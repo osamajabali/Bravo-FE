@@ -17,22 +17,22 @@ export class LearningOutcomesService {
   constructor(private apiHlpr: HttpService, private sharedService : SharedService) { }
 
   getUnits = (unitPayload : UnitPayload) : Observable<Result<UnitsPagination>> => {
-    return this.apiHlpr.post<Result<UnitsPagination>>(`learning-outcomes/units`, unitPayload);
+    return this.apiHlpr.post<Result<UnitsPagination>>(`learning-outcomes/semesters/units`, unitPayload);
   }
 
   getUnitsLessons = (id : number) : Observable<Result<LessonsPagination>> => {
-    return this.apiHlpr.post<Result<LessonsPagination>>(`learning-outcomes/units/lessons`, {unitId : id, pageSize : this.sharedService.pagination.pageSize});
+    return this.apiHlpr.post<Result<LessonsPagination>>(`learning-outcomes/semesters/units/lessons`, {unitId : id, pageSize : this.sharedService.pagination.pageSize});
   }
 
   lessonsCurriculums = (id : number) : Observable<Result<LessonsCurriculumsPagination>> => {
-    return this.apiHlpr.post<Result<LessonsCurriculumsPagination>>(`learning-outcomes/units/lessons/curriculums`, {lessonId  : id, pageSize : this.sharedService.pagination.pageSize});
+    return this.apiHlpr.post<Result<LessonsCurriculumsPagination>>(`learning-outcomes/semesters/units/lessons/curriculums`, {lessonId  : id, pageSize : this.sharedService.pagination.pageSize});
   }
 
   lessonsCurriculumsSkills = (courseSectionId : number , domainId : number ,curriculumLearningOutcomeId : number ) : Observable<Result<SingleSkillPagination>> => {
-    return this.apiHlpr.post<Result<SingleSkillPagination>>(`learning-outcomes/units/lessons/curriculums/skills`, {courseSectionId : courseSectionId , domainId : domainId , curriculumLearningOutcomeId : curriculumLearningOutcomeId , pageSize : this.sharedService.pagination.pageSize});
+    return this.apiHlpr.post<Result<SingleSkillPagination>>(`learning-outcomes/semesters/units/lessons/curriculums/skills`, {courseSectionId : courseSectionId , domainId : domainId , curriculumLearningOutcomeId : curriculumLearningOutcomeId , pageSize : this.sharedService.pagination.pageSize});
   }
 
   getStudents = (courseSectionId : number , learningOutcomeId : number ) : Observable<Result<LevelPagination>> => {
-    return this.apiHlpr.post<Result<LevelPagination>>(`learning-outcomes/units/lessons/curriculums/skills/students`, {courseSectionId : courseSectionId , learningOutcomeId : learningOutcomeId });
+    return this.apiHlpr.post<Result<LevelPagination>>(`learning-outcomes/semesters/units/lessons/curriculums/skills/students`, {courseSectionId : courseSectionId , learningOutcomeId : learningOutcomeId });
   }
 }

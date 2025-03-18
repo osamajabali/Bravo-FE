@@ -4,6 +4,7 @@ export interface LessonsCurriculums {
   curriculumLearningOutcomeId: number;
   nameArabic: string;
   lessonName?: string;
+  skillsCount: number;
 }
 
 export interface LessonsCurriculumsPagination extends PaginationFilter {

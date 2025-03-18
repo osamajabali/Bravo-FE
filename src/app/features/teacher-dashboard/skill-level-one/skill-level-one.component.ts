@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ButtonModule } from 'primeng/button';
@@ -17,6 +17,9 @@ import { SingleSkill } from '../../../core/models/teacher-dashboard-models/singl
 import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
 import { SkillActivationModalComponent } from '../../../shared/components/skill-activation-modal/skill-activation-modal.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { StatsService } from '../../../core/services/teacher-dashboard-services/stats.service';
+import { DomainRequest } from '../../../core/models/teacher-dashboard-models/stats.model';
+import { HeaderService } from '../../../core/services/header-services/header.service';
 
 @Component({
   selector: 'app-skill-level-one',
@@ -38,34 +41,13 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './skill-level-one.component.scss',
 })
 export class SkillLevelOneComponent {
-  skills: SingleSkill[] = [
-    {
-      learningOutcomeId: 1,
-      learningOutcomeDisplayName: 'Basic Math',
-      noOfStudentsEasy: 10,
-      noOfStudentsMedium: 20,
-      noOfStudentsHard: 15,
-      isActive: true,
-      activationDate: '2024-01-01',
-      isSkill: true,
-      numberOfSkills: 10,
-    },
-    {
-      learningOutcomeId: 2,
-      learningOutcomeDisplayName: 'Advanced Math',
-      noOfStudentsEasy: 5,
-      noOfStudentsMedium: 10,
-      noOfStudentsHard: 8,
-      isActive: false,
-      activationDate: '2024-01-02',
-      isSkill: true,
-    },
-  ];
+  skills: SingleSkill[] = [];
   curriculumId: number | null = null;
   activateSkill: boolean = false;
   showUserDrower: boolean = false;
   showSmartBoard: boolean = false;
   currentSkillUsers: any = null;
+  domainSkillsRequest: DomainRequest = new DomainRequest();
   private refreshSubscription!: Subscription;
 
   skillSummaryData: SkillSummaryData = {
@@ -75,53 +57,17 @@ export class SkillLevelOneComponent {
     timeSpent: 10,
   };
   domainId: number = 1;
-  levels: Level[] = [
-    {
-      levelId: 1,
-      levelName: 'Beginner',
-      studentsOfLevel: [
-        {
-          studentName: 'John Doe',
-          currentLevelId: 1,
-          isMastered: false,
-          isInProgress: true,
-        },
-        {
-          studentName: 'Jane Smith',
-          currentLevelId: 1,
-          isMastered: false,
-          isInProgress: true,
-        },
-      ],
-    },
-    {
-      levelId: 2,
-      levelName: 'Intermediate',
-      studentsOfLevel: [
-        {
-          studentName: 'Bob Wilson',
-          currentLevelId: 2,
-          isMastered: false,
-          isInProgress: true,
-        },
-        {
-          studentName: 'Alice Brown',
-          currentLevelId: 2,
-          isMastered: false,
-          isInProgress: true,
-        },
-      ],
-    },
-  ];
+  levels: Level[] = [];
   skillToActivate: SingleSkill | null = null;
   router: Router = inject(Router);
+  skillCurriculum: import("c:/Users/osama/Desktop/bravo-FE/src/app/core/models/teacher-dashboard-models/skill-curriculum.model").SkillCurriculum[];
+  skillArray: any;
+  curriculumArray: any;
 
-  constructor() {}
+  constructor(private statsService: StatsService, private headerService: HeaderService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    // Using hardcoded data, no need for API calls
-    this.domainId = 1;
-    this.curriculumId = 1;
+    this.getSkills();
   }
 
   toggleActive(skill: SingleSkill) {
@@ -132,77 +78,35 @@ export class SkillLevelOneComponent {
   _activateSkill() {
     this.activateSkill = !this.activateSkill;
     if (this.skillToActivate) {
-      this.skillToActivate.isActive = !this.skillToActivate.isActive;
+      this.skillToActivate.isEnabled = !this.skillToActivate.isEnabled;
     }
   }
 
   getSkills() {
-    // Using hardcoded data instead of API call
-    this.skills = [
-      {
-        learningOutcomeId: 1,
-        learningOutcomeDisplayName: 'Basic Math',
-        noOfStudentsEasy: 10,
-        noOfStudentsMedium: 20,
-        noOfStudentsHard: 15,
-        isActive: true,
-        activationDate: '2024-01-01',
-        isSkill: true,
-      },
-      {
-        learningOutcomeId: 2,
-        learningOutcomeDisplayName: 'Advanced Math',
-        noOfStudentsEasy: 5,
-        noOfStudentsMedium: 10,
-        noOfStudentsHard: 8,
-        isActive: false,
-        activationDate: '2024-01-02',
-        isSkill: true,
-      },
-    ];
+    this.route.paramMap.subscribe(params => {
+      this.domainId = parseInt(params.get('domainId') || '0');
+      console.log('domainId:', this.domainId);
+    });
+    this.domainSkillsRequest.courseSectionId = this.headerService.selectedSectionId;
+    this.domainSkillsRequest.domainId = this.domainId;
+    this.statsService.getDomainSkills(this.domainSkillsRequest).subscribe(res => {
+      if (res.success) {
+        this.skillCurriculum = res.result;
+        this.skillCurriculum.forEach(item => {
+          if (item.isSkill) {
+            this.skillArray.push(item); // Add to skillArray if isSkill is true
+          } else {
+            this.curriculumArray.push(item); // Add to curriculumArray if isSkill is false
+          }
+        })
+      }
+    })
   }
 
+
   getStudents = (learningOutcomeId: number) => {
-    // Using hardcoded data instead of API call
     this.showUserDrower = true;
-    this.levels = [
-      {
-        levelId: 1,
-        levelName: 'Beginner',
-        studentsOfLevel: [
-          {
-            studentName: 'John Doe',
-            currentLevelId: 1,
-            isMastered: false,
-            isInProgress: true,
-          },
-          {
-            studentName: 'Jane Smith',
-            currentLevelId: 1,
-            isMastered: false,
-            isInProgress: true,
-          },
-        ],
-      },
-      {
-        levelId: 2,
-        levelName: 'Intermediate',
-        studentsOfLevel: [
-          {
-            studentName: 'Bob Wilson',
-            currentLevelId: 2,
-            isMastered: false,
-            isInProgress: true,
-          },
-          {
-            studentName: 'Alice Brown',
-            currentLevelId: 2,
-            isMastered: false,
-            isInProgress: true,
-          },
-        ],
-      },
-    ];
+    this.levels = [];
   };
 
   viewAllSkills(learningOutcomeId: number) {

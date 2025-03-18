@@ -48,16 +48,16 @@
             <div class="custom-radio-container">
               <div
                 class="custom-radio"
-                [class.active]="skill.isActive"
+                [class.active]="skill.isEnabled"
                 (click)="toggleActive(skill)"
               >
-                <div class="radio-content" [class.reverse]="!skill.isActive">
+                <div class="radio-content" [class.reverse]="!skill.isEnabled">
                   <span class="status-text">{{
-                    skill.isActive ? "ACTIVE" : "OFF"
+                    skill.isEnabled ? "ACTIVE" : "OFF"
                   }}</span>
                   <img
                     [src]="
-                      skill.isActive
+                      skill.isEnabled
                         ? 'icon-radio-checked.svg'
                         : 'icon-radio-unchecked.svg'
                     "
@@ -65,9 +65,9 @@
                   />
                 </div>
               </div>
+              <!-- <div class="skill-status">{{skill.activationDate }}</div> -->
             </div>
           </div>
-          <!-- <div class="skill-status">{{skill.activationDate | date :'dd/MM/yyyy' }}</div> -->
         </div>
       </div>
       }

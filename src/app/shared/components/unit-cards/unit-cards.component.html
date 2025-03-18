@@ -1,20 +1,15 @@
 <div class="units-list">
   @if (cards.length) { @for (card of cards; track $index) {
-  <a
-    class="text-decoration-none"
-    role="button"
-    tabindex="0"
-    (click)="clickedCard(card)"
-  >
+  <a class="text-decoration-none" role="button" tabindex="0" (click)="clickedCard(card)">
     <div class="unit-card">
       <div class="unit-content">
         <h3 class="unit-title">
           {{
-            isUnit(card)
-              ? card.unitLabelName
-              : isLesson(card)
-              ? card.lessonName
-              : card.nameArabic
+          isUnit(card)
+          ? card.unitLabelName
+          : isLesson(card)
+          ? card.lessonName
+          : card.nameArabic
           }}
         </h3>
         @if (isUnit(card)) {
@@ -26,30 +21,21 @@
       </div>
     </div>
   </a>
-  } } @else {
+  }
+  <app-pagination [first]="first" [rows]="rows" [totalRecords]="totalRecords" itemLabel="books" (pageChange)="onPageChange($event)"></app-pagination>
+
+  } @else {
   <!-- Skeleton Loader -->
   @for (_ of [1, 2, 3, 4]; track $index) {
   <div class="card h-100">
     <div class="card-body d-flex justify-content-between align-items-center">
       <div>
-        <app-skeleton
-          [circles]="0"
-          [squares]="1"
-          [rectangles]="0"
-        ></app-skeleton>
+        <app-skeleton [circles]="0" [squares]="1" [rectangles]="0"></app-skeleton>
         <div class="my-2">
-          <app-skeleton
-            [circles]="0"
-            [squares]="0"
-            [rectangles]="1"
-          ></app-skeleton>
+          <app-skeleton [circles]="0" [squares]="0" [rectangles]="1"></app-skeleton>
         </div>
       </div>
-      <app-skeleton
-        [smallCircles]="1"
-        [squares]="0"
-        [rectangles]="0"
-      ></app-skeleton>
+      <app-skeleton [smallCircles]="1" [squares]="0" [rectangles]="0"></app-skeleton>
     </div>
   </div>
   } }

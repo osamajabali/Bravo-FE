@@ -76,6 +76,8 @@
               ]"
               [isSkills]="true"
               [labels]="pieChartLabels"
+              [activeCount]="isSkill(item) ? item.activated : item.activeSkills"
+              [inactiveCount]="isSkill(item) ? item.inActive : item.inActiveSkills"
             ></canvas>
           </div>
         </div>

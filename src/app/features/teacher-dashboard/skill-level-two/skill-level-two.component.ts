@@ -45,7 +45,7 @@ export class SkillLevelTwoComponent {
       noOfStudentsEasy: 10,
       noOfStudentsMedium: 20,
       noOfStudentsHard: 15,
-      isActive: true,
+      isEnabled: true,
       activationDate: '2024-01-01',
       isSkill: true,
       numberOfSkills: 10,
@@ -56,7 +56,7 @@ export class SkillLevelTwoComponent {
       noOfStudentsEasy: 5,
       noOfStudentsMedium: 10,
       noOfStudentsHard: 8,
-      isActive: false,
+      isEnabled: false,
       activationDate: '2024-01-02',
       isSkill: true
     }
@@ -112,7 +112,7 @@ export class SkillLevelTwoComponent {
   _activateSkill() {
     this.activateSkill = !this.activateSkill;
     if (this.skillToActivate) {
-      this.skillToActivate.isActive = !this.skillToActivate.isActive;
+      this.skillToActivate.isEnabled = !this.skillToActivate.isEnabled;
     }
   }
 
@@ -125,7 +125,7 @@ export class SkillLevelTwoComponent {
         noOfStudentsEasy: 10,
         noOfStudentsMedium: 20,
         noOfStudentsHard: 15,
-        isActive: true,
+        isEnabled: true,
         activationDate: '2024-01-01',
         isSkill: true
       },
@@ -135,7 +135,7 @@ export class SkillLevelTwoComponent {
         noOfStudentsEasy: 5,
         noOfStudentsMedium: 10,
         noOfStudentsHard: 8,
-        isActive: false,
+        isEnabled: false,
         activationDate: '2024-01-02',
         isSkill: true
       }

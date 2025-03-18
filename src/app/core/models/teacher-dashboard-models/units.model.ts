@@ -13,7 +13,7 @@ export class UnitPayload extends PaginationFilter {
 
 }
 
-export interface UnitsPagination extends PaginationFilter {
+export class UnitsPagination extends PaginationFilter {
   units: Unit[]
 }
 
