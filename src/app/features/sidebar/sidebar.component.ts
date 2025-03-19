@@ -17,7 +17,7 @@ export class SidebarComponent {
 
   menuItems: MenuItem[] = [
     {
-      label: 'MENU.QUICK_ACTIONS',
+      label: 'QUICK_ACTIONS',
       route: RouteNames.QUICK_ACTIONS,
       icon: 'quick-actions'
     },
@@ -33,37 +33,37 @@ export class SidebarComponent {
           icon: 'cubes'
         },
         {
-          label: 'MENU.ALL_SKILLS',
+          label: 'ALL_SKILLS',
           route: RouteNames.ALL_SKILLS,
           icon: 'list'
         }
       ]
     },
     {
-      label: 'MENU.LEARN',
+      label: 'LEARN',
       route: '/ds',
       icon: 'learn',
       expanded: false,
       children: [
         {
-          label: 'MENU.ASSIGNMENTS',
+          label: 'ASSIGNMENTS',
           route: RouteNames.ASSIGNMENTS,
           icon: 'tasks'
         },
         {
-          label: 'MENU.EXAMS',
+          label: 'EXAMS',
           route: RouteNames.EXAMS,
           icon: 'file-alt'
         }
       ]
     },
     {
-      label: 'MENU.STUDENTS',
+      label: 'STUDENTS',
       route: RouteNames.STUDENTS,
       icon: 'students'
     },
     {
-      label: 'MENU.LEVELED_READING',
+      label: 'LEVELED_READING',
       route: '/features/leveled-reading',
       icon: 'leveled-reading'
     },

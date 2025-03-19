@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center my-4">
   <div class="pagination-info">
-    Showing {{ first + 1 }}-{{ Math.min(first + rows, totalRecords) }} of
-    {{ totalRecords }} {{ itemLabel }}
+    {{'SHOWING' | translate}} {{ first ? first : 1 }}-{{ Math.min(first + rows - 1, totalRecords) }} {{'OF' | translate}}
+    {{ totalRecords }} {{ itemLabel  | translate}}
   </div>
   <p-paginator
     [first]="first"

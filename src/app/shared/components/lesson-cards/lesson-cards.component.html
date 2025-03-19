@@ -38,7 +38,7 @@
 
   }
   @if(showPagination){
-    <app-pagination [first]="first" [rows]="rows" [totalRecords]="totalRecords" itemLabel="books"
+    <app-pagination [first]="first" [rows]="rows" [itemLabel]="isLesson(cards[0]) ? 'LESSONS' : 'CURRICULUMS'" [totalRecords]="totalRecords" itemLabel="books"
     (pageChange)="onPageChange($event)"></app-pagination>
   }
 

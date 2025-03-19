@@ -12,6 +12,7 @@ export class LessonsPagination extends PaginationFilter {
 }
 export class LessonsPayload extends PaginationFilter {
     unitId: number;
+    courseSectionId : number;
 }
 
 export interface LessonWithActive extends Lessons {

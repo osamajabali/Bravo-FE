@@ -51,7 +51,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'single-skill/:domainId/:curriculumId',
-            data: { title: 'MENU.SKILLS' },
+            data: { title: 'SKILLS' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/single-skill/single-skill.component'
@@ -59,7 +59,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'leveled-reading',
-            data: { title: 'MENU.LEVELED_READING' },
+            data: { title: 'LEVELED_READING' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/leveled-reading/leveled-reading.component'
@@ -67,7 +67,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'leveled-reading/books-grid',
-            data: { title: 'MENU.LEVELED_READING' },
+            data: { title: 'LEVELED_READING' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/leveled-reading/books-grid/books-grid.component'
@@ -75,7 +75,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'skills-level-one/:domainId',
-            data: { title: 'MENU.SKILLS_LEVEL_ONE' },
+            data: { title: 'SKILLS_LEVEL_ONE' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/skill-level-one/skill-level-one.component'
@@ -83,7 +83,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'skills-level-two/:domainId',
-            data: { title: 'MENU.SKILLS_LEVEL_TWO' },
+            data: { title: 'SKILLS_LEVEL_TWO' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/skill-level-two/skill-level-two.component'
@@ -91,7 +91,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'student-level',
-            data: { title: 'MENU.STUDENT_LEVEL' },
+            data: { title: 'STUDENT_LEVEL' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/student-level/student-level.component'
@@ -99,7 +99,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'reading-criteria',
-            data: { title: 'MENU.READING_CRITERIA' },
+            data: { title: 'READING_CRITERIA' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/reading-criteria/reading-criteria.component'
@@ -107,7 +107,7 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'book-details',
-            data: { title: 'MENU.BOOK_DETAILS' },
+            data: { title: 'BOOK_DETAILS' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/leveled-reading/book-details/book-details.component'

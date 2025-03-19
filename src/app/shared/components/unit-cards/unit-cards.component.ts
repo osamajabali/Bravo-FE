@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { LessonsCurriculums } from '../../../core/models/teacher-dashboard-models/lesson-curriculums.model';
 import { SkeletonComponent } from "../skeleton/skeleton.component";
 import { PaginationComponent } from "../pagination/pagination.component";
+import { PaginatorState } from 'primeng/paginator';
 
 @Component({
   selector: 'app-unit-cards',
@@ -18,7 +19,7 @@ export class UnitCardsComponent {
   @Input() first: number = 0;
   @Input() rows: number = 0;
   @Input() totalRecords: number = 0;
-  @Output() pageNumber = new EventEmitter<number>();
+  @Output() paginatorState = new EventEmitter<PaginatorState>();
   
   constructor(private router: Router) {
     if (this.cards.length) {
@@ -26,8 +27,8 @@ export class UnitCardsComponent {
     }
   }
   
-  onPageChange($event: number) {
-  this.pageNumber.emit($event)
+  onPageChange($event: PaginatorState) {
+  this.paginatorState.emit($event)
   }
 
   checkType(card: Unit | Lessons | LessonsCurriculums): 'unit' | 'lesson' | 'curriculum' {

@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PaginatorModule } from 'primeng/paginator';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-pagination',
   standalone: true,
-  imports: [CommonModule, PaginatorModule],
+  imports: [CommonModule, PaginatorModule, TranslateModule],
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss'],
 })
@@ -15,11 +16,12 @@ export class PaginationComponent {
   @Input() totalRecords: number = 0;
   @Input() itemLabel: string = 'items';
 
-  @Output() pageChange = new EventEmitter<number>();
+  @Output() pageChange = new EventEmitter<PaginatorState>();
 
   protected Math = Math;
 
-  onPageChange(event: any) {
-    this.pageChange.emit(event.page + 1);
+  onPageChange(event: PaginatorState) {
+    event.page += 1
+    this.pageChange.emit(event);
   }
 }

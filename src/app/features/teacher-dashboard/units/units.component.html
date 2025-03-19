@@ -8,6 +8,6 @@
       <h1 class="page-title">{{ "UNITS" | translate }}</h1>
     </div>
 
-    <app-unit-cards [cards]="unitsPagination.units" [first]="1" [rows]="unitsPagination.pageSize" [totalRecords]="unitsPagination.totalRecords" (pageNumber)="nextPage($event)" ></app-unit-cards>
+    <app-unit-cards [cards]="unitsPagination.units" [first]="first" [rows]="unitsPagination.pageSize" [totalRecords]="unitsPagination.totalRecords" (paginatorState)="nextPage($event)" ></app-unit-cards>
   </div>
 </div>

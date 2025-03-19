@@ -171,7 +171,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.selectedSectionId = this.findSelectedId(this.classesData.courseSections, 'courseSectionId');
         this.headerService.selectedSectionId = this.selectedSectionId;
 
-        this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.subjects)}`;
+        this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.courseSections)} , ${this.getSelectedName(this.classesData.subjects)} `;
 
         this.sharedService.triggerRefresh(res);
       })
@@ -189,7 +189,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (!res.success) return;
 
       this.classesData = res.result;
-      this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.subjects)}`;
+      this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.courseSections)} , ${this.getSelectedName(this.classesData.subjects)} `;
     });
   }
 

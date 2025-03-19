@@ -79,14 +79,15 @@ export class DoughnutChartDirective implements OnChanges {
     }
 
     let chartData: number[]; 
-    const backgroundColor = [this.color, '#E0E0E0']; // ✅ Matches `AllSkillsComponent`
+    const backgroundColor = ['#E0E0E0', this.color]; // ✅ Inactive on top (reversed order)
 
     if (this.data.length === 1) {
       const percentage = this.data[0];
-      chartData = [percentage, 100 - percentage];
+      chartData = [100 - percentage, percentage]; // Inactive on top
     } else {
       const totalValue = this.data.reduce((sum, value) => sum + value, 0);
-      chartData = totalValue > 0 ? this.data.map(value => (value / totalValue) * 100) : [100];
+      chartData = totalValue > 0 ? 
+        [((this.inactiveCount / totalValue) * 100), ((this.activeCount / totalValue) * 100)] : [100, 0]; // Inactive on top
     }
 
     // ✅ Explicitly type `options` to avoid `cutout` error
@@ -121,7 +122,7 @@ export class DoughnutChartDirective implements OnChanges {
       type: 'doughnut',
       data: {
         labels: this.isSkills 
-          ? [` ${this.activeCount} Active`, `${this.inactiveCount} Inactive`]
+          ? [`${this.inactiveCount} Inactive`, `${this.activeCount} Active`] // Inactive on top
           : [], // Use active/inactive counts as labels
         datasets: [
           {

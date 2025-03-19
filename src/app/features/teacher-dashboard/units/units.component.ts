@@ -12,6 +12,7 @@ import {
   SkillSummaryData,
 } from '../../../shared/components/skill-summary/skill-summary.component';
 import { ActivatedRoute } from '@angular/router';
+import { PaginatorState } from 'primeng/paginator';
 
 @Component({
   selector: 'app-units',
@@ -35,6 +36,7 @@ export class UnitsComponent implements OnInit, OnDestroy {
   };
   semesterId: number;
   unitPayload: UnitPayload = new UnitPayload();
+  first: number = 1;
 
   constructor(
     private headerService: HeaderService,
@@ -75,8 +77,9 @@ export class UnitsComponent implements OnInit, OnDestroy {
     });
   }
 
-  nextPage($event: number) {
-    this.unitPayload.pageNumber = $event;
+  nextPage($event: PaginatorState) {
+    this.unitPayload.pageNumber = $event.page;
+    this.first = $event.first;
     this.getUnits();
   }
 

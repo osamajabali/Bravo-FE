@@ -6,6 +6,7 @@ import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { SkillActivationModalComponent } from '../skill-activation-modal/skill-activation-modal.component';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { PaginationComponent } from "../pagination/pagination.component";
+import { PaginatorState } from 'primeng/paginator';
 
 @Component({
   selector: 'app-lesson-cards',
@@ -19,7 +20,7 @@ export class LessonCardsComponent implements OnInit {
   @Input() showPagination: boolean;
   @Input() rows: number = 0;
   @Input() totalRecords: number = 0;
-  @Output() pageNumber = new EventEmitter<number>();
+  @Output() paginatorState = new EventEmitter<PaginatorState>();
   activateSkill: boolean = false;
   skillToActivate: LessonWithActive | CurriculumWithActive | null = null;
 
@@ -32,8 +33,8 @@ export class LessonCardsComponent implements OnInit {
 
   }
 
-  onPageChange($event: number) {debugger
-    this.pageNumber.emit($event)
+  onPageChange($event: PaginatorState) {
+    this.paginatorState.emit($event)
   }
 
 

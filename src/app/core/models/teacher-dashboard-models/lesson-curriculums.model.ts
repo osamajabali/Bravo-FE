@@ -14,7 +14,7 @@ export class LessonsCurriculumsPagination extends PaginationFilter {
 }
 
 export class LessonsCurriculumsPayload extends PaginationFilter {
-  leesonId : number ;
+  lessonId : number ;
   courseSectionId : number
 }
 

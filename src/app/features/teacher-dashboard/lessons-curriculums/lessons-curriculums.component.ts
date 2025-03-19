@@ -9,6 +9,7 @@ import {
   SkillSummaryData,
 } from '../../../shared/components/skill-summary/skill-summary.component';
 import { HeaderService } from '../../../core/services/header-services/header.service';
+import { PaginatorState } from 'primeng/paginator';
 @Component({
   selector: 'app-lessons-curriculums',
   imports: [LessonCardsComponent, TranslateModule, SkillSummaryComponent],
@@ -25,6 +26,7 @@ export class LessonsCurriculumsComponent implements OnInit {
     questionSolved: 0,
     timeSpent: 0,
   };
+  first: number;
 
   constructor(
     private learningOutcomesService: LearningOutcomesService,
@@ -39,7 +41,7 @@ export class LessonsCurriculumsComponent implements OnInit {
     });
   }
   getCurriculums() {
-    this.curriculumsPayload.leesonId = this.lessonId;
+    this.curriculumsPayload.lessonId = this.lessonId;
     this.curriculumsPayload.courseSectionId = this.headerService.selectedSectionId;
     this.learningOutcomesService
       .lessonsCurriculums(this.curriculumsPayload)
@@ -50,8 +52,9 @@ export class LessonsCurriculumsComponent implements OnInit {
       });
   }
 
-  nextPage($event: number) {
-    this.curriculumsPayload.pageNumber = $event;
+  nextPage($event: PaginatorState) {
+    this.curriculumsPayload.pageNumber = $event.page;
+    this.first = $event.first
     this.getCurriculums();
   }
 }
