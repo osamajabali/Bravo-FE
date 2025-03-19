@@ -162,6 +162,11 @@
     border-radius: 10px;
     border: 1px solid #d8d8d8;
     margin-bottom: var(--padding-xs);
+
+    .skip-button {
+      border: 1px solid var(--primary-primary-800) !important;
+      padding: var(--padding-xxs) var(--padding-xs) !important;
+    }
   }
 }
 
