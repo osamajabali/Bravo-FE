@@ -5,17 +5,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { SmartBoardComponent } from '../../../shared/components/smart-board/smart-board.component';
-import { UserDrawerComponent } from '../../../shared/components/user-drawer/user-drawer.component';
 import { FormsModule } from '@angular/forms';
 import {
-  SkillSummaryComponent,
   SkillSummaryData,
 } from '../../../shared/components/skill-summary/skill-summary.component';
 import { Subscription } from 'rxjs';
 import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
 import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
-import { SkillActivationModalComponent } from '../../../shared/components/skill-activation-modal/skill-activation-modal.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { LessonCardsComponent } from '../../../shared/components/lesson-cards/lesson-cards.component';
 import { SkillsCardsComponent } from '../../../shared/components/skills-cards/skills-cards.component';
@@ -23,6 +19,7 @@ import { DomainRequest } from '../../../core/models/teacher-dashboard-models/sta
 import { HeaderService } from '../../../core/services/header-services/header.service';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { StatsService } from '../../../core/services/teacher-dashboard-services/stats.service';
+import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
 
 @Component({
   selector: 'app-skill-level-two',
@@ -61,7 +58,7 @@ export class SkillLevelTwoComponent {
    levels: Level[] = [];
    skillToActivate: SingleSkill | null = null;
    router: Router = inject(Router);
-   skillCurriculum: import("c:/Users/osama/Desktop/bravo-FE/src/app/core/models/teacher-dashboard-models/skill-curriculum.model").SkillCurriculum[];
+   skillCurriculum: SkillCurriculum[];
    skillArray: any[] = [];
    curriculumArray: any[] = [];
  
