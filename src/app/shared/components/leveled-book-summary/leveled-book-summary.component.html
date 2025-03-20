@@ -42,18 +42,12 @@
   </div>
 </div>
 
-<!-- filter panel -->
-<p-overlayPanel
-  #filterPanel
-  [showCloseIcon]="false"
-  [dismissable]="true"
-  styleClass="filter-overlay"
->
+<p-popover #filterContent>
   <div class="filter-overlay-content">
-    <!-- Header with title and close button -->
+    <!-- Header with title -->
     <div class="filter-overlay-header">
       <h3 class="filter-overlay-title">Filter Sub Skills</h3>
-      <button class="filter-overlay-close" (click)="filterPanel.hide()">
+      <button class="filter-overlay-close" (click)="filterContent.toggle($event)">
         <i class="pi pi-times"></i>
       </button>
     </div>
@@ -129,4 +123,4 @@
       <button type="button" class="filter-btn filter-btn-apply">Apply</button>
     </div>
   </div>
-</p-overlayPanel>
+</p-popover>

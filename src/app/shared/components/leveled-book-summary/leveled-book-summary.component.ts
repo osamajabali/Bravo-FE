@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PopoverModule } from 'primeng/popover';
+import { CommonModule } from '@angular/common';
 
 interface FilterSection {
   title: string;
@@ -23,7 +23,8 @@ export interface SkillSummaryData {
 
 @Component({
   selector: 'app-leveled-book-summary',
-  imports: [ButtonModule, OverlayPanelModule],
+  standalone: true,
+  imports: [PopoverModule, CommonModule],
   templateUrl: './leveled-book-summary.component.html',
   styleUrl: './leveled-book-summary.component.scss',
 })

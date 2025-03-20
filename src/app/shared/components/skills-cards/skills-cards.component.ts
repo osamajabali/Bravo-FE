@@ -5,7 +5,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PopoverModule } from 'primeng/popover';
 import { Subscription, combineLatest } from 'rxjs';
 import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
 import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
@@ -20,18 +20,19 @@ import { UserDrawerComponent } from '../user-drawer/user-drawer.component';
 
 @Component({
   selector: 'app-skills-cards',
+  standalone: true,
   imports: [
-       CommonModule,
-        RouterModule,
-        FormsModule,
-        InputTextModule,
-        OverlayPanelModule,
-        ButtonModule,
-        DialogModule,
-        UserDrawerComponent,
-        SmartBoardComponent,
-        SkillSummaryComponent,
-        SkillActivationModalComponent,
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    InputTextModule,
+    PopoverModule,
+    ButtonModule,
+    DialogModule,
+    UserDrawerComponent,
+    SmartBoardComponent,
+    SkillSummaryComponent,
+    SkillActivationModalComponent,
   ],
   templateUrl: './skills-cards.component.html',
   styleUrl: './skills-cards.component.scss'
