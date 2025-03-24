@@ -47,6 +47,7 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
     questionSolved: 10,
     timeSpent: 10,
   };
+  sections: import("c:/Users/osama/Desktop/bravo-FE/src/app/core/models/header-models/header.model").Section[];
 
   constructor(
     private learningOutcomesService: LearningOutcomesService,
@@ -64,6 +65,7 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
     ]).subscribe(([params]) => {
       this.domainId = parseInt(params.get('domainId') || '0');
       this.curriculumId = parseInt(params.get('curriculumId') || '0');
+      this.sections = this.headerService.sectionsArray;
       this.getSkills();
     });
   }

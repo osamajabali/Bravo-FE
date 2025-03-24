@@ -4,7 +4,7 @@ export class SingleSkill {
   isEnabled: boolean;
   activationDate: string;
   isSkill: boolean;
-  learningOutcomeDisplayName: string;
+  displayName: string;
   learningOutcomeId: number;
   id?: number;
   noOfStudentsEasy: number;

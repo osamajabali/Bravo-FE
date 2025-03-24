@@ -29,7 +29,7 @@ export class SemestersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    localStorage.setItem('title' , 'SEMESTERS');
+    this.sharedService.pushTitle('SEMESTERS')
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
       this.getStats();
       this.getClasses();
@@ -45,7 +45,7 @@ export class SemestersComponent implements OnInit, OnDestroy {
 
   getClasses() {
     let model: StatsRequest = {
-      sectionId: this.headerService.selectedSectionId,
+      courseSectionId: this.headerService.selectedSectionId,
       subjectId: this.headerService.selectedSubjectId,
     };
 
@@ -58,7 +58,7 @@ export class SemestersComponent implements OnInit, OnDestroy {
 
   getStats() {
     let model: StatsRequest = {
-      sectionId: this.headerService.selectedSectionId,
+      courseSectionId: this.headerService.selectedSectionId,
       subjectId: this.headerService.selectedSubjectId,
     };
     this.statsService.getStats(model).subscribe((res) => {
@@ -70,7 +70,7 @@ export class SemestersComponent implements OnInit, OnDestroy {
 
   goToSingleSkill(semester: Skills | Semester) {
     let selectedSemester = semester as Semester;
-    localStorage.setItem('title' , selectedSemester.name)
+    this.sharedService.pushTitle(selectedSemester.name)
     this.router.navigate(['/features/units', selectedSemester.semesterId]);
   }
 

@@ -30,7 +30,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    localStorage.setItem('title' , 'SKILLS');
+    this.sharedService.pushTitle('SKILLS')
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
       this.getStats();
       this.getClasses();
@@ -45,20 +45,20 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   getClasses() {
     let model: StatsRequest = {
-      sectionId: this.headerService.selectedSectionId,
+      courseSectionId: this.headerService.selectedSectionId,
       subjectId: this.headerService.selectedSubjectId,
     };
 
     this.statsService.getMainSkills(model).subscribe((res) => {
       if (res) {
-        this.skills = res.result.domains;
+        this.skills = res.result;
       }
     });
   }
 
   getStats() {
     let model: StatsRequest = {
-      sectionId: this.headerService.selectedSectionId,
+      courseSectionId: this.headerService.selectedSectionId,
       subjectId: this.headerService.selectedSubjectId,
     };
     this.statsService.getStats(model).subscribe((res) => {
@@ -73,7 +73,7 @@ export class StatsComponent implements OnInit, OnDestroy {
       this.router.navigate(['/features/units']);
     } else {
 
-      localStorage.setItem('title' , (domain as Skills).name)
+      this.sharedService.pushTitle((domain as Skills).name)
       this.router.navigate(['/features/skills-level-one', (domain as Skills).domainId]);
     }
   }

@@ -30,7 +30,6 @@ export class LessonsComponent implements OnInit, OnDestroy { // Implement OnDest
     timeSpent: 0,
   };
   first: number = 0;
-  activateSkill: boolean;
   skillToActivate: Lessons | null = null;
   sections: Section[] = [];
 
@@ -74,8 +73,7 @@ export class LessonsComponent implements OnInit, OnDestroy { // Implement OnDest
   }
 
   _activateSkill() {
-    this.activateSkill = !this.activateSkill;
-    this.skillToActivate.isActive = !this.skillToActivate.isActive;
+    this.getLessons();
   }
 
   nextPage($event: PaginatorState) {

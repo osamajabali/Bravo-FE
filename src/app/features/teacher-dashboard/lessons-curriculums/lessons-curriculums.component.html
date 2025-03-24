@@ -10,7 +10,7 @@
 
     @if (curriculums.curriculums) {
       @for (lesson of curriculums.curriculums; track $index) {
-        <app-lesson-cards [card]="lesson" [showPagination]="true"  [rows]="curriculums.pageSize" [first]="first" [totalRecords]="curriculums.totalRecords" (paginatorState)="nextPage($event)"></app-lesson-cards>
+        <app-lesson-cards [sections]="sections" [card]="lesson" [showPagination]="true"  [rows]="curriculums.pageSize" [first]="first" [totalRecords]="curriculums.totalRecords" (skillActivation)="_activateSkill()" (paginatorState)="nextPage($event)"></app-lesson-cards>
       }
   
         
@@ -35,6 +35,3 @@
 
   </div>
 </div>
-
-<app-skill-activation-modal [(visible)]="activateSkill" [style]="{ width: '450px' }" [modal]="true" [closable]="true"
-  [closeOnEscape]="true" (activateSkill)="_activateSkill()"></app-skill-activation-modal>

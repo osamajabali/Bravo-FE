@@ -8,7 +8,7 @@
           isUnit(card)
           ? card.unitLabelName
           : isLesson(card)
-          ? card.lessonName
+          ? card.name
           : card.name
           }}
         </h3>
@@ -22,7 +22,8 @@
     </div>
   </a>
   }
-  <app-pagination [first]="first" [rows]="rows" [totalRecords]="totalRecords" itemLabel="books" [itemLabel]="'UNITS'" (pageChange)="onPageChange($event)"></app-pagination>
+  <app-pagination [first]="first" [rows]="rows" [totalRecords]="totalRecords" itemLabel="books" [itemLabel]="'UNITS'"
+    (pageChange)="onPageChange($event)"></app-pagination>
 
   } @else {
   <!-- Skeleton Loader -->

@@ -20,6 +20,9 @@ import { UserDrawerComponent } from '../user-drawer/user-drawer.component';
 import { PaginationComponent } from "../pagination/pagination.component";
 import { PaginatorState } from 'primeng/paginator';
 import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
+import { Section } from '../../../core/models/header-models/header.model';
+import { SkillActivation } from '../../../core/models/teacher-dashboard-models/skillsActivation.model';
+import { SkillActivationService } from '../../../core/services/skills-activation/skill-activation.service';
 
 @Component({
   selector: 'app-skills-cards',
@@ -45,11 +48,14 @@ export class SkillsCardsComponent {
   @Input() rows: number = 0;
   @Input() totalRecords: number = 0;
   @Input() showPagination: boolean = false;
+  @Input() sections: Section[] = [];
   @Output() paginatorState = new EventEmitter<PaginatorState>();
+  @Output() skillActivation = new EventEmitter<boolean>();
   activateSkill: boolean;
   showUserDrower: boolean;
   showSmartBoard: boolean;
   currentSkillUsers: any = null;
+  skillActivationModel: SkillActivation = new SkillActivation();
   private refreshSubscription!: Subscription;
 
 
@@ -60,7 +66,8 @@ export class SkillsCardsComponent {
   constructor(
     private learningOutcomesService: LearningOutcomesService,
     private headerService: HeaderService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private skillActivationService: SkillActivationService
   ) { }
 
   ngOnInit(): void {
@@ -76,18 +83,27 @@ export class SkillsCardsComponent {
 
   onPageChange($event: PaginatorState) {
     this.paginatorState.emit($event)
-    }
+  }
+
+  isSingleSkill(card: SingleSkill | SkillCurriculum): card is SingleSkill {
+    return 'learningOutcomeId' in card;
+  }
 
   toggleActive(skill: SingleSkill | SkillCurriculum) {
     this.skillToActivate = skill;
     this.activateSkill = !this.activateSkill;
   }
 
-  _activateSkill() {
+  _activateSkill(selectedIds: number[]) {
     this.activateSkill = !this.activateSkill;
-    if (this.skillToActivate) {
-      this.skillToActivate.isEnabled = !this.skillToActivate.isEnabled;
-    }
+    this.skillActivationModel.learningOutcomeId = (this.skillToActivate as SingleSkill).learningOutcomeId ? (this.skillToActivate as SingleSkill).learningOutcomeId : (this.skillToActivate as SkillCurriculum).id;
+    this.skillActivationModel.courseSectionIdList = selectedIds;
+    this.skillActivationModel.activationStatus = this.skillToActivate.isEnabled;
+    this.skillActivationService.activateSkill(this.skillActivationModel).subscribe(res => {
+      if (res.success) {
+        this.skillActivation.emit(res.success)
+      }
+    })
   }
 
   getStudents = (lerningOutcomeId: number) => {

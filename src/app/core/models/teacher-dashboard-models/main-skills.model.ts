@@ -1,7 +1,7 @@
 export class Skills{
-    activated: number;
+    activeSkills: number;
     domainId: number;
-    inActive: number;
+    inActiveSkills: number;
     name: string;
     quickSkills : QuickSkills[]
 }
@@ -9,6 +9,7 @@ export class Skills{
 export class QuickSkills{
     name : string;
     skillId : number;
+    isEnabled : boolean;
 }
 
 export class SkillsDomain{

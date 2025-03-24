@@ -71,47 +71,49 @@
               class="skill-chart"
               appDoughnutChart
               [data]="[
-                isSkill(item) ? item.activated : item.activeSkills,
-                isSkill(item) ? item.inActive : item.inActiveSkills
+                isSkill(item) ? item.activeSkills : item.activeSkills,
+                isSkill(item) ? item.inActiveSkills : item.inActiveSkills
               ]"
               [isSkills]="true"
               [labels]="pieChartLabels"
-              [activeCount]="isSkill(item) ? item.activated : item.activeSkills"
+              [activeCount]="isSkill(item) ? item.activeSkills : item.activeSkills"
               [inactiveCount]="
-                isSkill(item) ? item.inActive : item.inActiveSkills
+                isSkill(item) ? item.inActiveSkills : item.inActiveSkills
               "
             ></canvas>
           </div>
         </div>
 
-        <div class="skill-card-right">
-          <div class="quick-action-title">
-            <div>{{ "QUICK_ACTION" | translate }}</div>
-          </div>
-          <div class="quick-action-content">
-            @for (quickAction of item.quickSkills; track quickAction.skillId;
-            let j = $index) {
-            <div class="quick-action-item">
-              <div>{{ quickAction.name }}</div>
-              <div class="d-flex align-items-center gap-2">
-                <button pButton label="" class="p-button-secondary skip-button">
-                  <span>Skip</span>
-                  <img src="icon-rotate.svg" alt="Skip" />
-                </button>
-                <button
-                  pButton
-                  [label]="
-                    quickAction.skillId
-                      ? ('ACTIVATE' | translate)
-                      : ('DEACTIVATE' | translate)
-                  "
-                  class="p-button-primary activate-button"
-                ></button>
-              </div>
+        @if(item.quickSkills.length){
+          <div class="skill-card-right">
+            <div class="quick-action-title">
+              <div>{{ "QUICK_ACTION" | translate }}</div>
             </div>
-            }
+            <div class="quick-action-content">
+              @for (quickAction of item.quickSkills; track quickAction.skillId;
+              let j = $index) {
+              <div class="quick-action-item">
+                <div>{{ quickAction.name }}</div>
+                <div class="d-flex align-items-center gap-2">
+                  <button pButton label="" class="p-button-secondary skip-button">
+                    <span>Skip</span>
+                    <img src="icon-rotate.svg" alt="Skip" />
+                  </button>
+                  <button
+                    pButton
+                    [label]="
+                      quickAction.isEnabled
+                        ? ('ACTIVATE' | translate)
+                        : ('DEACTIVATE' | translate)
+                    "
+                    class="p-button-primary activate-button"
+                  ></button>
+                </div>
+              </div>
+              }
+            </div>
           </div>
-        </div>
+        }
       </div>
       } } @else {
       <!-- Skeletons Placeholder -->

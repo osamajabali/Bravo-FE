@@ -15,5 +15,13 @@ export class SkillActivationService {
   activateLesson = (skillActivation : SkillActivation) : Observable<Result<boolean>> => {
     return this.apiHlpr.post<Result<boolean>>(`skill-activation/by-lesson`, skillActivation);
   }
+
+  activateCurriculum = (skillActivation : SkillActivation) : Observable<Result<boolean>> => {
+    return this.apiHlpr.post<Result<boolean>>(`skill-activation/by-curriculum`, skillActivation);
+  }
+
+  activateSkill = (skillActivation : SkillActivation) : Observable<Result<boolean>> => {
+    return this.apiHlpr.post<Result<boolean>>(`skill-activation/by-learning-outcome`, skillActivation);
+  }
   
 }

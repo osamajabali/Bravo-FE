@@ -15,7 +15,7 @@ export interface Skill {
 
 export class StatsRequest {
   subjectId: number;
-  sectionId: number;
+  courseSectionId: number;
 }
 
 export class DomainRequest extends PaginationFilter {

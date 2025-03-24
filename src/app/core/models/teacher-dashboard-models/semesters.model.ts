@@ -1,6 +1,7 @@
 export class QuickSkill {
     skillId: number;
     name: string;
+    isEnabled : boolean;
   }
   
   export class Semester {

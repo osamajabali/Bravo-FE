@@ -7,8 +7,8 @@
 
         @if(skills.learningOutcomes){
         @for (skill of skills.learningOutcomes; track $index) {
-        <app-skills-cards [skill]="skill" [showPagination]="true" [rows]="" [first]="first"
-            [totalRecords]="skills.totalRecords" (paginatorState)="nextPage($event)" />
+        <app-skills-cards [sections]="sections" [skill]="skill" [showPagination]="true" [rows]="" [first]="first"
+            [totalRecords]="skills.totalRecords" (paginatorState)="nextPage($event)" (skillActivation)="getSkills()" />
         }
 
         <app-pagination [first]="first" [rows]="skills.pageSize" [totalRecords]="skills.totalRecords" itemLabel="books"

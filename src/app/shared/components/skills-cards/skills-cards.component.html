@@ -2,7 +2,7 @@
     <div class="units-list">
       <div class="unit-card">
         <div class="unit-content">
-          <h3 class="unit-title">{{ skill.learningOutcomeDisplayName }}</h3>
+          <h3 class="unit-title">{{ isSingleSkill(skill) ? skill.displayName : skill.skillName }}</h3>
           <div class="d-flex gap-3">
             <div class="badge">
               Beginner <span class="number">{{ skill.noOfStudentsEasy || 0 }}</span>
@@ -40,6 +40,12 @@
                   <img [src]="skill.isEnabled ? 'icon-radio-checked.svg' : 'icon-radio-unchecked.svg'" alt="check">
                 </div>
               </div>
+
+              @if(skill.activationDate) {
+                <div class="activation-date">
+                  <span>{{ skill.activationDate }}</span>
+                </div>
+                }
             </div>
           </div>
         </div>
@@ -50,8 +56,8 @@
 </div>
 
 <!-- Custom Dialog -->
-<app-skill-activation-modal [(visible)]="activateSkill" [style]="{ width: '450px' }" [modal]="true" [closable]="true"
-  [closeOnEscape]="true" (activateSkill)="_activateSkill()"></app-skill-activation-modal>
+<app-skill-activation-modal [(visible)]="activateSkill" [style]="{ width: '450px' }" [modal]="true" [closable]="true" [sections]="sections"
+  [closeOnEscape]="true" (activateSections)="_activateSkill($event)"></app-skill-activation-modal>
 
 <!-- Smart Board -->
 <app-smart-board (visibleChange)="showSmartBoard = false" [visible]="showSmartBoard" [skillId]="0"

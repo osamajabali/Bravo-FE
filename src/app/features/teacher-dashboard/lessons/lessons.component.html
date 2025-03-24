@@ -10,7 +10,7 @@
 
     @if (lessons.lessons) {
       @for (lesson of lessons.lessons; track $index) {
-        <app-lesson-cards [sections]="sections" [card]="lesson" [showPagination]="true"  [rows]="lessons.pageSize" [first]="first" [totalRecords]="lessons.totalRecords" (paginatorState)="nextPage($event)"></app-lesson-cards>
+        <app-lesson-cards [sections]="sections" [card]="lesson" [showPagination]="true"  [rows]="lessons.pageSize" [first]="first" [totalRecords]="lessons.totalRecords" (skillActivation)="_activateSkill()" (paginatorState)="nextPage($event)"></app-lesson-cards>
       }
   
         

@@ -6,6 +6,7 @@ import { LessonsCurriculums } from '../../../core/models/teacher-dashboard-model
 import { SkeletonComponent } from "../skeleton/skeleton.component";
 import { PaginationComponent } from "../pagination/pagination.component";
 import { PaginatorState } from 'primeng/paginator';
+import { SharedService } from '../../../core/services/shared-services/shared.service';
 
 @Component({
   selector: 'app-unit-cards',
@@ -21,7 +22,7 @@ export class UnitCardsComponent {
   @Input() totalRecords: number = 0;
   @Output() paginatorState = new EventEmitter<PaginatorState>();
   
-  constructor(private router: Router) {
+  constructor(private router: Router, private sharedService : SharedService) {
     if (this.cards.length) {
       this.checkType(this.cards[0])
     }
@@ -47,14 +48,14 @@ export class UnitCardsComponent {
 
   clickedCard(card: Unit | Lessons | LessonsCurriculums) {
     if ((card as Unit).unitId) {
-      localStorage.setItem('title' , (card as Unit).unitLabelName )
+      this.sharedService.pushTitle((card as Unit).unitLabelName)
       this.router.navigate(['/features/lessons', (card as Unit).unitId]);
     } else if ((card as Lessons).lessonId) {
-      localStorage.setItem('title' , (card as Lessons).lessonName )
+      this.sharedService.pushTitle((card as Lessons).name)
       this.router.navigate(['/features/lessons-curriculums', (card as Lessons).lessonId]);
     } else {
       const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
-      localStorage.setItem('title' , (card as LessonsCurriculums).name )
+      this.sharedService.pushTitle((card as LessonsCurriculums).name)
       this.router.navigate(['/features/single-skill', 0, curriculumId]);
 
     }

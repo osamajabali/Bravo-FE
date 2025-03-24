@@ -19,4 +19,28 @@ export class SharedService {
   triggerRefresh(data: any) { // Accept data as a parameter
     this.refreshSubject.next(data); // Emit data with the refresh event
   }
+
+  getTitle(): string {
+    if(JSON.parse(localStorage.getItem('title'))){
+    let titleArray =  JSON.parse(localStorage.getItem('title'))
+    let arrayLastIndex =  titleArray.length? titleArray.length - 1 : 0;
+   return JSON.parse(localStorage.getItem('title'))[arrayLastIndex]
+  }else{
+    return ''
+  }
+  }
+
+  pushTitle = (title : string) => {
+    let titleArray : string[] =  JSON.parse(localStorage.getItem('title')) ? JSON.parse(localStorage.getItem('title')) : [title]
+    titleArray.push(title);
+    localStorage.setItem('title' , JSON.stringify(titleArray));
+    this.getTitle()
+  }
+
+  popTitle = () =>{
+    let titleArray : string[] =  JSON.parse(localStorage.getItem('title')) ? JSON.parse(localStorage.getItem('title')) : ['']
+    titleArray.pop();
+    localStorage.setItem('title' , JSON.stringify(titleArray));
+    this.getTitle()
+  }
 }

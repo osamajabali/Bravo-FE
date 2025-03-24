@@ -3,7 +3,7 @@
     <div class="unit-card">
       <div class="unit-content">
         <h3 class="unit-title">
-          {{ isLesson(card) ? card.lessonName : card.name }}
+          {{ card.name ? card.name : isSkillCurriculum(card) ? card.domainName : card.name }}
         </h3>
         <p class="unit-description">Number of Skills: {{ card.skillsCount }}</p>
       </div>
@@ -12,25 +12,35 @@
           <img src="icon-plus.svg" alt="plus" />
           <span>Assignment</span>
         </button>
-        @if(isLesson(card)){
+
+        @if(isLesson(card)) {
         <button pButton label="" class="p-button-primary view-button" (click)="clickedCard(card)">
           <span>{{ getViewButtonText(card) }}</span>
           <img src="arrow-small-right.svg" alt="view" />
         </button>
-        }@else if (!isLesson(card) && card.skillsCount > 0 ) {
+        } @else if (!isLesson(card) && card.skillsCount > 0) {
         <button pButton label="" class="p-button-primary view-button" (click)="clickedCard(card)">
           <span>{{ getViewButtonText(card) }}</span>
           <img src="arrow-small-right.svg" alt="view" />
         </button>
         }
+
         <div class="custom-radio-container">
-          <div class="custom-radio" [class.active]="card.isActive" (click)="toggleActive(card)">
-            <div class="radio-content" [class.reverse]="!card.isActive">
-              <span class="status-text">{{ card.isActive ? 'ACTIVE' : 'OFF' }}</span>
-              <img [src]="card.isActive ? 'icon-radio-checked.svg' : 'icon-radio-unchecked.svg'" alt="check">
+          <div class="custom-radio" [class.active]="card.isEnabled" (click)="toggleActive(card)">
+            <div class="radio-content" [class.reverse]="!card.isEnabled">
+              <span class="status-text">{{ card.isEnabled ? 'ACTIVE' : 'OFF' }}</span>
+              <img [src]="card.isEnabled ? 'icon-radio-checked.svg' : 'icon-radio-unchecked.svg'" alt="check">
             </div>
           </div>
+          
+          @if(card.activationDate) {
+          <div class="activation-date">
+            <span>{{ card.activationDate }}</span>
+          </div>
+          }
+          
         </div>
+        
       </div>
     </div>
   </a>

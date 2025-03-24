@@ -15,7 +15,7 @@ import { SkillActivationModalComponent } from "../../../shared/components/skill-
 
 @Component({
   selector: 'app-lessons-curriculums',
-  imports: [LessonCardsComponent, TranslateModule, SkillSummaryComponent, PaginationComponent, SkeletonComponent, SkillActivationModalComponent],
+  imports: [LessonCardsComponent, TranslateModule, SkillSummaryComponent, PaginationComponent, SkeletonComponent],
   templateUrl: './lessons-curriculums.component.html',
   styleUrl: './lessons-curriculums.component.scss',
 })
@@ -32,8 +32,8 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
     timeSpent: 0,
   };
   first: number = 0;
-  activateSkill: boolean;
   skillToActivate: LessonsCurriculums | null = null;
+  sections: import("c:/Users/osama/Desktop/bravo-FE/src/app/core/models/header-models/header.model").Section[];
 
   constructor(
     private learningOutcomesService: LearningOutcomesService,
@@ -47,6 +47,7 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
       if (res) {
         this.route.paramMap.subscribe((params) => {
           this.lessonId = parseInt(params.get('id')!);  // Ensuring non-null 'id'
+          this.sections = this.headerService.sectionsArray;
           this.getCurriculums();
         });
       }
@@ -72,10 +73,7 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
   }
 
   _activateSkill() {
-    this.activateSkill = !this.activateSkill;
-    if (this.skillToActivate) {
-      this.skillToActivate.isActive = !this.skillToActivate.isActive;
-    }
+    this.getCurriculums();
   }
 
   nextPage($event: PaginatorState) {

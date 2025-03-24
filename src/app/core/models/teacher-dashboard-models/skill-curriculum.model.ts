@@ -4,10 +4,11 @@ export interface SkillCurriculum {
     activationDate: string | null;
     name: string;
     id: number;
+    skillName : string;
     learningOutcomeId? : number;
     isEnabled: boolean | null;
     isSkill: boolean;
-    learningOutcomeDisplayName: string | null;
+    domainName: string ;
     noOfStudentsEasy: number;
     noOfStudentsHard: number;
     noOfStudentsMedium: number;

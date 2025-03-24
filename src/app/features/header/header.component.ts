@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.getUserName()
 
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
-      this.title = localStorage.getItem('title')
+      this.title = this.sharedService.getTitle()
     });
 
     // Listen to route changes and refresh classes
@@ -225,6 +225,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
+    this.sharedService.popTitle();
     this.location.back();
   }
 

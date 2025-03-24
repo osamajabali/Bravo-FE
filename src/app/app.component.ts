@@ -5,6 +5,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SidebarComponent } from './features/sidebar/sidebar.component';
 import { AppLoaderComponent } from "./shared/components/app-loader/app-loader.component";
 import { LoginService } from './core/services/login-services/login.service';
+import { json } from 'stream/consumers';
+import { SharedService } from './core/services/shared-services/shared.service';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +18,7 @@ export class AppComponent {
   constructor(
     private translate: TranslateService,
     private authService : LoginService,
+    private sharedService : SharedService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
@@ -47,7 +50,7 @@ export class AppComponent {
 
   setDirection(lang: string) {
     if (isPlatformBrowser(this.platformId)) {
-    !localStorage.getItem('title') ? localStorage.setItem('title' , 'SKILLS') : '';
+    !this.sharedService.getTitle() ? localStorage.setItem('title' , JSON.stringify(['SKILLS'])) : [''];
     localStorage.setItem('language' , lang)
       this.document.documentElement.lang = lang;
       this.document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';

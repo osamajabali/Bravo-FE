@@ -5,9 +5,9 @@ export class LessonsCurriculums {
   lessonName?: string;
   skillsCount: number;
   name: string;
-  domainName: any;
   id?:number;
-  isActive?: boolean;
+  isEnabled?: boolean;
+  activationDate : string;
 }
 
 export class LessonsCurriculumsPagination extends PaginationFilter {

@@ -13,6 +13,7 @@ import { HeaderService } from '../../../core/services/header-services/header.ser
 import { Section } from '../../../core/models/header-models/header.model';
 import { SkillActivationService } from '../../../core/services/skills-activation/skill-activation.service';
 import { SkillActivation } from '../../../core/models/teacher-dashboard-models/skillsActivation.model';
+import { Result } from '../../../core/models/shared-models/result';
 
 @Component({
   selector: 'app-lesson-cards',
@@ -28,6 +29,7 @@ export class LessonCardsComponent implements OnInit {
   @Input() totalRecords: number = 0;
   @Input() sections: Section[] = [];
   @Output() paginatorState = new EventEmitter<PaginatorState>();
+  @Output() skillActivation = new EventEmitter<boolean>();
   activateSkill: boolean = false;
   skillToActivate: Lessons | LessonsCurriculums | SkillCurriculum | null = null;
   skillActivationModel : SkillActivation = new SkillActivation();
@@ -46,7 +48,11 @@ export class LessonCardsComponent implements OnInit {
 
 
   isLesson(card: Lessons | LessonsCurriculums | SkillCurriculum): card is Lessons {
-    return 'lessonName' in card;
+    return 'lessonId' in card;
+  }
+
+  isSkillCurriculum(card: Lessons | LessonsCurriculums | SkillCurriculum): card is SkillCurriculum {
+    return 'domainName' in card;
   }
 
   getViewButtonText(card: Lessons | LessonsCurriculums | SkillCurriculum): string {
@@ -56,33 +62,54 @@ export class LessonCardsComponent implements OnInit {
 
   toggleActive(card: Lessons | LessonsCurriculums | SkillCurriculum) {
     this.skillToActivate = card;
-    this.activateSkill = !this.activateSkill;
+    this.activateSkill = true;
   }
 
-  _activateSkill(selectedIds : number[]) {
+  _activateSkill(selectedIds : number[]) {debugger
     this.activateSkill = false;
-    if(this.isLesson(this.skillToActivate)){debugger
-      this.skillActivationModel.lessonId = this.skillToActivate.lessonId;
+    if((this.skillToActivate as Lessons).lessonId ){
+      this.skillActivationModel.lessonId = (this.skillToActivate as Lessons).lessonId;
       this.skillActivationModel.courseSectionIdList = selectedIds;
-      this.skillActivationModel.activationStatus = this.skillToActivate.isActive;
+      this.skillActivationModel.activationStatus = this.skillToActivate.isEnabled;
       this.skillActivationService.activateLesson(this.skillActivationModel).subscribe(res =>{
-
+        if(res.success){
+          this.skillActivation.emit(res.success)
+        }
+      })
+    }else if( (this.skillToActivate as LessonsCurriculums).curriculumLearningOutcomeId){debugger
+      this.skillActivationModel.curriculumLearningOutcomeId = (this.skillToActivate as LessonsCurriculums).curriculumLearningOutcomeId;
+      this.skillActivationModel.courseSectionIdList = selectedIds;
+      this.skillActivationModel.activationStatus = this.skillToActivate.isEnabled;
+      this.skillActivationService.activateCurriculum(this.skillActivationModel).subscribe(res =>{
+        if(res.success){
+          this.activateSkill = false;
+          this.skillActivation.emit(res.success);
+        }
+      })
+    }else{
+      this.skillActivationModel.learningOutcomeId = (this.skillToActivate as SkillCurriculum).id;
+      this.skillActivationModel.courseSectionIdList = selectedIds;
+      this.skillActivationModel.activationStatus = this.skillToActivate.isEnabled;
+      this.skillActivationService.activateSkill(this.skillActivationModel).subscribe(res =>{
+        if(res.success){
+          this.skillActivation.emit(res.success)
+        }
       })
     }
-    this.skillToActivate.isActive = !this.skillToActivate.isActive;
+    this.skillToActivate.isEnabled = !this.skillToActivate.isEnabled;
   }
 
   clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
     if ((card as Lessons).lessonId) {
-      localStorage.setItem('title' , (card as Lessons).lessonName )
+      this.sharedService.pushTitle((card as Lessons).name)
       this.router.navigate(['/features/lessons-curriculums', (card as Lessons).lessonId]);
     } else if ((card as LessonsCurriculums).curriculumLearningOutcomeId) {
-      localStorage.setItem('title' , (card as LessonsCurriculums).name )
+      this.sharedService.pushTitle((card as LessonsCurriculums).name)
       const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
       this.router.navigate(['/features/single-skill', 0, curriculumId]);
     } else {
       const domainId = (card as LessonsCurriculums).id;
-      localStorage.setItem('title' , (card as LessonsCurriculums).name)
+      this.sharedService.pushTitle((card as LessonsCurriculums).name)
       this.router.navigate([this.sharedService.nextRoute, domainId]);
     }
   }
