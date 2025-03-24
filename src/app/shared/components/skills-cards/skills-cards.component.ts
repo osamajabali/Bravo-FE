@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -17,51 +17,53 @@ import { SkillActivationModalComponent } from '../skill-activation-modal/skill-a
 import { SkillSummaryComponent, SkillSummaryData } from '../skill-summary/skill-summary.component';
 import { SmartBoardComponent } from '../smart-board/smart-board.component';
 import { UserDrawerComponent } from '../user-drawer/user-drawer.component';
+import { PaginationComponent } from "../pagination/pagination.component";
+import { PaginatorState } from 'primeng/paginator';
+import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
 
 @Component({
   selector: 'app-skills-cards',
   imports: [
-       CommonModule,
-        RouterModule,
-        FormsModule,
-        InputTextModule,
-        OverlayPanelModule,
-        ButtonModule,
-        DialogModule,
-        UserDrawerComponent,
-        SmartBoardComponent,
-        SkillSummaryComponent,
-        SkillActivationModalComponent,
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    InputTextModule,
+    OverlayPanelModule,
+    ButtonModule,
+    DialogModule,
+    UserDrawerComponent,
+    SmartBoardComponent,
+    SkillActivationModalComponent,
   ],
   templateUrl: './skills-cards.component.html',
   styleUrl: './skills-cards.component.scss'
 })
 export class SkillsCardsComponent {
-  @Input() skills: SingleSkill[] = [];
+  @Input() skill: SingleSkill | SkillCurriculum = {} as SingleSkill | SkillCurriculum;
+  @Input() first: number = 0;
+  @Input() rows: number = 0;
+  @Input() totalRecords: number = 0;
+  @Input() showPagination: boolean = false;
+  @Output() paginatorState = new EventEmitter<PaginatorState>();
   activateSkill: boolean;
   showUserDrower: boolean;
   showSmartBoard: boolean;
   currentSkillUsers: any = null;
   private refreshSubscription!: Subscription;
 
-  skillSummaryData: SkillSummaryData = {
-    allSkills: 25,
-    activeSkills: 10,
-    questionSolved: 10,
-    timeSpent: 10,
-  };
+
   domainId: number;
   levels: Level[] = [];
-  skillToActivate: SingleSkill | null = null;
+  skillToActivate: SingleSkill | null | SkillCurriculum = null;
 
   constructor(
     private learningOutcomesService: LearningOutcomesService,
     private headerService: HeaderService,
     private spinnerService: SpinnerService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    
+
   }
 
   ngOnDestroy(): void {
@@ -71,7 +73,11 @@ export class SkillsCardsComponent {
     }
   }
 
-  toggleActive(skill: SingleSkill) {
+  onPageChange($event: PaginatorState) {
+    this.paginatorState.emit($event)
+    }
+
+  toggleActive(skill: SingleSkill | SkillCurriculum) {
     this.skillToActivate = skill;
     this.activateSkill = !this.activateSkill;
   }

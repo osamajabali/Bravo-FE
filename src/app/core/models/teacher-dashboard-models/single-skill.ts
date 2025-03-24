@@ -1,6 +1,6 @@
 import { PaginationFilter } from '../shared-models/pagination.model';
 
-export interface SingleSkill {
+export class SingleSkill {
   isEnabled: boolean;
   activationDate: string;
   isSkill: boolean;
@@ -12,6 +12,12 @@ export interface SingleSkill {
   noOfStudentsMedium: number;
   numberOfSkills?: number;
 }
-export interface SingleSkillPagination extends PaginationFilter {
+export class SingleSkillPagination extends PaginationFilter {
   learningOutcomes: SingleSkill[];
+}
+
+export class SingleSkillPayload extends PaginationFilter {
+  courseSectionId: number;
+  domainId: number;
+  curriculumLearningOutcomeId: number;
 }

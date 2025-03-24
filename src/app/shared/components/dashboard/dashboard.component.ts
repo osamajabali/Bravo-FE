@@ -26,7 +26,7 @@ export class DashboardComponent {
   @Input() stats: Stats[] = [];
   @Input() title: string;
   @Input() items: (Skills | Semester)[] = [];
-  @Output() action = new EventEmitter<number>();
+  @Output() action = new EventEmitter<Skills | Semester>();
 
   pieChartLabels: string[] = ['Activated', 'Inactive'];
 
@@ -38,7 +38,7 @@ export class DashboardComponent {
     return (item as Skills).domainId !== undefined;
   }
 
-  goToSingleSkill(domainId: number) {
-    this.action.emit(domainId);
+  goToSingleSkill(item: Skills | Semester) {
+    this.action.emit(item);
   }
 }

@@ -47,6 +47,7 @@ export class AppComponent {
 
   setDirection(lang: string) {
     if (isPlatformBrowser(this.platformId)) {
+    !localStorage.getItem('title') ? localStorage.setItem('title' , 'SKILLS') : '';
     localStorage.setItem('language' , lang)
       this.document.documentElement.lang = lang;
       this.document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';

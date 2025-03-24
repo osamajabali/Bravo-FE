@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { LessonsPagination, LessonsPayload, LessonWithActive } from '../../../core/models/teacher-dashboard-models/lessons.model';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Lessons, LessonsPagination, LessonsPayload } from '../../../core/models/teacher-dashboard-models/lessons.model';
 import { LearningOutcomesService } from '../../../core/services/teacher-dashboard-services/learning-outcomes.service';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -8,13 +8,19 @@ import { SkillSummaryComponent, SkillSummaryData } from '../../../shared/compone
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { HeaderService } from '../../../core/services/header-services/header.service';
 import { PaginatorState } from 'primeng/paginator';
+import { Subscription } from 'rxjs';
+import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
+import { SkeletonComponent } from "../../../shared/components/skeleton/skeleton.component";
+import { Section } from '../../../core/models/header-models/header.model';
+
 @Component({
   selector: 'app-lessons',
-  imports: [LessonCardsComponent, TranslateModule, SkillSummaryComponent],
+  imports: [LessonCardsComponent, TranslateModule, SkillSummaryComponent, PaginationComponent, SkeletonComponent],
   templateUrl: './lessons.component.html',
   styleUrl: './lessons.component.scss',
 })
-export class LessonsComponent implements OnInit {
+export class LessonsComponent implements OnInit, OnDestroy { // Implement OnDestroy
+  private refreshSubscription!: Subscription; // Mark subscription as private to avoid accidental changes
   lessons: LessonsPagination = new LessonsPagination();
   lessonPayload: LessonsPayload = new LessonsPayload();
   summaryData: SkillSummaryData = {
@@ -23,20 +29,36 @@ export class LessonsComponent implements OnInit {
     questionSolved: 0,
     timeSpent: 0,
   };
-  first: number;
+  first: number = 0;
+  activateSkill: boolean;
+  skillToActivate: Lessons | null = null;
+  sections: Section[] = [];
+
 
   constructor(
     private learningOutcomesService: LearningOutcomesService,
     private route: ActivatedRoute,
-    private sharedService : SharedService,
-    private headerService : HeaderService
-  ) {}
+    private sharedService: SharedService,
+    private headerService: HeaderService
+  ) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      this.lessonPayload.unitId = parseInt(params.get('id'));
-      this.getLessons();
+    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
+      if (res) {
+        this.route.paramMap.subscribe((params) => {
+          
+          this.lessonPayload.unitId = parseInt(params.get('id')!);
+          this.sections = this.headerService.sectionsArray;
+          this.getLessons();
+        });
+      }
     });
+  }
+
+  ngOnDestroy(): void { // Unsubscribe in ngOnDestroy
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe(); // Unsubscribe to avoid memory leaks
+    }
   }
 
   getLessons() {
@@ -49,6 +71,11 @@ export class LessonsComponent implements OnInit {
           this.lessons = res.result;
         }
       });
+  }
+
+  _activateSkill() {
+    this.activateSkill = !this.activateSkill;
+    this.skillToActivate.isActive = !this.skillToActivate.isActive;
   }
 
   nextPage($event: PaginatorState) {

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { UnitPayload, UnitsPagination } from '../../models/teacher-dashboard-models/units.model';
 import { LessonsPagination, LessonsPayload } from '../../models/teacher-dashboard-models/lessons.model';
 import { LessonsCurriculumsPagination, LessonsCurriculumsPayload } from '../../models/teacher-dashboard-models/lesson-curriculums.model';
-import { SingleSkillPagination } from '../../models/teacher-dashboard-models/single-skill';
+import { SingleSkillPagination, SingleSkillPayload } from '../../models/teacher-dashboard-models/single-skill';
 import { Level, LevelPagination } from '../../models/teacher-dashboard-models/students.model';
 import { SharedService } from '../shared-services/shared.service';
 
@@ -28,8 +28,8 @@ export class LearningOutcomesService {
     return this.apiHlpr.post<Result<LessonsCurriculumsPagination>>(`semesters/units/lessons/curriculums`,lessonsCurriculumsPayload);
   }
 
-  lessonsCurriculumsSkills = (courseSectionId : number , domainId : number ,curriculumLearningOutcomeId : number ) : Observable<Result<SingleSkillPagination>> => {
-    return this.apiHlpr.post<Result<SingleSkillPagination>>(`semesters/units/lessons/curriculums/skills`, {courseSectionId : courseSectionId , domainId : domainId , curriculumLearningOutcomeId : curriculumLearningOutcomeId , pageSize : this.sharedService.pagination.pageSize});
+  lessonsCurriculumsSkills = (skillsPayload : SingleSkillPayload ) : Observable<Result<SingleSkillPagination>> => {
+    return this.apiHlpr.post<Result<SingleSkillPagination>>(`semesters/units/lessons/curriculums/skills`, skillsPayload);
   }
 
   getStudents = (courseSectionId : number , learningOutcomeId : number ) : Observable<Result<LevelPagination>> => {

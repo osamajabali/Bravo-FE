@@ -1,8 +1,12 @@
-import { Component, input, model, output } from '@angular/core';
+import { Component, Input, input, model, OnInit, output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
+import { Section } from '../../../core/models/header-models/header.model';
+import { SharedService } from '../../../core/services/shared-services/shared.service';
+import { HeaderService } from '../../../core/services/header-services/header.service';
+import { Subscription } from 'rxjs';
 
 interface SelectedGrades {
   all: boolean;
@@ -17,21 +21,19 @@ interface SelectedGrades {
   templateUrl: './skill-activation-modal.component.html',
   styleUrl: './skill-activation-modal.component.scss'
 })
-export class SkillActivationModalComponent {
+export class SkillActivationModalComponent  {
   visible = model<boolean>(false);
   visibleChange = output<boolean>();
   modal = input<boolean>(false);
   closable = input<boolean>(false);
   closeOnEscape = input<boolean>(false);
   header = input<string>('');
+  activateSections = output<number[]>();
+  @Input() sections: Section[] = [];
+  private refreshSubscription!: Subscription;
+  selectedIds: number[] = [];
+  allSelected: boolean = false;
 
-  activateSkill = output<SelectedGrades>();
-
-  selectedGrades: SelectedGrades = {
-    all: false,
-    grade1: false,
-    grade2: false
-  };
 
   close() {
     this.visible.set(false);
@@ -39,7 +41,25 @@ export class SkillActivationModalComponent {
   }
 
   _activateSkill() {
+    this.activateSections.emit(this.selectedIds);
     this.close();
-    this.activateSkill.emit(this.selectedGrades);
+  }
+
+  toggleAll() {
+    this.sections.forEach(section => {
+      section.isSelected = this.allSelected;
+    });
+
+    this.selectedIds = this.sections
+    .filter(section => section.isSelected)
+    .map(section => section.courseSectionId);
+
+    console.log(this.selectedIds)
+  }
+
+  onCheckboxChange() {
+    this.selectedIds = this.sections
+      .filter(section => section.isSelected)
+      .map(section => section.courseSectionId);
   }
 }

@@ -11,7 +11,6 @@ export const Main_Layout_Routes: Routes = [
         children: [
           {
             path: '',
-            data: { title: 'SKILLS' },
             loadComponent: () =>
               import('../teacher-dashboard/stats/stats.component').then(
                 (m) => m.StatsComponent
@@ -19,7 +18,6 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'semesters',
-            data: { title: 'SEMESTERS' },
             loadComponent: () =>
               import('../teacher-dashboard/semesters/semesters.component').then(
                 (m) => m.SemestersComponent
@@ -27,7 +25,6 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'units/:semesterId',
-            data: { title: 'UNITS' },
             loadComponent: () =>
               import('../teacher-dashboard/units/units.component').then(
                 (m) => m.UnitsComponent
@@ -35,7 +32,6 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'lessons/:id',
-            data: { title: 'LESSONS' },
             loadComponent: () =>
               import('../teacher-dashboard/lessons/lessons.component').then(
                 (m) => m.LessonsComponent
@@ -43,7 +39,6 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'lessons-curriculums/:id',
-            data: { title: 'CURRICULUMS' },
             loadComponent: () =>
               import('../teacher-dashboard/lessons-curriculums/lessons-curriculums.component').then(
                 (m) => m.LessonsCurriculumsComponent
@@ -51,7 +46,6 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'single-skill/:domainId/:curriculumId',
-            data: { title: 'SKILLS' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/single-skill/single-skill.component'
@@ -59,7 +53,6 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'leveled-reading',
-            data: { title: 'LEVELED_READING' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/leveled-reading/leveled-reading.component'
@@ -67,7 +60,6 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'leveled-reading/books-grid',
-            data: { title: 'LEVELED_READING' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/leveled-reading/books-grid/books-grid.component'
@@ -75,7 +67,6 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'skills-level-one/:domainId',
-            data: { title: 'SKILLS_LEVEL_ONE' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/skill-level-one/skill-level-one.component'
@@ -83,7 +74,6 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'skills-level-two/:domainId',
-            data: { title: 'SKILLS_LEVEL_TWO' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/skill-level-two/skill-level-two.component'
@@ -91,7 +81,6 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'student-level',
-            data: { title: 'STUDENT_LEVEL' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/student-level/student-level.component'
@@ -99,7 +88,6 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'reading-criteria',
-            data: { title: 'READING_CRITERIA' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/reading-criteria/reading-criteria.component'
@@ -107,7 +95,6 @@ export const Main_Layout_Routes: Routes = [
           },
           {
             path: 'book-details',
-            data: { title: 'BOOK_DETAILS' },
             loadComponent: () =>
               import(
                 '../teacher-dashboard/leveled-reading/book-details/book-details.component'

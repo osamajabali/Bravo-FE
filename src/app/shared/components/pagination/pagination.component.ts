@@ -11,8 +11,8 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./pagination.component.scss'],
 })
 export class PaginationComponent {
-  @Input() first: number = 0;
-  @Input() rows: number = 10;
+  @Input() first: number = 1;
+  @Input() rows: number = 0;
   @Input() totalRecords: number = 0;
   @Input() itemLabel: string = 'items';
 
@@ -21,7 +21,10 @@ export class PaginationComponent {
   protected Math = Math;
 
   onPageChange(event: PaginatorState) {
-    event.page += 1
+    event.page += 1;
+    if(event.first > this.first){
+      event.first +=1;
+    }
     this.pageChange.emit(event);
   }
 }

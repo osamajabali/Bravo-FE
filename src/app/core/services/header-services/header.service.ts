@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Classes, ClassesData } from '../../models/header-models/header.model';
+import { Classes, ClassesData, Section } from '../../models/header-models/header.model';
 import { Observable } from 'rxjs';
 import { Result } from '../../models/shared-models/result';
 import { HttpService } from '../shared-services/http.service';
@@ -12,6 +12,7 @@ export class HeaderService {
   selectedSubjectId : number;
   selectedGradeId : number;
   selectedSectionId : number;
+  sectionsArray: Section[] = [];
 
   constructor(private apiHlpr : HttpService) { }
 

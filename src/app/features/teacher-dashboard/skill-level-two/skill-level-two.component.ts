@@ -19,7 +19,10 @@ import { DomainRequest } from '../../../core/models/teacher-dashboard-models/sta
 import { HeaderService } from '../../../core/services/header-services/header.service';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { StatsService } from '../../../core/services/teacher-dashboard-services/stats.service';
-import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
+import { SkillCurriculumPagination } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
+import { PaginatorState } from 'primeng/paginator';
+import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
+import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
 
 @Component({
   selector: 'app-skill-level-two',
@@ -33,66 +36,79 @@ import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/s
     DialogModule,
     TranslateModule,
     SkillsCardsComponent,
-    LessonCardsComponent
+    LessonCardsComponent,
+    PaginationComponent
   ],
   templateUrl: './skill-level-two.component.html',
   styleUrl: './skill-level-two.component.scss',
 })
 export class SkillLevelTwoComponent {
-   skills: SingleSkill[] = [];
-   curriculumId: number | null = null;
-   activateSkill: boolean = false;
-   showUserDrower: boolean = false;
-   showSmartBoard: boolean = false;
-   currentSkillUsers: any = null;
-   domainSkillsRequest: DomainRequest = new DomainRequest();
-   private refreshSubscription!: Subscription;
- 
-   skillSummaryData: SkillSummaryData = {
-     allSkills: 25,
-     activeSkills: 10,
-     questionSolved: 10,
-     timeSpent: 10,
-   };
-   domainId: number = 1;
-   levels: Level[] = [];
-   skillToActivate: SingleSkill | null = null;
-   router: Router = inject(Router);
-   skillCurriculum: SkillCurriculum[];
-   skillArray: any[] = [];
-   curriculumArray: any[] = [];
- 
-   constructor(private statsService: StatsService, private headerService: HeaderService, private route: ActivatedRoute, private sharedService : SharedService) { }
- 
-   ngOnInit(): void {
-     this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
-       if (res) {
-         this.route.paramMap.subscribe((params) => {
-           this.getSkills();           
-         });
-       }
-     });
-   }
- 
-   getSkills() {
-     this.route.paramMap.subscribe(params => {
-       this.domainId = parseInt(params.get('domainId') || '0');
-       console.log('domainId:', this.domainId);
-       this.domainSkillsRequest.domainId = this.domainId;
-     });
-     this.domainSkillsRequest.courseSectionId = this.headerService.selectedSectionId;
-     this.statsService.getDomainSkills(this.domainSkillsRequest).subscribe(res => {
-       if (res.success) {
-         this.skillCurriculum = res.result.learningOutcomes;
-         this.skillCurriculum.forEach(item => {
-           if (item.isSkill) {
-             this.skillArray.push(item); // Add to skillArray if isSkill is true
-           } else {
-             this.curriculumArray.push(item); // Add to curriculumArray if isSkill is false
-           }
-         })
-       }
-     })
-   }
- }
- 
+  curriculumId: number | null = null;
+  activateSkill: boolean = false;
+  showUserDrower: boolean = false;
+  showSmartBoard: boolean = false;
+  currentSkillUsers: any = null;
+  curriculumsPayload: DomainRequest = new DomainRequest();
+  nextRoute: string = '/features/skills-level-two';
+  private refreshSubscription!: Subscription;
+
+  skillSummaryData: SkillSummaryData = {
+    allSkills: 25,
+    activeSkills: 10,
+    questionSolved: 10,
+    timeSpent: 10,
+  };
+  domainId: number = 1;
+  levels: Level[] = [];
+  skillToActivate: SingleSkill | null = null;
+  router: Router = inject(Router);
+  skillCurriculum: SkillCurriculumPagination = new SkillCurriculumPagination();
+  first: number = 0;
+
+  constructor(
+    private statsService: StatsService,
+    private headerService: HeaderService,
+    private route: ActivatedRoute,
+    private sharedService: SharedService,
+    private spinnerService: SpinnerService
+  ) { }
+
+  ngOnInit(): void {
+    this.sharedService.nextRoute = this.nextRoute;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
+      if (res) {
+        this.route.paramMap.subscribe((params) => {
+          this.getSkills();
+        });
+      }
+    });
+  }
+
+  ngOnDestroy(): void {  // Unsubscribe in ngOnDestroy
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();  // Unsubscribe to avoid memory leaks
+    }
+  }
+
+  getSkills() {
+    this.spinnerService.show();
+    this.route.paramMap.subscribe(params => {
+      this.domainId = parseInt(params.get('domainId') || '0');
+      console.log('domainId:', this.domainId);
+      this.curriculumsPayload.domainId = this.domainId;
+    });
+    this.curriculumsPayload.courseSectionId = this.headerService.selectedSectionId;
+    this.statsService.getDomainSkills(this.curriculumsPayload).subscribe(res => {
+      if (res.success) {
+        this.skillCurriculum = res.result;
+        this.spinnerService.hide();
+      }
+    });
+  }
+
+  nextPage($event: PaginatorState) {
+    this.curriculumsPayload.pageNumber = $event.page;
+    this.first = $event.first;
+    this.getSkills();
+  }
+}

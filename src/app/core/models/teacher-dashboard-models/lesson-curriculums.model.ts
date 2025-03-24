@@ -1,12 +1,13 @@
 import { PaginationFilter } from '../shared-models/pagination.model';
 
-export interface LessonsCurriculums {
+export class LessonsCurriculums {
   curriculumLearningOutcomeId: number;
   lessonName?: string;
   skillsCount: number;
   name: string;
   domainName: any;
   id?:number;
+  isActive?: boolean;
 }
 
 export class LessonsCurriculumsPagination extends PaginationFilter {
@@ -18,6 +19,3 @@ export class LessonsCurriculumsPayload extends PaginationFilter {
   courseSectionId : number
 }
 
-export interface CurriculumWithActive extends LessonsCurriculums {
-  isActive?: boolean;
-}

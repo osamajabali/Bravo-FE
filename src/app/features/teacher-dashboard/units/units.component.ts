@@ -36,7 +36,7 @@ export class UnitsComponent implements OnInit, OnDestroy {
   };
   semesterId: number;
   unitPayload: UnitPayload = new UnitPayload();
-  first: number = 1;
+  first: number = 0;
 
   constructor(
     private headerService: HeaderService,

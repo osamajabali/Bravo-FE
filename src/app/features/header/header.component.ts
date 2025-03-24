@@ -53,20 +53,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userMenuItems: MenuItem[] = [];
   selectedFiltersText: string = 'Choose properties';
   overlayVisible = false;
-  pageTitle = '';
   userInitials = 'LS';
   userRole = 'Teacher';
   userName = 'Laila Aslama';
   position = 'Teacher';
   classesData: ClassesData = new ClassesData();
   displayFilter = 'Select filters'; // Initializes the display filter
+  private refreshSubscription!: Subscription;
 
   // Subscriptions
   private subscriptions = new Subscription();
   sectionExpanded: boolean;
   GradesExpanded: boolean;
   SubjectExpanded: boolean;
-  title: string;
+  title: string = 'title';
   currentLang: string;
 
   ngOnInit(): void {
@@ -74,8 +74,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.getClasses();
     this.getUserName()
 
-    this.route.data.subscribe(data => {
-      this.title = data['title'];
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
+      this.title = localStorage.getItem('title')
     });
 
     // Listen to route changes and refresh classes
@@ -83,12 +83,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.router.events.pipe(
         filter(event => event instanceof NavigationEnd)
       ).subscribe(() => {
-        this.updateTitle();
         this.getClasses()
       })
     );
 
-    this.updateTitle()
   }
 
   getUserName() {
@@ -104,21 +102,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const secondInitial = words ? words[1]?.charAt(0)?.toUpperCase() : '';
 
     return firstInitial + secondInitial;
-  }
-
-  updateTitle() {
-    let activeRoute = this.route;
-
-    while (activeRoute.firstChild) {
-      activeRoute = activeRoute.firstChild;
-    }
-
-    // Extract title from the active route's data
-    activeRoute.data.subscribe(data => {
-      this.title = data['title'] || 'Default Title';
-      this.title = this.title;
-      console.log('Resolved Page Title:', this.title);
-    });
   }
 
 
@@ -171,6 +154,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.selectedSectionId = this.findSelectedId(this.classesData.courseSections, 'courseSectionId');
         this.headerService.selectedSectionId = this.selectedSectionId;
 
+        this.headerService.sectionsArray = this.classesData.courseSections
         this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.courseSections)} , ${this.getSelectedName(this.classesData.subjects)} `;
 
         this.sharedService.triggerRefresh(res);

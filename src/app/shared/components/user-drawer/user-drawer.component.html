@@ -20,8 +20,7 @@
   </div>
 
   <div class="drawer-content" (click)="$event.stopPropagation()">
-    @for (section of sections; track section.levelId) { @if
-    (section?.studentsOfLevel?.length) {
+    @for (section of sections; track section.levelId) { 
     <div class="user-section">
       <div class="section-header">
         <h3 class="section-title">
@@ -55,6 +54,6 @@
         }
       </div>
     </div>
-    } }
+    }
   </div>
 </p-sidebar>

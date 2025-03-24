@@ -122,7 +122,7 @@ export class DoughnutChartDirective implements OnChanges {
       type: 'doughnut',
       data: {
         labels: this.isSkills 
-          ? [`${this.inactiveCount} Inactive`, `${this.activeCount} Active`] // Inactive on top
+          ? [`${this.inactiveCount} Number of Inactive Skills`, `${this.activeCount} Number of Active Skills`] // Inactive on top
           : [], // Use active/inactive counts as labels
         datasets: [
           {

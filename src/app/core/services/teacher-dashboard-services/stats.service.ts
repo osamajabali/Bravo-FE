@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Result } from '../../models/shared-models/result';
 import { SkillsDomain } from '../../models/teacher-dashboard-models/main-skills.model';
 import { Semester } from '../../models/teacher-dashboard-models/semesters.model';
-import { SkillCurriculum, SkillCurriculumResponse } from '../../models/teacher-dashboard-models/skill-curriculum.model';
+import { SkillCurriculum, SkillCurriculumPagination, SkillCurriculumResponse } from '../../models/teacher-dashboard-models/skill-curriculum.model';
 
 
 @Injectable({
@@ -24,8 +24,8 @@ export class StatsService {
       return this.apiHlpr.post<Result<SkillsDomain>>(`home/domains`, obj);
     }
   
-    getDomainSkills = (obj: DomainRequest): Observable<Result<SkillCurriculumResponse>> => {
-      return this.apiHlpr.post<Result<SkillCurriculumResponse>>(`home/domains/skills`, obj);
+    getDomainSkills = (obj: DomainRequest): Observable<Result<SkillCurriculumPagination>> => {
+      return this.apiHlpr.post<Result<SkillCurriculumPagination>>(`home/domains/skills`, obj);
     }
   
     getSemesters = (courseSectionId : number ): Observable<Result<Semester[]>> => {

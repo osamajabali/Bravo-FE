@@ -62,7 +62,7 @@
               [label]="'SEE_ALL' | translate"
               class="p-button-outlined see-all-button"
               (click)="
-                goToSingleSkill(isSkill(item) ? item.domainId : item.semesterId)
+                goToSingleSkill(item)
               "
             ></button>
           </div>
@@ -102,10 +102,10 @@
                   pButton
                   [label]="
                     quickAction.skillId
-                      ? ('DEACTIVATE' | translate)
-                      : ('ACTIVATE' | translate)
+                      ? ('ACTIVATE' | translate)
+                      : ('DEACTIVATE' | translate)
                   "
-                  class="p-button-outlined activate-button"
+                  class="p-button-primary activate-button"
                 ></button>
               </div>
             </div>

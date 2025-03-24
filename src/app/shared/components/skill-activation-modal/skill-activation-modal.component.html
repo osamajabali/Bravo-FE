@@ -7,34 +7,36 @@
   [header]="header()"
 >
   <div class="dialog-content">
-    <span class="dialog-message"
-      >Please select the sections you want to activate</span
-    >
+    <span class="dialog-message">
+      Please select the sections you want to activate
+    </span>
     <div class="checkbox-group">
       <div class="checkbox-item">
         <p-checkbox
-          [(ngModel)]="selectedGrades.all"
           [binary]="true"
           inputId="all"
+          [(ngModel)]="allSelected"
+          (ngModelChange)="toggleAll()"
         ></p-checkbox>
         <label for="all">All</label>
       </div>
-      <div class="checkbox-item">
-        <p-checkbox
-          [(ngModel)]="selectedGrades.grade1"
-          [binary]="true"
-          inputId="grade1"
-        ></p-checkbox>
-        <label for="grade1">Grade 1</label>
-      </div>
-      <div class="checkbox-item">
-        <p-checkbox
-          [(ngModel)]="selectedGrades.grade2"
-          [binary]="true"
-          inputId="grade2"
-        ></p-checkbox>
-        <label for="grade2">Grade 2</label>
-      </div>
+
+
+     @if (sections) {
+      @for (section of sections; track $index) {
+        <div class="checkbox-item">
+          <p-checkbox
+            [binary]="true"
+            [inputId]="'section' + section.courseSectionId"
+            [value]="section.courseSectionId"
+            [(ngModel)]="section.isSelected"
+            (ngModelChange)="onCheckboxChange() ; allSelected = false || this.selectedIds.length == this.sections.length"
+          ></p-checkbox>
+          <label [for]="'section' + section.courseSectionId">{{ section.name }}</label>
+        </div>
+      }
+     }
+      
     </div>
   </div>
 

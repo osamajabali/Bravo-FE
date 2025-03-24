@@ -16,7 +16,7 @@ import { PaginatorState } from 'primeng/paginator';
 export class UnitCardsComponent {
   
   @Input() cards: (Unit | Lessons | LessonsCurriculums)[] = [];
-  @Input() first: number = 0;
+  @Input() first: number = 1;
   @Input() rows: number = 0;
   @Input() totalRecords: number = 0;
   @Output() paginatorState = new EventEmitter<PaginatorState>();
@@ -47,11 +47,14 @@ export class UnitCardsComponent {
 
   clickedCard(card: Unit | Lessons | LessonsCurriculums) {
     if ((card as Unit).unitId) {
+      localStorage.setItem('title' , (card as Unit).unitLabelName )
       this.router.navigate(['/features/lessons', (card as Unit).unitId]);
     } else if ((card as Lessons).lessonId) {
+      localStorage.setItem('title' , (card as Lessons).lessonName )
       this.router.navigate(['/features/lessons-curriculums', (card as Lessons).lessonId]);
     } else {
       const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
+      localStorage.setItem('title' , (card as LessonsCurriculums).name )
       this.router.navigate(['/features/single-skill', 0, curriculumId]);
 
     }

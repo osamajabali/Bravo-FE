@@ -1,12 +1,19 @@
-@if(skillArray?.length){
-<app-skills-cards [skills]="skillArray" />
-}
-
-@if (curriculumArray) {
 <div class="units-container">
-  <div class="header">
-    <h1 class="page-title">{{curriculumArray?.length}} {{ "CURRICULUMS" | translate }}</h1>
-  </div>
-  <app-lesson-cards [cards]="curriculumArray"/>
-</div>
+    <div class="header">
+        <h1 class="page-title">{{skillCurriculum.totalRecords}} {{ "SKILLS" | translate }}</h1>
+      </div>
+
+@if(skillCurriculum.learningOutcomes){
+    @for (skill of skillCurriculum.learningOutcomes; track $index) {
+        @if(skill.isSkill){
+        <app-skills-cards [skill]="skill" />
+        }
+        @else {
+        <app-lesson-cards [card]="skill" />
+        }
+        }
+    
+        <app-pagination [first]="first" [rows]="skillCurriculum.pageSize" [itemLabel]="'SKILLS'"
+        [totalRecords]="skillCurriculum.totalRecords" itemLabel="books" (pageChange)="nextPage($event)"></app-pagination>
 }
+</div>

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Stats, StatsRequest } from '../../../core/models/teacher-dashboard-models/stats.model';
 import { Semester } from '../../../core/models/teacher-dashboard-models/semesters.model';
+import { Skills } from '../../../core/models/teacher-dashboard-models/main-skills.model';
 
 @Component({
   selector: 'app-semesters',
@@ -28,6 +29,7 @@ export class SemestersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    localStorage.setItem('title' , 'SEMESTERS');
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
       this.getStats();
       this.getClasses();
@@ -66,8 +68,10 @@ export class SemestersComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToSingleSkill(semesterId: number) {
-    this.router.navigate(['/features/units', semesterId]);
+  goToSingleSkill(semester: Skills | Semester) {
+    let selectedSemester = semester as Semester;
+    localStorage.setItem('title' , selectedSemester.name)
+    this.router.navigate(['/features/units', selectedSemester.semesterId]);
   }
 
 }

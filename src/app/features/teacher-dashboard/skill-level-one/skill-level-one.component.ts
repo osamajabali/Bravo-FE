@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
@@ -6,9 +6,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
-import {
-  SkillSummaryData,
-} from '../../../shared/components/skill-summary/skill-summary.component';
+import { SkillSummaryData } from '../../../shared/components/skill-summary/skill-summary.component';
 import { Subscription } from 'rxjs';
 import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
 import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
@@ -19,7 +17,10 @@ import { HeaderService } from '../../../core/services/header-services/header.ser
 import { SkillsCardsComponent } from "../../../shared/components/skills-cards/skills-cards.component";
 import { LessonCardsComponent } from "../../../shared/components/lesson-cards/lesson-cards.component";
 import { SharedService } from '../../../core/services/shared-services/shared.service';
-import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
+import { SkillCurriculum, SkillCurriculumPagination } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
+import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
+import { PaginatorState } from 'primeng/paginator';
+import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
 
 @Component({
   selector: 'app-skill-level-one',
@@ -33,20 +34,20 @@ import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/s
     DialogModule,
     TranslateModule,
     SkillsCardsComponent,
-    LessonCardsComponent
-],
+    LessonCardsComponent,
+    PaginationComponent
+  ],
   templateUrl: './skill-level-one.component.html',
   styleUrl: './skill-level-one.component.scss',
 })
-export class SkillLevelOneComponent implements OnInit{
-  skills: SingleSkill[] = [];
+export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement OnDestroy
   curriculumId: number | null = null;
   activateSkill: boolean = false;
   showUserDrower: boolean = false;
   showSmartBoard: boolean = false;
   currentSkillUsers: any = null;
-  domainSkillsRequest: DomainRequest = new DomainRequest();
-  nextRoute : string = '/features/skills-level-two';
+  curriculumsPayload: DomainRequest = new DomainRequest();
+  nextRoute: string = '/features/skills-level-two';
   private refreshSubscription!: Subscription;
 
   skillSummaryData: SkillSummaryData = {
@@ -59,41 +60,53 @@ export class SkillLevelOneComponent implements OnInit{
   levels: Level[] = [];
   skillToActivate: SingleSkill | null = null;
   router: Router = inject(Router);
-  skillCurriculum: SkillCurriculum[];
-  skillArray: any[] = [];
-  curriculumArray: any[] = [];
+  skillCurriculum: SkillCurriculumPagination = new SkillCurriculumPagination();
+  first: number = 0;
 
-  constructor(private statsService: StatsService, private headerService: HeaderService, private route: ActivatedRoute, private sharedService : SharedService) { }
+  constructor(
+    private statsService: StatsService,
+    private headerService: HeaderService,
+    private route: ActivatedRoute,
+    private sharedService: SharedService,
+    private spinnerService: SpinnerService
+  ) { }
 
   ngOnInit(): void {
     this.sharedService.nextRoute = this.nextRoute;
     this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
       if (res) {
         this.route.paramMap.subscribe((params) => {
-          this.getSkills();           
+          this.getSkills();
         });
       }
     });
   }
 
+  ngOnDestroy(): void {  // Unsubscribe in ngOnDestroy
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();  // Unsubscribe to avoid memory leaks
+    }
+  }
+
   getSkills() {
+    this.spinnerService.show();
     this.route.paramMap.subscribe(params => {
       this.domainId = parseInt(params.get('domainId') || '0');
       console.log('domainId:', this.domainId);
-      this.domainSkillsRequest.domainId = this.domainId;
+      this.curriculumsPayload.domainId = this.domainId;
     });
-    this.domainSkillsRequest.courseSectionId = this.headerService.selectedSectionId;
-    this.statsService.getDomainSkills(this.domainSkillsRequest).subscribe(res => {
+    this.curriculumsPayload.courseSectionId = this.headerService.selectedSectionId;
+    this.statsService.getDomainSkills(this.curriculumsPayload).subscribe(res => {
       if (res.success) {
-        this.skillCurriculum = res.result.learningOutcomes;
-        this.skillCurriculum.forEach(item => {
-          if (item.isSkill) {
-            this.skillArray.push(item); // Add to skillArray if isSkill is true
-          } else {
-            this.curriculumArray.push(item); // Add to curriculumArray if isSkill is false
-          }
-        })
+        this.skillCurriculum = res.result;
+        this.spinnerService.hide();
       }
-    })
+    });
+  }
+
+  nextPage($event: PaginatorState) {
+    this.curriculumsPayload.pageNumber = $event.page;
+    this.first = $event.first;
+    this.getSkills();
   }
 }
