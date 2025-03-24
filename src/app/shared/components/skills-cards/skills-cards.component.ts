@@ -5,7 +5,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PopoverModule } from 'primeng/popover';
 import { Subscription, combineLatest } from 'rxjs';
 import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
 import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
@@ -23,12 +23,13 @@ import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/s
 
 @Component({
   selector: 'app-skills-cards',
+  standalone: true,
   imports: [
     CommonModule,
     RouterModule,
     FormsModule,
     InputTextModule,
-    OverlayPanelModule,
+    PopoverModule,
     ButtonModule,
     DialogModule,
     UserDrawerComponent,

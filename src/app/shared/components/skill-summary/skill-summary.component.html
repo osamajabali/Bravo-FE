@@ -14,9 +14,15 @@
       />
       <i class="pi pi-search position-absolute end-0 pe-3"></i>
     </span>
-    <div class="filter-container" (click)="filterPanel.toggle($event)">
+    <button
+      #filterBtn
+      pButton
+      type="button"
+      class="p-button-text filter-button"
+      (click)="filterContent.toggle($event)"
+    >
       <img src="icon-filter.svg" alt="filter" />
-    </div>
+    </button>
   </div>
   <div class="summary">
     <div class="box filled">
@@ -64,21 +70,14 @@
   </div>
 </div>
 
-<!-- filter panel -->
-<p-overlayPanel
-  #filterPanel
-  [showCloseIcon]="false"
-  [dismissable]="true"
-  styleClass="filter-overlay"
->
+<p-popover #filterContent>
   <div class="filter-overlay-content">
     <!-- Header with title and close button -->
     <div class="filter-overlay-header">
       <h3 class="filter-overlay-title">Filter Sub Skills</h3>
-      <button class="filter-overlay-close" (click)="filterPanel.hide()">
+      <button class="filter-overlay-close" (click)="filterContent.toggle($event)">
         <i class="pi pi-times"></i>
-      </button>
-    </div>
+      </button>    </div>
 
     <!-- Divider -->
     <div class="filter-divider"></div>
@@ -151,4 +150,4 @@
       <button type="button" class="filter-btn filter-btn-apply">Apply</button>
     </div>
   </div>
-</p-overlayPanel>
+</p-popover>

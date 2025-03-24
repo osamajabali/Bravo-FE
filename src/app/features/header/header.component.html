@@ -18,19 +18,15 @@
   <div class="header-right">
     <!-- Dropdown with overlay icon -->
     <div class="header-item">
-      <p-overlayPanel
-        #filterPanel
-        [showCloseIcon]="false"
-        [dismissable]="true"
-        styleClass="filter-overlay"
-      >
+
+      <p-popover #filterContent>
         <div class="filter-overlay-content">
           <!-- Header with title and close button -->
           <div class="filter-overlay-header">
             <h3 class="filter-overlay-title">
               {{ "CHOOSE_PROPERTIES" | translate }}
             </h3>
-            <button class="filter-overlay-close" (click)="filterPanel.hide()">
+            <button class="filter-overlay-close" (click)="filterContent.toggle($event)">
               <img src="icon-green-close.svg" alt="close" />
             </button>
           </div>
@@ -229,27 +225,27 @@
             <button
               type="button"
               class="filter-btn filter-btn-apply"
-              (click)="applyFilter($event); filterPanel.hide()"
+              (click)="applyFilter($event)"
             >
               {{ "APPLY" | translate }}
             </button>
           </div>
         </div>
-      </p-overlayPanel>
-
+      </p-popover>
       <button
-        pButton
-        type="button"
-        class="p-button-text filter-button"
-        (click)="filterPanel.toggle($event)"
-      >
-        <span class="button-label">{{ displayFilter | translate }}</span>
-        <img
-          src="arrow-green-down.svg"
-          alt="filter icon"
-          class="custom-filter-icon"
-        />
-      </button>
+      #filterBtn
+      pButton
+      type="button"
+      class="p-button-text filter-button"
+      (click)="filterContent.toggle($event)"
+    >
+      <span class="button-label">{{ displayFilter | translate }}</span>
+      <img
+        src="arrow-green-down.svg"
+        alt="filter icon"
+        class="custom-filter-icon"
+      />
+    </button>
     </div>
 
     <!-- Notification Icon -->

@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { filter, Subscription } from 'rxjs';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { ButtonModule } from 'primeng/button';
+import { PopoverModule } from 'primeng/popover';
+import { ButtonModule, ButtonDirective } from 'primeng/button';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
@@ -24,8 +24,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     CommonModule,
     FormsModule,
     NgSelectModule,
-    OverlayPanelModule,
-    ButtonModule,
+    PopoverModule,
+    ButtonDirective,
     RadioButtonModule,
     MenuModule,
     TranslateModule
