@@ -1,0 +1,301 @@
+<div class="assignments">
+  <div class="header">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="search-container">
+        <span
+          dir="ltr"
+          class="p-input-icon-left d-flex align-items-center position-relative"
+        >
+          <input
+            type="text"
+            pInputText
+            placeholder="Search"
+            class="search-input"
+            (change)="_onSearchChange($event)"
+            [value]="searchTerm"
+          />
+          <i class="pi pi-search position-absolute end-0 pe-3"></i>
+        </span>
+        <button
+          #filterBtn
+          pButton
+          type="button"
+          class="p-button-text filter-button"
+          (click)="filterContent.toggle($event)"
+        >
+          <img src="icon-filter.svg" alt="filter" />
+        </button>
+      </div>
+      <div class="buttons">
+        <button
+          pButton
+          label=""
+          class="p-button-outlined show-button"
+          (click)="newAssignment()"
+        >
+          <span>New Assignment</span>
+          <img src="icon-plus.svg" alt="plus" />
+        </button>
+      </div>
+    </div>
+    <div class="tabs">
+      <div
+        class="tab"
+        [class.selected]="selectedTab === 'active'"
+        (click)="onTabClick('active')"
+      >
+        Active
+      </div>
+      <div
+        class="tab"
+        [class.selected]="selectedTab === 'closed'"
+        (click)="onTabClick('closed')"
+      >
+        Closed
+      </div>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="advanced-search" *ngIf="selectedTab === 'active'">
+        <div class="advanced-filters">
+          <p-select
+            [options]="subjects"
+            [(ngModel)]="selectedSubject"
+            placeholder="Subjects"
+            [showClear]="true"
+            optionLabel="label"
+            optionValue="value"
+          ></p-select>
+          <p-select
+            [options]="grades"
+            [(ngModel)]="selectedGrade"
+            placeholder="Grade"
+            [showClear]="true"
+            optionLabel="label"
+            optionValue="value"
+          ></p-select>
+          <p-select
+            [options]="homerooms"
+            [(ngModel)]="selectedHomeroom"
+            placeholder="Homerooms"
+            [showClear]="true"
+            optionLabel="label"
+            optionValue="value"
+          ></p-select>
+          <p-datePicker
+            [(ngModel)]="startDate"
+            placeholder="Start Date"
+            [showClear]="false"
+            dateFormat="dd/mm/yy"
+          ></p-datePicker>
+          <p-datePicker
+            [(ngModel)]="endDate"
+            placeholder="End Date"
+            [showClear]="false"
+            dateFormat="dd/mm/yy"
+          ></p-datePicker>
+          <p-datePicker
+            [(ngModel)]="creationDate"
+            placeholder="Creation Date"
+            [showClear]="false"
+            dateFormat="dd/mm/yy"
+          ></p-datePicker>
+          <p-select
+            [options]="assignmentTypes"
+            [(ngModel)]="selectedAssignmentType"
+            placeholder="Assignment Type"
+            [showClear]="true"
+            optionLabel="label"
+            optionValue="value"
+          ></p-select>
+          <p-select
+            [options]="assignmentStatuses"
+            [(ngModel)]="selectedAssignmentStatus"
+            placeholder="Assignment Status"
+            [showClear]="true"
+            optionLabel="label"
+            optionValue="value"
+          ></p-select>
+          <p-select
+            [options]="sortOptions"
+            [(ngModel)]="selectedSortOption"
+            placeholder="Sort By"
+            [showClear]="true"
+            optionLabel="label"
+            optionValue="value"
+          ></p-select>
+          <p-select
+            [options]="orderOptions"
+            [(ngModel)]="selectedOrderOption"
+            placeholder="Order"
+            [showClear]="true"
+            optionLabel="label"
+            optionValue="value"
+          ></p-select>
+          <p-select
+            [options]="recipients"
+            [(ngModel)]="selectedRecipient"
+            placeholder="Recipient"
+            [showClear]="true"
+            optionLabel="label"
+            optionValue="value"
+          ></p-select>
+        </div>
+        <div class="advanced-search-actions">
+          <div class="clear-button" (click)="onResetAdvancedSearch()">
+            <span>Clear Filters</span>
+          </div>
+          <button
+            pButton
+            label="Search"
+            class="p-button-primary"
+            (click)="onAdvancedSearch()"
+          ></button>
+        </div>
+    </div>
+
+    <!-- Grid Headers -->
+    <div class="grid-header">
+      <div class="header-item title">Title</div>
+      <div class="header-item status">Status</div>
+      <div class="header-item type">Type</div>
+      <div class="header-item post-date">Post Date</div>
+      <div class="header-item due-date">Due On</div>
+      <div class="header-item questions">Question No.</div>
+      <div class="header-item actions">Actions</div>
+    </div>
+
+    <!-- Assignment List -->
+    <div class="assignments-list">
+      @for (assignment of assignments; track assignment.id) {
+      <div
+        class="assignment-row"
+        [class.system]="assignment.status === 'system'"
+        [class.scheduled]="assignment.status === 'scheduled'"
+      >
+        <div class="item title">{{ assignment.title }}</div>
+        <div class="item status">
+          <span
+            [class.system]="assignment.status === 'system'"
+            [class.scheduled]="assignment.status === 'scheduled'"
+          >
+            @if (assignment.status === 'system') {
+            <img src="icon-robot.svg" alt="system" />
+            } @else {
+            <img src="icon-calendar.svg" alt="scheduled" />
+            }
+            {{ assignment.status }}
+          </span>
+        </div>
+        <div class="item type">Skill</div>
+        <div class="item post-date">
+          {{ assignment.postDate | date : "mediumDate" }}
+        </div>
+        <div class="item due-date">
+          {{ assignment.dueDate | date : "mediumDate" }}
+        </div>
+        <div class="item questions">{{ assignment.questionCount }}</div>
+        <div class="item actions">
+          <button
+            pButton
+            type="button"
+            label="View Details"
+            class="p-button-primary"
+            (click)="viewAssignment(assignment.id)"
+          ></button>
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- Pagination -->
+    <app-pagination [rows]="10" [totalRecords]="100"></app-pagination>
+  </div>
+</div>
+
+<p-popover #filterContent>
+  <div class="filter-overlay-content">
+    <!-- Header with title and close button -->
+    <div class="filter-overlay-header">
+      <h3 class="filter-overlay-title">Filter Sub Skills</h3>
+      <button
+        class="filter-overlay-close"
+        (click)="filterContent.toggle($event)"
+      >
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+
+    <!-- Divider -->
+    <div class="filter-divider"></div>
+
+    <!-- Filter sections -->
+    <div class="filter-sections">
+      @for (section of filterSections; track section.title) {
+      <div class="filter-section">
+        <div
+          class="filter-section-header"
+          (click)="toggleFilterSection(section)"
+        >
+          <span class="filter-section-title">{{ section.title }}</span>
+          <i
+            class="pi"
+            [class.pi-chevron-up]="section.expanded"
+            [class.pi-chevron-down]="!section.expanded"
+          ></i>
+        </div>
+
+        @if (section.expanded) {
+        <div class="filter-section-content">
+          @for (option of section.options; track option.value) {
+          <div class="filter-option">
+            <div class="custom-checkbox">
+              <input
+                type="checkbox"
+                [id]="option.value"
+                [name]="section.title"
+                [value]="option.value"
+                [checked]="section.selectedOptions.includes(option.value)"
+                (change)="toggleCheckbox(section, option.value)"
+                class="visually-hidden"
+              />
+              <label [for]="option.value" class="checkbox-label">
+                <span class="checkbox-icon">
+                  @if (section.selectedOptions.includes(option.value)) {
+                  <img
+                    src="icon-checkbox-checked.svg"
+                    alt="Checked"
+                    class="checkbox-checked"
+                  />
+                  } @else {
+                  <img
+                    src="icon-checkbox-unchecked.svg"
+                    alt="Unchecked"
+                    class="checkbox-unchecked"
+                  />
+                  }
+                </span>
+                <span class="filter-option-label">{{ option.label }}</span>
+              </label>
+            </div>
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Divider after each section -->
+        <div class="filter-divider"></div>
+      </div>
+      }
+    </div>
+
+    <!-- Filter actions -->
+    <div class="filter-actions">
+      <button type="button" class="filter-btn filter-btn-clear">
+        Clear All
+      </button>
+      <button type="button" class="filter-btn filter-btn-apply">Apply</button>
+    </div>
+  </div>
+</p-popover>

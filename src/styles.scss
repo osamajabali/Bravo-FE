@@ -35,6 +35,15 @@ body {
   background: var(--neutral-white) !important;
 }
 
+.p-datepicker {
+  width: 100% !important;
+}
+
+.p-select, .p-inputtext {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
 .p-button-primary {
   background: var(--primary-primary-300) !important;
   color: var(--primary-primary-900) !important;
