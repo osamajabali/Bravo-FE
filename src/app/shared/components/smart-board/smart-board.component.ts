@@ -46,7 +46,7 @@ export class SmartBoardComponent implements OnInit {
 }
   getCards() {
     this.card.courseSectionId = this.headerService.selectedSectionId;
-    this.card.learningOutcomeId = 101099;
+    this.card.learningOutcomeId = this.learningOutcomeId;
     this.cardService.getCards(this.card).subscribe(res =>{
       if(res.success){
         this.cardResponse = res.result
