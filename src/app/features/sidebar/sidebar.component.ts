@@ -47,12 +47,12 @@ export class SidebarComponent {
       children: [
         {
           label: 'ASSIGNMENTS',
-          route: RouteNames.ASSIGNMENTS,
+          route: '/features/assignments',
           icon: 'tasks'
         },
         {
           label: 'EXAMS',
-          route: RouteNames.EXAMS,
+          route: '/features/exams',
           icon: 'file-alt'
         }
       ]

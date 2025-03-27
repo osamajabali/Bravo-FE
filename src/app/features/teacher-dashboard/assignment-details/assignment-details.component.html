@@ -1,0 +1,158 @@
+<div class="assignment-details">
+  <!-- Assignment Details Box -->
+   <div class="details-title">
+    <div class="title">Assignment Details</div>
+   </div>
+  <div class="details-box">
+    <!-- First Row -->
+    <div class="details-row">
+      <div class="left-section">
+        <div class="info-item">
+          <span class="value grade">{{ assignmentDetails.grade }}</span>
+        </div>
+        <div class="info-item">
+          <span class="value type">{{ assignmentDetails.type }}</span>
+        </div>
+      </div>
+      <div class="right-section">
+        <button pButton type="button" label="" class="p-button-secondary" (click)="onResend()">
+            <img src="icon-rotate.svg" alt="Resend">
+            Resend
+        </button>
+        <button pButton type="button" label="" class="p-button-secondary" (click)="onReminder()">
+            <img src="icon-reminder.svg" alt="Reminder">
+            Reminder
+        </button>
+        <button pButton type="button" label="" class="p-button-danger" (click)="onDelete()">
+            <img src="icon-red-trash.svg" alt="Delete">
+            Delete
+        </button>
+        <button pButton type="button" label="" class="p-button-secondary" (click)="onEdit()">
+            <img src="icon-pencil.svg" alt="Edit">
+            Edit
+        </button>
+        <button pButton type="button" label="" class="p-button-primary" (click)="onClose()">
+            <img src="icon-exit.svg" alt="Close">
+            Close Assignment
+        </button>
+      </div>
+    </div>
+
+    <!-- Second Row -->
+    <div class="details-row">
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="title">Status</span>
+          <span class="value">{{ assignmentDetails.status }}</span>
+        </div>
+        <div class="info-item">
+          <span class="title">Due On</span>
+          <span class="value">{{ assignmentDetails.dueDate | date:'mediumDate' }}</span>
+        </div>
+        <div class="info-item">
+          <span class="title">Posted On</span>
+          <span class="value">{{ assignmentDetails.postedDate | date:'mediumDate' }}</span>
+        </div>
+        <div class="info-item">
+          <span class="title">No. of Questions</span>
+          <span class="value">{{ assignmentDetails.questionCount }}</span>
+        </div>
+        <div class="info-item">
+          <span class="title">Skill Name</span>
+          <span class="value">{{ assignmentDetails.skillName }}</span>
+        </div>
+        <div class="info-item">
+          <span class="title">AVG Score</span>
+          <span class="value">{{ assignmentDetails.avgScore }}%</span>
+        </div>
+        <div class="info-item">
+          <span class="title">Sent To</span>
+          <span class="value">{{ assignmentDetails.sentTo }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submissions Grid -->
+  <div class="submissions-title">Submissions</div>
+  <div class="submissions-grid">
+    <!-- Grid Headers -->
+    <div class="grid-header">
+      <div class="header-item">
+        <div class="header-content">
+          <span>Student Name</span>
+          <img src="icon-sort.svg" alt="Sort" (click)="onSort('studentName')" class="sort-icon">
+        </div>
+      </div>
+      <div class="header-item">
+        <div class="header-content">
+          <span>Submission Status</span>
+          <img src="icon-sort.svg" alt="Sort" (click)="onSort('status')" class="sort-icon">
+        </div>
+      </div>
+      <div class="header-item">
+        <div class="header-content">
+          <span>Score</span>
+          <img src="icon-sort.svg" alt="Sort" (click)="onSort('score')" class="sort-icon">
+        </div>
+      </div>
+      <div class="header-item">
+        <div class="header-content">
+          <span>Time Spent</span>
+          <img src="icon-sort.svg" alt="Sort" (click)="onSort('timeSpent')" class="sort-icon">
+        </div>
+      </div>
+      <div class="header-item"></div>
+      <div class="header-item"></div>
+    </div>
+
+    <!-- Submissions List -->
+    <div class="submissions-list">
+      @for (submission of submissions; track submission.id) {
+        <div class="submission-row">
+          <div class="item student-name">
+            <p-checkbox
+              [(ngModel)]="submission.selected"
+              [binary]="true"
+            ></p-checkbox>
+            <span class="initials">{{ submission.initials }}</span>
+            <span class="name">{{ submission.studentName }}</span>
+          </div>
+          <div class="item status" [class]="submission.status.toLowerCase()">
+            {{ submission.status }}
+          </div>
+          <div class="item score">
+            <div class="score-item">
+              <span class="title">Correct</span>
+              <span class="value">{{ submission.correctAnswers }}</span>
+            </div>
+            <div class="score-item">
+              <span class="title">Wrong</span>
+              <span class="value">{{ submission.wrongAnswers }}</span>
+            </div>
+            <div class="score-item">
+              <span class="title">Score</span>
+              <span class="value">{{ submission.score }}%</span>
+            </div>
+          </div>
+          <div class="item time-spent">{{ submission.timeSpent }}</div>
+          <div class="item attachment">
+            <img src="icon-red-attachment.svg" alt="Attachment">
+          </div>
+          <div class="item actions">
+            <button 
+              pButton 
+              type="button" 
+              label="View Submission" 
+              class="p-button-primary view-submission" 
+              (click)="viewSubmission(submission.id)"
+            ></button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Pagination -->
+    <app-pagination [rows]="10" [totalRecords]="100"></app-pagination>
+  </div>
+</div>

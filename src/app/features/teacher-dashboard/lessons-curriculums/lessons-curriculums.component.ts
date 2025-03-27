@@ -12,6 +12,7 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
 import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
 import { SkeletonComponent } from "../../../shared/components/skeleton/skeleton.component";
 import { SkillActivationModalComponent } from "../../../shared/components/skill-activation-modal/skill-activation-modal.component";
+import { Section } from '../../../core/models/header-models/header.model';
 
 @Component({
   selector: 'app-lessons-curriculums',
@@ -33,7 +34,7 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
   };
   first: number = 0;
   skillToActivate: LessonsCurriculums | null = null;
-  sections: import("c:/Users/osama/Desktop/bravo-FE/src/app/core/models/header-models/header.model").Section[];
+  sections: Section[] = [];
 
   constructor(
     private learningOutcomesService: LearningOutcomesService,
