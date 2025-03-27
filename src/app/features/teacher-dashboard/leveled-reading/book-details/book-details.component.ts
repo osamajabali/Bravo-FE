@@ -7,6 +7,8 @@ import { GalleriaModule } from 'primeng/galleria';
 import { MenuItem } from 'primeng/api';
 import { BookInfoComponent } from './tabs/book-info/book-info.component';
 import { BookQuestionsComponent } from './tabs/book-questions/book-questions.component';
+import { ImageDialogComponent } from "../../../../shared/components/image-dialog/image-dialog.component";
+import { FormsModule } from '@angular/forms';
 
 interface BookDetail {
   subject: string;
@@ -24,8 +26,10 @@ interface BookDetail {
     DialogModule,
     GalleriaModule,
     BookInfoComponent,
-    BookQuestionsComponent
-  ],
+    BookQuestionsComponent,
+    ImageDialogComponent,
+    FormsModule
+],
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.scss'
 })
@@ -42,11 +46,11 @@ export class BookDetailsComponent {
 
   // Sample pages for the book (using the same image for demo)
   bookPages = [
-    { source: this.book.coverImage, alt: 'Page 1' },
-    { source: this.book.coverImage, alt: 'Page 2' },
-    { source: this.book.coverImage, alt: 'Page 3' },
-    { source: this.book.coverImage, alt: 'Page 4' },
-    { source: this.book.coverImage, alt: 'Page 5' }
+    'assets/images/book-image.svg',
+    'assets/images/book-image.svg',
+    'assets/images/book-image.svg',
+    'assets/images/book-image.svg',
+    'assets/images/book-image.svg'
   ];
 
   tabs: MenuItem[] = [
@@ -59,10 +63,4 @@ export class BookDetailsComponent {
     this.showReader = true;
   }
 
-  responsiveOptions = [
-    {
-      breakpoint: '1024px',
-      numVisible: 1
-    }
-  ];
 } 

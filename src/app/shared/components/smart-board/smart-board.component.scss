@@ -64,6 +64,8 @@
 
   .link-icon {
     margin-bottom: var(--padding-s); 
+    display: flex;
+    justify-content: center;
   }
 
   .link-title {

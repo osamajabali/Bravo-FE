@@ -1,15 +1,7 @@
-<p-dialog 
-  [(visible)]="visible" 
-  [modal]="true"
-  [closable]="false"
-  [closeOnEscape]="true"
-  [dismissableMask]="true"
-  [maximizable]="false"
-  [resizable]="false"
-  [draggable]="false"
-  styleClass="smart-board-dialog full-screen-dialog"
+<p-dialog [(visible)]="visible" [modal]="true" [closable]="false" [closeOnEscape]="true" [dismissableMask]="true"
+  [maximizable]="false" [resizable]="false" [draggable]="false" styleClass="smart-board-dialog full-screen-dialog"
   (onHide)="closeBoard()">
-  
+
   <ng-template pTemplate="header">
     <div class="board-header">
       <button class="close-button" (click)="closeBoard()">
@@ -24,15 +16,23 @@
     <div class="d-flex flex-wrap justify-content-center mt-3 gap-5">
       @for (card of cardResponse; track $index) {
       <div class="link" style="flex: 1 1 30%; max-width: 30%;">
-        <div class="link-icon">
-          <img [src]="card.iconUrl" alt="{{ card.name }}">
-        </div>
-        <div class="link-title">{{ card.name }}</div>
-        <div class="link-description">{{ card.count + ' ' + card.name }}</div>
+        <a (click)="getResources(card.resourceTypeId)" class="text-decoration-none">
+          <div class="link-icon">
+            <img [src]="card.iconUrl" alt="{{ card.name }}">
+          </div>
+          <div class="link-title text-center">{{ card.name }}</div>
+          <div class="link-description text-center">{{ card.count + ' ' + card.name }}</div>
+        </a>
       </div>
-    }
+      }
     </div>
+
   </div>
-  
-  
-</p-dialog> 
+
+
+</p-dialog>
+
+@if(resources.flashCards.length){
+<app-image-dialog [(ngModel)]="showImageDialog" [book]="book" [bookPages]="resources.flashCards"
+  (hideImageDialog)="showImageDialog = false"></app-image-dialog>
+}
