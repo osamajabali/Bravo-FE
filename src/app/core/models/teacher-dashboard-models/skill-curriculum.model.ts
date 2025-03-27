@@ -9,9 +9,9 @@ export interface SkillCurriculum {
     isEnabled: boolean | null;
     isSkill: boolean;
     domainName: string ;
-    noOfStudentsEasy: number;
-    noOfStudentsHard: number;
-    noOfStudentsMedium: number;
+    easyStudentsCount: number;
+    hardStudentsCount: number;
+    meduimStudentsCount: number;
     skillsCount: number;
     isActive : boolean;
   }

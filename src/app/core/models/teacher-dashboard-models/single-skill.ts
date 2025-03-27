@@ -7,9 +7,9 @@ export class SingleSkill {
   displayName: string;
   learningOutcomeId: number;
   id?: number;
-  noOfStudentsEasy: number;
-  noOfStudentsHard: number;
-  noOfStudentsMedium: number;
+  easyStudentsCount: number;
+  hardStudentsCount: number;
+  meduimStudentsCount: number;
   numberOfSkills?: number;
 }
 export class SingleSkillPagination extends PaginationFilter {

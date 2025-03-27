@@ -1,7 +1,12 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { CardService } from '../../../core/services/skills/card-service.service';
+import { CardRequest, CardResponse } from '../../../core/models/teacher-dashboard-models/card.model';
+import { HeaderService } from '../../../core/services/header-services/header.service';
+import { Subscription } from 'rxjs';
+import { SharedService } from '../../../core/services/shared-services/shared.service';
 
 @Component({
   selector: 'app-smart-board',
@@ -10,12 +15,32 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './smart-board.component.html',
   styleUrl: './smart-board.component.scss'
 })
-export class SmartBoardComponent {
+export class SmartBoardComponent implements OnInit {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>();
   
   @Input() skillId: number = 0;
   @Input() skillTitle: string = '';
+  @Input() learningOutcomeId : number = 0;
+  card : CardRequest = new CardRequest();
+  private refreshSubscription!: Subscription; // Mark subscription as private to avoid accidental changes
+  cardResponse: CardResponse[] = [];
+
+  constructor(private cardService : CardService, private headerService : HeaderService, private sharedService : SharedService){}
+
+  ngOnInit(): void {
+    this.getCards()
+}
+  getCards() {
+    this.card.courseSectionId = this.headerService.selectedSectionId;
+    this.card.learningOutcomeId = this.learningOutcomeId;
+    this.cardService.getCards(this.card).subscribe(res =>{
+      if(res.success){
+        this.cardResponse = res.result
+      }
+  })
+  }
+
   closeBoard(): void {
     this.visible = false;
     this.visibleChange.emit(this.visible);

@@ -6,10 +6,10 @@
     @if (skillCurriculum.learningOutcomes) {
     @for (skill of skillCurriculum.learningOutcomes; track $index) {
     @if(skill.isSkill){
-    <app-skills-cards [skill]="skill" />
+    <app-skills-cards [sections]="sections" [skill]="skill" />
     }
     @else {
-    <app-lesson-cards [card]="skill" />
+    <app-lesson-cards [sections]="sections" [card]="skill" />
     }
     }
 

@@ -90,22 +90,19 @@
               <div>{{ "QUICK_ACTION" | translate }}</div>
             </div>
             <div class="quick-action-content">
-              @for (quickAction of item.quickSkills; track quickAction.skillId;
+              @for (quickAction of item.quickSkills; track quickAction.learningOutcomeId;
               let j = $index) {
               <div class="quick-action-item">
                 <div>{{ quickAction.name }}</div>
                 <div class="d-flex align-items-center gap-2">
-                  <button pButton label="" class="p-button-secondary skip-button">
+                  <button pButton label="" class="p-button-secondary skip-button" (click)=" skipSkill(quickAction , item) ">
                     <span>Skip</span>
                     <img src="icon-rotate.svg" alt="Skip" />
                   </button>
                   <button
+                  (click)="showActivationModal(item , quickAction)"
                     pButton
-                    [label]="
-                      quickAction.isEnabled
-                        ? ('ACTIVATE' | translate)
-                        : ('DEACTIVATE' | translate)
-                    "
+                    [label]=" ('ACTIVATE' | translate)"
                     class="p-button-primary activate-button"
                   ></button>
                 </div>
@@ -149,3 +146,7 @@
     </div>
   </section>
 </div>
+
+<!-- Custom Dialog -->
+<app-skill-activation-modal [(visible)]="activateSkill" [style]="{ width: '450px' }" [modal]="true" [closable]="true" [sections]="sections"
+  [closeOnEscape]="true" (activateSections)="_activateSkill($event)"></app-skill-activation-modal>

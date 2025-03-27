@@ -73,7 +73,7 @@ export class LessonsComponent implements OnInit, OnDestroy { // Implement OnDest
   }
 
   _activateSkill() {
-    this.getLessons();
+    // this.getLessons();
   }
 
   nextPage($event: PaginatorState) {

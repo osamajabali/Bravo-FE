@@ -21,6 +21,7 @@ import { SkillCurriculum, SkillCurriculumPagination } from '../../../core/models
 import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
 import { PaginatorState } from 'primeng/paginator';
 import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
+import { Section } from '../../../core/models/header-models/header.model';
 
 @Component({
   selector: 'app-skill-level-one',
@@ -62,6 +63,7 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
   router: Router = inject(Router);
   skillCurriculum: SkillCurriculumPagination = new SkillCurriculumPagination();
   first: number = 0;
+  sections: Section[] = [];
 
   constructor(
     private statsService: StatsService,
@@ -75,6 +77,7 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
     this.sharedService.nextRoute = this.nextRoute;
     this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
       if (res) {
+        this.sections = this.headerService.sectionsArray;
         this.route.paramMap.subscribe((params) => {
           this.getSkills();
         });

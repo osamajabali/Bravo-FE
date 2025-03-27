@@ -11,7 +11,7 @@ import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/s
 import { Subscription } from 'rxjs';
 import { HeaderService } from '../../../core/services/header-services/header.service';
 import { Section } from '../../../core/models/header-models/header.model';
-import { SkillActivationService } from '../../../core/services/skills-activation/skill-activation.service';
+import { SkillActivationService } from '../../../core/services/skills/skill-activation.service';
 import { SkillActivation } from '../../../core/models/teacher-dashboard-models/skillsActivation.model';
 import { Result } from '../../../core/models/shared-models/result';
 
@@ -62,10 +62,10 @@ export class LessonCardsComponent implements OnInit {
 
   toggleActive(card: Lessons | LessonsCurriculums | SkillCurriculum) {
     this.skillToActivate = card;
-    this.activateSkill = true;
+    this.activateSkill = !this.activateSkill;
   }
 
-  _activateSkill(selectedIds : number[]) {debugger
+  _activateSkill(selectedIds : number[]) {
     this.activateSkill = false;
     if((this.skillToActivate as Lessons).lessonId ){
       this.skillActivationModel.lessonId = (this.skillToActivate as Lessons).lessonId;
@@ -73,17 +73,16 @@ export class LessonCardsComponent implements OnInit {
       this.skillActivationModel.activationStatus = this.skillToActivate.isEnabled;
       this.skillActivationService.activateLesson(this.skillActivationModel).subscribe(res =>{
         if(res.success){
-          this.skillActivation.emit(res.success)
+          this.skillToActivate.activationDate = res.result.activationDate;
         }
       })
-    }else if( (this.skillToActivate as LessonsCurriculums).curriculumLearningOutcomeId){debugger
+    }else if( (this.skillToActivate as LessonsCurriculums).curriculumLearningOutcomeId){
       this.skillActivationModel.curriculumLearningOutcomeId = (this.skillToActivate as LessonsCurriculums).curriculumLearningOutcomeId;
       this.skillActivationModel.courseSectionIdList = selectedIds;
       this.skillActivationModel.activationStatus = this.skillToActivate.isEnabled;
       this.skillActivationService.activateCurriculum(this.skillActivationModel).subscribe(res =>{
         if(res.success){
-          this.activateSkill = false;
-          this.skillActivation.emit(res.success);
+          this.skillToActivate.activationDate = res.result.activationDate;
         }
       })
     }else{
@@ -92,7 +91,7 @@ export class LessonCardsComponent implements OnInit {
       this.skillActivationModel.activationStatus = this.skillToActivate.isEnabled;
       this.skillActivationService.activateSkill(this.skillActivationModel).subscribe(res =>{
         if(res.success){
-          this.skillActivation.emit(res.success)
+          this.skillToActivate.activationDate = res.result.activationDate;
         }
       })
     }

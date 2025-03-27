@@ -22,7 +22,7 @@ import { PaginatorState } from 'primeng/paginator';
 import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
 import { Section } from '../../../core/models/header-models/header.model';
 import { SkillActivation } from '../../../core/models/teacher-dashboard-models/skillsActivation.model';
-import { SkillActivationService } from '../../../core/services/skills-activation/skill-activation.service';
+import { SkillActivationService } from '../../../core/services/skills/skill-activation.service';
 
 @Component({
   selector: 'app-skills-cards',
@@ -51,7 +51,7 @@ export class SkillsCardsComponent {
   @Input() sections: Section[] = [];
   @Output() paginatorState = new EventEmitter<PaginatorState>();
   @Output() skillActivation = new EventEmitter<boolean>();
-  activateSkill: boolean;
+  activateSkill: boolean = false;
   showUserDrower: boolean;
   showSmartBoard: boolean;
   currentSkillUsers: any = null;
@@ -85,6 +85,10 @@ export class SkillsCardsComponent {
     this.paginatorState.emit($event)
   }
 
+  getSmartBoardDetails() {
+    this.showSmartBoard = true
+  }
+
   isSingleSkill(card: SingleSkill | SkillCurriculum): card is SingleSkill {
     return 'learningOutcomeId' in card;
   }
@@ -95,13 +99,14 @@ export class SkillsCardsComponent {
   }
 
   _activateSkill(selectedIds: number[]) {
-    this.activateSkill = !this.activateSkill;
+    this.activateSkill = false;
     this.skillActivationModel.learningOutcomeId = (this.skillToActivate as SingleSkill).learningOutcomeId ? (this.skillToActivate as SingleSkill).learningOutcomeId : (this.skillToActivate as SkillCurriculum).id;
     this.skillActivationModel.courseSectionIdList = selectedIds;
     this.skillActivationModel.activationStatus = this.skillToActivate.isEnabled;
     this.skillActivationService.activateSkill(this.skillActivationModel).subscribe(res => {
       if (res.success) {
-        this.skillActivation.emit(res.success)
+        this.skillToActivate.isEnabled = !this.skillToActivate.isEnabled;
+        this.skillToActivate.activationDate = res.result.activationDate;
       }
     })
   }

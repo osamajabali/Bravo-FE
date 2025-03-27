@@ -24,9 +24,9 @@ interface SelectedGrades {
 export class SkillActivationModalComponent  {
   visible = model<boolean>(false);
   visibleChange = output<boolean>();
-  modal = input<boolean>(false);
-  closable = input<boolean>(false);
-  closeOnEscape = input<boolean>(false);
+  modal = input<boolean>(true);
+  closable = input<boolean>(true);
+  closeOnEscape = input<boolean>(true);
   header = input<string>('');
   activateSections = output<number[]>();
   @Input() sections: Section[] = [];

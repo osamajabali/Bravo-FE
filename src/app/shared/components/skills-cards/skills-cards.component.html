@@ -5,13 +5,13 @@
           <h3 class="unit-title">{{ isSingleSkill(skill) ? skill.displayName : skill.skillName }}</h3>
           <div class="d-flex gap-3">
             <div class="badge">
-              Beginner <span class="number">{{ skill.noOfStudentsEasy || 0 }}</span>
+              Beginner <span class="number">{{ skill.easyStudentsCount || 0 }}</span>
             </div>
             <div class="badge">
-              Average <span class="number">{{ skill.noOfStudentsMedium || 0 }}</span>
+              Average <span class="number">{{ skill.meduimStudentsCount || 0 }}</span>
             </div>
             <div class="badge">
-              Advanced <span class="number">{{ skill.noOfStudentsHard || 0 }}</span>
+              Advanced <span class="number">{{ skill.hardStudentsCount || 0 }}</span>
             </div>
           </div>
         </div>
@@ -23,7 +23,7 @@
                 <span class="action-icon-text">Students</span>
               </div>
             </a>
-            <a (click)="showSmartBoard = true">
+            <a (click)="getSmartBoardDetails()">
               <div class="action-icon">
                 <img src="icon-cards.svg" alt="cards" />
                 <span class="action-icon-text">Cards</span>
@@ -59,9 +59,11 @@
 <app-skill-activation-modal [(visible)]="activateSkill" [style]="{ width: '450px' }" [modal]="true" [closable]="true" [sections]="sections"
   [closeOnEscape]="true" (activateSections)="_activateSkill($event)"></app-skill-activation-modal>
 
-<!-- Smart Board -->
-<app-smart-board (visibleChange)="showSmartBoard = false" [visible]="showSmartBoard" [skillId]="0"
-  [skillTitle]="'Static Lesson Title'"></app-smart-board>
+@if (showSmartBoard) {
+  <!-- Smart Board -->
+<app-smart-board (visibleChange)="showSmartBoard = false" [visible]="showSmartBoard" [skillId]="0" [learningOutcomeId]="skill.learningOutcomeId ? skill.learningOutcomeId : skill.id"
+[skillTitle]="'Static Lesson Title'"></app-smart-board>
+}
 
 <!-- User Drawer -->
 <app-user-drawer (visibleChange)="showUserDrower = false" [visible]="showUserDrower"

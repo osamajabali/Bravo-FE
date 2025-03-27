@@ -1,10 +1,11 @@
 <p-dialog
-  [visible]="visible()"
+  [(visible)]="visible"
   [style]="{ width: '500px' }"
   [modal]="modal()"
   [closable]="closable()"
   [closeOnEscape]="closeOnEscape()"
   [header]="header()"
+  (onHide)="close()"
 >
   <div class="dialog-content">
     <span class="dialog-message">
