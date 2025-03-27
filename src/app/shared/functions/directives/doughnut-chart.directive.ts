@@ -99,6 +99,7 @@ export class DoughnutChartDirective implements OnChanges {
         legend: {
           display: this.isSkills, // ✅ Legend only for skill charts
           position: 'right',
+          onClick: () => {}, // ❌ Disable click behavior
           labels: {
             boxWidth: 12,
             padding: 15,

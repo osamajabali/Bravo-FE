@@ -23,7 +23,7 @@
                 <span class="action-icon-text">Students</span>
               </div>
             </a>
-            <a (click)="getSmartBoardDetails()">
+            <a (click)="getSmartBoardDetails() ; toggleActive(skill)">
               <div class="action-icon">
                 <img src="icon-cards.svg" alt="cards" />
                 <span class="action-icon-text">Cards</span>
@@ -61,7 +61,7 @@
 
 @if (showSmartBoard) {
   <!-- Smart Board -->
-<app-smart-board (visibleChange)="showSmartBoard = false" [visible]="showSmartBoard" [skillId]="0" [learningOutcomeId]="skill.learningOutcomeId ? skill.learningOutcomeId : skill.id"
+<app-smart-board (visibleChange)="showSmartBoard = false" [title]="isSingleSkill(skillToActivate) ? skillToActivate.displayName : skillToActivate.skillName" [visible]="showSmartBoard" [skillId]="0" [learningOutcomeId]="skill.learningOutcomeId ? skill.learningOutcomeId : skill.id"
 [skillTitle]="'Static Lesson Title'"></app-smart-board>
 }
 

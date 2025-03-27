@@ -11,6 +11,7 @@ import { ImageDialogComponent } from "../image-dialog/image-dialog.component";
 import { FormsModule } from '@angular/forms';
 import { ResourceTypeEnum } from '../../../core/models/shared-models/enums';
 import { Resources } from '../../../core/models/shared-models/resources.model';
+import { BookDetail } from '../../../features/teacher-dashboard/leveled-reading/book-details/book-details.component';
 
 @Component({
   selector: 'app-smart-board',
@@ -22,9 +23,9 @@ import { Resources } from '../../../core/models/shared-models/resources.model';
 export class SmartBoardComponent implements OnInit {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>();
-  
   @Input() skillId: number = 0;
   @Input() skillTitle: string = '';
+  @Input() title: string = '';
   @Input() learningOutcomeId : number = 0;
   card : CardRequest = new CardRequest();
   private refreshSubscription!: Subscription; // Mark subscription as private to avoid accidental changes
@@ -33,11 +34,7 @@ export class SmartBoardComponent implements OnInit {
   resourceType = ResourceTypeEnum;
   resources : Resources = new Resources();
   
-  book: any = {
-    subject: 'Arabic',
-    title: 'القراءة للمبتدئين - المستوى الأول',
-    coverImage: 'assets/images/book-image.svg'
-  };
+  book: BookDetail = new BookDetail();
 
   constructor(private cardService : CardService, private headerService : HeaderService, private sharedService : SharedService){}
 
@@ -46,7 +43,7 @@ export class SmartBoardComponent implements OnInit {
 }
   getCards() {
     this.card.courseSectionId = this.headerService.selectedSectionId;
-    this.card.learningOutcomeId = this.learningOutcomeId;
+    this.card.learningOutcomeId = 101050;
     this.cardService.getCards(this.card).subscribe(res =>{
       if(res.success){
         this.cardResponse = res.result
@@ -55,26 +52,18 @@ export class SmartBoardComponent implements OnInit {
   }
 
   openCardPerType = (id : number) =>{
-    switch (id) {
-      case this.resourceType.FlashCards:
-        this.showImageDialog = true;
-        break;
-      case 2:
-        console.log('Handle case for ID 2');
-        break;
-      case 3:
-        console.log('Handle case for ID 3');
-        break;
-      default:
-        console.log('Handle default case');
+    if(this.resources.flashCards){
+      this.showImageDialog = true
     }
   }
 
-  getResources(id : number) {
+  getResources(card : CardResponse) {debugger
+    this.card.resourceTypeId = card.resourceTypeId;
+    this.book.title = this.title;
     this.cardService.getResources(this.card).subscribe(res =>{
       if(res.success){
         this.resources = res.result;
-        this.openCardPerType(id);
+        this.openCardPerType(card.resourceTypeId);
       }
   })
   }

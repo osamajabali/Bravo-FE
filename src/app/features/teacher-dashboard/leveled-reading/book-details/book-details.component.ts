@@ -10,10 +10,10 @@ import { BookQuestionsComponent } from './tabs/book-questions/book-questions.com
 import { ImageDialogComponent } from "../../../../shared/components/image-dialog/image-dialog.component";
 import { FormsModule } from '@angular/forms';
 
-interface BookDetail {
-  subject: string;
-  title: string;
-  coverImage: string;
+export class BookDetail {
+  subject: string = '';
+  title: string = '';
+  coverImage: string = '';
 }
 
 @Component({

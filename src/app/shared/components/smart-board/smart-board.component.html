@@ -16,7 +16,7 @@
     <div class="d-flex flex-wrap justify-content-center mt-3 gap-5">
       @for (card of cardResponse; track $index) {
       <div class="link" style="flex: 1 1 30%; max-width: 30%;">
-        <a (click)="getResources(card.resourceTypeId)" class="text-decoration-none">
+        <a (click)="getResources(card)" class="text-decoration-none">
           <div class="link-icon">
             <img [src]="card.iconUrl" alt="{{ card.name }}">
           </div>
