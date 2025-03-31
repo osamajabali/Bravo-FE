@@ -1,114 +1,278 @@
 <div class="assignment-details">
-  <!-- Assignment Details Box -->
-   <div class="details-title">
-    <div class="title">Assignment Details</div>
-   </div>
-  <div class="details-box">
-    <!-- First Row -->
-    <div class="details-row">
-      <div class="left-section">
-        <div class="info-item">
-          <span class="value grade">{{ assignmentDetails.grade }}</span>
+  <div class="header">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="summary-boxes">
+        <div class="box red">
+          <div class="box-content">
+            <div class="bold-area">
+              <img src="icon-red-x.svg" alt="warning" />
+            </div>
+            <div class="info">
+              <div class="number">10</div>
+              <div class="label">Did Not Submitted</div>
+            </div>
+          </div>
         </div>
-        <div class="info-item">
-          <span class="value type">{{ assignmentDetails.type }}</span>
+        <div class="box yellow">
+          <div class="box-content">
+            <div class="bold-area">
+              <img src="icon-yellow-check.svg" alt="submitted" />
+            </div>
+            <div class="info">
+              <div class="number">10</div>
+              <div class="label">Submitted</div>
+            </div>
+          </div>
+        </div>
+        <div class="box green">
+          <div class="box-content">
+            <div class="bold-area">
+              <img src="icon-double-check.svg" alt="Corrected" />
+            </div>
+            <div class="info">
+              <div class="number">10</div>
+              <div class="label">Corrected</div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="right-section">
-        <button pButton type="button" label="" class="p-button-secondary" (click)="onResend()">
-            <img src="icon-rotate.svg" alt="Resend">
-            Resend
+      <div class="buttons">
+        <button
+          pButton
+          label=""
+          class="p-button-outlined show-button"
+          (click)="viewResources()"
+        >
+          <span>View Resources</span>
+          <img src="icon-eye.svg" alt="view resources" />
         </button>
-        <button pButton type="button" label="" class="p-button-secondary" (click)="onReminder()">
-            <img src="icon-reminder.svg" alt="Reminder">
-            Reminder
+        <button
+          pButton
+          label=""
+          class="p-button-outlined show-button"
+          (click)="exportBtn.toggle($event)"
+        >
+          <span>Export as</span>
+          <img src="arrow-green-down.svg" alt="export" />
         </button>
-        <button pButton type="button" label="" class="p-button-danger" (click)="onDelete()">
-            <img src="icon-red-trash.svg" alt="Delete">
-            Delete
-        </button>
-        <button pButton type="button" label="" class="p-button-secondary" (click)="onEdit()">
-            <img src="icon-pencil.svg" alt="Edit">
-            Edit
-        </button>
-        <button pButton type="button" label="" class="p-button-primary" (click)="onClose()">
-            <img src="icon-exit.svg" alt="Close">
-            Close Assignment
-        </button>
-      </div>
-    </div>
-
-    <!-- Second Row -->
-    <div class="details-row">
-      <div class="info-grid">
-        <div class="info-item">
-          <span class="title">Status</span>
-          <span class="value">{{ assignmentDetails.status }}</span>
-        </div>
-        <div class="info-item">
-          <span class="title">Due On</span>
-          <span class="value">{{ assignmentDetails.dueDate | date:'mediumDate' }}</span>
-        </div>
-        <div class="info-item">
-          <span class="title">Posted On</span>
-          <span class="value">{{ assignmentDetails.postedDate | date:'mediumDate' }}</span>
-        </div>
-        <div class="info-item">
-          <span class="title">No. of Questions</span>
-          <span class="value">{{ assignmentDetails.questionCount }}</span>
-        </div>
-        <div class="info-item">
-          <span class="title">Skill Name</span>
-          <span class="value">{{ assignmentDetails.skillName }}</span>
-        </div>
-        <div class="info-item">
-          <span class="title">AVG Score</span>
-          <span class="value">{{ assignmentDetails.avgScore }}%</span>
-        </div>
-        <div class="info-item">
-          <span class="title">Sent To</span>
-          <span class="value">{{ assignmentDetails.sentTo }}</span>
-        </div>
       </div>
     </div>
   </div>
+  <div class="info-container">
+    <!-- Assignment Details Box -->
+    <div class="details-title">
+      <div class="title">Assignment Details</div>
+    </div>
+    <div class="details-box">
+      <!-- First Row -->
+      <div class="details-row">
+        <div class="left-section">
+          <div class="info-item">
+            <span class="value grade">{{ assignmentDetails.grade }}</span>
+          </div>
+        </div>
+        <div class="right-section">
+          <button
+            pButton
+            type="button"
+            label=""
+            class="p-button-secondary"
+            (click)="onResend()"
+          >
+            <img src="icon-rotate.svg" alt="Resend" />
+            Resend
+          </button>
+          <button
+            pButton
+            type="button"
+            label=""
+            class="p-button-secondary"
+            (click)="onReminder()"
+          >
+            <img src="icon-reminder.svg" alt="Reminder" />
+            Reminder
+          </button>
+          <button
+            pButton
+            type="button"
+            label=""
+            class="p-button-danger"
+            (click)="onDelete()"
+          >
+            <img src="icon-red-trash.svg" alt="Delete" />
+            Delete
+          </button>
+          <button
+            pButton
+            type="button"
+            label=""
+            class="p-button-secondary"
+            (click)="onEdit()"
+          >
+            <img src="icon-pencil.svg" alt="Edit" />
+            Edit
+          </button>
+          <button
+            pButton
+            type="button"
+            label=""
+            class="p-button-primary"
+            (click)="onClose()"
+          >
+            <img src="icon-exit.svg" alt="Close" />
+            Close Assignment
+          </button>
+        </div>
+      </div>
 
-  <!-- Submissions Grid -->
-  <div class="submissions-title">Submissions</div>
-  <div class="submissions-grid">
-    <!-- Grid Headers -->
-    <div class="grid-header">
-      <div class="header-item">
-        <div class="header-content">
-          <span>Student Name</span>
-          <img src="icon-sort.svg" alt="Sort" (click)="onSort('studentName')" class="sort-icon">
+      <!-- Second Row -->
+      <div class="details-row">
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="title">Status</span>
+            <span class="value">{{ assignmentDetails.status }}</span>
+          </div>
+          <div class="info-item">
+            <span class="title">Due On</span>
+            <span class="value">{{
+              assignmentDetails.dueDate | date : "mediumDate"
+            }}</span>
+          </div>
+          <div class="info-item">
+            <span class="title">Posted On</span>
+            <span class="value">{{
+              assignmentDetails.postedDate | date : "mediumDate"
+            }}</span>
+          </div>
+          <div class="info-item">
+            <span class="title">No. of Questions</span>
+            <span class="value">{{ assignmentDetails.questionCount }}</span>
+          </div>
+          <div class="info-item">
+            <span class="title">Skill Name</span>
+            <span class="value">{{ assignmentDetails.skillName }}</span>
+          </div>
+          <div class="info-item">
+            <span class="title">AVG Score</span>
+            <span class="value">{{ assignmentDetails.avgScore }}%</span>
+          </div>
+          <div class="info-item">
+            <span class="title">Sent To</span>
+            <span class="value">{{ assignmentDetails.sentTo }}</span>
+          </div>
         </div>
       </div>
-      <div class="header-item">
-        <div class="header-content">
-          <span>Submission Status</span>
-          <img src="icon-sort.svg" alt="Sort" (click)="onSort('status')" class="sort-icon">
+
+      <!-- Third Row -->
+      <div class="details-row score">
+        <div class="title">
+          <span>Overall Average Score</span>
+        </div>
+        <div class="summary-boxes">
+          <div class="box transparent">
+            <div class="box-content">
+              <div class="info">
+                <div class="label">Did not delivered</div>
+                <div class="number">5</div>
+              </div>
+            </div>
+          </div>
+          <div class="box red">
+            <div class="box-content">
+              <div class="bold-area"></div>
+              <div class="info">
+                <div class="label">Weak</div>
+                <div class="number">3</div>
+              </div>
+            </div>
+          </div>
+          <div class="box yellow">
+            <div class="box-content">
+              <div class="bold-area"></div>
+              <div class="info">
+                <div class="label">Good</div>
+                <div class="number">1</div>
+              </div>
+            </div>
+          </div>
+          <div class="box blue">
+            <div class="box-content">
+              <div class="bold-area"></div>
+              <div class="info">
+                <div class="label">Very Good</div>
+                <div class="number">4</div>
+              </div>
+            </div>
+          </div>
+          <div class="box green">
+            <div class="box-content">
+              <div class="bold-area"></div>
+              <div class="info">
+                <div class="label">Excellent</div>
+                <div class="number">1</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="header-item">
-        <div class="header-content">
-          <span>Score</span>
-          <img src="icon-sort.svg" alt="Sort" (click)="onSort('score')" class="sort-icon">
-        </div>
-      </div>
-      <div class="header-item">
-        <div class="header-content">
-          <span>Time Spent</span>
-          <img src="icon-sort.svg" alt="Sort" (click)="onSort('timeSpent')" class="sort-icon">
-        </div>
-      </div>
-      <div class="header-item"></div>
-      <div class="header-item"></div>
     </div>
 
-    <!-- Submissions List -->
-    <div class="submissions-list">
-      @for (submission of submissions; track submission.id) {
+    <!-- Submissions Grid -->
+    <div class="submissions-title">Submissions</div>
+    <div class="submissions-grid">
+      <!-- Grid Headers -->
+      <div class="grid-header">
+        <div class="header-item">
+          <div class="header-content">
+            <span>Student Name</span>
+            <img
+              src="icon-sort.svg"
+              alt="Sort"
+              (click)="onSort('studentName')"
+              class="sort-icon"
+            />
+          </div>
+        </div>
+        <div class="header-item">
+          <div class="header-content">
+            <span>Submission Status</span>
+            <img
+              src="icon-sort.svg"
+              alt="Sort"
+              (click)="onSort('status')"
+              class="sort-icon"
+            />
+          </div>
+        </div>
+        <div class="header-item">
+          <div class="header-content">
+            <span>Score</span>
+            <img
+              src="icon-sort.svg"
+              alt="Sort"
+              (click)="onSort('score')"
+              class="sort-icon"
+            />
+          </div>
+        </div>
+        <div class="header-item">
+          <div class="header-content">
+            <span>Time Spent</span>
+            <img
+              src="icon-sort.svg"
+              alt="Sort"
+              (click)="onSort('timeSpent')"
+              class="sort-icon"
+            />
+          </div>
+        </div>
+        <div class="header-item"></div>
+        <div class="header-item"></div>
+      </div>
+
+      <!-- Submissions List -->
+      <div class="submissions-list">
+        @for (submission of submissions; track submission.id) {
         <div class="submission-row">
           <div class="item student-name">
             <p-checkbox
@@ -137,22 +301,38 @@
           </div>
           <div class="item time-spent">{{ submission.timeSpent }}</div>
           <div class="item attachment">
-            <img src="icon-red-attachment.svg" alt="Attachment">
+            <img src="icon-red-attachment.svg" alt="Attachment" />
           </div>
           <div class="item actions">
-            <button 
-              pButton 
-              type="button" 
-              label="View Submission" 
-              class="p-button-primary view-submission" 
+            <button
+              pButton
+              type="button"
+              label="View Submission"
+              class="p-button-primary view-submission"
               (click)="viewSubmission(submission.id)"
             ></button>
           </div>
         </div>
-      }
-    </div>
+        }
+      </div>
 
-    <!-- Pagination -->
-    <app-pagination [rows]="10" [totalRecords]="100"></app-pagination>
+      <!-- Pagination -->
+      <app-pagination [rows]="10" [totalRecords]="100"></app-pagination>
+    </div>
   </div>
 </div>
+
+<p-menu #exportBtn [popup]="true">
+  <ng-template #start>
+    <div class="export-menu-content">
+      <div class="export-item" (click)="exportAs('pdf'); exportBtn.toggle($event)">
+        <span class="label">PDF</span>
+        <img src="icon-download.svg" alt="download" />
+      </div>
+      <div class="export-item" (click)="exportAs('xlsx'); exportBtn.toggle($event)">
+        <span class="label">XLSX</span>
+        <img src="icon-download.svg" alt="download" />
+      </div>
+    </div>
+  </ng-template>
+</p-menu>
