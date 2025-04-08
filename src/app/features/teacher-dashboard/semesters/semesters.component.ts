@@ -29,7 +29,8 @@ export class SemestersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.sharedService.pushTitle('SEMESTERS')
+    this.sharedService.removeArray();
+    this.sharedService.pushTitle('SEMESTERS');
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
       this.getStats();
       this.getClasses();
@@ -70,8 +71,8 @@ export class SemestersComponent implements OnInit, OnDestroy {
 
   goToSingleSkill(semester: Skills | Semester) {
     let selectedSemester = semester as Semester;
-    this.sharedService.pushTitle(selectedSemester.name)
-    this.router.navigate(['/features/units', selectedSemester.semesterId]);
+    this.sharedService.pushTitle(selectedSemester.name + ' - ' +this.sharedService.translate('UNITS'))
+    this.router.navigate(['/features/semesters/units', selectedSemester.semesterId]);
   }
 
 }

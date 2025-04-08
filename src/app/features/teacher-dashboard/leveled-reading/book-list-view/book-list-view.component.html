@@ -2,33 +2,16 @@
   <div class="search-box">
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
-      <input
-        type="text"
-        pInputText
-        [(ngModel)]="searchQuery"
-        placeholder="Search books..."
-        (input)="onSearch()"
-      />
+      <input type="text" pInputText [(ngModel)]="searchQuery" placeholder="Search books..." (input)="onSearch()" />
     </span>
   </div>
   <div class="level-filters">
-    <p-dropdown
-      [options]="mainLevels"
-      [(ngModel)]="selectedMainLevel"
-      placeholder="Select Main Level"
-      [showClear]="true"
-      (onChange)="onMainLevelChange()"
-      styleClass="main-level-dropdown"
-    >
+    <p-dropdown [options]="mainLevels" [(ngModel)]="readingFilter.readingMainLevelId" placeholder="Select Main Level"
+      optionLabel="name" optionValue="mainLevelId" [showClear]="true" (ngModelChange)="onMainLevelChange()"
+      styleClass="main-level-dropdown">
     </p-dropdown>
-    <p-dropdown
-      [options]="subLevels"
-      [(ngModel)]="selectedSubLevel"
-      placeholder="Select Sub Level"
-      [showClear]="true"
-      (onChange)="onSubLevelChange()"
-      styleClass="sub-level-dropdown"
-    >
+    <p-dropdown [options]="subLevels" [(ngModel)]="readingFilter.readingSubLevelId" placeholder="Select Sub Level" [showClear]="true"
+      optionLabel="name" optionValue="subLevelId" (ngModelChange)="onSubLevelChange()" styleClass="sub-level-dropdown">
     </p-dropdown>
     <div class="filter-container" (click)="toggleAdvancedSearch()">
       <img src="icon-filter.svg" alt="filter" />
@@ -37,119 +20,59 @@
 </div>
 <div class="advanced-search" *ngIf="showAdvancedSearch">
   <div class="advanced-filters">
-    <p-dropdown
-      [options]="skills"
-      [(ngModel)]="selectedSkills"
-      placeholder="Skills"
-      [showClear]="true"
-    ></p-dropdown>
-    <p-dropdown
-      [options]="grades"
-      [(ngModel)]="selectedGrade"
-      placeholder="Grade"
-      [showClear]="true"
-    ></p-dropdown>
-    <p-dropdown
-      [options]="comprehensionSkills"
-      [(ngModel)]="selectedComprehensionSkills"
-      placeholder="Comprehension Skills"
-      [showClear]="true"
-    ></p-dropdown>
-    <p-dropdown
-      [options]="subjects"
-      [(ngModel)]="selectedSubject"
-      placeholder="Subject"
-      [showClear]="true"
-    ></p-dropdown>
-    <p-dropdown
-      [options]="hubs"
-      [(ngModel)]="selectedHub"
-      placeholder="Hub"
-      [showClear]="true"
-    ></p-dropdown>
-    <p-dropdown
-      [options]="ibHubs"
-      [(ngModel)]="selectedIbHub"
-      placeholder="IB Hub"
-      [showClear]="true"
-    ></p-dropdown>
-    <p-dropdown
-      [options]="ibLearnerProfiles"
-      [(ngModel)]="selectedIbLearnerProfile"
-      placeholder="IB Learner Profile"
-      [showClear]="true"
-    ></p-dropdown>
-    <p-dropdown
-      [options]="literaryTypes"
-      [(ngModel)]="selectedLiteraryType"
-      placeholder="Literary Type"
-      [showClear]="true"
-    ></p-dropdown>
-    <p-dropdown
-      [options]="authorNames"
-      [(ngModel)]="selectedAuthorName"
-      placeholder="Author Name"
-      [showClear]="true"
-    ></p-dropdown>
-    <p-dropdown
-      [options]="publishers"
-      [(ngModel)]="selectedPublisher"
-      placeholder="Publisher"
-      [showClear]="true"
-    ></p-dropdown>
-    <p-dropdown
-      [options]="illustrators"
-      [(ngModel)]="selectedIllustrator"
-      placeholder="Illustrator"
-      [showClear]="true"
-    ></p-dropdown>
-    <p-dropdown
-      [options]="ageGroups"
-      [(ngModel)]="selectedAgeGroup"
-      placeholder="Age Group"
-      [showClear]="true"
-    ></p-dropdown>
+    <p-dropdown [options]="detailedFilter.learningOutcomes" [(ngModel)]="readingFilter.learningOutcomeId" optionLabel="name" optionValue="learningOutcomeId"
+    placeholder="Skills" [showClear]="true"></p-dropdown>
+    <p-dropdown [options]="detailedFilter.grades" [(ngModel)]="readingFilter.gradeId" optionLabel="name" optionValue="gradeId"
+    placeholder="Grade" [showClear]="true"></p-dropdown>
+    <p-dropdown [options]="detailedFilter.genres" [(ngModel)]="readingFilter.genreId" optionLabel="name" optionValue="genreId"
+      placeholder="Comprehension Skills" [showClear]="true"></p-dropdown>
+    <p-dropdown [options]="detailedFilter.subjects" [(ngModel)]="readingFilter.subjectId" optionLabel="name" optionValue="subjectId" placeholder="Subject"
+      [showClear]="true"></p-dropdown>
+    <p-dropdown [options]="detailedFilter.learningHubs" [(ngModel)]="readingFilter.learningHubId" optionLabel="name" optionValue="learningHubId" placeholder="Hub" [showClear]="true"></p-dropdown>
+    <p-dropdown [options]="[]" placeholder="IB Hub" [showClear]="true"></p-dropdown>
+    <p-dropdown [options]="detailedFilter.ibLearnerProfiles" [(ngModel)]="readingFilter.ibLearnerProfileId" optionLabel="name" optionValue="ibLearnerProfileId"
+    placeholder="IB Learner Profile"
+      [showClear]="true"></p-dropdown>
+    <p-dropdown [options]="[]" placeholder="Literary Type"
+      [showClear]="true"></p-dropdown>
+    <p-dropdown [options]="detailedFilter.authors" [(ngModel)]="readingFilter.authorId" optionLabel="name" optionValue="authorId"
+    placeholder="Author Name"
+      [showClear]="true"></p-dropdown>
+    <p-dropdown [options]="detailedFilter.publishers" [(ngModel)]="readingFilter.publisherId" optionLabel="name" optionValue="publisherId" placeholder="Publisher"
+      [showClear]="true"></p-dropdown>
+    <p-dropdown [options]="detailedFilter.illustrators" [(ngModel)]="readingFilter.illustratorId" placeholder="Illustrator" optionLabel="name" optionValue="illustratorId"
+      [showClear]="true"></p-dropdown>
+    <p-dropdown [options]="detailedFilter.ageGroups" [(ngModel)]="readingFilter.ageGroupId" optionLabel="name" optionValue="ageGroupId"
+    placeholder="Age Group"
+      [showClear]="true"></p-dropdown>
   </div>
   <div class="advanced-search-actions">
     <div class="reset-button" (click)="onResetAdvancedSearch()">
       <img src="icon-trash.svg" alt="reset" />
     </div>
-    <button
-      pButton
-      label="Cancel"
-      class="p-button-outlined"
-      (click)="onCancelAdvancedSearch()"
-    ></button>
-    <button
-      pButton
-      label="Search"
-      class="p-button-primary"
-      (click)="onAdvancedSearch()"
-    ></button>
+    <button pButton label="Cancel" class="p-button-outlined" (click)="onCancelAdvancedSearch()"></button>
+    <button pButton label="Search" class="p-button-primary" (click)="getStories()"></button>
   </div>
 </div>
 
-<div class="books-number">{{ books?.length }} Books</div>
+@if(books.stories){
+<div class="books-number">{{ books.totalRecords }} Books</div>
 <div class="books-grid">
-  @for (book of books; track book.title) {
+  @for (book of books.stories; track book.title) {
   <div class="book-card">
     <div class="book-cover">
-      <img [src]="book.coverImage" [alt]="book.title" />
+      <img [src]="book.coverUrl" [alt]="book.title" />
     </div>
     <div class="book-details">
       <h3 class="title">{{ book.title }}</h3>
-      <p class="sub-level">Sub Level: {{ book.subLevel }}</p>
-      <p class="author">Author: {{ book.author }}</p>
-      <p class="student-level">Student Level: {{ book.studentLevel }}</p>
+      <p class="sub-level">Sub Level: {{ book.levelName }}</p>
+      <p class="author">Author: {{ book.authorName }}</p>
       <button pButton class="p-button-primary" (click)="viewBook(book)">View Book</button>
     </div>
   </div>
   }
 </div>
-<app-pagination
-  [first]="first"
-  [rows]="rows"
-  [totalRecords]="totalRecords"
-  itemLabel="books"
-  (pageChange)="onPageChange($event)"
-></app-pagination>
+
+<app-pagination [first]="first" [rows]="books.pageSize" [totalRecords]="books.totalRecords" itemLabel="books"
+  (pageChange)="nextPage($event)"></app-pagination>
+}

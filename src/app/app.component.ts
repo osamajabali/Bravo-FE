@@ -50,7 +50,6 @@ export class AppComponent {
 
   setDirection(lang: string) {
     if (isPlatformBrowser(this.platformId)) {
-    !this.sharedService.getTitle() ? localStorage.setItem('title' , JSON.stringify(['SKILLS'])) : [''];
     localStorage.setItem('language' , lang)
       this.document.documentElement.lang = lang;
       this.document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';

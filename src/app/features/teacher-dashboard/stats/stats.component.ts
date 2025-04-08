@@ -30,6 +30,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.sharedService.removeArray(); 
     this.sharedService.pushTitle('SKILLS')
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
       this.getStats();
@@ -70,11 +71,11 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   goToSingleSkill(domain: Skills | Semester) {
     if (this.router.url.includes('units')) {
-      this.router.navigate(['/features/units']);
+      this.router.navigate(['/features/semesters/units']);
     } else {
 
-      this.sharedService.pushTitle((domain as Skills).name)
-      this.router.navigate(['/features/skills-level-one', (domain as Skills).domainId]);
+      this.sharedService.pushTitle((domain as Skills).name + ' - ' +this.sharedService.translate('SKILLS'))
+      this.router.navigate(['/features/skills/skills-level-one', (domain as Skills).domainId]);
     }
   }
 }

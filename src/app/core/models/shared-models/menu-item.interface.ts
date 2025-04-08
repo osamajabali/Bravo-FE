@@ -10,7 +10,7 @@ export enum RouteNames {
   QUICK_ACTIONS = 'quick-actions',
   SKILLS = 'skills',
   SKILLS_UNITS = 'features/units',
-  ALL_SKILLS = 'features',
+  ALL_SKILLS = 'features/skills',
   ASSIGNMENTS = 'assignments',
   EXAMS = 'exams',
   STUDENTS = 'features/students',

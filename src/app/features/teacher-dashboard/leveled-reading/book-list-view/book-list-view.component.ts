@@ -1,160 +1,108 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
-import { Book } from '../../../../core/models/teacher-dashboard-models/leveled-reading';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
+import { SharedService } from '../../../../core/services/shared-services/shared.service';
+import { LeveldReadingService } from '../../../../core/services/teacher-dashboard-services/leveld-reading.service';
+import { Subscription } from 'rxjs';
+import { ReadingFilter } from '../../../../core/models/reading-models/reading-filter.model';
+import { StoriesList, Story } from '../../../../core/models/reading-models/stories.model';
+import { PaginatorState } from 'primeng/paginator';
+import { MainLevels } from '../../../../core/models/reading-models/main-levels';
+import { DetailedFilter } from '../../../../core/models/reading-models/detailed-filter.model';
 
 @Component({
   selector: 'app-book-list-view',
   standalone: true,
   imports: [
-    CommonModule, 
-    ButtonModule, 
-    DropdownModule, 
+    CommonModule,
+    ButtonModule,
+    DropdownModule,
     InputTextModule,
     FormsModule,
     PaginationComponent
   ],
   templateUrl: './book-list-view.component.html',
-  styleUrl: './book-list-view.component.scss'
+  styleUrls: ['./book-list-view.component.scss']
 })
-export class BookListViewComponent {
-  router = inject(Router);
+export class BookListViewComponent implements OnInit, OnDestroy {
   // Search and filters
   searchQuery: string = '';
   showAdvancedSearch = false;
-  
+
   // Basic filters
-  mainLevels: any[] = [
-    { label: 'All Levels', value: null },
-    { label: 'Beginner', value: 'beginner' },
-    { label: 'Intermediate', value: 'intermediate' },
-    { label: 'Advanced', value: 'advanced' }
-  ];
-  subLevels: any[] = [
-    { label: 'All Sub Levels', value: null },
-    { label: 'أ', value: 'أ' },
-    { label: 'ب', value: 'ب' },
-    { label: 'ت', value: 'ت' },
-    { label: 'ث', value: 'ث' },
-    { label: 'ج', value: 'ج' },
-    { label: 'ح', value: 'ح' },
-    { label: 'خ', value: 'خ' },
-    { label: 'د', value: 'د' }
-  ];
-  selectedMainLevel: any = null;
-  selectedSubLevel: any = null;
+  mainLevels: MainLevels[] = [{ mainLevelId: 0, subLevelId : 0, name: 'All levels', order: 0 }];
+  subLevels: MainLevels[] = [];
+  detailedFilter: DetailedFilter = new DetailedFilter();
 
-  // Advanced filters
-  skills: any[] = [{ label: 'Reading Skills', value: 'reading' }];
-  grades: any[] = [{ label: 'Grade 1', value: 'grade1' }];
-  comprehensionSkills: any[] = [{ label: 'Analysis', value: 'analysis' }];
-  subjects: any[] = [{ label: 'Arabic', value: 'arabic' }];
-  hubs: any[] = [{ label: 'Main Hub', value: 'main' }];
-  ibHubs: any[] = [{ label: 'IB Hub 1', value: 'ib1' }];
-  ibLearnerProfiles: any[] = [{ label: 'Profile 1', value: 'profile1' }];
-  literaryTypes: any[] = [{ label: 'Fiction', value: 'fiction' }];
-  authorNames: any[] = [{ label: 'Ahmed Mohammed', value: 'ahmed' }];
-  publishers: any[] = [{ label: 'Al-Kitab', value: 'alkitab' }];
-  illustrators: any[] = [{ label: 'Sara Ahmed', value: 'sara' }];
-  ageGroups: any[] = [{ label: '5-7 years', value: '5-7' }];
-
-  selectedSkills: any = null;
-  selectedGrade: any = null;
-  selectedComprehensionSkills: any = null;
-  selectedSubject: any = null;
-  selectedHub: any = null;
-  selectedIbHub: any = null;
-  selectedIbLearnerProfile: any = null;
-  selectedLiteraryType: any = null;
-  selectedAuthorName: any = null;
-  selectedPublisher: any = null;
-  selectedIllustrator: any = null;
-  selectedAgeGroup: any = null;
-  
   // Pagination
   first: number = 0;
-  rows: number = 9;
-  totalRecords: number = 0;
-  
+
   // Books data
-  books: Book[] = [
-    {
-      title: 'من معالم القرآن',
-      subLevel: 'ز',
-      author: 'احمد احمد',
-      studentLevel: 'Advanced',
-      coverImage: 'assets/images/book-image.svg',
-    },
-    {
-      title: 'محطة الشباب',
-      subLevel: 'ز',
-      author: 'احمد احمد',
-      studentLevel: 'Advanced',
-      coverImage: 'assets/images/book-image.svg',
-    },
-    {
-      title: 'حجر سقراط في الجبال',
-      subLevel: 'ز',
-      author: 'احمد احمد',
-      studentLevel: 'Advanced',
-      coverImage: 'assets/images/book-image.svg',
-    },
-    {
-      title: 'الأرملة و الصبي',
-      subLevel: 'ز',
-      author: 'احمد احمد',
-      studentLevel: 'Advanced',
-      coverImage: 'assets/images/book-image.svg',
-    },
-    {
-      title: 'لغة، أيها المجد؟',
-      subLevel: 'ز',
-      author: 'احمد احمد',
-      studentLevel: 'Advanced',
-      coverImage: 'assets/images/book-image.svg',
-    },
-    {
-      title: 'بريق طه',
-      subLevel: 'ز',
-      author: 'احمد احمد',
-      studentLevel: 'Advanced',
-      coverImage: 'assets/images/book-image.svg',
-    },
-    {
-      title: 'بريق طه',
-      subLevel: 'ز',
-      author: 'احمد احمد',
-      studentLevel: 'Advanced',
-      coverImage: 'assets/images/book-image.svg',
-    },
-    {
-      title: 'بريق طه',
-      subLevel: 'ز',
-      author: 'احمد احمد',
-      studentLevel: 'Advanced',
-      coverImage: 'assets/images/book-image.svg',
-    },
-    {
-      title: 'بريق طه',
-      subLevel: 'ز',
-      author: 'احمد احمد',
-      studentLevel: 'Advanced',
-      coverImage: 'assets/images/book-image.svg',
-    },
-  ];
+  books: StoriesList = new StoriesList();
+
+  private refreshSubscription!: Subscription; // Mark subscription as private to avoid accidental changes
+  readingFilter: ReadingFilter = new ReadingFilter();
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private sharedService: SharedService,
+    private readingService: LeveldReadingService
+  ) {}
 
   ngOnInit(): void {
-    this.totalRecords = this.books.length;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
+      if (res) {
+        this.route.paramMap.subscribe((params) => {
+          this.getMainLevels();
+          this.getFilters();
+          this.getStories();
+        });
+      }
+    });
   }
 
-  onPageChange(event: any) {
-    this.first = event.first;
-    this.rows = event.rows;
+  ngOnDestroy(): void {
+    // Unsubscribe to prevent memory leaks
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
+  }
+
+  getFilters() {
+    this.readingService.getFilters(0, 0).subscribe((res) => {
+      if (res.success) {
+        this.detailedFilter = res.result;
+      }
+    });
+  }
+
+  getMainLevels() {
+    this.readingService.getMainLevels().subscribe((res) => {
+      if (res.success) {
+        const allLevels = { mainLevelId: 0, subLevelId : 0, name: 'All Levels', order: 0 };
+        this.mainLevels = [allLevels, ...res.result];
+      }
+    });
+  }
+
+  getStories() {
+    if (this.sharedService.getPageState('BookListComponent')) {
+      let pageNumber = this.sharedService.getPageState('BookListComponent');
+      this.readingFilter.pageNumber = pageNumber;
+      this.first = (pageNumber - 1) * this.readingFilter.pageSize;
+    }
+
+    this.readingService.getStories(this.readingFilter).subscribe((res) => {
+      if (res.success) {
+        this.books = res.result;
+      }
+    });
   }
 
   onSearch() {
@@ -162,11 +110,20 @@ export class BookListViewComponent {
   }
 
   onMainLevelChange() {
-    // TODO: Implement main level filter
+    this.readingFilter.readingSubLevelId = 0 ;
+    this.sharedService.savePageState('BookListComponent', 1);
+    this.readingService.getSubLevels(this.readingFilter.readingMainLevelId).subscribe((res) => {
+      if (res.success) {
+        this.getStories();
+        const allLevels = { mainLevelId: 0, name: 'All Sub Levels', order: 0 };
+        this.subLevels = [allLevels, ...res.result];
+      }
+    });
   }
 
   onSubLevelChange() {
-    // TODO: Implement sub level filter
+    this.sharedService.savePageState('BookListComponent', 1);
+    this.getStories();
   }
 
   toggleAdvancedSearch() {
@@ -174,24 +131,47 @@ export class BookListViewComponent {
   }
 
   onAdvancedSearch() {
-    // TODO: Implement advanced search
     this.showAdvancedSearch = false;
   }
 
   onCancelAdvancedSearch() {
     this.showAdvancedSearch = false;
+    this.readingFilter.learningOutcomeId = 0;
+    this.readingFilter.gradeId = 0;
+    this.readingFilter.subjectId = 0;
+    this.readingFilter.learningHubId = 0;
+    this.readingFilter.ibLearnerProfileId = 0;
+    this.readingFilter.genreId = 0;
+    this.readingFilter.authorId = 0;
+    this.readingFilter.publisherId = 0;
+    this.readingFilter.illustratorId = 0;
+    this.readingFilter.ageGroupId = 0;
+    this.getStories();
   }
 
   onResetAdvancedSearch() {
-    this.selectedSkills = null;
-    this.selectedGrade = null;
-    this.selectedComprehensionSkills = null;
-    this.selectedSubject = null;
-    this.selectedHub = null;
-    this.selectedIbHub = null;
+    this.showAdvancedSearch = false;
+    this.readingFilter.learningOutcomeId = 0;
+    this.readingFilter.gradeId = 0;
+    this.readingFilter.subjectId = 0;
+    this.readingFilter.learningHubId = 0;
+    this.readingFilter.ibLearnerProfileId = 0;
+    this.readingFilter.genreId = 0;
+    this.readingFilter.authorId = 0;
+    this.readingFilter.publisherId = 0;
+    this.readingFilter.illustratorId = 0;
+    this.readingFilter.ageGroupId = 0;
+    this.getStories();
   }
 
-  viewBook(book: Book) {
+  nextPage($event: PaginatorState) {
+    this.readingFilter.pageNumber = $event.page;
+    this.sharedService.savePageState('BookListComponent', $event.page);
+    this.first = $event.first;
+    this.getStories();
+  }
+
+  viewBook(book: Story) {
     this.router.navigate(['/features/book-details']);
   }
-} 
+}

@@ -19,11 +19,13 @@ import { DomainRequest } from '../../../core/models/teacher-dashboard-models/sta
 import { HeaderService } from '../../../core/services/header-services/header.service';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { StatsService } from '../../../core/services/teacher-dashboard-services/stats.service';
-import { SkillCurriculumPagination } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
+import { SkillCurriculum, SkillCurriculumPagination } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
 import { PaginatorState } from 'primeng/paginator';
 import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
 import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
 import { Section } from '../../../core/models/header-models/header.model';
+import { LessonsCurriculums } from '../../../core/models/teacher-dashboard-models/lesson-curriculums.model';
+import { Lessons } from '../../../core/models/teacher-dashboard-models/lessons.model';
 
 @Component({
   selector: 'app-skill-level-two',
@@ -50,7 +52,7 @@ export class SkillLevelTwoComponent {
   showSmartBoard: boolean = false;
   currentSkillUsers: any = null;
   curriculumsPayload: DomainRequest = new DomainRequest();
-  nextRoute: string = '/features/skills-level-two';
+  nextRoute: string = '/features/skills/skills-level-two';
   private refreshSubscription!: Subscription;
 
   skillSummaryData: SkillSummaryData = {
@@ -103,6 +105,11 @@ export class SkillLevelTwoComponent {
       console.log('domainId:', this.domainId);
       this.curriculumsPayload.domainId = this.domainId;
     });
+    if (this.sharedService.getPageState(`SkillLevelTwoComponent ${this.domainId}`)) {
+      let pageNumber = this.sharedService.getPageState(`SkillLevelTwoComponent ${this.domainId}`);
+      this.curriculumsPayload.pageNumber = pageNumber;
+      this.first = (pageNumber - 1) * this.curriculumsPayload.pageSize;
+    }
     this.curriculumsPayload.courseSectionId = this.headerService.selectedSectionId;
     this.statsService.getDomainSkills(this.curriculumsPayload).subscribe(res => {
       if (res.success) {
@@ -112,8 +119,16 @@ export class SkillLevelTwoComponent {
     });
   }
 
+    clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
+      this.domainId = (card as SkillCurriculum).id;
+      this.sharedService.pushTitle((card as SkillCurriculum).domainName + ' - ' + this.sharedService.translate('SKILLS'))
+      this.router.navigate([this.sharedService.nextRoute, this.domainId]);
+    }
+    
+
   nextPage($event: PaginatorState) {
     this.curriculumsPayload.pageNumber = $event.page;
+    this.sharedService.savePageState(`SkillLevelTwoComponent ${this.domainId}`, $event.page);
     this.first = $event.first;
     this.getSkills();
   }

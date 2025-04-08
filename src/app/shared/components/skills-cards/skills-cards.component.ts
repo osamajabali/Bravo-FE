@@ -85,7 +85,8 @@ export class SkillsCardsComponent {
     this.paginatorState.emit($event)
   }
 
-  getSmartBoardDetails() {
+  getSmartBoardDetails(skill : SingleSkill | SkillCurriculum) {
+    this.skillToActivate = skill;
     this.showSmartBoard = true
   }
 

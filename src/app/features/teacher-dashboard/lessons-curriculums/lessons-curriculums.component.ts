@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningOutcomesService } from '../../../core/services/teacher-dashboard-services/learning-outcomes.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LessonsCurriculums, LessonsCurriculumsPagination, LessonsCurriculumsPayload } from '../../../core/models/teacher-dashboard-models/lesson-curriculums.model';
 import { TranslateModule } from '@ngx-translate/core';
 import { LessonCardsComponent } from '../../../shared/components/lesson-cards/lesson-cards.component';
@@ -13,6 +13,8 @@ import { PaginationComponent } from "../../../shared/components/pagination/pagin
 import { SkeletonComponent } from "../../../shared/components/skeleton/skeleton.component";
 import { SkillActivationModalComponent } from "../../../shared/components/skill-activation-modal/skill-activation-modal.component";
 import { Section } from '../../../core/models/header-models/header.model';
+import { Lessons } from '../../../core/models/teacher-dashboard-models/lessons.model';
+import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
 
 @Component({
   selector: 'app-lessons-curriculums',
@@ -40,8 +42,9 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
     private learningOutcomesService: LearningOutcomesService,
     private route: ActivatedRoute,
     private headerService: HeaderService,
-    private sharedService: SharedService
-  ) {}
+    private sharedService: SharedService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
@@ -62,6 +65,11 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
   }
 
   getCurriculums() {
+    if (this.sharedService.getPageState('LessonsCurriculumsComponent')) {
+      let pageNumber = this.sharedService.getPageState('LessonsCurriculumsComponent');
+      this.curriculumsPayload.pageNumber = pageNumber;
+      this.first = (pageNumber - 1) * this.curriculumsPayload.pageSize;
+    }
     this.curriculumsPayload.lessonId = this.lessonId;
     this.curriculumsPayload.courseSectionId = this.headerService.selectedSectionId;
     this.learningOutcomesService
@@ -73,12 +81,15 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
       });
   }
 
-  _activateSkill() {
-    // this.getCurriculums();
+  clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
+    this.sharedService.pushTitle((card as LessonsCurriculums).name + ' - ' + this.sharedService.translate('SKILLS'))
+    const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
+    this.router.navigate(['/features/semesters/single-skill', 0, curriculumId]);
   }
 
   nextPage($event: PaginatorState) {
     this.curriculumsPayload.pageNumber = $event.page;
+    this.sharedService.savePageState('LessonsCurriculumsComponent', $event.page);
     this.first = $event.first;
     this.getCurriculums();
   }

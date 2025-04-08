@@ -10,7 +10,7 @@
 
     @if (curriculums.curriculums) {
       @for (lesson of curriculums.curriculums; track $index) {
-        <app-lesson-cards [sections]="sections" [card]="lesson" [showPagination]="true"  [rows]="curriculums.pageSize" [first]="first" [totalRecords]="curriculums.totalRecords" (skillActivation)="_activateSkill()" (paginatorState)="nextPage($event)"></app-lesson-cards>
+        <app-lesson-cards [sections]="sections" [card]="lesson" (cardClick)="clickedCard($event)" [showPagination]="true"  [rows]="curriculums.pageSize" [first]="first" [totalRecords]="curriculums.totalRecords" (paginatorState)="nextPage($event)"></app-lesson-cards>
       }
   
         

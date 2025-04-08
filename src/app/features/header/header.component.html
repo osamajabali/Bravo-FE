@@ -2,15 +2,17 @@
   <div class="header-left">
     <!-- Static Back Button -->
     <div class="header-item">
+     @if(!checkTitle){
       @if(('DIR'|translate) == 'rtl'){
-      <a (click)="goBack()">
-        <img src="arrow-left-dark.svg" alt="arrow" class="rotate-180" />
-      </a>
-      }@else {
-      <a (click)="goBack()">
-        <img src="arrow-left-dark.svg" alt="arrow" />
-      </a>
-      }
+        <a (click)="goBack()">
+          <img src="arrow-left-dark.svg" alt="arrow" class="rotate-180" />
+        </a>
+        }@else {
+        <a (click)="goBack()">
+          <img src="arrow-left-dark.svg" alt="arrow" />
+        </a>
+        }
+     }
     </div>
     <h1 class="page-title">{{ title | translate }}</h1>
   </div>

@@ -67,14 +67,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   GradesExpanded: boolean;
   SubjectExpanded: boolean;
   title: string = 'title';
+  checkTitle : boolean;
   currentLang: string;
 
   ngOnInit(): void {
     this.setupUserMenu();
     this.getClasses();
     this.getUserName()
-
+    
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
+      this.checkTitleAvailability();
       this.title = this.sharedService.getTitle()
     });
 
@@ -87,6 +89,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
       })
     );
 
+  }
+
+  checkTitleAvailability() {
+    if (typeof window !== 'undefined') {
+    if(localStorage.getItem('title')){
+      let titleArray = JSON.parse(localStorage.getItem('title'))
+      this.checkTitle =  (titleArray.length == 2);
+    }
+  }
   }
 
   getUserName() {

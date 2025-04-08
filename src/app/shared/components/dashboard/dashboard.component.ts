@@ -92,7 +92,7 @@ export class DashboardComponent {
     this.skillActivationModel.domainId = this.isSkill(this.selectedItem) ? this.selectedItem.domainId : 0;
     this.skillActivationModel.semesterId = this.isSkill(this.selectedItem) ? 0 : this.selectedItem.semesterId;
     this.skillActivationModel.currentCourseSectionId = this.headerService.selectedSectionId;
-    debugger
+    
     this.skillActivationModel.learningOutcomeId = this.selectedQuickSkill.learningOutcomeId;
     this.skillActivationService.skipSkill(this.skillActivationModel).subscribe(res => {
       if (res.success) {
@@ -102,9 +102,16 @@ export class DashboardComponent {
   }
 
   changeQuickSkills(item: QuickSkill) {
-    this.selectedItem.quickSkills = this.selectedItem.quickSkills.filter(arr => arr.learningOutcomeId != this.selectedQuickSkill.learningOutcomeId);
-    this.selectedItem.quickSkills.push(item);
+    const index = this.selectedItem.quickSkills.findIndex(arr => arr.learningOutcomeId === this.selectedQuickSkill.learningOutcomeId);
+    if (index !== -1) {
+      // Replace the item at the found index with the new item
+      this.selectedItem.quickSkills[index] = item;
+    } else {
+      // If the item to replace wasn't found, just add the new item
+      this.selectedItem.quickSkills.push(item);
+    }
   }
+  
 
   showActivationModal(item: (Skills | Semester), selectedQuickSkill: QuickSkill) {
     this.selectedItem = item;

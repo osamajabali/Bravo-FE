@@ -46,7 +46,7 @@
             <a
               [routerLink]="['/' + child.route]"
               routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
+              [routerLinkActiveOptions]="{ exact: false }"
               class="nav-link"
             >
               <span class="menu-text">{{ child.label | translate }}</span>

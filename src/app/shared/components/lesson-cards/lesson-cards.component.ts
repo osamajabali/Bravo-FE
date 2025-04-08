@@ -22,7 +22,7 @@ import { Result } from '../../../core/models/shared-models/result';
   styleUrl: './lesson-cards.component.scss',
 })
 export class LessonCardsComponent implements OnInit {
-  @Input() card: Lessons | LessonsCurriculums | SkillCurriculum= {} as Lessons | LessonsCurriculums  | SkillCurriculum;
+  @Input() card: Lessons | LessonsCurriculums | SkillCurriculum = {} as Lessons | LessonsCurriculums  | SkillCurriculum;
   @Input() first: number = 0;
   @Input() showPagination: boolean;
   @Input() rows: number = 0;
@@ -30,6 +30,7 @@ export class LessonCardsComponent implements OnInit {
   @Input() sections: Section[] = [];
   @Output() paginatorState = new EventEmitter<PaginatorState>();
   @Output() skillActivation = new EventEmitter<boolean>();
+  @Output() cardClick = new EventEmitter<(Lessons | LessonsCurriculums | SkillCurriculum)>();
   activateSkill: boolean = false;
   skillToActivate: Lessons | LessonsCurriculums | SkillCurriculum | null = null;
   skillActivationModel : SkillActivation = new SkillActivation();
@@ -99,17 +100,18 @@ export class LessonCardsComponent implements OnInit {
   }
 
   clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
+    this.cardClick.emit(card)
     if ((card as Lessons).lessonId) {
-      this.sharedService.pushTitle((card as Lessons).name)
-      this.router.navigate(['/features/lessons-curriculums', (card as Lessons).lessonId]);
+      // this.sharedService.pushTitle((card as Lessons).name + ' - ' +this.sharedService.translate('CURRICULUMS')); 
+      // this.router.navigate(['/features/semesters/lessons-curriculums', (card as Lessons).lessonId]);
     } else if ((card as LessonsCurriculums).curriculumLearningOutcomeId) {
-      this.sharedService.pushTitle((card as LessonsCurriculums).name)
-      const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
-      this.router.navigate(['/features/single-skill', 0, curriculumId]);
+      // this.sharedService.pushTitle((card as LessonsCurriculums).name + ' - ' +this.sharedService.translate('SKILLS'))
+      // const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
+      // this.router.navigate(['/features/semesters/single-skill', 0, curriculumId]);
     } else {
-      const domainId = (card as LessonsCurriculums).id;
-      this.sharedService.pushTitle((card as LessonsCurriculums).name)
-      this.router.navigate([this.sharedService.nextRoute, domainId]);
+      // const domainId = (card as LessonsCurriculums).id;
+      // this.sharedService.pushTitle((card as LessonsCurriculums).name+ ' - ' +this.sharedService.translate('SKILLS'))
+      // this.router.navigate([this.sharedService.nextRoute, domainId]);
     }
   }
 

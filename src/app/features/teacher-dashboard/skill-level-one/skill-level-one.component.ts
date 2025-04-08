@@ -22,6 +22,8 @@ import { PaginationComponent } from "../../../shared/components/pagination/pagin
 import { PaginatorState } from 'primeng/paginator';
 import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
 import { Section } from '../../../core/models/header-models/header.model';
+import { LessonsCurriculums } from '../../../core/models/teacher-dashboard-models/lesson-curriculums.model';
+import { Lessons } from '../../../core/models/teacher-dashboard-models/lessons.model';
 
 @Component({
   selector: 'app-skill-level-one',
@@ -48,7 +50,7 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
   showSmartBoard: boolean = false;
   currentSkillUsers: any = null;
   curriculumsPayload: DomainRequest = new DomainRequest();
-  nextRoute: string = '/features/skills-level-two';
+  nextRoute: string = '/features/skills/skills-level-two';
   private refreshSubscription!: Subscription;
 
   skillSummaryData: SkillSummaryData = {
@@ -98,6 +100,11 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
       console.log('domainId:', this.domainId);
       this.curriculumsPayload.domainId = this.domainId;
     });
+    if (this.sharedService.getPageState('SkillLevelOneComponent')) {
+      let pageNumber = this.sharedService.getPageState('SkillLevelOneComponent');
+      this.curriculumsPayload.pageNumber = pageNumber;
+      this.first = (pageNumber - 1) * this.curriculumsPayload.pageSize;
+    }
     this.curriculumsPayload.courseSectionId = this.headerService.selectedSectionId;
     this.statsService.getDomainSkills(this.curriculumsPayload).subscribe(res => {
       if (res.success) {
@@ -107,8 +114,15 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
     });
   }
 
+  clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
+    const domainId = (card as SkillCurriculum).id;
+    this.sharedService.pushTitle((card as SkillCurriculum).domainName + ' - ' + this.sharedService.translate('SKILLS'))
+    this.router.navigate([this.sharedService.nextRoute, domainId]);
+  }
+
   nextPage($event: PaginatorState) {
     this.curriculumsPayload.pageNumber = $event.page;
+    this.sharedService.savePageState('SkillLevelOneComponent', $event.page);
     this.first = $event.first;
     this.getSkills();
   }

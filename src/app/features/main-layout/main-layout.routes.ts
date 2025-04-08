@@ -11,6 +11,11 @@ export const Main_Layout_Routes: Routes = [
     children: [
       {
         path: '',
+        redirectTo: 'semesters',
+        pathMatch: 'full',
+    },
+      {
+        path: 'skills',
         loadComponent: () =>
           import('../teacher-dashboard/stats/stats.component').then(
             (m) => m.StatsComponent
@@ -24,28 +29,28 @@ export const Main_Layout_Routes: Routes = [
           ),
       },
       {
-        path: 'units/:semesterId',
+        path: 'semesters/units/:semesterId',
         loadComponent: () =>
           import('../teacher-dashboard/units/units.component').then(
             (m) => m.UnitsComponent
           ),
       },
       {
-        path: 'lessons/:id',
+        path: 'semesters/lessons/:id',
         loadComponent: () =>
           import('../teacher-dashboard/lessons/lessons.component').then(
             (m) => m.LessonsComponent
           ),
       },
       {
-        path: 'lessons-curriculums/:id',
+        path: 'semesters/lessons-curriculums/:id',
         loadComponent: () =>
           import(
             '../teacher-dashboard/lessons-curriculums/lessons-curriculums.component'
           ).then((m) => m.LessonsCurriculumsComponent),
       },
       {
-        path: 'single-skill/:domainId/:curriculumId',
+        path: 'semesters/single-skill/:domainId/:curriculumId',
         loadComponent: () =>
           import(
             '../teacher-dashboard/single-skill/single-skill.component'
@@ -66,14 +71,14 @@ export const Main_Layout_Routes: Routes = [
           ).then((m) => m.BooksGridComponent),
       },
       {
-        path: 'skills-level-one/:domainId',
+        path: 'skills/skills-level-one/:domainId',
         loadComponent: () =>
           import(
             '../teacher-dashboard/skill-level-one/skill-level-one.component'
           ).then((m) => m.SkillLevelOneComponent),
       },
       {
-        path: 'skills-level-two/:domainId',
+        path: 'skills/skills-level-two/:domainId',
         loadComponent: () =>
           import(
             '../teacher-dashboard/skill-level-two/skill-level-two.component'

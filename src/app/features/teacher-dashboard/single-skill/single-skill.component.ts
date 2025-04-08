@@ -79,6 +79,11 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
   }
 
   getSkills() {
+    if (this.sharedService.getPageState('SingleSkillComponent')) {
+      let pageNumber = this.sharedService.getPageState('SingleSkillComponent');
+      this.skillsPayload.pageNumber = pageNumber;
+      this.first = (pageNumber - 1) * this.skillsPayload.pageSize;
+    }
     this.skillsPayload.courseSectionId =this.headerService.selectedSectionId;
     this.skillsPayload.curriculumLearningOutcomeId = this.curriculumId ? this.curriculumId : 0
     this.skillsPayload.domainId = this.domainId ? this.curriculumId : 0
@@ -94,6 +99,7 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
 
     nextPage($event: PaginatorState) {
       this.skillsPayload.pageNumber = $event.page;
+      this.sharedService.savePageState('SingleSkillComponent', $event.page);
       this.first = $event.first;
       this.getSkills();
     }

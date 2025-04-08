@@ -112,10 +112,19 @@ export class DoughnutChartDirective implements OnChanges {
           enabled: this.isSkills, // ✅ Tooltips only for skill charts
           callbacks: {
             label: function (context) {
-              return `${context.label}: ${Math.round(context.raw as number)}%`;
+              if (!context.label.toLowerCase().includes("inactive")) {
+                return `${Math.round(context.raw as number)}% of Active skills`; // Display percentage of active skills
+              }else{
+                return `${Math.round(context.raw as number)}% of inActive skills`;
+              }
             },
+            // Optional: Remove the title or additional information if needed
+            title: function() {
+              return ''; // Hides the title
+            }
           },
         },
+        
       },
     };
 

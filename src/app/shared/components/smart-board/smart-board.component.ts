@@ -29,6 +29,7 @@ export class SmartBoardComponent implements OnInit {
   @Input() learningOutcomeId : number = 0;
   card : CardRequest = new CardRequest();
   private refreshSubscription!: Subscription; // Mark subscription as private to avoid accidental changes
+  
   showImageDialog : boolean = false;
   cardResponse: CardResponse[] = [];
   resourceType = ResourceTypeEnum;
@@ -57,7 +58,7 @@ export class SmartBoardComponent implements OnInit {
     }
   }
 
-  getResources(card : CardResponse) {debugger
+  getResources(card : CardResponse) {
     this.card.resourceTypeId = card.resourceTypeId;
     this.book.title = this.title;
     this.cardService.getResources(this.card).subscribe(res =>{

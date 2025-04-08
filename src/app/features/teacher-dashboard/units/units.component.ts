@@ -11,7 +11,7 @@ import {
   SkillSummaryComponent,
   SkillSummaryData,
 } from '../../../shared/components/skill-summary/skill-summary.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
 
 @Component({
@@ -43,6 +43,7 @@ export class UnitsComponent implements OnInit, OnDestroy {
     private learningOutcomesService: LearningOutcomesService,
     public sharedService: SharedService,
     private route: ActivatedRoute,
+    private router: Router,
   ) {
     if (!this.sharedService) {
       this.sharedService = new SharedService();
@@ -67,6 +68,11 @@ export class UnitsComponent implements OnInit, OnDestroy {
   }
 
   getUnits() {
+    if(this.sharedService.getPageState('UnitsComponent')){
+      let  pageNumber = this.sharedService.getPageState('UnitsComponent');
+      this.unitPayload.pageNumber = pageNumber;
+      this.first = (pageNumber - 1) * this.unitsPagination.pageSize;
+    }
     this.unitPayload.courseSectionId = this.headerService.selectedSectionId;
     this.unitPayload.semesterId = this.semesterId;
 
@@ -79,8 +85,14 @@ export class UnitsComponent implements OnInit, OnDestroy {
 
   nextPage($event: PaginatorState) {
     this.unitPayload.pageNumber = $event.page;
+    this.sharedService.savePageState('UnitsComponent' , $event.page)
     this.first = $event.first;
     this.getUnits();
+  }
+
+  cardClick(card : any) {
+    this.sharedService.pushTitle((card as Unit).unitLabelName + ' - ' +this.sharedService.translate('LESSONS'))
+    this.router.navigate(['/features/semesters/lessons', (card as Unit).unitId]);
   }
 
   ngOnDestroy(): void {
