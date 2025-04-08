@@ -5,6 +5,8 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
 
 interface AssignmentDetails {
   grade: string;
@@ -38,7 +40,8 @@ interface StudentSubmission {
     ButtonModule,
     PaginationComponent,
     CheckboxModule,
-    FormsModule
+    FormsModule,
+    MenuModule
   ],
   templateUrl: './assignment-details.component.html',
   styleUrl: './assignment-details.component.scss'
@@ -108,6 +111,10 @@ export class AssignmentDetailsComponent implements OnInit {
     // Implement close logic
   }
 
+  viewResources(): void {
+    // Implement view resources logic
+  }
+
   viewSubmission(submissionId: number): void {
     // Implement view submission logic
   }
@@ -120,5 +127,10 @@ export class AssignmentDetailsComponent implements OnInit {
 
   onSort(column: string): void {
     // Implement sorting logic for each column
+  }
+
+  exportAs(type: 'pdf' | 'xlsx'): void {
+    // Implement export logic based on type
+    console.log(`Exporting as ${type}`);
   }
 }
