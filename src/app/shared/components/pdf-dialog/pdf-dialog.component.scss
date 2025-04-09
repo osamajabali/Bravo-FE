@@ -1,0 +1,103 @@
+:host ::ng-deep {
+  .pdf-dialog {
+    .p-dialog-content {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .pdf-container {
+      width: 90vw !important;
+      max-width: 1400px;
+      height: 90vh;
+      background-color: var(--neutral-grey-50);
+
+      .pdf-actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        padding: 8px 16px;
+        background-color: var(--neutral-grey-100);
+        border-bottom: 1px solid var(--neutral-grey-200);
+        height: 60px;
+
+        .action-group {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          
+          &:not(:last-child) {
+            border-right: 1px solid var(--neutral-grey-200);
+            padding-right: 20px;
+          }
+        }
+
+        .page-info {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          color: var(--neutral-grey-700);
+          font-size: 14px;
+
+          .page-input {
+            width: 40px;
+            height: 24px;
+            text-align: center;
+            border: 1px solid var(--neutral-grey-300);
+            border-radius: 4px;
+            outline: none;
+            
+            &:focus {
+              border-color: var(--primary-primary-500);
+            }
+          }
+        }
+
+        .zoom-info {
+          .zoom-select {
+            height: 24px;
+            border: 1px solid var(--neutral-grey-300);
+            border-radius: 4px;
+            outline: none;
+            padding: 0 4px;
+            font-size: 14px;
+            color: var(--neutral-grey-700);
+            background-color: var(--neutral-white);
+            cursor: pointer;
+
+            &:focus {
+              border-color: var(--primary-primary-500);
+            }
+          }
+        }
+
+        .action-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border: none;
+          border-radius: 4px;
+          background-color: transparent;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover:not(:disabled) {
+            background-color: var(--neutral-grey-200);
+          }
+
+          &:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+          }
+
+          i {
+            font-size: 1rem;
+            color: var(--neutral-grey-700);
+          }
+        }
+      }
+    }
+  }
+}

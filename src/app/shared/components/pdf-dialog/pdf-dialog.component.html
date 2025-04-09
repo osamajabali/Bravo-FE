@@ -1,0 +1,79 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+  [maximizable]="false"
+  [resizable]="false"
+  [draggable]="false"
+  class="pdf-dialog"
+  (onHide)="closeDialog()"
+>
+  <div class="pdf-container">
+    <div class="pdf-actions">
+      <div class="action-group">
+        <button class="action-btn" (click)="previousPage()" [disabled]="currentPage === 1">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <div class="page-info">
+          <input type="number" [value]="currentPage" (change)="onPageChange($event)" min="1" [max]="totalPages" class="page-input" />
+          <span>/ {{totalPages}}</span>
+        </div>
+        <button class="action-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
+          <i class="pi pi-chevron-right"></i>
+        </button>
+      </div>
+
+      <div class="action-group">
+        <button class="action-btn" (click)="zoomOut()" [disabled]="zoom <= 0.25">
+          <i class="pi pi-minus"></i>
+        </button>
+        <div class="zoom-info">
+          <select [(ngModel)]="zoomLevel" (ngModelChange)="onZoomChange($event)" class="zoom-select">
+            <option value="0.5">50%</option>
+            <option value="0.75">75%</option>
+            <option value="1">100%</option>
+            <option value="1.25">125%</option>
+            <option value="1.5">150%</option>
+            <option value="2">200%</option>
+            <option value="auto">Fit to width</option>
+            <option value="page">Fit to page</option>
+          </select>
+        </div>
+        <button class="action-btn" (click)="zoomIn()" [disabled]="zoom >= 3">
+          <i class="pi pi-plus"></i>
+        </button>
+      </div>
+
+      <div class="action-group">
+        <button class="action-btn" (click)="rotateClockwise()">
+          <i class="pi pi-refresh"></i>
+        </button>
+        <button class="action-btn" (click)="downloadPdf()">
+          <i class="pi pi-download"></i>
+        </button>
+        <button class="action-btn" (click)="printPdf()">
+          <i class="pi pi-print"></i>
+        </button>
+      </div>
+    </div>
+    <pdf-viewer
+      [src]="_pdfUrl"
+      [rotation]="rotation"
+      [original-size]="true"
+      [show-all]="true"
+      [fit-to-page]="zoomLevel === 'page'"
+      [zoom]="zoom"
+      [zoom-scale]="zoomLevel === 'auto' ? 'page-width' : null"
+      [stick-to-page]="true"
+      [render-text]="true"
+      [external-link-target]="'blank'"
+      [autoresize]="true"
+      [show-borders]="true"
+      [(page)]="currentPage"
+      (after-load-complete)="onPdfLoaded($event)"
+      style="width: 100%; height: calc(100vh - 60px)"
+    ></pdf-viewer>
+  </div>
+</p-dialog>

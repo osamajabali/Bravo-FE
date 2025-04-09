@@ -1,0 +1,37 @@
+<p-dialog
+[(visible)]="visible"
+[modal]="true"
+[closable]="true"
+[closeOnEscape]="true"
+[dismissableMask]="true"
+[resizable]="false"
+[draggable]="false"
+class="video-dialog"
+(onHide)="closeDialog()"
+>
+<div class="video-container">
+  <img 
+    *ngIf="!isPlaying" 
+    class="play-icon" 
+    src="icon-video-play.svg" 
+    alt="play" 
+    (click)="togglePlay()"
+  />
+  <video
+    #videoPlayer
+    controls
+    controlsList="nodownload"
+    preload="auto"
+    class="custom-video-player"
+    (play)="onVideoPlay()"
+    (pause)="onVideoPause()"
+    (ended)="onVideoEnded()"
+  >
+    <source [src]="videoUrl" type="video/mp4" />
+    <source [src]="videoUrl" type="video/webm" />
+    <source [src]="videoUrl" type="application/x-mpegURL" />
+    <source [src]="videoUrl" type="application/vnd.apple.mpegurl" />
+    Your browser doesn't support HTML5 video.
+  </video>
+</div>
+</p-dialog>
