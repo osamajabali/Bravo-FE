@@ -1,9 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { BookListViewComponent } from './book-list-view/book-list-view.component';
-import { LeveledReadingViewComponent } from './leveled-reading-view/leveled-reading-view.component';
+import { SharedService } from '../../../core/services/shared-services/shared.service';
 
 @Component({
   selector: 'app-leveled-reading',
@@ -11,15 +10,21 @@ import { LeveledReadingViewComponent } from './leveled-reading-view/leveled-read
   imports: [
     CommonModule,
     ButtonModule,
-    BookListViewComponent,
-    LeveledReadingViewComponent
+    RouterOutlet,
+    RouterModule
   ],
   templateUrl: './leveled-reading.component.html',
   styleUrl: './leveled-reading.component.scss',
 })
-export class LeveledReadingComponent {
+export class LeveledReadingComponent implements OnInit {
+
   router = inject(Router);
-  selectedTab = 'book-list';
+  sharedService = inject(SharedService);
+
+  ngOnInit(): void {
+    this.sharedService.removeArray(); 
+    this.sharedService.pushTitle('LEVELED_READING')
+  }
 
   showStudentLevel() {
     this.router.navigate(['/features/student-level']);

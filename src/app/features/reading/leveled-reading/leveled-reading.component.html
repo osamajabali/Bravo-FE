@@ -1,21 +1,24 @@
 <div class="leveled-reading">
   <div class="header">
     <div class="tabs">
-      <div
+      <a
         class="tab"
-        [class.selected]="selectedTab === 'book-list'"
-        (click)="selectedTab = 'book-list'"
+        [routerLink]="'/features/leveled-reading'"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
       >
         Book List
-      </div>
-      <div
+      </a>
+      <a
         class="tab"
-        [class.selected]="selectedTab === 'leveled-reading'"
-        (click)="selectedTab = 'leveled-reading'"
+        [routerLink]="'/features/leveled-reading/leveled-reading-view'"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
       >
         Leveled Reading
-      </div>
+      </a>
     </div>
+    
     <div class="buttons">
       <button
         pButton
@@ -36,10 +39,6 @@
     </div>
   </div>
   <div class="content">
-    @if(selectedTab === 'book-list') {
-      <app-book-list-view />
-    } @else {
-      <app-leveled-reading-view />
-    }
+    <router-outlet />
   </div>
 </div>

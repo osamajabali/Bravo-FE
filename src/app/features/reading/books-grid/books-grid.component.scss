@@ -3,15 +3,16 @@
 
   .grid-header {
     display: grid;
-    grid-template-columns: 100px 2fr 1fr 1fr 1fr 2fr;
+    grid-template-columns: 100px 2fr 1fr 1fr 2fr; /* 5 columns */
     gap: var(--padding-m);
     padding: var(--padding-s) var(--padding-m);
-
+  
     .header-cell {
       font-size: var(--font-size-xxs);
       color: #565656;
     }
   }
+  
 
   .grid-body {
     display: flex;
@@ -20,7 +21,7 @@
 
     .grid-row {
       display: grid;
-      grid-template-columns: 100px 2fr 1fr 1fr 1fr 2fr;
+    grid-template-columns: 100px 2fr 1fr 1fr 2fr; /* 5 columns */
       gap: var(--padding-m);
       padding: 0;
       border: 1px solid var(--neutral-grey-200);

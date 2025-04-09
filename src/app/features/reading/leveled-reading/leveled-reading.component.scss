@@ -18,7 +18,7 @@
         font-size: var(--font-size-xs);
         cursor: pointer;
 
-        &.selected {
+        &.active {
           color: var(--primary-primary-900);
           font-weight: var(--font-weight-bold);
           border-bottom: 2px solid var(--primary-primary-900);

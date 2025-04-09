@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { LeveledReadingComponent } from '../reading/leveled-reading/leveled-reading.component';
 
 export const Main_Layout_Routes: Routes = [
   {
@@ -58,16 +59,26 @@ export const Main_Layout_Routes: Routes = [
       },
       {
         path: 'leveled-reading',
-        loadComponent: () =>
-          import(
-            '../teacher-dashboard/leveled-reading/leveled-reading.component'
-          ).then((m) => m.LeveledReadingComponent),
+        component : LeveledReadingComponent,
+        children: [
+          {
+            path: '', // Default path when you visit /leveled-reading
+            loadComponent: () =>
+              import('../reading/book-list-view/book-list-view.component').then((m) => m.BookListViewComponent),
+          },
+          {
+            path: 'leveled-reading-view', // Path for leveled-reading-view
+            loadComponent: () =>
+              import('../reading/leveled-reading-view/leveled-reading-view.component').then((m) => m.LeveledReadingViewComponent),
+          },
+        ]
       },
+      
       {
-        path: 'leveled-reading/books-grid',
+        path: 'leveled-reading/books-grid/:id',
         loadComponent: () =>
           import(
-            '../teacher-dashboard/leveled-reading/books-grid/books-grid.component'
+            '../reading/books-grid/books-grid.component'
           ).then((m) => m.BooksGridComponent),
       },
       {
@@ -102,7 +113,7 @@ export const Main_Layout_Routes: Routes = [
         path: 'book-details',
         loadComponent: () =>
           import(
-            '../teacher-dashboard/leveled-reading/book-details/book-details.component'
+            '../reading/book-details/book-details.component'
           ).then((m) => m.BookDetailsComponent),
       },
       {
