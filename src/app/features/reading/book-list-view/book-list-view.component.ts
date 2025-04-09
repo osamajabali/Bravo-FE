@@ -5,15 +5,16 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
-import { SharedService } from '../../../../core/services/shared-services/shared.service';
-import { LeveldReadingService } from '../../../../core/services/teacher-dashboard-services/leveld-reading.service';
 import { Subscription } from 'rxjs';
-import { ReadingFilter } from '../../../../core/models/reading-models/reading-filter.model';
-import { StoriesList, Story } from '../../../../core/models/reading-models/stories.model';
 import { PaginatorState } from 'primeng/paginator';
-import { MainLevels } from '../../../../core/models/reading-models/main-levels';
-import { DetailedFilter } from '../../../../core/models/reading-models/detailed-filter.model';
+import { DetailedFilter } from '../../../core/models/reading-models/detailed-filter.model';
+import { MainLevels } from '../../../core/models/reading-models/main-levels';
+import { ReadingFilter } from '../../../core/models/reading-models/reading-filter.model';
+import { StoriesList, Story } from '../../../core/models/reading-models/stories.model';
+import { SharedService } from '../../../core/services/shared-services/shared.service';
+import { LeveldReadingService } from '../../../core/services/teacher-dashboard-services/leveld-reading.service';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
 
 @Component({
   selector: 'app-book-list-view',
@@ -52,7 +53,8 @@ export class BookListViewComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private sharedService: SharedService,
-    private readingService: LeveldReadingService
+    private readingService: LeveldReadingService,
+    private spinnerService : SpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -92,6 +94,7 @@ export class BookListViewComponent implements OnInit, OnDestroy {
   }
 
   getStories() {
+    this.spinnerService.show();
     if (this.sharedService.getPageState('BookListComponent')) {
       let pageNumber = this.sharedService.getPageState('BookListComponent');
       this.readingFilter.pageNumber = pageNumber;
@@ -100,6 +103,7 @@ export class BookListViewComponent implements OnInit, OnDestroy {
 
     this.readingService.getStories(this.readingFilter).subscribe((res) => {
       if (res.success) {
+        this.spinnerService.hide()
         this.books = res.result;
       }
     });

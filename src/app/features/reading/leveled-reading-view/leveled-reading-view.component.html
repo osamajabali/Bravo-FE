@@ -1,13 +1,7 @@
 <div class="leveled-reading-view">
   <div class="filter-section mb-4">
-    <p-dropdown
-      [options]="levels"
-      [(ngModel)]="selectedLevel"
-      placeholder="Select Level"
-      [showClear]="true"
-      (onChange)="onLevelChange()"
-      styleClass="level-dropdown"
-    >
+    <p-dropdown [options]="mainLevels" [(ngModel)]="levelReading.readingMainLevelId" placeholder="Select Main Level"
+      optionLabel="name" optionValue="mainLevelId" [showClear]="false" (ngModelChange)="getReadings()">
     </p-dropdown>
     <div class="search-container">
       <span class="p-input-icon-left">
@@ -25,9 +19,9 @@
   </div>
 
   <div class="books-list">
-    @for (book of books; track book.title) {
+    @for (book of levelReadingResponse.subLevels; track $index) {
     <div class="book-item">
-      <div class="book-title">{{ book.title }}</div>
+      <div class="book-title">{{ book.name }}</div>
       <div class="book-buttons">
         <div class="icon">
           <img src="icon-book.svg" alt="book" />
@@ -35,7 +29,7 @@
         </div>
         <div class="icon">
           <img src="icon-multiple-users.svg" alt="multiple users" />
-          <span class="text">23 Students</span>
+          <span class="text">{{book.studentsCount}} Students</span>
         </div>
         <div class="icon assignment-icon">
           <img src="icon-plus.svg" alt="plus" />
@@ -51,4 +45,7 @@
     </div>
     }
   </div>
+
+  <app-pagination [first]="first" [rows]="levelReadingResponse.pageSize" [totalRecords]="levelReadingResponse.totalRecords" itemLabel="books"
+  (pageChange)="nextPage($event)"></app-pagination>
 </div>

@@ -5,10 +5,10 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { GalleriaModule } from 'primeng/galleria';
 import { MenuItem } from 'primeng/api';
-import { BookInfoComponent } from './tabs/book-info/book-info.component';
-import { BookQuestionsComponent } from './tabs/book-questions/book-questions.component';
-import { ImageDialogComponent } from "../../../../shared/components/image-dialog/image-dialog.component";
 import { FormsModule } from '@angular/forms';
+import { ImageDialogComponent } from '../../../shared/components/image-dialog/image-dialog.component';
+import { BookInfoComponent } from '../tabs/book-info/book-info.component';
+import { BookQuestionsComponent } from '../tabs/book-questions/book-questions.component';
 
 export class BookDetail {
   subject: string = '';

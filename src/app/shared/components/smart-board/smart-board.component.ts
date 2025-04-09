@@ -24,7 +24,7 @@ import { PdfDialogComponent } from '../pdf-dialog/pdf-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { ResourceTypeEnum } from '../../../core/models/shared-models/enums';
 import { Resources } from '../../../core/models/shared-models/resources.model';
-import { BookDetail } from '../../../features/teacher-dashboard/leveled-reading/book-details/book-details.component';
+import { BookDetail } from '../../../features/reading/book-details/book-details.component';
 
 export enum SmartBoardResourceId {
   Videos = 2,
