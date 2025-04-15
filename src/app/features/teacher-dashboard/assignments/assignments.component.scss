@@ -26,6 +26,11 @@
       }
     }
 
+    .advanced-search-button {
+      min-width: 150px;
+      height: 45px;
+    }
+
     .buttons {
       display: flex;
       gap: var(--padding-s);
@@ -125,7 +130,7 @@
 
     .grid-header {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
       gap: var(--padding-m);
       padding: var(--padding-s);
       border-radius: var(--radius-m);
@@ -143,20 +148,19 @@
 
       .assignment-row {
         display: grid;
-        grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
         gap: var(--padding-m);
         padding: var(--padding-s) var(--padding-xs);
         border-radius: var(--radius-m);
         align-items: center;
         transition: all 0.2s ease-in-out;
-        cursor: pointer;
 
         &:hover {
           transform: translateY(-2px);
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
-        &.system {
+        &.scheduled {
           background-color: var(--neutral-grey-25);
           border-style: dashed;
           border-width: 1px;
@@ -174,11 +178,21 @@
           }
         }
 
-        &.scheduled {
+        &.active {
+          background-color: var(--neutral-white);
           border: 1px solid var(--neutral-grey-200);
 
           &:hover {
-            border-color: var(--primary-primary-200);
+            background-color: var(--neutral-grey-50);
+          }
+        }
+
+        &.inactive {
+          background-color: var(--neutral-grey-100);
+          border: 1px solid var(--neutral-grey-200);
+
+          &:hover {
+            background-color: var(--neutral-grey-50);
           }
         }
 
@@ -196,17 +210,42 @@
               border-radius: var(--radius-xxxl);
               font-size: var(--font-size-xxs);
               width: fit-content;
-
-              &.system {
-                background-color: var(--primary-primary-50);
-                color: var(--primary-primary-900);
-                border: 1px solid var(--primary-primary-200);
-              }
+              font-weight: var(--font-weight-bold);
 
               &.scheduled {
                 background-color: var(--colors-info-blue-10);
                 color: var(--colors-info-blue-100);
                 border: 1px solid var(--colors-info-blue-20);
+
+                .dot {
+                  background-color: var(--colors-info-blue-100);
+                }
+              }
+
+              &.active {
+                background-color: var(--colors-success-green-10);
+                color: #3b9255;
+                border: 1px solid var(--colors-success-green-20);
+
+                .dot {
+                  background-color: #3B9255;
+                }
+              }
+
+              &.inactive {
+                background-color: var(--colors-negative-red-10);
+                color: var(--negative-icon);
+                border: 1px solid var(--colors-negative-red-20);
+
+                .dot {
+                  background-color: var(--negative-icon);
+                }
+              }
+
+              .dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
               }
             }
           }
@@ -450,6 +489,42 @@
           }
         }
       }
+    }
+  }
+
+  // Action menu styles
+  .action-menu {
+    .p-menu-content {
+      min-width: 200px;
+    }
+    
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: var(--padding-s) var(--padding-m);
+      cursor: pointer;
+      
+      &:hover {
+        background-color: var(--neutral-grey-50);
+      }
+      
+      .menu-icon {
+        width: 18px;
+        height: 18px;
+        margin-right: var(--padding-m);
+      }
+      
+      .menu-text {
+        color: var(--primary-primary-900);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-bold);
+      }
+    }
+    
+    .menu-separator {
+      height: 1px;
+      background-color: var(--neutral-grey-200);
+      margin: 0;
     }
   }
 }

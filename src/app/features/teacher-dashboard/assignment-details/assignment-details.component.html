@@ -68,7 +68,32 @@
       <div class="details-row">
         <div class="left-section">
           <div class="info-item">
-            <span class="value grade">{{ assignmentDetails.grade }}</span>
+            <div class="value grade">{{ assignmentDetails.grade }}</div>
+            <div class="value type">{{ assignmentDetails.type }}</div>
+          </div>
+          <div class="custom-radio-container">
+            <div
+              class="custom-radio"
+              [class.active]="assignmentDetails.isEnabled"
+              (click)="toggleActive()"
+            >
+              <div
+                class="radio-content"
+                [class.reverse]="!assignmentDetails.isEnabled"
+              >
+                <span class="status-text">{{
+                  assignmentDetails.isEnabled ? "ACTIVE" : "OFF"
+                }}</span>
+                <img
+                  [src]="
+                    assignmentDetails.isEnabled
+                      ? 'icon-radio-checked.svg'
+                      : 'icon-radio-unchecked.svg'
+                  "
+                  alt="check"
+                />
+              </div>
+            </div>
           </div>
         </div>
         <div class="right-section">
@@ -79,8 +104,8 @@
             class="p-button-secondary"
             (click)="onResend()"
           >
-            <img src="icon-rotate.svg" alt="Resend" />
-            Resend
+            <img src="icon-eye.svg" alt="view all questions" />
+            View All Questions
           </button>
           <button
             pButton
@@ -90,17 +115,7 @@
             (click)="onReminder()"
           >
             <img src="icon-reminder.svg" alt="Reminder" />
-            Reminder
-          </button>
-          <button
-            pButton
-            type="button"
-            label=""
-            class="p-button-danger"
-            (click)="onDelete()"
-          >
-            <img src="icon-red-trash.svg" alt="Delete" />
-            Delete
+            Send Reminder
           </button>
           <button
             pButton
@@ -110,17 +125,15 @@
             (click)="onEdit()"
           >
             <img src="icon-pencil.svg" alt="Edit" />
-            Edit
           </button>
           <button
             pButton
             type="button"
             label=""
-            class="p-button-primary"
-            (click)="onClose()"
+            class="p-button-danger"
+            (click)="onDelete()"
           >
-            <img src="icon-exit.svg" alt="Close" />
-            Close Assignment
+            <img src="icon-red-trash.svg" alt="Delete" />
           </button>
         </div>
       </div>
@@ -133,10 +146,16 @@
             <span class="value">{{ assignmentDetails.status }}</span>
           </div>
           <div class="info-item">
-            <span class="title">Due On</span>
-            <span class="value">{{
-              assignmentDetails.dueDate | date : "mediumDate"
-            }}</span>
+            <span class="title">Section</span>
+            <span class="value">{{ assignmentDetails.section }}</span>
+          </div>
+          <div class="info-item">
+            <span class="title">Assigned By</span>
+            <span class="value">{{ assignmentDetails.assignedBy }}</span>
+          </div>
+          <div class="info-item">
+            <span class="title">Questions</span>
+            <span class="value">{{ assignmentDetails.questionCount }}</span>
           </div>
           <div class="info-item">
             <span class="title">Posted On</span>
@@ -145,31 +164,22 @@
             }}</span>
           </div>
           <div class="info-item">
-            <span class="title">No. of Questions</span>
-            <span class="value">{{ assignmentDetails.questionCount }}</span>
-          </div>
-          <div class="info-item">
-            <span class="title">Skill Name</span>
-            <span class="value">{{ assignmentDetails.skillName }}</span>
-          </div>
-          <div class="info-item">
-            <span class="title">AVG Score</span>
-            <span class="value">{{ assignmentDetails.avgScore }}%</span>
-          </div>
-          <div class="info-item">
-            <span class="title">Sent To</span>
-            <span class="value">{{ assignmentDetails.sentTo }}</span>
+            <span class="title">Due On</span>
+            <span class="value">{{
+              assignmentDetails.dueDate | date : "mediumDate"
+            }}</span>
           </div>
         </div>
       </div>
 
       <!-- Third Row -->
       <div class="details-row score">
-        <div class="title">
-          <span>Overall Average Score</span>
+        <div class="score-container">
+          <div class="title">Overall Average Score</div>
+          <div class="value">{{ assignmentDetails.avgScore }}%</div>
         </div>
         <div class="summary-boxes">
-          <div class="box transparent">
+          <div class="box not-delivered">
             <div class="box-content">
               <div class="info">
                 <div class="label">Did not delivered</div>
@@ -266,8 +276,8 @@
             />
           </div>
         </div>
-        <div class="header-item"></div>
-        <div class="header-item"></div>
+        <div class="header-item">Reflection</div>
+        <div class="header-item">Actions</div>
       </div>
 
       <!-- Submissions List -->
@@ -281,6 +291,11 @@
             ></p-checkbox>
             <span class="initials">{{ submission.initials }}</span>
             <span class="name">{{ submission.studentName }}</span>
+            <img
+              src="icon-warning.svg"
+              alt="warning"
+              *ngIf="submission.status === 'Pending'"
+            />
           </div>
           <div class="item status" [class]="submission.status.toLowerCase()">
             {{ submission.status }}
@@ -303,12 +318,19 @@
           <div class="item attachment">
             <img src="icon-red-attachment.svg" alt="Attachment" />
           </div>
-          <div class="item actions">
+          <div class="item actions d-flex gap-2">
+            <button
+              pButton
+              type="button"
+              label="Correct"
+              class="p-button-primary"
+              (click)="correct(submission.id)"
+            ></button>
             <button
               pButton
               type="button"
               label="View Submission"
-              class="p-button-primary view-submission"
+              class="p-button-secondary view-submission"
               (click)="viewSubmission(submission.id)"
             ></button>
           </div>
@@ -325,14 +347,60 @@
 <p-menu #exportBtn [popup]="true">
   <ng-template #start>
     <div class="export-menu-content">
-      <div class="export-item" (click)="exportAs('pdf'); exportBtn.toggle($event)">
+      <div
+        class="export-item"
+        (click)="exportAs('pdf'); exportBtn.toggle($event)"
+      >
         <span class="label">PDF</span>
         <img src="icon-download.svg" alt="download" />
       </div>
-      <div class="export-item" (click)="exportAs('xlsx'); exportBtn.toggle($event)">
+      <div
+        class="export-item"
+        (click)="exportAs('xlsx'); exportBtn.toggle($event)"
+      >
         <span class="label">XLSX</span>
         <img src="icon-download.svg" alt="download" />
       </div>
     </div>
   </ng-template>
 </p-menu>
+
+<p-dialog
+  [(visible)]="showDeleteConfirmation"
+  [modal]="false"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '450px' }"
+  styleClass="delete-confirmation-dialog"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+  [showHeader]="true"
+  [closable]="true"
+>
+  <!-- <div class="board-header">
+    <button class="close-button" (click)="cancelDelete()">
+      <img src="icon-exit.svg" alt="close" />
+    </button>
+  </div> -->
+  <div class="delete-confirmation-content">
+    <div class="delete-title">
+      Are you sure you want to delete the assignment?
+    </div>
+    <div class="delete-actions">
+      <button
+        pButton
+        type="button"
+        label="Cancel"
+        class="p-button-secondary cancel-button"
+        (click)="cancelDelete()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Delete"
+        class="p-button-primary delete-button"
+        (click)="confirmDelete()"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

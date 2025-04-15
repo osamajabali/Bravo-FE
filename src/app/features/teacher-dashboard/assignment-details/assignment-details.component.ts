@@ -6,7 +6,7 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
 
 interface AssignmentDetails {
   grade: string;
@@ -15,16 +15,17 @@ interface AssignmentDetails {
   dueDate: Date;
   postedDate: Date;
   questionCount: number;
-  skillName: string;
+  section: string;
+  assignedBy: string;
   avgScore: number;
-  sentTo: string;
+  isEnabled: boolean;
 }
 
 interface StudentSubmission {
   id: number;
   studentName: string;
   initials: string;
-  status: 'Pending' | 'Submitted';
+  status: 'Active' | 'Pending';
   correctAnswers: number;
   wrongAnswers: number;
   score: number;
@@ -41,7 +42,8 @@ interface StudentSubmission {
     PaginationComponent,
     CheckboxModule,
     FormsModule,
-    MenuModule
+    MenuModule,
+    DialogModule
   ],
   templateUrl: './assignment-details.component.html',
   styleUrl: './assignment-details.component.scss'
@@ -49,17 +51,19 @@ interface StudentSubmission {
 export class AssignmentDetailsComponent implements OnInit {
   sharedService = inject(SharedService);
   selectAll: boolean = false;
+  showDeleteConfirmation: boolean = false;
 
   assignmentDetails: AssignmentDetails = {
     grade: 'Grade 5',
-    type: 'Skill',
+    type: 'Leveled Reading',
     status: 'Active',
     dueDate: new Date('2024-03-15'),
     postedDate: new Date('2024-03-01'),
     questionCount: 10,
-    skillName: 'Reading Comprehension',
+    section: 'Section A',
+    assignedBy: 'John Doe',
     avgScore: 85,
-    sentTo: 'Class A'
+    isEnabled: true
   };
 
   submissions: StudentSubmission[] = [
@@ -67,7 +71,7 @@ export class AssignmentDetailsComponent implements OnInit {
       id: 1,
       studentName: 'John Smith',
       initials: 'JS',
-      status: 'Submitted',
+      status: 'Pending',
       correctAnswers: 8,
       wrongAnswers: 2,
       score: 80,
@@ -78,7 +82,7 @@ export class AssignmentDetailsComponent implements OnInit {
       id: 2,
       studentName: 'Emma Wilson',
       initials: 'EW',
-      status: 'Pending',
+      status: 'Active',
       correctAnswers: 0,
       wrongAnswers: 0,
       score: 0,
@@ -100,7 +104,18 @@ export class AssignmentDetailsComponent implements OnInit {
   }
 
   onDelete(): void {
-    // Implement delete logic
+    this.showDeleteConfirmation = true;
+  }
+
+  confirmDelete(): void {
+    // Implement actual delete logic here
+    console.log('Assignment deleted');
+    this.showDeleteConfirmation = false;
+    // Optional: Navigate back to assignments list or show success message
+  }
+
+  cancelDelete(): void {
+    this.showDeleteConfirmation = false;
   }
 
   onEdit(): void {
@@ -123,6 +138,14 @@ export class AssignmentDetailsComponent implements OnInit {
     this.submissions.forEach(submission => {
       submission.selected = this.selectAll;
     });
+  }
+
+  correct(submissionId: number): void {
+    // Implement correct logic
+  }
+
+  toggleActive(): void {
+    this.assignmentDetails.isEnabled = !this.assignmentDetails.isEnabled;
   }
 
   onSort(column: string): void {
