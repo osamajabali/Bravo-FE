@@ -7,6 +7,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MenuModule } from 'primeng/menu';
 import { DialogModule } from 'primeng/dialog';
+import { Router } from '@angular/router';
 
 interface AssignmentDetails {
   grade: string;
@@ -52,6 +53,7 @@ export class AssignmentDetailsComponent implements OnInit {
   sharedService = inject(SharedService);
   selectAll: boolean = false;
   showDeleteConfirmation: boolean = false;
+  router = inject(Router);
 
   assignmentDetails: AssignmentDetails = {
     grade: 'Grade 5',
@@ -131,7 +133,7 @@ export class AssignmentDetailsComponent implements OnInit {
   }
 
   viewSubmission(submissionId: number): void {
-    // Implement view submission logic
+    this.router.navigate(['/features/assignments/assignment-submission', submissionId]);
   }
 
   onSelectAll(): void {

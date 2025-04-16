@@ -144,6 +144,13 @@ export const Main_Layout_Routes: Routes = [
             (m) => m.AssignmentDetailsComponent
           ),
       },
+      {
+        path: 'assignments/assignment-submission/:id',
+        loadComponent: () =>
+          import('../teacher-dashboard/assignment-submission/assignment-submission.component').then(
+            (m) => m.AssignmentSubmissionComponent
+          ),
+      },
     ],
   },
 ];
