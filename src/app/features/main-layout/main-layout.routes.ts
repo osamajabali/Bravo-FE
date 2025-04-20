@@ -30,28 +30,28 @@ export const Main_Layout_Routes: Routes = [
           ),
       },
       {
-        path: 'semesters/units/:semesterId',
+        path: 'semesters/units',
         loadComponent: () =>
           import('../teacher-dashboard/units/units.component').then(
             (m) => m.UnitsComponent
           ),
       },
       {
-        path: 'semesters/lessons/:id',
+        path: 'semesters/lessons',
         loadComponent: () =>
           import('../teacher-dashboard/lessons/lessons.component').then(
             (m) => m.LessonsComponent
           ),
       },
       {
-        path: 'semesters/lessons-curriculums/:id',
+        path: 'semesters/lessons-curriculums',
         loadComponent: () =>
           import(
             '../teacher-dashboard/lessons-curriculums/lessons-curriculums.component'
           ).then((m) => m.LessonsCurriculumsComponent),
       },
       {
-        path: 'semesters/single-skill/:domainId/:curriculumId',
+        path: 'semesters/single-skill',
         loadComponent: () =>
           import(
             '../teacher-dashboard/single-skill/single-skill.component'
@@ -75,25 +75,39 @@ export const Main_Layout_Routes: Routes = [
       },
       
       {
-        path: 'leveled-reading/books-grid/:id',
+        path: 'leveled-reading/books-grid',
         loadComponent: () =>
           import(
             '../reading/books-grid/books-grid.component'
           ).then((m) => m.BooksGridComponent),
       },
       {
-        path: 'skills/skills-level-one/:domainId',
+        path: 'assignments',
+        loadComponent: () =>
+          import(
+            '../teacher-dashboard/assignments/assignments.component'
+          ).then((m) => m.AssignmentsComponent),
+      },
+      {
+        path: 'skills/skills-level-one',
         loadComponent: () =>
           import(
             '../teacher-dashboard/skill-level-one/skill-level-one.component'
           ).then((m) => m.SkillLevelOneComponent),
       },
       {
-        path: 'skills/skills-level-two/:domainId',
+        path: 'skills/skills-level-two',
         loadComponent: () =>
           import(
             '../teacher-dashboard/skill-level-two/skill-level-two.component'
           ).then((m) => m.SkillLevelTwoComponent),
+      },
+      {
+        path: 'skills/skills-level-three',
+        loadComponent: () =>
+          import(
+            '../teacher-dashboard/skill-level-three/skill-level-three.component'
+          ).then((m) => m.SkillLevelThreeComponent),
       },
       {
         path: 'student-level',

@@ -1,6 +1,7 @@
-import { Component, input, output } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { PopoverModule } from 'primeng/popover';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface FilterSection {
   title: string;
@@ -24,15 +25,15 @@ export interface SkillSummaryData {
 @Component({
   selector: 'app-skill-summary',
   standalone: true,
-  imports: [PopoverModule, CommonModule],
+  imports: [PopoverModule, CommonModule, FormsModule],
   templateUrl: './skill-summary.component.html',
-  styleUrl: './skill-summary.component.scss',
+  styleUrls: ['./skill-summary.component.scss'],
 })
 export class SkillSummaryComponent {
-  showAssignmentButton = input<boolean>(false);
-  data = input<SkillSummaryData>();
-  onSearchChange = output<string>();
-  searchTerm = '';
+  @Input() showAssignmentButton: boolean = false;
+  @Input() data: SkillSummaryData;
+  @Output() onSearchChange = new EventEmitter<string>();
+  searchTerm: string = '';
 
   filterSections: FilterSection[] = [
     {
@@ -56,10 +57,8 @@ export class SkillSummaryComponent {
     },
   ];
 
-  _onSearchChange(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.searchTerm = inputElement.value;
-    this.onSearchChange.emit(this.searchTerm);
+  _onSearchChange() {
+    this.onSearchChange.emit(this.searchTerm); // Emit the correct value
   }
 
   toggleFilterSection(section: FilterSection): void {

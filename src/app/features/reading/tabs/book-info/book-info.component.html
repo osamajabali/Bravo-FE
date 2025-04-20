@@ -1,64 +1,15 @@
-<div class="book-info-grid">
-  <!-- First Row - Highlighted Boxes -->
-  <div class="info-box highlighted">
-    <div class="title">Literary Type</div>
-    <div class="d-flex justify-content-between">
-      <div class="value">{{ bookDetails.literaryType }}</div>
-      <img src="icon-literary-type.svg" alt="literary type" />
+<div class="book-info-grid">  
+  @for (book of bookDetails; track $index) {
+    <div class="info-box" [ngStyle]="{'background-color' : book.color}">
+      <div class="title">{{book.labelName}}</div>
+      <div class="d-flex justify-content-between">
+        <div class="value">{{ book.title }}</div>
+        @if (book.icon) {
+          <img [src]="book.icon" alt="book" />
+        }
+      </div>
     </div>
-  </div>
-  <div class="info-box highlighted">
-    <div class="title">Number of Pages</div>
-    <div class="d-flex justify-content-between">
-      <div class="value">{{ bookDetails.numberOfPages }}</div>
-      <img src="icon-small-book.svg" alt="book" />
-    </div>
-  </div>
-  <div class="info-box highlighted">
-    <div class="title">Number of Words</div>
-    <div class="d-flex justify-content-between">
-      <div class="value">{{ bookDetails.numberOfWords }}</div>
-      <img src="icon-word.svg" alt="w" />
-    </div>
-  </div>
-
-  <!-- Regular Info Boxes -->
-  <div class="info-box">
-    <div class="title">Main Level</div>
-    <div class="value">{{ bookDetails.mainLevel }}</div>
-  </div>
-  <div class="info-box">
-    <div class="title">Sub Level</div>
-    <div class="value">{{ bookDetails.subLevel }}</div>
-  </div>
-  <div class="info-box">
-    <div class="title">Age Group</div>
-    <div class="value">{{ bookDetails.ageGroup }}</div>
-  </div>
-  <div class="info-box">
-    <div class="title">Author Name</div>
-    <div class="value">{{ bookDetails.authorName }}</div>
-  </div>
-  <div class="info-box">
-    <div class="title">Publisher</div>
-    <div class="value">{{ bookDetails.publisher }}</div>
-  </div>
-  <div class="info-box">
-    <div class="title">Illustrator</div>
-    <div class="value">{{ bookDetails.illustrator }}</div>
-  </div>
-  <div class="info-box">
-    <div class="title">Hub</div>
-    <div class="value">{{ bookDetails.hub }}</div>
-  </div>
-  <div class="info-box">
-    <div class="title">IB Hub</div>
-    <div class="value">{{ bookDetails.ibHub }}</div>
-  </div>
-  <div class="info-box">
-    <div class="title">IB Learner Profile</div>
-    <div class="value">{{ bookDetails.ibLearnerProfile }}</div>
-  </div>
+  }
 </div>
 
 <div class="worksheet-section">
@@ -87,28 +38,30 @@
       <div class="column-actions"></div>
     </div>
     <div class="grid-body">
-      @for (file of uploadedFiles; track file.name) {
-      <div class="grid-row">
-        <div class="column-data">
-          <img [src]="getFileIcon(file)" [alt]="file.type || 'file'" />
-          {{ file.name }}
-        </div>
-        <div class="column-data">{{ file.uploadDate }}</div>
-        <div class="column-data">{{ file.size }}</div>
-        <div class="column-actions">
-          <img
-            src="icon-download.svg"
-            alt="download"
-            (click)="downloadFile(file)"
-          />
-          <img
-            src="icon-trash-red.svg"
-            alt="trash"
-            (click)="deleteFile(file)"
-          />
+      @for (file of uploadedFiles; track file.fileName) {
+      <div>
+        <div class="grid-row">
+          <div class="column-data">
+            <img [src]="getFileIcon(file)" [alt]="file?.type || 'file'" />
+            {{ file?.fileName }}
+          </div>
+          <div class="column-data">{{ file?.uploadDate }}</div>
+          <div class="column-data">{{ file?.fileSize }}</div>
+          <div class="column-actions">
+            <img
+              src="icon-download.svg"
+              alt="download"
+              (click)="downloadFile(file)"
+            />
+            <img
+              src="icon-trash-red.svg"
+              alt="trash"
+              (click)="deleteFile(file)"
+            />
+          </div>
         </div>
       </div>
-      }
+    }
     </div>
   </div>
 

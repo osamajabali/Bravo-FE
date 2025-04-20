@@ -64,12 +64,17 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
       this.route.paramMap,
       this.sharedService.refresh$,
     ]).subscribe(([params]) => {
-      this.domainId = parseInt(params.get('domainId') || '0');
-      this.curriculumId = parseInt(params.get('curriculumId') || '0');
+      this.domainId = this.sharedService.getId('domainId');
+      this.curriculumId = this.sharedService.getId('curriculumId');
       this.sections = this.headerService.sectionsArray;
       this.getSkills();
     });
   }
+
+  onSearchChange($event: string) {
+    this.skillsPayload.searchValue = $event;
+    this.getSkills()
+    }
 
   ngOnDestroy(): void {
     // Unsubscribe from any subscriptions to avoid memory leaks

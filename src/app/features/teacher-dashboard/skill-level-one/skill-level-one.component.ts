@@ -95,11 +95,9 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
 
   getSkills() {
     this.spinnerService.show();
-    this.route.paramMap.subscribe(params => {
-      this.domainId = parseInt(params.get('domainId') || '0');
-      console.log('domainId:', this.domainId);
-      this.curriculumsPayload.domainId = this.domainId;
-    });
+    this.domainId =this.sharedService.getId('skillDomainId');
+    this.curriculumsPayload.domainId = this.domainId;
+
     if (this.sharedService.getPageState('SkillLevelOneComponent')) {
       let pageNumber = this.sharedService.getPageState('SkillLevelOneComponent');
       this.curriculumsPayload.pageNumber = pageNumber;
@@ -116,8 +114,9 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
 
   clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
     const domainId = (card as SkillCurriculum).id;
-    this.sharedService.pushTitle((card as SkillCurriculum).domainName + ' - ' + this.sharedService.translate('SKILLS'))
-    this.router.navigate([this.sharedService.nextRoute, domainId]);
+    this.sharedService.pushTitle((card as SkillCurriculum).domainName + ' - ' + this.sharedService.translate('SKILLS'));
+    this.sharedService.saveId('SkillLevelOneDomainId' , domainId)
+    this.router.navigate([this.sharedService.nextRoute]);
   }
 
   nextPage($event: PaginatorState) {

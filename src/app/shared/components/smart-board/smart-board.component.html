@@ -24,18 +24,28 @@
       <h2>{{ skillTitle }}</h2>
     </div>
     <div class="d-flex flex-wrap justify-content-center mt-3 gap-5">
-      @for (card of cardResponse; track $index) {
-      <div class="link" style="flex: 1 1 30%; max-width: 30%">
-        <a (click)="getResources(card)" class="text-decoration-none">
-          <div class="link-icon">
-            <img [src]="card.iconUrl" alt="{{ card.name }}" />
-          </div>
-          <div class="link-title text-center">{{ card.name }}</div>
-          <div class="link-description text-center">
-            {{ card.count + " " + card.name }}
+      @if (cardResponse.length) {
+        @for (card of cardResponse; track $index) {
+          <a (click)="getResources(card)" class="active text-decoration-none" style="flex: 1 1 30%; max-width: 30%">
+        <div class="link w-100">
+            <div class="link-icon">
+              <img [src]="card.iconUrl" alt="{{ card.name }}" />
+            </div>
+            <div class="link-title text-center">{{ card.name }}</div>
+            <div class="link-description text-center">
+              {{ card.count + " " + card.name }}
+            </div>
           </div>
         </a>
-      </div>
+        }
+      }@else{
+        @for (card of [0,1,2,3,4]; track $index) {
+          <a  class="text-decoration-none" style="flex: 1 1 30%; max-width: 30%">
+        <div class="link w-100">
+            <app-skeleton  [squares]="1" />
+          </div>
+        </a>
+        }
       }
     </div>
   </div>
@@ -49,13 +59,30 @@
   (hideImageDialog)="showImageDialog = false"
 ></app-image-dialog>
 }
+@if(resources.questions.length){
+<app-image-dialog
+  [(ngModel)]="showImageDialog"
+  [isImage]="false"
+  [bookPages]="questions"
+  (hideImageDialog)="showImageDialog = false"
+></app-image-dialog>
+}
 
-<app-video-dialog
-  [(visible)]="showVideoDialog"
-  [videoUrl]="currentVideoUrl"
-></app-video-dialog>
+@if(resources.relatedBooks.length){
+<app-image-dialog
+  [(ngModel)]="showImageDialog"
+  [bookPages]="relatedBooks"
+  (hideImageDialog)="showImageDialog = false"
+></app-image-dialog>
+}
 
-<app-pdf-dialog
+@if (resources.videos.length) {
+  <app-video-dialog [showVideoDialog]="true" [videoUrls]="resources.videos"></app-video-dialog>
+}
+
+@if (resources.worksheets) {
+  <app-pdf-dialog
+  [pdfUrls]="resources.worksheets"
   [(visible)]="showPdfDialog"
-  [pdfUrl]="currentPdfUrl"
 ></app-pdf-dialog>
+}

@@ -6,14 +6,8 @@
     <div class="search-container">
       <span class="p-input-icon-left">
         <i class="pi pi-search"></i>
-        <input
-          pInputText
-          type="text"
-          placeholder="Search"
-          [(ngModel)]="searchTerm"
-          (ngModelChange)="onSearchChange()"
-          class="search-input"
-        />
+        <input pInputText type="text" placeholder="Search" [(ngModel)]="levelReading.searchValue" (ngModelChange)="onSearchChange()"
+          class="search-input" />
       </span>
     </div>
   </div>
@@ -27,25 +21,48 @@
           <img src="icon-book.svg" alt="book" />
           <span class="text">Show Criteria</span>
         </div>
-        <div class="icon">
+        <a class="icon" (click)="getStudents(book.readingSubLevelId)">
           <img src="icon-multiple-users.svg" alt="multiple users" />
           <span class="text">{{book.studentsCount}} Students</span>
-        </div>
+        </a>
         <div class="icon assignment-icon">
           <img src="icon-plus.svg" alt="plus" />
           <span class="text">Assignment</span>
         </div>
-        <button
-          pButton
-          label="View Books"
-          class="p-button-primary"
-          (click)="viewBooks(book)"
-        ></button>
+        <button pButton label="View Books" class="p-button-primary" (click)="viewBooks(book)"></button>
       </div>
     </div>
     }
   </div>
 
-  <app-pagination [first]="first" [rows]="levelReadingResponse.pageSize" [totalRecords]="levelReadingResponse.totalRecords" itemLabel="books"
-  (pageChange)="nextPage($event)"></app-pagination>
+  <app-pagination [first]="first" [rows]="levelReadingResponse.pageSize"
+    [totalRecords]="levelReadingResponse.totalRecords" itemLabel="books"
+    (pageChange)="nextPage($event)"></app-pagination>
 </div>
+
+
+<!-- User Drawer -->
+<p-sidebar [(visible)]="showUserDrower" position="right" [style]="{ width: '400px' }" [showCloseIcon]="false" [modal]="true"
+  [closeOnEscape]="false" (onHide)="showUserDrower = false" (click)="showUserDrower = false">
+  <div class="drawer-header" (click)="$event.stopPropagation()">
+    <button class="close-button gap-3" (click)="showUserDrower = false">
+      <img src="arrow-left-gray.svg" alt="close" />
+      <span> {{students.studentsCount}} Students</span>
+    </button>
+  </div>
+
+  <div class="drawer-content" (click)="$event.stopPropagation()">
+    <div class="user-list">
+      @for (user of students.students; track user.fullName) {
+      <div class="user-item">
+        <div class="user-info">
+          <div class="user-avatar">
+            <img src="icon-user.svg" alt="User" />
+          </div>
+          <span class="user-name">{{ user.fullName }}</span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</p-sidebar>

@@ -25,6 +25,7 @@ import { FormsModule } from '@angular/forms';
 import { ResourceTypeEnum } from '../../../core/models/shared-models/enums';
 import { Resources } from '../../../core/models/shared-models/resources.model';
 import { BookDetail } from '../../../features/reading/book-details/book-details.component';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
 
 export enum SmartBoardResourceId {
   Videos = 2,
@@ -32,11 +33,6 @@ export enum SmartBoardResourceId {
   Questions = 8,
   RelatedBooks = 9,
   Worksheets = 10,
-}
-
-interface ResourceItem {
-  url: string;
-  type: string;
 }
 
 @Component({
@@ -50,6 +46,7 @@ interface ResourceItem {
     VideoDialogComponent,
     PdfDialogComponent,
     FormsModule,
+    SkeletonComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './smart-board.component.html',
@@ -76,6 +73,8 @@ export class SmartBoardComponent implements OnInit {
   currentPdfUrl: string = '';
 
   book: BookDetail = new BookDetail();
+  relatedBooks: string[];
+  questions: string[];
 
   constructor(
     private cardService: CardService,
@@ -87,9 +86,10 @@ export class SmartBoardComponent implements OnInit {
     this.getCards();
   }
 
-  getCards() {
+  getCards() { 
     this.card.courseSectionId = this.headerService.selectedSectionId;
     this.card.learningOutcomeId = 101050;
+    this.card.resourceTypeId = 10;
     this.cardService.getCards(this.card).subscribe((res) => {
       if (res.success) {
         this.cardResponse = res.result;
@@ -105,24 +105,21 @@ export class SmartBoardComponent implements OnInit {
         }
         break;
       case SmartBoardResourceId.Videos:
-        if (this.resources.videos?.length > 0) {
-          const video = this.resources.videos[0] as unknown as ResourceItem;
-          if (video?.url) {
-            // We need to attach the video extension to the url 
-            // Sample https://www.w3schools.com/html/mov_bbb.mp4
-            this.currentVideoUrl = video.url;
             this.showVideoDialog = true;
-          }
+        break;
+      case SmartBoardResourceId.RelatedBooks:
+        if (this.resources.relatedBooks) {
+            this.showImageDialog = true;
         }
         break;
+      // case SmartBoardResourceId.Questions:
+      //   if (this.resources.questions) {
+      //       this.showImageDialog = true;
+      //   }
+      //   break;
       case SmartBoardResourceId.Worksheets:
         if (this.resources.worksheets?.length > 0) {
-          const worksheet = this.resources.worksheets[0] as unknown as ResourceItem;
-          if (worksheet?.url) {
-            // sample 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf'
-            this.currentPdfUrl = worksheet?.url;
             this.showPdfDialog = true;
-          }
         }
         break;
     }
@@ -134,6 +131,8 @@ export class SmartBoardComponent implements OnInit {
     this.cardService.getResources(this.card).subscribe((res) => {
       if (res.success) {
         this.resources = res.result;
+        this.relatedBooks = res.result.relatedBooks.map(x => x.coverUrl);
+        this.questions = res.result.questions.map(x => x.text);
         this.openCardPerType(card.resourceTypeId);
       }
     });

@@ -50,13 +50,18 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
     this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
       if (res) {
         this.route.paramMap.subscribe((params) => {
-          this.lessonId = parseInt(params.get('id')!);  // Ensuring non-null 'id'
+          this.lessonId = this.sharedService.getId('lessonId');  // Ensuring non-null 'id'
           this.sections = this.headerService.sectionsArray;
           this.getCurriculums();
         });
       }
     });
   }
+
+  onSearchChange($event: string) {debugger
+    this.curriculumsPayload.searchValue = $event;
+    this.getCurriculums()
+    }
 
   ngOnDestroy(): void {  // Unsubscribe in ngOnDestroy
     if (this.refreshSubscription) {
@@ -84,7 +89,9 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
   clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
     this.sharedService.pushTitle((card as LessonsCurriculums).name + ' - ' + this.sharedService.translate('SKILLS'))
     const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
-    this.router.navigate(['/features/semesters/single-skill', 0, curriculumId]);
+    this.sharedService.saveId('domainId' , 0);
+    this.sharedService.saveId('curriculumId' , curriculumId);
+    this.router.navigate(['/features/semesters/single-skill']);
   }
 
   nextPage($event: PaginatorState) {

@@ -42,10 +42,10 @@ import { Lessons } from '../../../core/models/teacher-dashboard-models/lessons.m
     LessonCardsComponent,
     PaginationComponent
   ],
-  templateUrl: './skill-level-two.component.html',
-  styleUrl: './skill-level-two.component.scss',
+  templateUrl: './skill-level-three.component.html',
+  styleUrl: './skill-level-three.component.scss',
 })
-export class SkillLevelTwoComponent {
+export class SkillLevelThreeComponent {
   curriculumId: number | null = null;
   activateSkill: boolean = false;
   showUserDrower: boolean = false;
@@ -100,7 +100,7 @@ export class SkillLevelTwoComponent {
 
   getSkills() {
     this.spinnerService.show();
-    this.domainId = this.sharedService.getId('SkillLevelOneDomainId');
+    this.domainId = this.sharedService.getId('SkillLevelTwoDomainId');
     this.curriculumsPayload.domainId = this.domainId;
     
     if (this.sharedService.getPageState(`SkillLevelTwoComponent ${this.domainId}`)) {
@@ -117,11 +117,11 @@ export class SkillLevelTwoComponent {
     });
   }
 
-    clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {debugger
+    clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
       this.domainId = (card as SkillCurriculum).id;
       this.sharedService.pushTitle((card as SkillCurriculum).domainName + ' - ' + this.sharedService.translate('SKILLS'));
-      this.sharedService.saveId('SkillLevelTwoDomainId' , this.domainId)
-      this.router.navigate(['/features/skills/skills-level-three']);
+      this.sharedService.saveId('SkillLevelThreeDomainId' , this.domainId)
+      this.router.navigate([this.sharedService.nextRoute]);
     }
     
 

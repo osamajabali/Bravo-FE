@@ -1,56 +1,37 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DialogModule } from 'primeng/dialog';
+import { GalleriaModule } from 'primeng/galleria';
+import { Videos } from '../../../core/models/shared-models/resources.model';
 
 @Component({
   selector: 'app-video-dialog',
   standalone: true,
-  imports: [CommonModule, DialogModule],
+  imports: [DialogModule, GalleriaModule],
   templateUrl: './video-dialog.component.html',
-  styleUrls: ['./video-dialog.component.scss'],
+  styleUrls: ['./video-dialog.component.scss']
 })
-export class VideoDialogComponent {
-  @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLVideoElement>;
-  @Input() visible: boolean = false;
-  @Output() visibleChange = new EventEmitter<boolean>();
-  @Input() videoUrl: string = '';
-  
-  isPlaying: boolean = false;
+export class VideoDialogComponent implements OnInit {
+  @Input() videoUrls: Videos[] = [];  // Video URLs from parent
+  @Input() showVideoDialog: boolean = false;  // Dialog visibility controlled by parent
+  activeIndex = 0;
 
-  togglePlay(): void {
-    if (this.videoPlayer?.nativeElement) {
-      if (this.isPlaying) {
-        this.videoPlayer.nativeElement.pause();
-      } else {
-        this.videoPlayer.nativeElement.play();
-      }
-    }
+  constructor(private sanitizer: DomSanitizer) {}
+
+  ngOnInit() {
+    // Sanitize the URLs upon initialization
+    this.videoUrls = this.videoUrls.map(video => ({
+      ...video,
+      safeUrl: this.sanitizer.bypassSecurityTrustResourceUrl(video.url)
+    }));
   }
 
-  onVideoPlay(): void {
-    this.isPlaying = true;
+  // Function to sanitize the URL for iframe src
+  getSafeUrl(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  onVideoPause(): void {
-    this.isPlaying = false;
-  }
-
-  onVideoEnded(): void {
-    this.isPlaying = false;
-  }
-
-  closeDialog(): void {
-    if (this.videoPlayer?.nativeElement) {
-      this.videoPlayer.nativeElement.pause();
-    }
-    this.visible = false;
-    this.visibleChange.emit(this.visible);
+  closeDialog() {
+    this.showVideoDialog = false;
   }
 }

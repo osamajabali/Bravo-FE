@@ -72,7 +72,8 @@ export class SemestersComponent implements OnInit, OnDestroy {
   goToSingleSkill(semester: Skills | Semester) {
     let selectedSemester = semester as Semester;
     this.sharedService.pushTitle(selectedSemester.name + ' - ' +this.sharedService.translate('UNITS'))
-    this.router.navigate(['/features/semesters/units', selectedSemester.semesterId]);
+    this.sharedService.saveId('semesterId' , selectedSemester.semesterId)
+    this.router.navigate(['/features/semesters/units']);
   }
 
 }

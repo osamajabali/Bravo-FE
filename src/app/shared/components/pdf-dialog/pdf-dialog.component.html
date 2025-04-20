@@ -13,14 +13,14 @@
   <div class="pdf-container">
     <div class="pdf-actions">
       <div class="action-group">
-        <button class="action-btn" (click)="previousPage()" [disabled]="currentPage === 1">
+        <button class="action-btn" (click)="previousPage()" [disabled]="currentPage == 1">
           <i class="pi pi-chevron-left"></i>
         </button>
         <div class="page-info">
-          <input type="number" [value]="currentPage" (change)="onPageChange($event)" min="1" [max]="totalPages" class="page-input" />
-          <span>/ {{totalPages}}</span>
+          <input type="number" name="currentPage" [(ngModel)]="currentPage" class="page-input" />
+          <span>/ {{pdfUrls.length}}</span>
         </div>
-        <button class="action-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
+        <button class="action-btn" (click)="nextPage()" [disabled]="currentPage == pdfUrls.length">
           <i class="pi pi-chevron-right"></i>
         </button>
       </div>
@@ -58,22 +58,25 @@
         </button>
       </div>
     </div>
+   @if (pdfUrls.length) {
     <pdf-viewer
-      [src]="_pdfUrl"
-      [rotation]="rotation"
-      [original-size]="true"
-      [show-all]="true"
-      [fit-to-page]="zoomLevel === 'page'"
-      [zoom]="zoom"
-      [zoom-scale]="zoomLevel === 'auto' ? 'page-width' : null"
-      [stick-to-page]="true"
-      [render-text]="true"
-      [external-link-target]="'blank'"
-      [autoresize]="true"
-      [show-borders]="true"
-      [(page)]="currentPage"
-      (after-load-complete)="onPdfLoaded($event)"
-      style="width: 100%; height: calc(100vh - 60px)"
-    ></pdf-viewer>
+    [src]="pdfUrls[currentPage - 1]"
+    [rotation]="rotation"
+    [original-size]="true"
+    [show-all]="true"
+    [fit-to-page]="zoomLevel === 'page'"
+    [zoom]="zoom"
+    [zoom-scale]="zoomLevel === 'auto' ? 'page-width' : null"
+    [stick-to-page]="true"
+    [render-text]="true"
+    [external-link-target]="'blank'"
+    [autoresize]="true"
+    [show-borders]="true"
+    (pageChange)="onPageChange($event)"
+    (after-load-complete)="onPdfLoaded($event)"
+    style="width: 100%; height: calc(100vh - 60px)"
+  ></pdf-viewer>
+   }
+  
   </div>
 </p-dialog>

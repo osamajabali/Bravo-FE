@@ -22,11 +22,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class PdfDialogComponent {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>();
-  @Input() set pdfUrl(value: string) {
-    if (value) {
-      this._pdfUrl = value;
-    }
-  }
+  @Input() pdfUrls : string[] =[];
   
   _pdfUrl: string = '';
   zoom: number = 1;
@@ -41,23 +37,20 @@ export class PdfDialogComponent {
     this.totalPages = pdf.numPages;
   }
 
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  nextPage(): void {
-    if (this.currentPage < this.totalPages) {
+  nextPage() {
+    if (this.currentPage < this.pdfUrls.length) {
       this.currentPage++;
     }
   }
+  
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }  
 
   onPageChange(event: any): void {
-    const page = parseInt(event.target.value);
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
+      this.currentPage = this.currentPage + 1;
   }
 
   zoomIn(): void {
@@ -88,15 +81,17 @@ export class PdfDialogComponent {
     this.rotation = (this.rotation + 90) % 360;
   }
 
-  downloadPdf(): void {
+  downloadPdf() {
     const link = document.createElement('a');
-    link.href = this._pdfUrl;
-    link.download = 'document.pdf';
+    link.href = this.pdfUrls[this.currentPage - 1];
+    link.download = `Dolch_Sight_Words_Part1_Page_${this.currentPage}.pdf`; // Customize filename
     link.click();
   }
 
-  printPdf(): void {
-    window.open(this._pdfUrl, '_blank');
+  // Print PDF function
+  printPdf() {
+    const printWindow = window.open(this.pdfUrls[this.currentPage - 1], '_blank');
+    printWindow?.print(); // Trigger print dialog for the PDF
   }
 
   closeDialog(): void {

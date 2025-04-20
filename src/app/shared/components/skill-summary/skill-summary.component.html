@@ -9,8 +9,8 @@
         pInputText
         placeholder="Search"
         class="search-input"
-        (change)="_onSearchChange($event)"
-        [value]="searchTerm"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="_onSearchChange()"
       />
       <i class="pi pi-search position-absolute end-0 pe-3"></i>
     </span>
@@ -32,7 +32,7 @@
           <img src="icon-green-bulb.svg" alt="arrow-right" />
         </div>
       </div>
-      <div class="number">{{ data()?.allSkills }}</div>
+      <!-- <div class="number">{{ data()?.allSkills }}</div> -->
     </div>
     <div class="box outlined">
       <div class="d-flex justify-content-between items-center gap-4">
@@ -41,7 +41,7 @@
           <img src="icon-orange-bulb.svg" alt="arrow-right" />
         </div>
       </div>
-      <div class="number">{{ data()?.activeSkills }}</div>
+      <!-- <div class="number">{{ data()?.activeSkills }}</div> -->
     </div>
     <div class="box outlined">
       <div class="d-flex justify-content-between items-center gap-4">
@@ -50,7 +50,7 @@
           <img src="icon-light-green-bulb.svg" alt="arrow-right" />
         </div>
       </div>
-      <div class="number">{{ data()?.questionSolved }}</div>
+      <!-- <div class="number">{{ data()?.questionSolved }}</div> -->
     </div>
     <div class="box outlined">
       <div class="d-flex justify-content-between items-center gap-4">
@@ -59,9 +59,9 @@
           <img src="icon-sand-watch.svg" alt="arrow-right" />
         </div>
       </div>
-      <div class="number">{{ data()?.timeSpent }}</div>
+      <!-- <div class="number">{{ data()?.timeSpent }}</div> -->
     </div>
-    @if (showAssignmentButton()) {
+    @if (showAssignmentButton) {
     <button pButton label="" class="p-button-outlined assignment-button">
       <span>New Assignment</span>
       <img src="icon-plus.svg" alt="arrow-right" />

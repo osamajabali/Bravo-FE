@@ -1,23 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { Detail, FileDetails } from '../../../../core/models/reading-models/story-details.model';
 
-interface BookDetails {
-  literaryType: string;
-  numberOfPages: number;
-  numberOfWords: number;
-  authorName: string;
-  publisher: string;
-  illustrator: string;
-  hub: string;
-  ibHub: string;
-  ibLearnerProfile: string;
-  ageGroup: string;
-  mainLevel: string;
-  subLevel: string;
-}
 
 interface WorksheetFile {
   name: string;
@@ -37,42 +24,17 @@ interface WorksheetFile {
 export class BookInfoComponent {
   constructor(private messageService: MessageService) {}
 
-  bookDetails: BookDetails = {
-    literaryType: 'Fiction',
-    numberOfPages: 24,
-    numberOfWords: 1200,
-    authorName: 'Ahmed Mohammed',
-    publisher: 'Al-Kitab',
-    illustrator: 'Sara Ahmed',
-    hub: 'Main Hub',
-    ibHub: 'IB Hub 1',
-    ibLearnerProfile: 'Inquirer',
-    ageGroup: '5-7 years',
-    mainLevel: 'Beginner',
-    subLevel: 'أ'
-  };
+  @Input() bookDetails: Detail[] = [];
 
-  uploadedFiles: WorksheetFile[] = [
-    {
-      name: 'Worksheet 1.pdf',
-      uploadDate: '2024-03-20',
-      size: '2.5 MB',
-      type: 'pdf'
-    },
-    {
-      name: 'Exercise Sheet.xlsx',
-      uploadDate: '2024-03-19',
-      size: '1.8 MB',
-      type: 'xlsx'
-    }
-  ];
+  @Input() uploadedFiles: FileDetails[] = [];
 
   get numberOfUploadedFiles(): number {
-    return this.uploadedFiles.length;
+    return this.uploadedFiles?.length;
   }
 
-  getFileIcon(file: WorksheetFile): string {
-    const extension = file.type || this.getFileExtension(file.name);
+  getFileIcon(file: FileDetails): string {
+    const extensionName = file.fileName.split('.').pop();
+    const extension = file.type || this.getFileExtension(extensionName);
     switch (extension) {
       case 'xls':
       case 'xlsx':
@@ -128,11 +90,15 @@ export class BookInfoComponent {
       }
 
       // Create new worksheet file entry
-      const newFile: WorksheetFile = {
-        name: file.name,
+      
+      const newFile: FileDetails = {
+        fileName: file.name,
         uploadDate: new Date().toISOString().split('T')[0],
-        size: this.formatFileSize(file.size),
-        type: this.getFileExtension(file.name)
+        fileSize: this.formatFileSize(file.size),
+        type: this.getFileExtension(file.name),
+        fileId: 0,
+        fileIcon: '',
+        fileURL: ''
       };
 
       // Simulate upload process
@@ -162,23 +128,28 @@ export class BookInfoComponent {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 
-  downloadFile(file: WorksheetFile): void {
+  downloadFile(file: FileDetails): void {
     // TODO: Implement actual download functionality
     this.messageService.add({
       severity: 'info',
       summary: 'Download Started',
-      detail: `Downloading ${file.name}...`
+      detail: `Downloading ${file.fileName}...`
     });
+
+    const link = document.createElement('a');
+    link.href = file.fileURL;  // URL or path to the file
+    link.download = file.fileName;  // Filename for the download
+    link.click();
   }
 
-  deleteFile(file: WorksheetFile): void {
+  deleteFile(file: FileDetails): void {
     const index = this.uploadedFiles.indexOf(file);
     if (index > -1) {
       this.uploadedFiles = this.uploadedFiles.filter(f => f !== file);
       this.messageService.add({
         severity: 'success',
         summary: 'File Deleted',
-        detail: `${file.name} has been deleted successfully`
+        detail: `${file.fileName} has been deleted successfully`
       });
     }
   }

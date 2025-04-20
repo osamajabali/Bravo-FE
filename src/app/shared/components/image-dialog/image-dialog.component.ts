@@ -3,10 +3,11 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { GalleriaModule } from 'primeng/galleria';
+import { CarouselModule } from 'primeng/carousel';
 
 @Component({
   selector: 'app-image-dialog',
-  imports: [ButtonModule , DialogModule , GalleriaModule],
+  imports: [ButtonModule , DialogModule , GalleriaModule,CarouselModule],
   templateUrl: './image-dialog.component.html',
   styleUrl: './image-dialog.component.scss',
   providers: [
@@ -21,6 +22,7 @@ export class ImageDialogComponent implements ControlValueAccessor {
   @Input() book: any = {}; // Input book object
   @Input() bookPages: string[] = []; // Array of book pages
   @Input() activeIndex: number = 0; // Active page index
+  @Input() isImage: boolean = true; // Active page index
   @Output() hideImageDialog = new EventEmitter<boolean>();  // Emit when dialog is closed
   showReader: boolean = false; // Controls dialog visibility
   

@@ -4,10 +4,10 @@
     <div class="question-comprehension-skill">Comprehension Skills</div>
     <div class="empty-space"></div>
   </div>
-  @for (question of questions; track question.id) {
+  @for (question of questions; track $index) {
     <div class="question-item">
-      <div class="question-title">{{ question.title }}</div>
-      <div class="question-comprehension-skill">{{ question.comprehensionSkill }}</div>
+      <div class="question-title">{{ question.learningOutcomeName }}</div>
+      <div class="question-comprehension-skill">{{ question.questionText }}</div>
       <button 
         pButton 
         label="View Question" 
@@ -30,7 +30,7 @@
 >
   @if (selectedQuestion) {
     <div class="question-image-container">
-      <img [src]="selectedQuestion.imageUrl" [alt]="selectedQuestion.title" />
+      <img [src]="'selectedQuestion.imageUrl'" [alt]="selectedQuestion.learningOutcomeName" />
     </div>
   }
 </p-dialog>

@@ -62,7 +62,7 @@
 @if (showSmartBoard) {
   <!-- Smart Board -->
 <app-smart-board (visibleChange)="showSmartBoard = false" [title]="isSingleSkill(skillToActivate) ? skillToActivate.displayName : skillToActivate.skillName" [visible]="showSmartBoard" [skillId]="0" [learningOutcomeId]="skill.learningOutcomeId ? skill.learningOutcomeId : skill.id"
-[skillTitle]="'Static Lesson Title'"></app-smart-board>
+[skillTitle]="isSingleSkill(skillToActivate) ? skillToActivate.displayName : skillToActivate.skillName"></app-smart-board>
 }
 
 <!-- User Drawer -->

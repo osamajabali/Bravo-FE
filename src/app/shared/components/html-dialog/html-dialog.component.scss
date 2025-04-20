@@ -37,7 +37,7 @@
           }
   
           .p-galleria-items {
-            min-width: 40vw;
+            width: 40vw;
             button {
               color: var(--neutral-black);
               border: 1px solid var(--neutral-grey-200);
@@ -67,7 +67,15 @@
     font-weight: var(--font-weight-bold);
   }
   
-  
+  .galleria-container {
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: center;     /* Vertically center */
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+  }
+
   .book-reader {
     display: flex;
     flex-direction: column;
@@ -76,8 +84,3 @@
     height: 100%;            /* Full height of the container */
     width: 100%;             /* Full width of the container */
   }
-
-  .custom-nav-icon.disabled {
-    opacity: 0.5;  /* Reduce the opacity to indicate it's disabled */
-    cursor: not-allowed;  /* Change the cursor to indicate it's disabled */
-}

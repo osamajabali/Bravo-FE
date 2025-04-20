@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PaginatorState } from 'primeng/paginator';
 import { SubLevelReading } from '../../../core/models/reading-models/level-reading.model';
-import { SublevelReadingResponse } from '../../../core/models/reading-models/sub-level-reading.model';
+import { SublevelReading, SublevelReadingResponse } from '../../../core/models/reading-models/sub-level-reading.model';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { LeveldReadingService } from '../../../core/services/teacher-dashboard-services/leveld-reading.service';
 import { LeveledBookSummaryComponent } from '../../../shared/components/leveled-book-summary/leveled-book-summary.component';
@@ -63,7 +63,7 @@ export class BooksGridComponent implements OnInit, OnDestroy {
     this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
       if (res) {
         this.route.paramMap.subscribe((params) => {
-          this.subLevelReadingFilter.readingSubLevelId = parseInt(params.get('id')!); // Using '!' to assert non-null value
+          this.subLevelReadingFilter.readingSubLevelId = this.sharedService.getId('readingSublevelId');
           this.getBooks();
         });
       }
@@ -99,7 +99,9 @@ export class BooksGridComponent implements OnInit, OnDestroy {
     this.getBooks();
   }
 
-  viewBook(bookId: number): void {
+  viewBook(book: SublevelReading): void {debugger
+    this.sharedService.pushTitle(book.title + '- Book Details');
+    this.sharedService.saveId('bookId' , book.storyId)
     this.router.navigate(['/features/book-details']);
   }
 

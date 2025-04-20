@@ -2,7 +2,7 @@
   <div class="search-box">
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
-      <input type="text" pInputText [(ngModel)]="searchQuery" placeholder="Search books..." (input)="onSearch()" />
+      <input type="text" pInputText [(ngModel)]="readingFilter.searchValue" placeholder="Search books..." (ngModelChange)="getStories()" />
     </span>
   </div>
   <div class="level-filters">

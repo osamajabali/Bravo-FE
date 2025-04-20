@@ -1,14 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-
-interface Question {
-  id: number;
-  title: string;
-  imageUrl?: string;
-  comprehensionSkill: string;
-}
+import { Questions } from '../../../../core/models/reading-models/questions.model';
 
 @Component({
   selector: 'app-book-questions',
@@ -19,30 +13,11 @@ interface Question {
 })
 export class BookQuestionsComponent {
   showQuestionDialog = false;
-  selectedQuestion: Question | null = null;
+  selectedQuestion: Questions | null = null;
 
-  questions: Question[] = [
-    {
-      id: 1,
-      title: 'ما هي الشخصيات الرئيسية في القصة وما هي صفاتها؟',
-      imageUrl: 'assets/images/book-image.svg',
-      comprehensionSkill: 'Comprehension Skill 1'
-    },
-    {
-      id: 2,
-      title: 'ما هو الدرس المستفاد من هذه القصة؟',
-      imageUrl: 'assets/images/book-image.svg',
-      comprehensionSkill: 'Comprehension Skill 2'
-    },
-    {
-      id: 3,
-      title: 'كيف تغيرت الشخصية الرئيسية من بداية القصة إلى نهايتها؟',
-      imageUrl: 'assets/images/book-image.svg',
-      comprehensionSkill: 'Comprehension Skill 3'
-    }
-  ];
+  @Input() questions: Questions[] = [];
 
-  viewQuestion(question: Question) {
+  viewQuestion(question: Questions) {
     this.selectedQuestion = question;
     this.showQuestionDialog = true;
   }

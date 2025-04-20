@@ -2,6 +2,7 @@
   <app-skill-summary
     [showAssignmentButton]="false"
     [data]="summaryData"
+    (onSearchChange)="onSearchChange($event)"
   ></app-skill-summary>
   <div class="units-container">
     <div class="header">

@@ -109,9 +109,6 @@ export class BookListViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSearch() {
-    // TODO: Implement search functionality
-  }
 
   onMainLevelChange() {
     this.readingFilter.readingSubLevelId = 0 ;
@@ -124,6 +121,12 @@ export class BookListViewComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+    viewBook(book: Story) {
+      this.sharedService.pushTitle(book.title + '- Books');
+      this.sharedService.saveId('bookId' , book.storyId)
+      this.router.navigate(['/features/book-details']);
+    }
 
   onSubLevelChange() {
     this.sharedService.savePageState('BookListComponent', 1);
@@ -173,9 +176,5 @@ export class BookListViewComponent implements OnInit, OnDestroy {
     this.sharedService.savePageState('BookListComponent', $event.page);
     this.first = $event.first;
     this.getStories();
-  }
-
-  viewBook(book: Story) {
-    this.router.navigate(['/features/book-details']);
   }
 }

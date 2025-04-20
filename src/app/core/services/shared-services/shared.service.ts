@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root'
 })
 export class SharedService {
-  nextRoute: string;
+  nextRoute: string = '/features/skills/skills-level-three';
   pagination: PaginationFilter = new PaginationFilter();
   private refreshSubject = new Subject<any>(); // Changed from void to any
   private apiResponseSubject = new BehaviorSubject<any>(null);
@@ -62,5 +62,16 @@ export class SharedService {
   getPageState(componentName: string): number {
     const page = sessionStorage.getItem(componentName);
     return page ? parseInt(page) : 1; // Return 1 if no page state exists
+  }
+
+  // Save pagination state for a specific component
+  saveId(idName: string, page: number): void {
+    sessionStorage.setItem(idName, page.toString());
+  }
+
+  // Retrieve pagination state for a specific component
+  getId(idName: string): number {
+    const page = sessionStorage.getItem(idName);
+    return page ? parseInt(page) : 0; // Return 1 if no page state exists
   }
 }

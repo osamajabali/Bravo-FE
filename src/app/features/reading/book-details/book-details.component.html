@@ -5,12 +5,12 @@
   <div class="upper-section">
     <div class="book-cover-container">
       <div class="book-cover">
-        <img [src]="book.coverImage" [alt]="book.title" />
+        <img [src]="storyDetails?.mainDetails?.cover" [alt]="storyDetails?.mainDetails?.title" />
       </div>
       <div class="book-info">
         <div>
           <div class="subject">Subject</div>
-          <h1 class="title">{{ book.title }}</h1>
+          <h1 class="title">{{ storyDetails?.mainDetails?.title }}</h1>
         </div>
         <div class="buttons">
           <button
@@ -44,30 +44,30 @@
         </div>
         <div class="box outlined">
           <div class="d-flex justify-content-between items-center gap-4">
-            <div class="text">Read</div>
+            <div class="text">{{ storyDetails?.quickStats?.read?.labelName }}</div>
             <div class="icon">
-              <img src="icon-orange-bulb.svg" alt="arrow-right" />
+              <img [src]="storyDetails?.quickStats?.read?.icon" alt="arrow-right" />
             </div>
           </div>
-          <div class="number">10</div>
+          <div class="number">{{ storyDetails?.quickStats?.read?.title }}</div>
         </div>
         <div class="box outlined">
           <div class="d-flex justify-content-between items-center gap-4">
-            <div class="text">Question Solved</div>
+            <div class="text">{{ storyDetails?.quickStats?.questionsSolved?.labelName }}</div>
             <div class="icon">
-              <img src="icon-light-green-bulb.svg" alt="arrow-right" />
+              <img [src]="storyDetails?.quickStats?.questionsSolved?.icon" alt="arrow-right" />
             </div>
           </div>
-          <div class="number">10</div>
+          <div class="number">{{ storyDetails?.quickStats?.questionsSolved?.title }}</div>
         </div>
         <div class="box outlined">
           <div class="d-flex justify-content-between items-center gap-4">
-            <div class="text">Time Spent</div>
+            <div class="text">{{ storyDetails?.quickStats?.timeSpent?.labelName }}</div>
             <div class="icon">
-              <img src="icon-sand-watch.svg" alt="arrow-right" />
+              <img [src]="storyDetails?.quickStats?.timeSpent?.icon" alt="arrow-right" />
             </div>
           </div>
-          <div class="number">10</div>
+          <div class="number">{{ storyDetails?.quickStats?.timeSpent?.title }}</div>
         </div>
       </div>
     </div>
@@ -92,19 +92,13 @@
     </div>
 
     <div class="tab-content">
-      @switch (activeTab) { @case ('book-details') {
-      <app-book-info />
-      } @case ('questions') {
-      <app-book-questions />
-      } }
+      @if(activeTab === 'book-details'){
+        <app-book-info [bookDetails]="storyDetails?.details" [uploadedFiles]="storyDetails?.files" />
+      }@else {
+        <app-book-questions [questions]="questions.questions" />
+      }
     </div>
   </div>
 </div>
 
-
-<app-image-dialog
-[(ngModel)]="showReader"
-[book]="book"
-[bookPages]="bookPages"
-(hideImageDialog)="showReader = false"
-></app-image-dialog>
+<app-html-dialog [(ngModel)]="showReader" />

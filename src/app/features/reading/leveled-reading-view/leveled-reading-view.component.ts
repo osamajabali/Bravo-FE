@@ -8,12 +8,17 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Subscription } from 'rxjs';
 import { PaginatorState } from 'primeng/paginator';
 import { LevelReadingResponseArray, LevelReadingResponse } from '../../../core/models/reading-models/level-reading-response.model';
-import { LevelReading } from '../../../core/models/reading-models/level-reading.model';
+import { LevelReading, SubLevelStudents, SubLevelStudentsResponseArray } from '../../../core/models/reading-models/level-reading.model';
 import { MainLevels } from '../../../core/models/reading-models/main-levels';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { LeveldReadingService } from '../../../core/services/teacher-dashboard-services/leveld-reading.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
+import { HeaderService } from '../../../core/services/header-services/header.service';
+import { UserDrawerComponent } from "../../../shared/components/user-drawer/user-drawer.component";
+import { SublevelReadingResponse } from '../../../core/models/reading-models/sub-level-reading.model';
+import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
+import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-leveled-reading-view',
@@ -24,7 +29,8 @@ import { SpinnerService } from '../../../core/services/shared-services/spinner.s
     ButtonModule,
     FormsModule,
     InputTextModule,
-    PaginationComponent
+    PaginationComponent,
+    SidebarModule
   ],
   templateUrl: './leveled-reading-view.component.html',
   styleUrl: './leveled-reading-view.component.scss'
@@ -44,13 +50,17 @@ export class LeveledReadingViewComponent implements OnInit, OnDestroy {
 
   private refreshSubscription!: Subscription;
   first: number = 0;
+  showUserDrower: boolean;
+  subLevelStudent: SubLevelStudents = new SubLevelStudents();
+  students: SubLevelStudentsResponseArray = new SubLevelStudentsResponseArray();
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private sharedService: SharedService,
     private readingService: LeveldReadingService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private headerService: HeaderService
   ) { }
 
   ngOnInit(): void {
@@ -70,6 +80,17 @@ export class LeveledReadingViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  getStudents(subLevelId : number) {
+    this.showUserDrower = true;
+    this.subLevelStudent.courseSectionId = this.headerService.selectedSectionId;
+    this.subLevelStudent.readingSubLevelId = subLevelId;
+    this.readingService.getSubLevelStudents(this.subLevelStudent).subscribe(res => {
+      if (res.success) {
+        this.students = res.result;
+      }
+    })
+  }
+
   getReadings() {
     this.spinnerService.show();
     if (this.sharedService.getPageState('LeveledReadingViewComponent')) {
@@ -77,6 +98,8 @@ export class LeveledReadingViewComponent implements OnInit, OnDestroy {
       this.levelReading.pageNumber = pageNumber;
       this.first = (pageNumber - 1) * this.levelReading.pageSize;
     }
+
+    this.levelReading.courseSectionId = this.headerService.selectedSectionId;
 
     this.readingService.getLevelReading(this.levelReading).subscribe(res => {
       if (res.success) {
@@ -104,7 +127,8 @@ export class LeveledReadingViewComponent implements OnInit, OnDestroy {
 
   viewBooks(book: LevelReadingResponse) {
     this.sharedService.pushTitle(book.name + '- Books');
-    this.router.navigate(['/features/leveled-reading/books-grid', book.readingSubLevelId]);
+    this.sharedService.saveId('readingSublevelId' , book.readingSubLevelId)
+    this.router.navigate(['/features/leveled-reading/books-grid']);
   }
 
   onSearchChange() {

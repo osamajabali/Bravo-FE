@@ -49,13 +49,18 @@ export class LessonsComponent implements OnInit, OnDestroy {
       if (res) {
         this.route.paramMap.subscribe((params) => {
           
-          this.lessonPayload.unitId = parseInt(params.get('id')!);
+          this.lessonPayload.unitId = this.sharedService.getId('unitId');
           this.sections = this.headerService.sectionsArray;
           this.getLessons();
         });
       }
     });
   }
+
+  onSearchChange($event: string) {
+    this.lessonPayload.searchValue = $event;
+    this.getLessons()
+    }
 
   ngOnDestroy(): void { // Unsubscribe in ngOnDestroy
     if (this.refreshSubscription) {
@@ -82,7 +87,8 @@ export class LessonsComponent implements OnInit, OnDestroy {
 
   clickedCard(card: Lessons|LessonsCurriculums|SkillCurriculum) {
     this.sharedService.pushTitle((card as Lessons).name + ' - ' +this.sharedService.translate('CURRICULUMS')); 
-    this.router.navigate(['/features/semesters/lessons-curriculums', (card as Lessons).lessonId]);
+    this.sharedService.saveId('lessonId' , (card as Lessons).lessonId )
+    this.router.navigate(['/features/semesters/lessons-curriculums']);
     } 
     
     // Implement OnDestroy

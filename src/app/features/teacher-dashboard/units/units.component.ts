@@ -55,7 +55,7 @@ export class UnitsComponent implements OnInit, OnDestroy {
     this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
       if (res) {
         this.route.paramMap.subscribe((params) => {
-          this.semesterId = parseInt(params.get('semesterId')!); // Using '!' to assert non-null value
+          this.semesterId = this.sharedService.getId('semesterId'); // Using '!' to assert non-null value
           this.getUnits();
         });
       }
@@ -66,6 +66,11 @@ export class UnitsComponent implements OnInit, OnDestroy {
       this.getUnits();
     }
   }
+
+  onSearchChange($event: string) {
+    this.unitPayload.searchValue = $event;
+    this.getUnits()
+    }
 
   getUnits() {
     if(this.sharedService.getPageState('UnitsComponent')){
@@ -91,8 +96,9 @@ export class UnitsComponent implements OnInit, OnDestroy {
   }
 
   cardClick(card : any) {
-    this.sharedService.pushTitle((card as Unit).unitLabelName + ' - ' +this.sharedService.translate('LESSONS'))
-    this.router.navigate(['/features/semesters/lessons', (card as Unit).unitId]);
+    this.sharedService.pushTitle((card as Unit).unitLabelName + ' - ' +this.sharedService.translate('LESSONS'));
+    this.sharedService.saveId('unitId' , (card as Unit).unitId)
+    this.router.navigate(['/features/semesters/lessons']);
   }
 
   ngOnDestroy(): void {
