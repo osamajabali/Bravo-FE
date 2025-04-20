@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { Router } from '@angular/router';
 import { PopoverModule } from 'primeng/popover';
@@ -10,6 +10,9 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
+import { Menu } from 'primeng/menu';
 
 interface FilterSection {
   title: string;
@@ -26,10 +29,13 @@ interface FilterOption {
 interface Assignment {
   id: number;
   title: string;
-  status: 'system' | 'scheduled';
+  status: 'active' | 'inactive' | 'scheduled';
   postDate: Date;
   dueDate: Date;
-  questionCount: number;
+  submissions: string;
+  assignedBy: string;
+  target: string;
+  avgScore: string;
 }
 
 @Component({
@@ -44,12 +50,15 @@ interface Assignment {
     SelectButtonModule,
     SelectModule,
     DatePickerModule,
-    FormsModule
+    FormsModule,
+    MenuModule
   ],
   templateUrl: './assignments.component.html',
   styleUrl: './assignments.component.scss'
 })
 export class AssignmentsComponent implements OnInit {
+  @ViewChild('actionMenu') actionMenu!: Menu;
+  
   sharedService = inject(SharedService);
   router = inject(Router);
   selectedTab: string = 'active';
@@ -65,7 +74,7 @@ export class AssignmentsComponent implements OnInit {
   selectedSortOption = null;
   selectedOrderOption = null;
   selectedRecipient = null;
-
+  showAdvancedSearch = false;
   subjects = [
     { label: 'English', value: 'english' },
     { label: 'Math', value: 'math' },
@@ -120,18 +129,35 @@ export class AssignmentsComponent implements OnInit {
     {
       id: 1,
       title: 'Reading Comprehension',
-      status: 'system',
+      status: 'scheduled',
       postDate: new Date('2024-03-01'),
       dueDate: new Date('2024-03-15'),
-      questionCount: 10
+      submissions: '12 out of 15',
+      assignedBy: 'Teacher name',
+      target: 'G4A, G4B',
+      avgScore: '85%'
     },
     {
       id: 2,
       title: 'Vocabulary Practice',
-      status: 'scheduled',
+      status: 'active',
       postDate: new Date('2024-03-05'),
       dueDate: new Date('2024-03-20'),
-      questionCount: 15
+      submissions: '12 out of 15',
+      assignedBy: 'System',
+      target: 'G4A, G4B',
+      avgScore: '85%'
+    },
+    {
+      id: 3,
+      title: 'Math Practice',
+      status: 'inactive',
+      postDate: new Date('2024-03-10'),
+      dueDate: new Date('2024-03-25'),
+      submissions: '12 out of 15',
+      assignedBy: 'System',
+      target: 'G4A, G4B',
+      avgScore: '85%'
     }
   ];
 
@@ -157,6 +183,8 @@ export class AssignmentsComponent implements OnInit {
     },
   ];
 
+  selectedAssignment: Assignment | null = null;
+
   ngOnInit(): void {
     this.sharedService.pushTitle('ASSIGNMENTS');
   }
@@ -174,7 +202,7 @@ export class AssignmentsComponent implements OnInit {
   }
 
   onAdvancedSearch() {
-    // TODO: Implement advanced search
+    this.showAdvancedSearch = !this.showAdvancedSearch;
   }
 
   onResetAdvancedSearch() {
@@ -208,5 +236,40 @@ export class AssignmentsComponent implements OnInit {
     } else {
       section.selectedOptions.push(value);
     }
+  }
+
+  showActionMenu(event: Event, assignment: Assignment) {
+    this.selectedAssignment = assignment;
+    if (this.actionMenu) {
+      this.actionMenu.toggle(event);
+    }
+  }
+
+  resendAssignment() {
+    // Implement resend functionality
+    console.log('Resend assignment:', this.selectedAssignment?.id);
+    this.actionMenu.hide();
+  }
+
+  deactivateAssignment() {
+    // Implement deactivate functionality
+    console.log('Deactivate assignment:', this.selectedAssignment?.id);
+    this.actionMenu.hide();
+  }
+
+  editAssignment() {
+    // Implement edit functionality
+    this.actionMenu.hide();
+  }
+
+  viewQuestions() {
+    // Implement view questions functionality
+    this.actionMenu.hide();
+  }
+
+  exportAssignment() {
+    // Implement export functionality
+    console.log('Export assignment:', this.selectedAssignment?.id);
+    this.actionMenu.hide();
   }
 }
