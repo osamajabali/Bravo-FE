@@ -14,20 +14,19 @@
         <span>High Achievers</span>
       </h2>
       <div class="students-list">
-        @for (student of highAchievers; track student.id) {
+        @for (student of benchmarks.highLevel.students; track $index) {
         <div class="student-row">
           <div class="student-info">
             <p-checkbox
               [(ngModel)]="student.selected"
               [binary]="true"
-              (onChange)="onStudentSelect(student, true)"
             ></p-checkbox>
             <div class="student-avatar">
-              {{ getInitials(student.name) }}
+              {{ getInitials(student.fullName) }}
             </div>
-            <span class="student-name">{{ student.name }}</span>
+            <span class="student-name">{{ student.fullName }}</span>
           </div>
-          <div class="books-level">{{ student.level }}</div>
+          <div class="books-level">{{ student.levelName }}</div>
         </div>
         }
       </div>
@@ -41,20 +40,19 @@
         <span>Low Achievers</span>
       </h2>
       <div class="students-list low-achievers">
-        @for (student of lowAchievers; track student.id) {
+        @for (student of benchmarks.lowLevel.students; track $index) {
         <div class="student-row">
           <div class="student-info">
             <p-checkbox
               [(ngModel)]="student.selected"
               [binary]="true"
-              (onChange)="onStudentSelect(student, false)"
             ></p-checkbox>
             <div class="student-avatar">
-              {{ getInitials(student.name) }}
+              {{ getInitials(student.fullName) }}
             </div>
-            <span class="student-name">{{ student.name }}</span>
+            <span class="student-name">{{ student.fullName }}</span>
           </div>
-          <div class="books-level">{{ student.level }}</div>
+          <div class="books-level">{{ student.levelName }}</div>
         </div>
         }
       </div>

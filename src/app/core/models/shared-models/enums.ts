@@ -12,3 +12,11 @@ export enum ResourceTypeEnum {
     Worksheets = 10
   }
   
+  export enum StatisticsEnum {
+    Semester = 1,
+    Domain = 2,
+    Unit = 3,
+    Lesson = 4,
+    Curriculum = 5
+  }
+  

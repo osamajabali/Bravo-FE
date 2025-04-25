@@ -16,6 +16,7 @@
           <button
             pButton
             label=""
+            type="button"
             class="p-button-primary read-button"
             (click)="readNow()"
           >
@@ -101,4 +102,6 @@
   </div>
 </div>
 
-<app-html-dialog [(ngModel)]="showReader" />
+@if (showReader) {
+  <app-html-dialog [(ngModel)]="showReader" />
+}

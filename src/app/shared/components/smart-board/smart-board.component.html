@@ -77,7 +77,7 @@
 }
 
 @if (resources.videos.length) {
-  <app-video-dialog [showVideoDialog]="true" [videoUrls]="resources.videos"></app-video-dialog>
+  <app-video-dialog [(ngModel)]="showVideoDialog" [videoUrls]="resources.videos"></app-video-dialog>
 }
 
 @if (resources.worksheets) {

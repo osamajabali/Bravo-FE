@@ -14,6 +14,9 @@ import { PaginationComponent } from "../../../shared/components/pagination/pagin
 import { SkeletonComponent } from "../../../shared/components/skeleton/skeleton.component";
 import { TranslateModule } from '@ngx-translate/core';
 import { Section } from '../../../core/models/header-models/header.model';
+import { Statistics, StatisticsResponse } from '../../../core/models/teacher-dashboard-models/statistics.model';
+import { StatisticsEnum } from '../../../core/models/shared-models/enums';
+import { SkillsStatisticsService } from '../../../core/services/skills/skills-statistics.service';
 
 @Component({
   selector: 'app-single-skill',
@@ -23,7 +26,7 @@ import { Section } from '../../../core/models/header-models/header.model';
     PaginationComponent,
     SkeletonComponent,
     TranslateModule
-],
+  ],
   templateUrl: './single-skill.component.html',
   styleUrl: './single-skill.component.scss',
 })
@@ -49,13 +52,14 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
     timeSpent: 10,
   };
   sections: Section[] = [];
+  statistics: StatisticsResponse[] = [];
 
   constructor(
     private learningOutcomesService: LearningOutcomesService,
     private sharedService: SharedService,
     private route: ActivatedRoute,
     private headerService: HeaderService,
-    private spinnerService: SpinnerService
+    private statisticsService: SkillsStatisticsService
   ) { }
 
   ngOnInit(): void {
@@ -68,13 +72,27 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
       this.curriculumId = this.sharedService.getId('curriculumId');
       this.sections = this.headerService.sectionsArray;
       this.getSkills();
+      this.getStatistics();
     });
+  }
+
+  getStatistics() {
+    let model: Statistics = {
+      courseSectionId: this.headerService.selectedSectionId,
+      type: StatisticsEnum.Curriculum,
+      id: this.domainId ? this.domainId : this.curriculumId
+    }
+    this.statisticsService.getStatistics(model).subscribe(res => {
+      if (res.success) {
+        this.statistics = res.result
+      }
+    })
   }
 
   onSearchChange($event: string) {
     this.skillsPayload.searchValue = $event;
     this.getSkills()
-    }
+  }
 
   ngOnDestroy(): void {
     // Unsubscribe from any subscriptions to avoid memory leaks
@@ -89,7 +107,7 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
       this.skillsPayload.pageNumber = pageNumber;
       this.first = (pageNumber - 1) * this.skillsPayload.pageSize;
     }
-    this.skillsPayload.courseSectionId =this.headerService.selectedSectionId;
+    this.skillsPayload.courseSectionId = this.headerService.selectedSectionId;
     this.skillsPayload.curriculumLearningOutcomeId = this.curriculumId ? this.curriculumId : 0
     this.skillsPayload.domainId = this.domainId ? this.curriculumId : 0
 
@@ -102,10 +120,10 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
       });
   }
 
-    nextPage($event: PaginatorState) {
-      this.skillsPayload.pageNumber = $event.page;
-      this.sharedService.savePageState('SingleSkillComponent', $event.page);
-      this.first = $event.first;
-      this.getSkills();
-    }
+  nextPage($event: PaginatorState) {
+    this.skillsPayload.pageNumber = $event.page;
+    this.sharedService.savePageState('SingleSkillComponent', $event.page);
+    this.first = $event.first;
+    this.getSkills();
+  }
 }

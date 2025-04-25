@@ -25,42 +25,19 @@
     </button>
   </div>
   <div class="summary">
-    <div class="box filled">
-      <div class="d-flex justify-content-between items-center gap-4">
-        <div class="text">All Skills</div>
-        <div class="icon">
-          <img src="icon-green-bulb.svg" alt="arrow-right" />
+
+    @for (item of data; track $index) {
+      <div class="box" [style]="{'background-color' : item.backgroundColor , 'border' : '1px solid' + item.borderColor}">
+        <div class="d-flex justify-content-between items-center gap-4">
+          <div class="text">{{item.labelName}}</div>
+          <div class="icon">
+            <img [src]="item.iconUrl" alt="arrow-right" />
+          </div>
         </div>
+        <div class="number">{{ item.value }}</div>
       </div>
-      <!-- <div class="number">{{ data()?.allSkills }}</div> -->
-    </div>
-    <div class="box outlined">
-      <div class="d-flex justify-content-between items-center gap-4">
-        <div class="text">Active Skills</div>
-        <div class="icon">
-          <img src="icon-orange-bulb.svg" alt="arrow-right" />
-        </div>
-      </div>
-      <!-- <div class="number">{{ data()?.activeSkills }}</div> -->
-    </div>
-    <div class="box outlined">
-      <div class="d-flex justify-content-between items-center gap-4">
-        <div class="text">Question Solved</div>
-        <div class="icon">
-          <img src="icon-light-green-bulb.svg" alt="arrow-right" />
-        </div>
-      </div>
-      <!-- <div class="number">{{ data()?.questionSolved }}</div> -->
-    </div>
-    <div class="box outlined">
-      <div class="d-flex justify-content-between items-center gap-4">
-        <div class="text">Time Spent</div>
-        <div class="icon">
-          <img src="icon-sand-watch.svg" alt="arrow-right" />
-        </div>
-      </div>
-      <!-- <div class="number">{{ data()?.timeSpent }}</div> -->
-    </div>
+    }
+
     @if (showAssignmentButton) {
     <button pButton label="" class="p-button-outlined assignment-button">
       <span>New Assignment</span>

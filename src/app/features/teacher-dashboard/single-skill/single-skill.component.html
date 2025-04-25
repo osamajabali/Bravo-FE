@@ -1,5 +1,8 @@
 <div>
-    <app-skill-summary [showAssignmentButton]="false" [data]="skillSummaryData" (onSearchChange)="onSearchChange($event)"></app-skill-summary>
+    @if (statistics.length) {
+    <app-skill-summary [showAssignmentButton]="false" [data]="statistics"
+        (onSearchChange)="onSearchChange($event)"></app-skill-summary>
+    }
     <div class="units-container">
         <div class="header">
             <h1 class="page-title">{{ skills?.totalRecords }} {{'SKILLS' | translate}}</h1>

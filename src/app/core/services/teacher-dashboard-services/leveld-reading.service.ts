@@ -11,6 +11,7 @@ import { SublevelReadingResponse } from '../../models/reading-models/sub-level-r
 import { StoryPageResponseArray, StoryPages, StorySummarry } from '../../models/reading-models/story-summary.model';
 import { StoryDetails } from '../../models/reading-models/story-details.model';
 import { QuestionsResponse } from '../../models/reading-models/questions.model';
+import { Benchmark } from '../../models/reading-models/benchmark.model';
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +58,9 @@ export class LeveldReadingService {
 
   getStoryPages = (storyPages : StoryPages) : Observable<Result<StoryPageResponseArray>> => {
     return this.apiHlpr.post<Result<StoryPageResponseArray>>(`library/story-pages` , storyPages);
+  }
+
+  getBenchmark = (id : number) : Observable<Result<Benchmark>> => {
+    return this.apiHlpr.post<Result<Benchmark>>(`library/students-reading-benchmark` , {courseSectionId : id});
   }
 }

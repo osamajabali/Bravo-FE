@@ -14,6 +14,9 @@ import { SkeletonComponent } from "../../../shared/components/skeleton/skeleton.
 import { Section } from '../../../core/models/header-models/header.model';
 import { LessonsCurriculums } from '../../../core/models/teacher-dashboard-models/lesson-curriculums.model';
 import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
+import { Statistics, StatisticsResponse } from '../../../core/models/teacher-dashboard-models/statistics.model';
+import { StatisticsEnum } from '../../../core/models/shared-models/enums';
+import { SkillsStatisticsService } from '../../../core/services/skills/skills-statistics.service';
 
 @Component({
   selector: 'app-lessons',
@@ -25,15 +28,10 @@ export class LessonsComponent implements OnInit, OnDestroy {
   private refreshSubscription!: Subscription; // Mark subscription as private to avoid accidental changes
   lessons: LessonsPagination = new LessonsPagination();
   lessonPayload: LessonsPayload = new LessonsPayload();
-  summaryData: SkillSummaryData = {
-    allSkills: 0,
-    activeSkills: 0,
-    questionSolved: 0,
-    timeSpent: 0,
-  };
   first: number = 0;
   skillToActivate: Lessons | null = null;
   sections: Section[] = [];
+  statistics: StatisticsResponse[] = [];
 
 
   constructor(
@@ -41,7 +39,8 @@ export class LessonsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private sharedService: SharedService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private statisticsService : SkillsStatisticsService
   ) { }
 
   ngOnInit(): void {
@@ -52,10 +51,25 @@ export class LessonsComponent implements OnInit, OnDestroy {
           this.lessonPayload.unitId = this.sharedService.getId('unitId');
           this.sections = this.headerService.sectionsArray;
           this.getLessons();
+          this.getStatistics();
         });
       }
     });
   }
+
+    getStatistics(){
+      let model : Statistics ={
+        courseSectionId: this.headerService.selectedSectionId,
+        type: StatisticsEnum.Unit,
+        id: this.lessonPayload.unitId
+      }
+      this.statisticsService.getStatistics(model).subscribe(res=>{
+        if(res.success){
+          this.statistics = res.result
+        }
+      })
+    }
+  
 
   onSearchChange($event: string) {
     this.lessonPayload.searchValue = $event;

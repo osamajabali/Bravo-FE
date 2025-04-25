@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { PopoverModule } from 'primeng/popover';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StatisticsResponse } from '../../../core/models/teacher-dashboard-models/statistics.model';
 
 interface FilterSection {
   title: string;
@@ -31,7 +32,7 @@ export interface SkillSummaryData {
 })
 export class SkillSummaryComponent {
   @Input() showAssignmentButton: boolean = false;
-  @Input() data: SkillSummaryData;
+  @Input() data: StatisticsResponse[] =[];
   @Output() onSearchChange = new EventEmitter<string>();
   searchTerm: string = '';
 

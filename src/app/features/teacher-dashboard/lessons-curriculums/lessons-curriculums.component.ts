@@ -15,6 +15,9 @@ import { SkillActivationModalComponent } from "../../../shared/components/skill-
 import { Section } from '../../../core/models/header-models/header.model';
 import { Lessons } from '../../../core/models/teacher-dashboard-models/lessons.model';
 import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/skill-curriculum.model';
+import { Statistics, StatisticsResponse } from '../../../core/models/teacher-dashboard-models/statistics.model';
+import { StatisticsEnum } from '../../../core/models/shared-models/enums';
+import { SkillsStatisticsService } from '../../../core/services/skills/skills-statistics.service';
 
 @Component({
   selector: 'app-lessons-curriculums',
@@ -37,13 +40,15 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
   first: number = 0;
   skillToActivate: LessonsCurriculums | null = null;
   sections: Section[] = [];
+  statistics: StatisticsResponse[] = [];
 
   constructor(
     private learningOutcomesService: LearningOutcomesService,
     private route: ActivatedRoute,
     private headerService: HeaderService,
     private sharedService: SharedService,
-    private router: Router
+    private router: Router,
+    private statisticsService: SkillsStatisticsService
   ) { }
 
   ngOnInit(): void {
@@ -53,15 +58,29 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
           this.lessonId = this.sharedService.getId('lessonId');  // Ensuring non-null 'id'
           this.sections = this.headerService.sectionsArray;
           this.getCurriculums();
+          this.getStatistics();
         });
       }
     });
   }
 
-  onSearchChange($event: string) {debugger
+  getStatistics() {
+    let model: Statistics = {
+      courseSectionId: this.headerService.selectedSectionId,
+      type: StatisticsEnum.Lesson,
+      id: this.curriculumsPayload.lessonId
+    }
+    this.statisticsService.getStatistics(model).subscribe(res => {
+      if (res.success) {
+        this.statistics = res.result
+      }
+    })
+  }
+
+  onSearchChange($event: string) {
     this.curriculumsPayload.searchValue = $event;
     this.getCurriculums()
-    }
+  }
 
   ngOnDestroy(): void {  // Unsubscribe in ngOnDestroy
     if (this.refreshSubscription) {
@@ -89,8 +108,8 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
   clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
     this.sharedService.pushTitle((card as LessonsCurriculums).name + ' - ' + this.sharedService.translate('SKILLS'))
     const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
-    this.sharedService.saveId('domainId' , 0);
-    this.sharedService.saveId('curriculumId' , curriculumId);
+    this.sharedService.saveId('domainId', 0);
+    this.sharedService.saveId('curriculumId', curriculumId);
     this.router.navigate(['/features/semesters/single-skill']);
   }
 

@@ -76,3 +76,65 @@
   height: 100%;            /* Full height of the container */
   width: 100%;             /* Full width of the container */
 }
+
+:host ::ng-deep {
+  .video-dialog {
+    .p-dialog-content {
+      padding: var(--padding-3xl);
+      height: 90vh;
+      display: flex;
+      align-items: center;
+    }
+  
+    .video-container {
+      width: 90vw !important;
+      max-width: 1600px !important;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000;
+      border-radius: var(--radius-m);
+      overflow: hidden;
+      position: relative;
+
+      .play-icon {
+        position: absolute;
+        left: 50%;
+        z-index: 100;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+  
+      .custom-video-player {
+        width: 100%;
+        height: 100%;
+        max-height: calc(90vh - var(--padding-3xl) * 2);
+  
+        &::-webkit-media-controls {
+          background-color: rgba(0, 0, 0, 0.7);
+        }
+  
+        &::-webkit-media-controls-panel {
+          padding: 0 10px;
+        }
+  
+        &::-webkit-media-controls-play-button {
+          color: var(--primary-primary-500);
+        }
+  
+        &::-webkit-media-controls-timeline {
+          color: var(--primary-primary-500);
+        }
+  
+        &::-webkit-media-controls-volume-slider {
+          background-color: var(--primary-primary-500);
+        }
+      }
+    }
+  }
+}

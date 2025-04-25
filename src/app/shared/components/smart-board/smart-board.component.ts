@@ -138,6 +138,10 @@ export class SmartBoardComponent implements OnInit {
     });
   }
 
+  showVideoDialogChange(event : boolean) {
+    this.showVideoDialog = event
+    }
+
   closeBoard(): void {
     this.visible = false;
     this.visibleChange.emit(this.visible);

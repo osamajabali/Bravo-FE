@@ -43,7 +43,7 @@ export class HtmlDialogComponent implements OnInit, ControlValueAccessor {
     ];
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {debugger
     this.storyPages.storyId = 337697;
     this.readingService.getStoryPages(this.storyPages).subscribe(res => {
       if (res.success) {

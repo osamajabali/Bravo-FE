@@ -6,7 +6,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
-import { SkillSummaryData } from '../../../shared/components/skill-summary/skill-summary.component';
+import { SkillSummaryData, SkillSummaryComponent } from '../../../shared/components/skill-summary/skill-summary.component';
 import { Subscription } from 'rxjs';
 import { SingleSkill } from '../../../core/models/teacher-dashboard-models/single-skill';
 import { Level } from '../../../core/models/teacher-dashboard-models/students.model';
@@ -24,6 +24,9 @@ import { SpinnerService } from '../../../core/services/shared-services/spinner.s
 import { Section } from '../../../core/models/header-models/header.model';
 import { LessonsCurriculums } from '../../../core/models/teacher-dashboard-models/lesson-curriculums.model';
 import { Lessons } from '../../../core/models/teacher-dashboard-models/lessons.model';
+import { Statistics, StatisticsResponse } from '../../../core/models/teacher-dashboard-models/statistics.model';
+import { StatisticsEnum } from '../../../core/models/shared-models/enums';
+import { SkillsStatisticsService } from '../../../core/services/skills/skills-statistics.service';
 
 @Component({
   selector: 'app-skill-level-one',
@@ -38,8 +41,9 @@ import { Lessons } from '../../../core/models/teacher-dashboard-models/lessons.m
     TranslateModule,
     SkillsCardsComponent,
     LessonCardsComponent,
-    PaginationComponent
-  ],
+    PaginationComponent,
+    SkillSummaryComponent
+],
   templateUrl: './skill-level-one.component.html',
   styleUrl: './skill-level-one.component.scss',
 })
@@ -66,13 +70,15 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
   skillCurriculum: SkillCurriculumPagination = new SkillCurriculumPagination();
   first: number = 0;
   sections: Section[] = [];
+  statistics: StatisticsResponse[] = [];
 
   constructor(
     private statsService: StatsService,
     private headerService: HeaderService,
     private route: ActivatedRoute,
     private sharedService: SharedService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private statisticsService: SkillsStatisticsService,
   ) { }
 
   ngOnInit(): void {
@@ -82,6 +88,7 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
         this.sections = this.headerService.sectionsArray;
         this.route.paramMap.subscribe((params) => {
           this.getSkills();
+          this.getStatistics();
         });
       }
     });
@@ -110,6 +117,24 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
         this.spinnerService.hide();
       }
     });
+  }
+  
+  getStatistics() {
+    let model: Statistics = {
+      courseSectionId: this.headerService.selectedSectionId,
+      type: StatisticsEnum.Domain,
+      id: this.curriculumsPayload.domainId
+    }
+    this.statisticsService.getStatistics(model).subscribe(res => {
+      if (res.success) {
+        this.statistics = res.result
+      }
+    })
+  }
+
+  onSearchChange($event: string) {
+    this.curriculumsPayload.searchValue = $event;
+    this.getSkills()
   }
 
   clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {

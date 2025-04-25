@@ -99,7 +99,7 @@ export class BooksGridComponent implements OnInit, OnDestroy {
     this.getBooks();
   }
 
-  viewBook(book: SublevelReading): void {debugger
+  viewBook(book: SublevelReading): void {
     this.sharedService.pushTitle(book.title + '- Book Details');
     this.sharedService.saveId('bookId' , book.storyId)
     this.router.navigate(['/features/book-details']);

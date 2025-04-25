@@ -41,6 +41,9 @@ export class SkillActivationModalComponent  {
   }
 
   _activateSkill() {
+    this.selectedIds = this.sections
+    .filter(section => section.isSelected)
+    .map(section => section.courseSectionId);
     this.activateSections.emit(this.selectedIds);
     this.close();
   }

@@ -1,9 +1,11 @@
 <div>
-  <app-skill-summary
+  @if (statistics.length) {
+    <app-skill-summary
     [showAssignmentButton]="false"
-    [data]="summaryData"
+    [data]="statistics"
     (onSearchChange)="onSearchChange($event)"
   ></app-skill-summary>
+  }
   <div class="units-container">
     <div class="header">
       <h1 class="page-title">{{lessons.totalRecords}} {{ "LESSONS" | translate }}</h1>

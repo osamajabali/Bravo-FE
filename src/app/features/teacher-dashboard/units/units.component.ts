@@ -13,6 +13,9 @@ import {
 } from '../../../shared/components/skill-summary/skill-summary.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
+import { SkillsStatisticsService } from '../../../core/services/skills/skills-statistics.service';
+import { Statistics, StatisticsResponse } from '../../../core/models/teacher-dashboard-models/statistics.model';
+import { StatisticsEnum } from '../../../core/models/shared-models/enums';
 
 @Component({
   selector: 'app-units',
@@ -28,15 +31,10 @@ import { PaginatorState } from 'primeng/paginator';
 export class UnitsComponent implements OnInit, OnDestroy {
   private refreshSubscription!: Subscription; // Mark subscription as private to avoid accidental changes
   unitsPagination: UnitsPagination = new UnitsPagination();
-  summaryData: SkillSummaryData = {
-    allSkills: 0,
-    activeSkills: 0,
-    questionSolved: 0,
-    timeSpent: 0,
-  };
   semesterId: number;
   unitPayload: UnitPayload = new UnitPayload();
   first: number = 0;
+  statistics: StatisticsResponse[] = [];
 
   constructor(
     private headerService: HeaderService,
@@ -44,6 +42,7 @@ export class UnitsComponent implements OnInit, OnDestroy {
     public sharedService: SharedService,
     private route: ActivatedRoute,
     private router: Router,
+    private statisticsService : SkillsStatisticsService
   ) {
     if (!this.sharedService) {
       this.sharedService = new SharedService();
@@ -57,15 +56,29 @@ export class UnitsComponent implements OnInit, OnDestroy {
         this.route.paramMap.subscribe((params) => {
           this.semesterId = this.sharedService.getId('semesterId'); // Using '!' to assert non-null value
           this.getUnits();
+          this.getStatistics()
         });
       }
     });
-
     // If section ID is available, fetch units immediately
     if (this.headerService.selectedSectionId) {
       this.getUnits();
     }
   }
+
+  getStatistics(){
+    let model : Statistics ={
+      courseSectionId: this.headerService.selectedSectionId,
+      type: StatisticsEnum.Semester,
+      id: this.semesterId
+    }
+    this.statisticsService.getStatistics(model).subscribe(res=>{
+      if(res.success){
+        this.statistics = res.result
+      }
+    })
+  }
+
 
   onSearchChange($event: string) {
     this.unitPayload.searchValue = $event;
