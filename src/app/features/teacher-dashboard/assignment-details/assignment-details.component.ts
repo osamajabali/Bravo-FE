@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { MenuModule } from 'primeng/menu';
 import { DialogModule } from 'primeng/dialog';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface AssignmentDetails {
   grade: string;
@@ -44,7 +45,8 @@ interface StudentSubmission {
     CheckboxModule,
     FormsModule,
     MenuModule,
-    DialogModule
+    DialogModule,
+    TranslateModule
   ],
   templateUrl: './assignment-details.component.html',
   styleUrl: './assignment-details.component.scss'

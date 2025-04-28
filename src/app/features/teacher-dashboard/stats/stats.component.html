@@ -1,1 +1,1 @@
-  <app-dashboard [items]="skills" [title]="'SKILLS'" [isSemester]="false" [stats]="stats" (action)="goToSingleSkill($event)"></app-dashboard>
+  <app-dashboard [items]="skills" [title]="'SKILLS'" [isSemester]="false" [stats]="stats" (action)="goToSingleSkill($event)" (activate)="getClasses()"></app-dashboard>

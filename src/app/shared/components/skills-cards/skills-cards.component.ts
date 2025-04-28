@@ -23,6 +23,7 @@ import { SkillCurriculum } from '../../../core/models/teacher-dashboard-models/s
 import { Section } from '../../../core/models/header-models/header.model';
 import { SkillActivation } from '../../../core/models/teacher-dashboard-models/skillsActivation.model';
 import { SkillActivationService } from '../../../core/services/skills/skill-activation.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-skills-cards',
@@ -38,6 +39,7 @@ import { SkillActivationService } from '../../../core/services/skills/skill-acti
     UserDrawerComponent,
     SmartBoardComponent,
     SkillActivationModalComponent,
+    TranslateModule
   ],
   templateUrl: './skills-cards.component.html',
   styleUrl: './skills-cards.component.scss'

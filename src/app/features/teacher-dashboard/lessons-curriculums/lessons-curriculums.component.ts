@@ -106,7 +106,7 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
   }
 
   clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
-    this.sharedService.pushTitle((card as LessonsCurriculums).name + ' - ' + this.sharedService.translate('SKILLS'))
+    this.sharedService.pushTitle((card as LessonsCurriculums).name)
     const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
     this.sharedService.saveId('domainId', 0);
     this.sharedService.saveId('curriculumId', curriculumId);

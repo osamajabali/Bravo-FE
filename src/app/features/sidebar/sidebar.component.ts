@@ -14,6 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class SidebarComponent {
   activeMenuItem: MenuItem | null = null;
   currentUrl: string = '';
+  expanded : boolean = false;
 
   menuItems: MenuItem[] = [
     {

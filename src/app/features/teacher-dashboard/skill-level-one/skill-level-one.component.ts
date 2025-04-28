@@ -139,8 +139,9 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
 
   clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
     const domainId = (card as SkillCurriculum).id;
-    this.sharedService.pushTitle((card as SkillCurriculum).domainName + ' - ' + this.sharedService.translate('SKILLS'));
-    this.sharedService.saveId('SkillLevelOneDomainId' , domainId)
+    this.sharedService.pushTitle((card as SkillCurriculum).domainName);
+    this.sharedService.saveId('SkillLevelOneDomainId' , domainId);
+    sessionStorage.removeItem('SkillLevelTwoComponent');
     this.router.navigate([this.sharedService.nextRoute]);
   }
 

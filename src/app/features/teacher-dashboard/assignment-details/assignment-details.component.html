@@ -82,7 +82,7 @@
                 [class.reverse]="!assignmentDetails.isEnabled"
               >
                 <span class="status-text">{{
-                  assignmentDetails.isEnabled ? "ACTIVE" : "OFF"
+                  (assignmentDetails.isEnabled ? "ACTIVE" : "INACTIVE") | translate
                 }}</span>
                 <img
                   [src]="

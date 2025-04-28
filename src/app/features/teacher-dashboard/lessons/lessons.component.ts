@@ -100,8 +100,9 @@ export class LessonsComponent implements OnInit, OnDestroy {
   }
 
   clickedCard(card: Lessons|LessonsCurriculums|SkillCurriculum) {
-    this.sharedService.pushTitle((card as Lessons).name + ' - ' +this.sharedService.translate('CURRICULUMS')); 
-    this.sharedService.saveId('lessonId' , (card as Lessons).lessonId )
+    this.sharedService.pushTitle((card as Lessons).name); 
+    this.sharedService.saveId('lessonId' , (card as Lessons).lessonId );
+    sessionStorage.removeItem('LessonsCurriculumsComponent');
     this.router.navigate(['/features/semesters/lessons-curriculums']);
     } 
     

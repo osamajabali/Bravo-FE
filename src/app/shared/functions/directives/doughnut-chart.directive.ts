@@ -101,8 +101,8 @@ export class DoughnutChartDirective implements OnChanges {
           position: 'right',
           onClick: () => {}, // ❌ Disable click behavior
           labels: {
-            boxWidth: 12,
-            padding: 15,
+            boxWidth: 10,
+            padding: 5,
             font: {
               size: 12,
             },
@@ -113,9 +113,9 @@ export class DoughnutChartDirective implements OnChanges {
           callbacks: {
             label: function (context) {
               if (!context.label.toLowerCase().includes("inactive")) {
-                return `${Math.round(context.raw as number)}% of Active skills`; // Display percentage of active skills
+                return `${Math.round(context.raw as number)}% Active Skills`; // Display percentage of active skills
               }else{
-                return `${Math.round(context.raw as number)}% of inActive skills`;
+                return `${Math.round(context.raw as number)}% Inactive Skills`;
               }
             },
             // Optional: Remove the title or additional information if needed
@@ -132,7 +132,7 @@ export class DoughnutChartDirective implements OnChanges {
       type: 'doughnut',
       data: {
         labels: this.isSkills 
-          ? [`${this.inactiveCount} Number of Inactive Skills`, `${this.activeCount} Number of Active Skills`] // Inactive on top
+          ? [`${this.inactiveCount} Inactive Skills`, `${this.activeCount} Active Skills`] // Inactive on top
           : [], // Use active/inactive counts as labels
         datasets: [
           {

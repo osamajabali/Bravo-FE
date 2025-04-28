@@ -40,5 +40,7 @@
     "BOOK_DETAILS": "تفاصيل الكتاب",
     "SHOWING": "عرض",
     "OF": "من",
-    "items": "عناصر"
+    "items": "عناصر",
+    "ACTIVE" : "فعالة",
+    "INACTIVE" : "غير فعالة"
 }

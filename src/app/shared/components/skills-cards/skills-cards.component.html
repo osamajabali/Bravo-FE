@@ -36,7 +36,7 @@
             <div class="custom-radio-container">
               <div class="custom-radio" [class.active]="skill.isEnabled" (click)="toggleActive(skill)">
                 <div class="radio-content" [class.reverse]="!skill.isEnabled">
-                  <span class="status-text">{{ skill.isEnabled ? 'ACTIVE' : 'OFF' }}</span>
+                  <span class="status-text">{{ (skill.isEnabled ? 'ACTIVE' : 'INACTIVE') | translate }}</span>
                   <img [src]="skill.isEnabled ? 'icon-radio-checked.svg' : 'icon-radio-unchecked.svg'" alt="check">
                 </div>
               </div>

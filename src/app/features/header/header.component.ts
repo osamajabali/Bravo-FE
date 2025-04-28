@@ -236,8 +236,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    this.sharedService.popTitle();
-    this.location.back();
+    setTimeout(() => {
+      this.sharedService.popTitle();
+      this.location.back();
+    }, 100);
   }
 
   ngOnDestroy(): void {

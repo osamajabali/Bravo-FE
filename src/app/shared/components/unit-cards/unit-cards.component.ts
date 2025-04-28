@@ -50,14 +50,13 @@ export class UnitCardsComponent {
   clickedCard(card: Unit | Lessons | LessonsCurriculums) {
     this.cardClick.emit(card)
     if ((card as Unit).unitId) {
-      // this.sharedService.pushTitle((card as Unit).unitLabelName + ' - ' +this.sharedService.translate('LESSONS'))
-      // this.router.navigate(['/features/semesters/lessons', (card as Unit).unitId]);
+      
     } else if ((card as Lessons).lessonId) {
-      this.sharedService.pushTitle((card as Lessons).name + ' - ' +this.sharedService.translate('CURRICULUMS'))
+      this.sharedService.pushTitle((card as Lessons).name)
       this.router.navigate(['/features/semesters/lessons-curriculums', (card as Lessons).lessonId]);
     } else {
       const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
-      this.sharedService.pushTitle((card as LessonsCurriculums).name  + ' - ' +this.sharedService.translate('SKILLS'))
+      this.sharedService.pushTitle((card as LessonsCurriculums).name)
       this.router.navigate(['/features/semesters/single-skill', 0, curriculumId]);
 
     }

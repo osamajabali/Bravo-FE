@@ -28,7 +28,7 @@
         <div class="custom-radio-container">
           <div class="custom-radio" [class.active]="card.isEnabled" (click)="toggleActive(card)">
             <div class="radio-content" [class.reverse]="!card.isEnabled">
-              <span class="status-text">{{ card.isEnabled ? 'ACTIVE' : 'OFF' }}</span>
+              <span class="status-text">{{ (card.isEnabled ? 'ACTIVE' : 'INACTIVE') | translate }}</span>
               <img [src]="card.isEnabled ? 'icon-radio-checked.svg' : 'icon-radio-unchecked.svg'" alt="check">
             </div>
           </div>

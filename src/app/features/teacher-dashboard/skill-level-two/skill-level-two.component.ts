@@ -142,8 +142,9 @@ export class SkillLevelTwoComponent {
 
     clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
       this.domainId = (card as SkillCurriculum).id;
-      this.sharedService.pushTitle((card as SkillCurriculum).domainName + ' - ' + this.sharedService.translate('SKILLS'));
-      this.sharedService.saveId('SkillLevelTwoDomainId' , this.domainId)
+      this.sharedService.pushTitle((card as SkillCurriculum).domainName);
+      this.sharedService.saveId('SkillLevelTwoDomainId' , this.domainId);
+      sessionStorage.removeItem('SkillLevelThreeComponent');
       this.router.navigate(['/features/skills/skills-level-three']);
     }
     

@@ -70,8 +70,9 @@ export class StatsComponent implements OnInit, OnDestroy {
   }
 
   goToSingleSkill(domain: Skills | Semester) {
-    this.sharedService.pushTitle((domain as Skills).name + ' - ' + this.sharedService.translate('SKILLS'));
-    this.sharedService.saveId('skillDomainId' ,  (domain as Skills).domainId)
+    this.sharedService.pushTitle((domain as Skills).name);
+    this.sharedService.saveId('skillDomainId' ,  (domain as Skills).domainId);
+    sessionStorage.removeItem('SkillLevelOneComponent');
     this.router.navigate(['/features/skills/skills-level-one']);
   }
 }

@@ -109,8 +109,9 @@ export class UnitsComponent implements OnInit, OnDestroy {
   }
 
   cardClick(card : any) {
-    this.sharedService.pushTitle((card as Unit).unitLabelName + ' - ' +this.sharedService.translate('LESSONS'));
+    this.sharedService.pushTitle((card as Unit).unitName);
     this.sharedService.saveId('unitId' , (card as Unit).unitId)
+    sessionStorage.removeItem('LessonsComponent');
     this.router.navigate(['/features/semesters/lessons']);
   }
 

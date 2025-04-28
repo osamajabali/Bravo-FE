@@ -1,4 +1,4 @@
-import { Component, Input, input, model, OnInit, output } from '@angular/core';
+import { Component, EventEmitter, Input, input, model, OnInit, Output, output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -30,12 +30,14 @@ export class SkillActivationModalComponent  {
   header = input<string>('');
   activateSections = output<number[]>();
   @Input() sections: Section[] = [];
+  @Output() activate = new EventEmitter<boolean>();
   private refreshSubscription!: Subscription;
   selectedIds: number[] = [];
   allSelected: boolean = false;
 
 
   close() {
+    this.sections = [];
     this.visible.set(false);
     this.visibleChange.emit(this.visible());
   }
@@ -45,6 +47,7 @@ export class SkillActivationModalComponent  {
     .filter(section => section.isSelected)
     .map(section => section.courseSectionId);
     this.activateSections.emit(this.selectedIds);
+    this.activate.emit(true)
     this.close();
   }
 

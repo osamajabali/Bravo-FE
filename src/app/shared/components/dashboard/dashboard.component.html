@@ -57,7 +57,8 @@
         <div class="skill-card-left">
           <div class="d-flex justify-content-between gap-4 align-items-center">
             <h3 class="skill-title">{{ item.name }}</h3>
-            <button
+            @if (((isSkill(item) ? item.activeSkills : item.activeSkills) != 0) || ((isSkill(item) ? item.inActiveSkills : item.inActiveSkills) != 0) ) {
+              <button
               pButton
               [label]="'SEE_ALL' | translate"
               class="p-button-outlined see-all-button"
@@ -65,6 +66,7 @@
                 goToSingleSkill(item)
               "
             ></button>
+            }
           </div>
           <div class="skill-chart-container">
             <canvas
@@ -149,4 +151,4 @@
 
 <!-- Custom Dialog -->
 <app-skill-activation-modal [(visible)]="activateSkill" [style]="{ width: '450px' }" [modal]="true" [closable]="true" [sections]="sections"
-  [closeOnEscape]="true" (activateSections)="_activateSkill($event)"></app-skill-activation-modal>
+  [closeOnEscape]="true" (activateSections)="_activateSkill($event)" ></app-skill-activation-modal>

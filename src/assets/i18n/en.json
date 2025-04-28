@@ -39,5 +39,7 @@
     "BOOK_DETAILS": "Book Details",
     "SHOWING": "Showing",
     "OF": "of",
-    "items": "items"
+    "items": "items",
+    "ACTIVE" : "Active",
+    "INACTIVE" : "Inactive"
 }

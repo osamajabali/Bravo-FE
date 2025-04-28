@@ -37,6 +37,7 @@ export class DashboardComponent {
   @Input() isSemester: boolean = false;
   @Input() items: (Skills | Semester)[] = [];
   @Output() action = new EventEmitter<Skills | Semester>();
+  @Output() activate = new EventEmitter<boolean>();
 
   pieChartLabels: string[] = ['Activated', 'Inactive'];
   activateSkill: boolean;
@@ -79,7 +80,8 @@ export class DashboardComponent {
     this.skillActivationModel.activationStatus = false;
     this.skillActivationService.quickActionActivation(this.skillActivationModel).subscribe(res => {
       if (res.success) {
-        this.changeQuickSkills(res.result)
+        this.activate.emit(true);
+        this.changeQuickSkills(res.result);
       }
     })
   }

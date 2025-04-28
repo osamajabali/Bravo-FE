@@ -44,11 +44,7 @@ export class SemestersComponent implements OnInit, OnDestroy {
     }
   }
 
-  getClasses() {
-    let model: StatsRequest = {
-      courseSectionId: this.headerService.selectedSectionId,
-      subjectId: this.headerService.selectedSubjectId,
-    };
+  getClasses() {debugger
 
     this.statsService.getSemesters(this.headerService.selectedSectionId).subscribe((res) => {
       if (res) {
@@ -71,8 +67,9 @@ export class SemestersComponent implements OnInit, OnDestroy {
 
   goToSingleSkill(semester: Skills | Semester) {
     let selectedSemester = semester as Semester;
-    this.sharedService.pushTitle(selectedSemester.name + ' - ' +this.sharedService.translate('UNITS'))
-    this.sharedService.saveId('semesterId' , selectedSemester.semesterId)
+    this.sharedService.pushTitle(selectedSemester.name)
+    this.sharedService.saveId('semesterId' , selectedSemester.semesterId);
+    sessionStorage.removeItem('UnitsComponent');
     this.router.navigate(['/features/semesters/units']);
   }
 

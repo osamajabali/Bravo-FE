@@ -22,9 +22,17 @@ export class PaginationComponent {
 
   onPageChange(event: PaginatorState) {
     event.page += 1;
-    if(event.first > this.first){
-      event.first +=1;
+    if (event.first > this.first) {
+      event.first += 1;
     }
     this.pageChange.emit(event);
+  
+    if (typeof window !== 'undefined') { // SSR safe
+      const unitContainer = document.querySelector('.content-area-white');
+      if (unitContainer) {
+        unitContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
   }
+  
 }

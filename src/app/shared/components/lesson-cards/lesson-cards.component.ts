@@ -14,10 +14,11 @@ import { Section } from '../../../core/models/header-models/header.model';
 import { SkillActivationService } from '../../../core/services/skills/skill-activation.service';
 import { SkillActivation } from '../../../core/models/teacher-dashboard-models/skillsActivation.model';
 import { Result } from '../../../core/models/shared-models/result';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-lesson-cards',
-  imports: [SkillActivationModalComponent],
+  imports: [SkillActivationModalComponent,TranslateModule],
   templateUrl: './lesson-cards.component.html',
   styleUrl: './lesson-cards.component.scss',
 })

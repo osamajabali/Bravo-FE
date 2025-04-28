@@ -127,8 +127,8 @@ export class SkillLevelThreeComponent {
     this.domainId = this.sharedService.getId('SkillLevelTwoDomainId');
     this.curriculumsPayload.domainId = this.domainId;
     
-    if (this.sharedService.getPageState(`SkillLevelTwoComponent ${this.domainId}`)) {
-      let pageNumber = this.sharedService.getPageState(`SkillLevelTwoComponent ${this.domainId}`);
+    if (this.sharedService.getPageState(`SkillLevelThreeComponent ${this.domainId}`)) {
+      let pageNumber = this.sharedService.getPageState(`SkillLevelThreeComponent ${this.domainId}`);
       this.curriculumsPayload.pageNumber = pageNumber;
       this.first = (pageNumber - 1) * this.curriculumsPayload.pageSize;
     }
@@ -143,7 +143,7 @@ export class SkillLevelThreeComponent {
 
     clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
       this.domainId = (card as SkillCurriculum).id;
-      this.sharedService.pushTitle((card as SkillCurriculum).domainName + ' - ' + this.sharedService.translate('SKILLS'));
+      this.sharedService.pushTitle((card as SkillCurriculum).domainName);
       this.sharedService.saveId('SkillLevelThreeDomainId' , this.domainId)
       this.router.navigate([this.sharedService.nextRoute]);
     }
@@ -151,7 +151,7 @@ export class SkillLevelThreeComponent {
 
   nextPage($event: PaginatorState) {
     this.curriculumsPayload.pageNumber = $event.page;
-    this.sharedService.savePageState(`SkillLevelTwoComponent ${this.domainId}`, $event.page);
+    this.sharedService.savePageState(`SkillLevelThreeComponent ${this.domainId}`, $event.page);
     this.first = $event.first;
     this.getSkills();
   }
