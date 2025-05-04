@@ -19,6 +19,7 @@ import { SkillActivationService } from '../../../core/services/skills/skill-acti
 
 @Component({
   selector: 'app-dashboard',
+  standalone :true,
   imports: [
     CommonModule,
     DoughnutChartDirective,
@@ -38,7 +39,6 @@ export class DashboardComponent {
   @Input() items: (Skills | Semester)[] = [];
   @Output() action = new EventEmitter<Skills | Semester>();
   @Output() activate = new EventEmitter<boolean>();
-
   pieChartLabels: string[] = ['Activated', 'Inactive'];
   activateSkill: boolean;
   skillActivationModel: SkillActivation = new SkillActivation();
@@ -87,6 +87,7 @@ export class DashboardComponent {
   }
 
   skipSkill(quickAction : QuickSkill , item: (Skills | Semester)) {
+    quickAction.isDisabled = true;
     this.activateSkill = false;
     this.selectedQuickSkill = quickAction;
     this.selectedItem = item;
@@ -98,7 +99,10 @@ export class DashboardComponent {
     this.skillActivationModel.learningOutcomeId = this.selectedQuickSkill.learningOutcomeId;
     this.skillActivationService.skipSkill(this.skillActivationModel).subscribe(res => {
       if (res.success) {
-        this.changeQuickSkills(res.result)
+        this.changeQuickSkills(res.result);
+        quickAction.isDisabled = false;
+      }else{
+        quickAction.isDisabled = false;
       }
     })
   }
@@ -117,7 +121,8 @@ export class DashboardComponent {
 
   showActivationModal(item: (Skills | Semester), selectedQuickSkill: QuickSkill) {
     this.selectedItem = item;
-    this.selectedQuickSkill = selectedQuickSkill
+    this.selectedQuickSkill = selectedQuickSkill;
+    this.sections = this.headerService.sectionsArray;
     this.activateSkill = true;
   }
 

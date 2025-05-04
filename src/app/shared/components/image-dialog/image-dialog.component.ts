@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { GalleriaModule } from 'primeng/galleria';
 import { CarouselModule } from 'primeng/carousel';
+import { HeaderService } from '../../../core/services/header-services/header.service';
 
 @Component({
   selector: 'app-image-dialog',
@@ -26,6 +27,7 @@ export class ImageDialogComponent implements ControlValueAccessor {
   @Output() hideImageDialog = new EventEmitter<boolean>();  // Emit when dialog is closed
   showReader: boolean = false; // Controls dialog visibility
   
+  constructor(public headerService : HeaderService){}
   responsiveOptions = [
     {
       breakpoint: '1024px',

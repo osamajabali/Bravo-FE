@@ -1,4 +1,4 @@
-<p-dialog
+<p-dialog [dismissableMask]="true"
   [(visible)]="visible"
   [modal]="true"
   [closable]="true"
@@ -58,25 +58,26 @@
         </button>
       </div>
     </div>
-   @if (pdfUrls.length) {
+
+    <!-- Only show pdf-viewer if pdfUrls is populated -->
+    @if (pdfUrls.length) {
     <pdf-viewer
-    [src]="pdfUrls[currentPage - 1]"
-    [rotation]="rotation"
-    [original-size]="true"
-    [show-all]="true"
-    [fit-to-page]="zoomLevel === 'page'"
-    [zoom]="zoom"
-    [zoom-scale]="zoomLevel === 'auto' ? 'page-width' : null"
-    [stick-to-page]="true"
-    [render-text]="true"
-    [external-link-target]="'blank'"
-    [autoresize]="true"
-    [show-borders]="true"
-    (pageChange)="onPageChange($event)"
-    (after-load-complete)="onPdfLoaded($event)"
-    style="width: 100%; height: calc(100vh - 60px)"
-  ></pdf-viewer>
-   }
-  
+      [src]="pdfUrls[currentPage - 1]"
+      [rotation]="rotation"
+      [original-size]="true"
+      [show-all]="true"
+      [fit-to-page]="zoomLevel === 'page' || zoomLevel === 'auto'"
+      [zoom]="zoom"
+      [zoom-scale]="zoomLevel === 'auto' ? 'page-width' : null"
+      [stick-to-page]="true"
+      [render-text]="true"
+      [external-link-target]="'blank'"
+      [autoresize]="true"
+      [show-borders]="true"
+      (pageChange)="onPageChange($event)"
+      (after-load-complete)="onPdfLoaded($event)"
+      style="width: 100%; height: 700px"
+    ></pdf-viewer>
+    }
   </div>
 </p-dialog>

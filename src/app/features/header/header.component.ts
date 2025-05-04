@@ -16,6 +16,7 @@ import { LoginService } from '../../core/services/login-services/login.service';
 import { Classes, ClassesData, Section } from '../../core/models/header-models/header.model';
 import { ClassesEnum } from '../../core/models/shared-models/enums';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SpinnerService } from '../../core/services/shared-services/spinner.service';
 
 @Component({
   selector: 'app-header',
@@ -63,18 +64,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // Subscriptions
   private subscriptions = new Subscription();
-  sectionExpanded: boolean;
+  sectionExpanded: boolean = true;
   GradesExpanded: boolean;
   SubjectExpanded: boolean;
   title: string = 'title';
-  checkTitle : boolean;
+  checkTitle: boolean = true;
   currentLang: string;
+
+  constructor(private spinnerService: SpinnerService) { }
 
   ngOnInit(): void {
     this.setupUserMenu();
     this.getClasses();
     this.getUserName()
-    
+
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
       this.checkTitleAvailability();
       this.title = this.sharedService.getTitle()
@@ -93,11 +96,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   checkTitleAvailability() {
     if (typeof window !== 'undefined') {
-    if(localStorage.getItem('title')){
-      let titleArray = JSON.parse(localStorage.getItem('title'))
-      this.checkTitle =  (titleArray.length == 2);
+      if (localStorage.getItem('title')) {
+        let titleArray = JSON.parse(localStorage.getItem('title'))
+        this.checkTitle = (titleArray.length == 1);
+      } else {
+        this.checkTitle = true;
+      }
     }
-  }
   }
 
   getUserName() {
@@ -146,8 +151,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   getClasses(): void {
     const model: Classes = {
       gradeId: this.headerService.selectedGradeId ?? 0,
-      roleId: parseInt(localStorage.getItem('roleId') || '0', 10),
-      subjectId: this.headerService.selectedSubjectId ?? 0
+      roleId: parseInt(localStorage.getItem('roleId') || '0'),
+      subjectId: this.headerService.selectedSubjectId ?? 0,
+      courseSectionId: this.headerService.selectedSectionId ?? 0
     };
 
     this.subscriptions.add(
@@ -155,7 +161,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         if (!res.success) return;
 
         this.classesData = res.result;
-
         this.selectedGradeId = this.findSelectedId(this.classesData.grades, 'gradeId');
         this.headerService.selectedGradeId = this.selectedGradeId;
 
@@ -165,7 +170,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.selectedSectionId = this.findSelectedId(this.classesData.courseSections, 'courseSectionId');
         this.headerService.selectedSectionId = this.selectedSectionId;
 
-        this.headerService.sectionsArray = this.classesData.courseSections
+        this.headerService.sectionsArray = this.classesData.courseSections;
+
         this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.courseSections)} , ${this.getSelectedName(this.classesData.subjects)} `;
 
         this.sharedService.triggerRefresh(res);
@@ -173,18 +179,52 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
   }
 
+  refreshClasses = () => {
+    // const model: Classes = {
+    //   gradeId: 0,
+    //   roleId: parseInt(localStorage.getItem('roleId') || '0'),
+    //   subjectId: 0,
+    //   courseSectionId: 0
+    // };
+
+    // this.subscriptions.add(
+    //   this.headerService.getClasses(model).subscribe(res => {
+    //     if (!res.success) return;
+    //     this.classesData = res.result;
+    //     this.selectedGradeId = this.findSelectedId(this.classesData.grades, 'gradeId');
+    //     this.headerService.selectedGradeId = this.selectedGradeId;
+
+    //     this.selectedSubjectId = this.findSelectedId(this.classesData.subjects, 'subjectId');
+    //     this.headerService.selectedSubjectId = this.selectedSubjectId;
+
+    //     this.selectedSectionId = this.findSelectedId(this.classesData.courseSections, 'courseSectionId');
+    //     this.headerService.selectedSectionId = this.selectedSectionId;
+
+    //     this.headerService.sectionsArray = this.classesData.courseSections;
+
+    //     this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.courseSections)} , ${this.getSelectedName(this.classesData.subjects)} `;
+
+    //     this.GradesExpanded = false;
+    //     this.SubjectExpanded = false;
+    //     this.sectionExpanded = true;
+    //     this.sharedService.triggerRefresh(res);
+    //   })
+    // );
+  }
+
   private updateClasses(): void {
+    
     const model: Classes = {
       gradeId: this.headerService.selectedGradeId ?? 0,
       roleId: parseInt(localStorage.getItem('roleId') || '0', 10),
-      subjectId: this.headerService.selectedSubjectId ?? 0
+      subjectId: this.headerService.selectedSubjectId ?? 0,
+      courseSectionId: this.headerService.selectedSectionId ?? 0
     };
-
+    
     this.headerService.getClasses(model).subscribe(res => {
-      if (!res.success) return;
-
-      this.classesData = res.result;
-      this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.courseSections)} , ${this.getSelectedName(this.classesData.subjects)} `;
+      if (res.success) {
+        this.classesData = res.result;
+      }
     });
   }
 
@@ -192,17 +232,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.classesEnum.subject === classesEnum) {
       this.headerService.selectedSubjectId = id;
       this.headerService.selectedGradeId = 0;
-      this.selectedSubjectId = id
+      this.selectedSubjectId = id;
+      this.classesData.grades = [];
       this.updateClasses();
     } else if (this.classesEnum.grade === classesEnum) {
       this.headerService.selectedGradeId = id;
       this.selectedGradeId = id;
+      this.classesData.courseSections = [];
       this.updateClasses();
     } else {
       console.log('section id', id);
       this.headerService.selectedSectionId = id;
       this.selectedSectionId = id;
-      this.updateClasses();
+      this.updateClasses()
     }
   }
 
@@ -221,6 +263,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // Method to apply the filter
   applyFilter($event) {
+    this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.courseSections)} , ${this.getSelectedName(this.classesData.subjects)} `;
+    const url = this.router.url;
+
+    if (url.includes('semester')) {
+      // Route to the component based on URL check
+      this.router.navigate(['/features/semesters']);
+    }
+    if (url.includes('skills')) {
+      // Route to the component based on URL check
+      this.router.navigate(['/features/skills']);
+    }
     $event.stopPropagation();
     this.sharedService.triggerRefresh('trigger');
   }
@@ -236,10 +289,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    setTimeout(() => {
+    this.checkTitleAvailability();
+    if (!this.checkTitle) {
       this.sharedService.popTitle();
       this.location.back();
-    }, 100);
+    }
   }
 
   ngOnDestroy(): void {

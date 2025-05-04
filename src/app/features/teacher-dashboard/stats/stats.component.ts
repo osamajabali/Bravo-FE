@@ -31,7 +31,6 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sharedService.removeArray();
-    this.sharedService.pushTitle('SKILLS')
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
       this.getStats();
       this.getClasses();

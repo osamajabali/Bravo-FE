@@ -21,7 +21,7 @@
     <!-- Dropdown with overlay icon -->
     <div class="header-item">
 
-      <p-popover #filterContent>
+      <p-popover #filterContent (onHide)="refreshClasses()" >
         <div class="filter-overlay-content">
           <!-- Header with title and close button -->
           <div class="filter-overlay-header">
@@ -66,9 +66,7 @@
                   @for (Subject of classesData.subjects; track $index) {
                   <div
                     class="filter-option"
-                    (click)="
-                      selectedItem(Subject.subjectId, classesEnum.subject)
-                    "
+                    (click)=" selectedItem(Subject.subjectId, classesEnum.subject) ; SubjectExpanded = false ; GradesExpanded = true ; sectionExpanded = false "
                   >
                     <div
                       class="custom-checkbox"
@@ -129,7 +127,7 @@
                   @for (grade of classesData.grades; track $index) {
                   <div
                     class="filter-option"
-                    (click)="selectedItem(grade.gradeId, classesEnum.grade)"
+                    (click)="selectedItem(grade.gradeId, classesEnum.grade) ; SubjectExpanded = false ; GradesExpanded = false ; sectionExpanded = true"
                   >
                     <div
                       class="custom-checkbox"
@@ -221,9 +219,7 @@
 
           <!-- Filter Actions -->
           <div class="filter-actions">
-            <button type="button" class="filter-btn filter-btn-clear">
-              {{ "CLEAR_ALL" | translate }}
-            </button>
+            <div></div>
             <button
               type="button"
               class="filter-btn filter-btn-apply"

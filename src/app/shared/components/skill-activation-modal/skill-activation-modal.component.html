@@ -1,4 +1,4 @@
-<p-dialog
+<p-dialog [dismissableMask]="true"
   [(visible)]="visible"
   [style]="{ width: '500px' }"
   [modal]="modal()"
@@ -9,7 +9,7 @@
 >
   <div class="dialog-content">
     <span class="dialog-message">
-      Please select the sections you want to activate
+      Please select the sections you want to {{buttonLabel}}
     </span>
     <div class="checkbox-group">
       <div class="checkbox-item">
@@ -52,7 +52,8 @@
     <button
       type="button"
       pButton
-      label="Activate"
+      [label]="buttonLabel"
+      [disabled]="!selectedIds.length"
       class="p-button-primary"
       (click)="_activateSkill()"
     ></button>

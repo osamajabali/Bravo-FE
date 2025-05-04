@@ -1,9 +1,9 @@
-<p-dialog [(visible)]="showReader" [closable]="true" [modal]="true" [style]="{ width: '60vw', height: '90vh' }" [draggable]="false" (onHide)="hideDialog()"
+<p-dialog [dismissableMask]="true" [(visible)]="showReader" [closable]="true" [modal]="true" [style]="{ width: '60vw', height: '90vh' }" [draggable]="false" (onHide)="hideDialog()"
     [resizable]="false" [closeOnEscape]="true" [showHeader]="false">
     <div class="book-reader">
         @if (isImage) {
             <div class="book-title">{{ book.title }}</div>
-        <p-galleria [value]="bookPages" [showItemNavigators]="true" [showThumbnails]="false" [showIndicators]="false"
+        <p-galleria [value]="bookPages" [showItemNavigators]="true" [showThumbnails]="false" [showIndicators]="false" [dir]="headerService.selectedSubjectId == 3 ? 'ltr' : 'rtl'"
             [circular]="false" [responsiveOptions]="responsiveOptions"
             [containerStyle]="{ margin: 'auto' }" [(activeIndex)]="activeIndex">
             <ng-template pTemplate="item" let-item>

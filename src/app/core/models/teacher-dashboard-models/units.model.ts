@@ -14,6 +14,6 @@ export class UnitPayload extends PaginationFilter {
 }
 
 export class UnitsPagination extends PaginationFilter {
-  units: Unit[]
+  units: Unit[] = []
 }
 

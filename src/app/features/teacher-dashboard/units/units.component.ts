@@ -82,7 +82,8 @@ export class UnitsComponent implements OnInit, OnDestroy {
 
   onSearchChange($event: string) {
     this.unitPayload.searchValue = $event;
-    this.getUnits()
+    this.sharedService.savePageState('UnitsComponent' , 1)
+    this.getUnits();
     }
 
   getUnits() {

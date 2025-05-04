@@ -91,6 +91,7 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
 
   onSearchChange($event: string) {
     this.skillsPayload.searchValue = $event;
+    this.sharedService.savePageState('SingleSkillComponent' , 1)
     this.getSkills()
   }
 

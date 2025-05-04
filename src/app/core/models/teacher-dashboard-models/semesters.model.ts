@@ -3,6 +3,7 @@ export class QuickSkill {
   isEnabled: boolean;
   activationDate: string;
   learningOutcomeId : number;
+  isDisabled: boolean;
   }
   
   export class Semester {

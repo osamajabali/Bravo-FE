@@ -26,7 +26,7 @@
             <a (click)="getSmartBoardDetails(skill)">
               <div class="action-icon">
                 <img src="icon-cards.svg" alt="cards" />
-                <span class="action-icon-text">Cards</span>
+                <span class="action-icon-text">Resources</span>
               </div>
             </a>
             <button pButton label="" class="assignment-button">
@@ -56,7 +56,7 @@
 </div>
 
 <!-- Custom Dialog -->
-<app-skill-activation-modal [(visible)]="activateSkill" [style]="{ width: '450px' }" [modal]="true" [closable]="true" [sections]="sections"
+<app-skill-activation-modal [(visible)]="activateSkill" [buttonLabel]="skill.isEnabled ? 'Deactivate' : 'Activate'" [style]="{ width: '450px' }" [modal]="true" [closable]="true" [sections]="sections"
   [closeOnEscape]="true" (activateSections)="_activateSkill($event)"></app-skill-activation-modal>
 
 @if (showSmartBoard) {

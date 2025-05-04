@@ -134,6 +134,7 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
 
   onSearchChange($event: string) {
     this.curriculumsPayload.searchValue = $event;
+    this.sharedService.savePageState('SkillLevelOneComponent' , 1)
     this.getSkills()
   }
 

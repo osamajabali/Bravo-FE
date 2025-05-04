@@ -2,6 +2,7 @@ export class Classes {
     roleId: number; 
     subjectId: number; 
     gradeId: number;
+    courseSectionId: number;
   }
   
 

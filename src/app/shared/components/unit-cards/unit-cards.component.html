@@ -1,5 +1,5 @@
 <div class="units-list">
-  @if (cards?.length) { @for (card of cards; track $index) {
+  @if (cards) { @for (card of cards; track $index) {
   <a class="text-decoration-none" role="button" tabindex="0" (click)="clickedCard(card)">
     <div class="unit-card">
       <div class="unit-content">

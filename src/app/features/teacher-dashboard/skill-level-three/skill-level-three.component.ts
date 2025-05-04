@@ -112,6 +112,7 @@ export class SkillLevelThreeComponent {
   
     onSearchChange($event: string) {
       this.curriculumsPayload.searchValue = $event;
+      this.sharedService.savePageState('SkillLevelThreeComponent' , 1)
       this.getSkills()
     }
   

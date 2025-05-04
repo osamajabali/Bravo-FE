@@ -73,6 +73,7 @@ export class LessonsComponent implements OnInit, OnDestroy {
 
   onSearchChange($event: string) {
     this.lessonPayload.searchValue = $event;
+    this.sharedService.savePageState('LessonsComponent' , 1)
     this.getLessons()
     }
 

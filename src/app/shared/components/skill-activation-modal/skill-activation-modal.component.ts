@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, input, model, OnInit, Output, output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, input, model, OnInit, Output, output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -21,7 +21,7 @@ interface SelectedGrades {
   templateUrl: './skill-activation-modal.component.html',
   styleUrl: './skill-activation-modal.component.scss'
 })
-export class SkillActivationModalComponent  {
+export class SkillActivationModalComponent {
   visible = model<boolean>(false);
   visibleChange = output<boolean>();
   modal = input<boolean>(true);
@@ -34,18 +34,28 @@ export class SkillActivationModalComponent  {
   private refreshSubscription!: Subscription;
   selectedIds: number[] = [];
   allSelected: boolean = false;
-
+  headerService = inject(HeaderService)
+  @Input() buttonLabel: string = 'Activate';
 
   close() {
-    this.sections = [];
+    this.sections
+      .filter(x => x.isSelected === true)
+      .map(x => {
+        if (x.courseSectionId == this.headerService.selectedSectionId) {
+          x.isSelected = true;
+        } else {
+          x.isSelected = false;
+        }
+      });
+    this.allSelected = false;
     this.visible.set(false);
     this.visibleChange.emit(this.visible());
   }
 
   _activateSkill() {
     this.selectedIds = this.sections
-    .filter(section => section.isSelected)
-    .map(section => section.courseSectionId);
+      .filter(section => section.isSelected)
+      .map(section => section.courseSectionId);
     this.activateSections.emit(this.selectedIds);
     this.activate.emit(true)
     this.close();
@@ -57,8 +67,8 @@ export class SkillActivationModalComponent  {
     });
 
     this.selectedIds = this.sections
-    .filter(section => section.isSelected)
-    .map(section => section.courseSectionId);
+      .filter(section => section.isSelected)
+      .map(section => section.courseSectionId);
 
     console.log(this.selectedIds)
   }

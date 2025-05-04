@@ -8,7 +8,7 @@
   allowfullscreen
 ></iframe>
 
-<p-dialog
+<p-dialog [dismissableMask]="true" (onHide)="isPlaying = false"
   [(visible)]="showVideoDialog"
   [modal]="true"
   [closable]="true"

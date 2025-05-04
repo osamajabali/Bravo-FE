@@ -30,7 +30,6 @@ export class SemestersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sharedService.removeArray();
-    this.sharedService.pushTitle('SEMESTERS');
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
       this.getStats();
       this.getClasses();
@@ -44,11 +43,15 @@ export class SemestersComponent implements OnInit, OnDestroy {
     }
   }
 
-  getClasses() {debugger
+  getClasses() {
 
     this.statsService.getSemesters(this.headerService.selectedSectionId).subscribe((res) => {
       if (res) {
-        this.skills = res.result;
+        if(res.result == null){
+          this.skills = [];
+        }else{
+          this.skills = res.result;
+        }
       }
     });
   }

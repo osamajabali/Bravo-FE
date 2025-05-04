@@ -56,19 +56,12 @@ export class VideoDialogComponent
 
   // Method to sanitize the URL for iframe src
   getSafeUrl(url: string): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url+'?autoplay=1');
   }
 
   // Toggle play/pause functionality
   togglePlay(): void {
     this.isPlaying = !this.isPlaying;
-    if (this.videoPlayer?.nativeElement) {
-      if (this.isPlaying) {
-        this.videoPlayer.nativeElement.play();
-      } else {
-        this.videoPlayer.nativeElement.pause();
-      }
-    }
   }
 
   // Handle video play
