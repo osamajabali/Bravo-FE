@@ -21,10 +21,10 @@
           <img src="icon-book.svg" alt="book" />
           <span class="text">Show Criteria</span>
         </div>
-        <a class="icon" (click)="getStudents(book.readingSubLevelId)">
+        <button class="icon bg-white" [disabled]="book.studentsCount == 0" (click)="getStudents(book.readingSubLevelId)" >
           <img src="icon-multiple-users.svg" alt="multiple users" />
           <span class="text">{{book.studentsCount}} Students</span>
-        </a>
+        </button>
         <div class="icon assignment-icon">
           <img src="icon-plus.svg" alt="plus" />
           <span class="text">Assignment</span>

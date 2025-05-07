@@ -62,6 +62,7 @@ export class BookListViewComponent implements OnInit, OnDestroy {
       if (res) {
         this.route.paramMap.subscribe((params) => {
           this.getMainLevels();
+          this.onMainLevelChange(0);
           this.getFilters();
           this.getStories();
         });
@@ -87,8 +88,7 @@ export class BookListViewComponent implements OnInit, OnDestroy {
   getMainLevels() {
     this.readingService.getMainLevels().subscribe((res) => {
       if (res.success) {
-        const allLevels = { mainLevelId: 0, subLevelId : 0, name: 'All Levels', order: 0 };
-        this.mainLevels = [allLevels, ...res.result];
+        this.mainLevels = res.result;
       }
     });
   }
@@ -110,25 +110,28 @@ export class BookListViewComponent implements OnInit, OnDestroy {
   }
 
 
-  onMainLevelChange() {
-    this.readingFilter.readingSubLevelId = 0 ;
+  onMainLevelChange(mainLevelId : number) {
+    this.readingFilter = new ReadingFilter() ;
+    this.readingFilter.readingMainLevelId = mainLevelId;
     this.sharedService.savePageState('BookListComponent', 1);
     this.readingService.getSubLevels(this.readingFilter.readingMainLevelId).subscribe((res) => {
       if (res.success) {
         this.getStories();
-        const allLevels = { mainLevelId: 0, name: 'All Sub Levels', order: 0 };
-        this.subLevels = [allLevels, ...res.result];
+        this.subLevels =  res.result;
       }
     });
   }
 
     viewBook(book: Story) {
-      this.sharedService.pushTitle(book.title + '- Books');
+      this.sharedService.pushTitle(book.title);
       this.sharedService.saveId('bookId' , book.storyId)
       this.router.navigate(['/features/book-details']);
     }
 
-  onSubLevelChange() {
+  onSubLevelChange(mainLevelId : number , subLevelId : number) {
+    this.readingFilter = new ReadingFilter() ;
+    this.readingFilter.readingMainLevelId = mainLevelId;
+    this.readingFilter.readingSubLevelId = subLevelId;
     this.sharedService.savePageState('BookListComponent', 1);
     this.getStories();
   }

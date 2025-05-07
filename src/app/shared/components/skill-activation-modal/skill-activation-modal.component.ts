@@ -32,21 +32,24 @@ export class SkillActivationModalComponent {
   @Input() sections: Section[] = [];
   @Output() activate = new EventEmitter<boolean>();
   private refreshSubscription!: Subscription;
-  selectedIds: number[] = [];
+  selectedIds: number[] = [0];
   allSelected: boolean = false;
   headerService = inject(HeaderService)
   @Input() buttonLabel: string = 'Activate';
 
   close() {
-    this.sections
-      .filter(x => x.isSelected === true)
-      .map(x => {
+    this.sections.map(x => {
         if (x.courseSectionId == this.headerService.selectedSectionId) {
           x.isSelected = true;
         } else {
           x.isSelected = false;
         }
       });
+
+      this.selectedIds = this.sections
+      .filter(section => section.isSelected)
+      .map(section => section.courseSectionId);
+      
     this.allSelected = false;
     this.visible.set(false);
     this.visibleChange.emit(this.visible());

@@ -1,14 +1,4 @@
-<!-- Example iframe for static video -->
-<iframe #videoPlayer
-  [src]="getSafeUrl(videoUrls[0].url)"
-  width="640"
-  height="360"
-  frameborder="0"
-  allow="autoplay; fullscreen"
-  allowfullscreen
-></iframe>
-
-<p-dialog [dismissableMask]="true" (onHide)="isPlaying = false"
+<p-dialog [dismissableMask]="true" (onHide)="isPlaying = false" (onHide)="isPlaying = false"
   [(visible)]="showVideoDialog"
   [modal]="true"
   [closable]="true"
@@ -20,7 +10,7 @@
   (onHide)="closeDialog()"
 >
 <div class="video-container">
-  @if(!isPlaying){
+  @if(false){
     <img 
     class="play-icon" 
     src="icon-video-play.svg" 

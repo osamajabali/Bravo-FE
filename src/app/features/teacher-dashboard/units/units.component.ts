@@ -16,15 +16,20 @@ import { PaginatorState } from 'primeng/paginator';
 import { SkillsStatisticsService } from '../../../core/services/skills/skills-statistics.service';
 import { Statistics, StatisticsResponse } from '../../../core/models/teacher-dashboard-models/statistics.model';
 import { StatisticsEnum } from '../../../core/models/shared-models/enums';
+import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
+import { SkeletonComponent } from "../../../shared/components/skeleton/skeleton.component";
 
 @Component({
   selector: 'app-units',
+  standalone : true,
   imports: [
     CommonModule,
     UnitCardsComponent,
     TranslateModule,
     SkillSummaryComponent,
-  ],
+    PaginationComponent,
+    SkeletonComponent
+],
   templateUrl: './units.component.html',
   styleUrls: ['./units.component.scss'], // Corrected styleUrl to styleUrls (plural)
 })
@@ -43,11 +48,7 @@ export class UnitsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private statisticsService : SkillsStatisticsService
-  ) {
-    if (!this.sharedService) {
-      this.sharedService = new SharedService();
-    }
-  }
+  ) {}
 
   ngOnInit(): void {
     // Subscribing to the refresh event

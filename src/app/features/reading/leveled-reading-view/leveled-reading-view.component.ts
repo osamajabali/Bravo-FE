@@ -126,7 +126,7 @@ export class LeveledReadingViewComponent implements OnInit, OnDestroy {
   }
 
   viewBooks(book: LevelReadingResponse) {
-    this.sharedService.pushTitle(book.name + '- Books');
+    this.sharedService.pushTitle(book.name);
     this.sharedService.saveId('readingSublevelId' , book.readingSubLevelId)
     this.router.navigate(['/features/leveled-reading/books-grid']);
   }

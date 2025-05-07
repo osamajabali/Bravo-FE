@@ -10,55 +10,23 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
 
 @Component({
   selector: 'app-unit-cards',
-  imports: [SkeletonComponent, PaginationComponent],
+  imports: [],
   templateUrl: './unit-cards.component.html',
   styleUrl: './unit-cards.component.scss'
 })
 export class UnitCardsComponent {
   
-  @Input() cards: (Unit | Lessons | LessonsCurriculums)[] = [];
-  @Input() first: number = 1;
-  @Input() rows: number = 0;
-  @Input() totalRecords: number = 0;
-  @Output() paginatorState = new EventEmitter<PaginatorState>();
-  @Output() cardClick = new EventEmitter<(Unit | Lessons | LessonsCurriculums)>();
+  @Input() card: Unit = new Unit();
+  @Output() cardClick = new EventEmitter<(Unit)>();
   
-  constructor(private router: Router, private sharedService : SharedService) {
-    if (this.cards.length) {
-      this.checkType(this.cards[0])
-    }
-  }
+  constructor(private router: Router, private sharedService : SharedService) {}
   
-  onPageChange($event: PaginatorState) {
-  this.paginatorState.emit($event)
-  }
-
-  checkType(card: Unit | Lessons | LessonsCurriculums): 'unit' | 'lesson' | 'curriculum' {
-    if (this.isUnit(card)) return 'unit';
-    if (this.isLesson(card)) return 'lesson';
-    return 'curriculum';
-  }
-
-  isUnit(card: Unit | Lessons | LessonsCurriculums): card is Unit {
+  isUnit(card: Unit ): card is Unit {
     return 'unitLabelName' in card; // Type guard to check if card is a Unit
   }
 
-  isLesson(card: Unit | Lessons | LessonsCurriculums): card is Lessons {
-    return 'lessonName' in card; // Type guard to check if card is a Lesson
-  }
 
-  clickedCard(card: Unit | Lessons | LessonsCurriculums) {
+  clickedCard(card: Unit ) {
     this.cardClick.emit(card)
-    if ((card as Unit).unitId) {
-      
-    } else if ((card as Lessons).lessonId) {
-      this.sharedService.pushTitle((card as Lessons).name)
-      this.router.navigate(['/features/semesters/lessons-curriculums', (card as Lessons).lessonId]);
-    } else {
-      const curriculumId = (card as LessonsCurriculums).curriculumLearningOutcomeId;
-      this.sharedService.pushTitle((card as LessonsCurriculums).name)
-      this.router.navigate(['/features/semesters/single-skill', 0, curriculumId]);
-
-    }
   }
 }

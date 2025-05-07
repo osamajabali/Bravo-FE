@@ -1,4 +1,4 @@
-<p-dialog [dismissableMask]="true" [(visible)]="showReader" [closable]="true" [modal]="false" [style]="{ width: '60vw', height: '90vh' }" [draggable]="false" (onHide)="hideDialog()"
+<p-dialog [dismissableMask]="true" [(visible)]="showReader" [closable]="true" [modal]="true" [style]="{ width: '60vw', height: '90vh' }" [draggable]="true" (onHide)="hideDialog()"
     [resizable]="false" [closeOnEscape]="true" [showHeader]="false">
     <div class="book-reader">
         <div class="galleria-container">
@@ -6,7 +6,7 @@
                 [circular]="true" [responsiveOptions]="responsiveOptions" [(activeIndex)]="activeIndex" (activeIndexChange)="nextPage()">
                 <ng-template pTemplate="item" let-item>
                     <!-- Dynamically render sanitized HTML content -->
-                    <div [innerHTML]="getSanitizedContent(item.htmlContent)"></div>
+                    <div [innerHTML]="item.htmlContent"></div>
                 </ng-template>
 
                 <ng-template pTemplate="previousitemicon">

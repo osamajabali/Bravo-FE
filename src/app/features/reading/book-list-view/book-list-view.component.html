@@ -7,11 +7,11 @@
   </div>
   <div class="level-filters">
     <p-dropdown [options]="mainLevels" [(ngModel)]="readingFilter.readingMainLevelId" placeholder="Select Main Level"
-      optionLabel="name" optionValue="mainLevelId" [showClear]="false" (ngModelChange)="onMainLevelChange()"
+      optionLabel="name" optionValue="mainLevelId" [showClear]="false" (ngModelChange)="onMainLevelChange($event)"
       styleClass="main-level-dropdown">
     </p-dropdown>
     <p-dropdown [options]="subLevels" [(ngModel)]="readingFilter.readingSubLevelId" placeholder="Select Sub Level" [showClear]="false"
-      optionLabel="name" optionValue="subLevelId" (ngModelChange)="onSubLevelChange()" styleClass="sub-level-dropdown">
+      optionLabel="name" optionValue="subLevelId" (ngModelChange)="onSubLevelChange(readingFilter.readingMainLevelId , $event)" styleClass="sub-level-dropdown">
     </p-dropdown>
     <div class="filter-container" (click)="toggleAdvancedSearch()">
       <img src="icon-filter.svg" alt="filter" />

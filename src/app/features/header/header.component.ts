@@ -1,10 +1,10 @@
 import { CommonModule, DOCUMENT, isPlatformBrowser, Location } from '@angular/common';
-import { Component, OnDestroy, OnInit, PLATFORM_ID, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, PLATFORM_ID, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { filter, Subscription } from 'rxjs';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { PopoverModule } from 'primeng/popover';
+import { ActivatedRoute, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { Popover, PopoverModule } from 'primeng/popover';
 import { ButtonModule, ButtonDirective } from 'primeng/button';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MenuModule } from 'primeng/menu';
@@ -35,6 +35,7 @@ import { SpinnerService } from '../../core/services/shared-services/spinner.serv
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  @ViewChild('filterContent') filterContent: Popover;  // Get the reference to the popover
   // Services via Inject
   private readonly loginService = inject(LoginService);
   private readonly headerService = inject(HeaderService);
@@ -88,7 +89,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.router.events.pipe(
         filter(event => event instanceof NavigationEnd)
       ).subscribe(() => {
-        this.getClasses()
+        this.getClasses();
+        this.sectionExpanded = true;
+        this.GradesExpanded = false;
+        this.SubjectExpanded = false;
+        this.filterContent.hide();  // Close the popover
       })
     );
 
@@ -226,6 +231,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.classesData = res.result;
       }
     });
+
   }
 
   selectedItem(id: number, classesEnum: ClassesEnum) {
@@ -265,7 +271,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   applyFilter($event) {
     this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.courseSections)} , ${this.getSelectedName(this.classesData.subjects)} `;
     const url = this.router.url;
-
+    this.filterContent.hide();  // Close the popover
     if (url.includes('semester')) {
       // Route to the component based on URL check
       this.router.navigate(['/features/semesters']);

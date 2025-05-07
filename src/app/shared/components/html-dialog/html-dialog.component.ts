@@ -9,8 +9,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 // Standalone Component Configuration
 @Component({
   selector: 'app-html-dialog',
-  standalone: true, // This makes the component standalone
-  imports: [DialogModule, GalleriaModule], // Import required modules directly here
+  standalone: true, 
+  imports: [DialogModule, GalleriaModule], 
   templateUrl: './html-dialog.component.html',
   styleUrls: ['./html-dialog.component.scss'],
   providers: [
@@ -23,31 +23,25 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class HtmlDialogComponent implements OnInit, ControlValueAccessor {
   showReader: boolean = false;
-  book: any = { title: 'Sample Book' };
-  bookPages: string[] = [];
   activeIndex: number = 0;
+  previousIndex: number = 0;
+  storyPages: StoryPages = new StoryPages();
+  storyPagesResponse: StoryPageResponseArray = new StoryPageResponseArray();
+  
   responsiveOptions: any[] = [
     { breakpoint: '1024px', numVisible: 3, numScroll: 3 },
     { breakpoint: '768px', numVisible: 2, numScroll: 2 },
     { breakpoint: '560px', numVisible: 1, numScroll: 1 }
   ];
-  storyPages: StoryPages = new StoryPages();
-  storyPagesResponse: StoryPageResponseArray = new StoryPageResponseArray();
-  previousIndex: number =0;
 
-  constructor(private readingService: LeveldReadingService, private sanitizer: DomSanitizer) {
-    this.bookPages = [
-      "<h1>Page 1</h1><p>This is the content of the first page.</p>",
-      "<h1>Page 2</h1><p>This is the content of the second page.</p>",
-      "<h1>Page 3</h1><p>This is the content of the third page.</p>"
-    ];
-  }
+  constructor(private readingService: LeveldReadingService, private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
     this.storyPages.storyId = 337697;
     this.readingService.getStoryPages(this.storyPages).subscribe(res => {
       if (res.success) {
         this.storyPagesResponse = res.result;
+        this.storyPagesResponse.pages.forEach(x => x.htmlContent = this.getSanitizedContent(x.htmlContent) as string)
       }
     });
   }
@@ -58,7 +52,7 @@ export class HtmlDialogComponent implements OnInit, ControlValueAccessor {
 
   // ControlValueAccessor Methods
   writeValue(value: any): void {
-    if (value !== undefined) {
+    if (value !== undefined && value !== null) {
       this.showReader = value;
     }
   }
@@ -80,22 +74,24 @@ export class HtmlDialogComponent implements OnInit, ControlValueAccessor {
   }
 
   nextPage() {
-    if(this.storyPagesResponse.pages.length != this.storyPagesResponse.totalRecords){
-      if(this.activeIndex != this.storyPagesResponse.totalRecords){
-        if ((this.activeIndex + 1) % this.storyPagesResponse.pageSize === 0) {
-          if (this.previousIndex < this.activeIndex + 1) {
-            this.storyPages.pageNumber = Math.floor((this.activeIndex + 1) / this.storyPagesResponse.pageSize) + 1;
-              this.readingService.getStoryPages(this.storyPages).subscribe(res => {
-              if (res.success) {
-                this.storyPagesResponse.pages.push(...res.result.pages);
-                console.log(this.storyPagesResponse.pages)
-              }
-            });
+    const currentPage = this.activeIndex + 1;
+    const totalRecords = this.storyPagesResponse.totalRecords;
+    const pageSize = this.storyPagesResponse.pageSize;
+
+    if (this.storyPagesResponse.pages.length < totalRecords && currentPage % pageSize === 0) {
+      const nextPageNumber = Math.floor(currentPage / pageSize) + 1;
+
+      if (this.previousIndex < currentPage) {
+        this.storyPages.pageNumber = nextPageNumber;
+        this.readingService.getStoryPages(this.storyPages).subscribe(res => {
+          if (res.success) {
+            this.storyPagesResponse.pages.push(...res.result.pages);
+            console.log(this.storyPagesResponse.pages);
           }
-        }
+        });
       }
     }
 
-    this.previousIndex = this.activeIndex + 1;
+    this.previousIndex = currentPage;
   }
 }
