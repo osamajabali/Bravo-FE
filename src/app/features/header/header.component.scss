@@ -11,17 +11,27 @@
 .header-left {
   display: flex;
   gap: 1rem;
+  flex: 1;
 
   .page-title {
     font-size: var(--font-size-l);
+    font-weight: var(--font-weight-bold);
     color: var(--primary-primary-900);
     margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    text-overflow: ellipsis;
   }
 }
 
 .header-right {
   display: flex;
+  flex: 1;
   align-items: center;
+  justify-content: flex-end;
   gap: 1.5rem;
 }
 
@@ -72,6 +82,7 @@
     padding: 0.5rem;
     border-radius: 8px;
     transition: background-color 0.2s ease;
+    min-width: 172px;
 
     &:hover {
       background-color: var(--neutral-grey-100);
@@ -90,6 +101,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 
     .user-initials {
       color: var(--neutral-white);
@@ -370,4 +382,8 @@
 
 .rotate-180 {
   transform: rotate(180deg);
+}
+
+.button-label {
+  font-weight: var(--font-weight-bold);
 }
