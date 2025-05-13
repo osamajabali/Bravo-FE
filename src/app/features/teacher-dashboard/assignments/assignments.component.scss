@@ -208,8 +208,8 @@
             span {
               display: inline-flex;
               align-items: center;
-              gap: var(--padding-s);
-              padding: var(--padding-xs) var(--padding-s);
+              gap: var(--padding-xxs);
+              padding: var(--padding-xxs) var(--padding-xs);
               border-radius: var(--radius-xxxl);
               font-size: var(--font-size-xxs);
               width: fit-content;
@@ -246,8 +246,8 @@
               }
 
               .dot {
-                width: 10px;
-                height: 10px;
+                width: 8px;
+                height: 8px;
                 border-radius: 50%;
               }
             }
