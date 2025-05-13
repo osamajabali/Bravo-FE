@@ -75,3 +75,19 @@ a {
 .pointer {
   cursor: pointer;
 }
+
+/* Hide scrollbar for the entire window */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: none;
+}
+
+/* For IE/Edge */
+* {
+  -ms-overflow-style: none;
+}
+
