@@ -75,6 +75,8 @@ export class AssignmentsComponent implements OnInit {
   selectedOrderOption = null;
   selectedRecipient = null;
   showAdvancedSearch = false;
+  sortColumn: string = '';
+  sortDirection: 'asc' | 'desc' | '' = '';
   subjects = [
     { label: 'English', value: 'english' },
     { label: 'Math', value: 'math' },
@@ -265,6 +267,17 @@ export class AssignmentsComponent implements OnInit {
   viewQuestions() {
     // Implement view questions functionality
     this.actionMenu.hide();
+  }
+
+  onSort(column: string): void {
+    // Implement sorting logic for each column
+    this.sortColumn = column;
+    this.sortDirection =
+      this.sortDirection === ''
+        ? 'asc'
+        : this.sortDirection === 'asc'
+        ? 'desc'
+        : '';
   }
 
   exportAssignment() {

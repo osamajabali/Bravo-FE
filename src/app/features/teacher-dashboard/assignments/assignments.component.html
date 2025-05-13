@@ -166,17 +166,127 @@
   <div class="content">
     <!-- Grid Headers -->
     <div class="grid-header">
-      <div class="header-item title">Title</div>
-      <div class="header-item status">Status</div>
-      <div class="header-item avg-score">AVG. Score</div>
-      <div class="header-item target">Target</div>
-      <div class="header-item assigned-by">Assigned By</div>
-      <div class="header-item post-date">Post Date</div>
-      <div class="header-item due-date">Due On</div>
-      <div class="header-item submissions">Submissions</div>
-      <div class="header-item actions"></div>
+      <div class="header-item title">
+        <span>Title</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('title')"
+          [src]="
+            sortColumn === 'title'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item status">
+        <span>Status</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('status')"
+          [src]="
+            sortColumn === 'status'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item avg-score">
+        <span>AVG. Score</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('avgScore')"
+          [src]="
+            sortColumn === 'avgScore'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item target">
+        <span>Target</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('target')"
+          [src]="
+            sortColumn === 'target'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item assigned-by">
+        <span>Assigned By</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('assignedBy')"
+          [src]="
+            sortColumn === 'assignedBy'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item post-date">
+        <span>Post Date</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('postDate')"
+          [src]="
+            sortColumn === 'postDate'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item due-date">
+        <span>Due On</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('dueDate')"
+          [src]="
+            sortColumn === 'dueDate'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item submissions">
+        <span>Submissions</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('submissions')"
+          [src]="
+            sortColumn === 'submissions'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
     </div>
-
     <!-- Assignment List -->
     <div class="assignments-list">
       @for (assignment of assignments; track assignment.id) {
@@ -215,7 +325,12 @@
             class="p-button-primary"
             (click)="viewAssignment(assignment.id)"
           ></button>
-          <img src="icon-more-vertical.svg" alt="more" class="pointer more-actions" (click)="showActionMenu($event, assignment)" />
+          <img
+            src="icon-more-vertical.svg"
+            alt="more"
+            class="pointer more-actions"
+            (click)="showActionMenu($event, assignment)"
+          />
         </div>
       </div>
       }
@@ -320,25 +435,29 @@
       <span class="menu-text">Resend</span>
     </div>
     <div class="menu-separator"></div>
-    
+
     <div class="menu-item" (click)="deactivateAssignment()">
       <img src="icon-deactivate.svg" alt="deactivate" class="menu-icon" />
       <span class="menu-text">Deactivate</span>
     </div>
     <div class="menu-separator"></div>
-    
+
     <div class="menu-item" (click)="editAssignment()">
       <img src="icon-pencil-edit.svg" alt="edit" class="menu-icon" />
       <span class="menu-text">Edit</span>
     </div>
     <div class="menu-separator"></div>
-    
+
     <div class="menu-item" (click)="viewQuestions()">
-      <img src="icon-view-questions.svg" alt="view questions" class="menu-icon" />
+      <img
+        src="icon-view-questions.svg"
+        alt="view questions"
+        class="menu-icon"
+      />
       <span class="menu-text">View Questions</span>
     </div>
     <div class="menu-separator"></div>
-    
+
     <div class="menu-item" (click)="exportAssignment()">
       <img src="icon-file-export.svg" alt="export" class="menu-icon" />
       <span class="menu-text">Export</span>

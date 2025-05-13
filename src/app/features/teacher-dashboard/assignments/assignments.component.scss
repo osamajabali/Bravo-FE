@@ -138,6 +138,9 @@
       .header-item {
         color: var(--neutral-grey-500);
         font-size: var(--font-size-xxs);
+        display: flex;
+        align-items: center;
+        gap: var(--padding-s);
       }
     }
 
