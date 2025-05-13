@@ -96,40 +96,40 @@
             [(ngModel)]="selectedAssignmentType"
             placeholder="Assignment Type"
             [showClear]="false"
-            optionLabel="label"
-            optionValue="value"
+            optionLabel="name"
+            optionValue="assignmentTypeId"
           ></p-select>
           <p-select
-            [options]="assignmentStatuses"
+            [options]="assignmentFilter.filterStatus"
             [(ngModel)]="selectedAssignmentStatus"
             placeholder="Assignment Status"
             [showClear]="false"
-            optionLabel="label"
-            optionValue="value"
+            optionLabel="name"
+            optionValue="id"
           ></p-select>
           <p-select
-            [options]="sortOptions"
+            [options]="assignmentFilter.filterSortBy"
             [(ngModel)]="selectedSortOption"
             placeholder="Sort By"
             [showClear]="false"
-            optionLabel="label"
-            optionValue="value"
+            optionLabel="name"
+            optionValue="id"
           ></p-select>
           <p-select
-            [options]="orderOptions"
+            [options]="assignmentFilter.filterOrders"
             [(ngModel)]="selectedOrderOption"
             placeholder="Order"
             [showClear]="false"
-            optionLabel="label"
-            optionValue="value"
+            optionLabel="name"
+            optionValue="id"
           ></p-select>
           <p-select
-            [options]="recipients"
+            [options]="assignmentFilter.recipientTypes"
             [(ngModel)]="selectedRecipient"
             placeholder="Recipient"
             [showClear]="false"
-            optionLabel="label"
-            optionValue="value"
+            optionLabel="name"
+            optionValue="recipientId"
           ></p-select>
         </div>
         <div class="advanced-search-actions">

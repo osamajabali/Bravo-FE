@@ -13,6 +13,10 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
+import { AssignmentsService } from '../../../core/services/assignment/assignments.service';
+import { AssignmentFilter } from '../../../core/models/assignment/assignment.model';
+import { HeaderService } from '../../../core/services/header-services/header.service';
+import { Subscription } from 'rxjs';
 
 interface FilterSection {
   title: string;
@@ -58,8 +62,7 @@ interface Assignment {
 })
 export class AssignmentsComponent implements OnInit {
   @ViewChild('actionMenu') actionMenu!: Menu;
-  
-  sharedService = inject(SharedService);
+
   router = inject(Router);
   selectedTab: string = 'active';
   searchTerm = '';
@@ -98,34 +101,8 @@ export class AssignmentsComponent implements OnInit {
     { label: 'Homeroom 3', value: 'homeroom3' },
   ];
 
-  assignmentTypes = [
-    { label: 'Assignment Type 1', value: 'assignmentType1' },
-    { label: 'Assignment Type 2', value: 'assignmentType2' },
-    { label: 'Assignment Type 3', value: 'assignmentType3' },
-  ];
+  assignmentTypes : {assignmentTypeId : number , name : string}[] = [];
 
-  assignmentStatuses = [
-    { label: 'Active', value: 'active' },
-    { label: 'Inactive', value: 'inactive' },
-  ];  
-
-  orderOptions = [
-    { label: 'Ascending', value: 'ascending' },
-    { label: 'Descending', value: 'descending' },
-  ];
-
-  recipients = [
-    { label: 'Recipient 1', value: 'recipient1' },
-    { label: 'Recipient 2', value: 'recipient2' },
-    { label: 'Recipient 3', value: 'recipient3' },
-  ];
-  
-  sortOptions = [
-    { label: 'Sort Option 1', value: 'sortOption1' },
-    { label: 'Sort Option 2', value: 'sortOption2' },
-    { label: 'Sort Option 3', value: 'sortOption3' },
-  ];
-  
   // Mock data for assignments
   assignments: Assignment[] = [
     {
@@ -186,9 +163,29 @@ export class AssignmentsComponent implements OnInit {
   ];
 
   selectedAssignment: Assignment | null = null;
+  assignmentFilter: AssignmentFilter = new AssignmentFilter();
+  private refreshSubscription!: Subscription;
+
+  constructor(private assignmentService: AssignmentsService, private headerService: HeaderService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
-    this.sharedService.pushTitle('ASSIGNMENTS');
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
+      this.getAssignmentsFilter();
+    });
+  }
+
+  getAssignmentsFilter() {
+    this.assignmentService.getAssignmentFilters().subscribe(res => {
+      if (res.success) {
+        this.assignmentFilter = res.result;
+      }
+    });
+
+    this.assignmentService.getAssignmentTypes(this.headerService.selectedSubjectId).subscribe(res => {
+      if (res.success) {
+        this.assignmentTypes = res.result;
+      }
+    })
   }
 
   onTabClick(tab: string) {
@@ -276,8 +273,8 @@ export class AssignmentsComponent implements OnInit {
       this.sortDirection === ''
         ? 'asc'
         : this.sortDirection === 'asc'
-        ? 'desc'
-        : '';
+          ? 'desc'
+          : '';
   }
 
   exportAssignment() {

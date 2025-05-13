@@ -9,8 +9,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 // Standalone Component Configuration
 @Component({
   selector: 'app-html-dialog',
-  standalone: true, 
-  imports: [DialogModule, GalleriaModule], 
+  standalone: true,
+  imports: [DialogModule, GalleriaModule],
   templateUrl: './html-dialog.component.html',
   styleUrls: ['./html-dialog.component.scss'],
   providers: [
@@ -27,14 +27,14 @@ export class HtmlDialogComponent implements OnInit, ControlValueAccessor {
   previousIndex: number = 0;
   storyPages: StoryPages = new StoryPages();
   storyPagesResponse: StoryPageResponseArray = new StoryPageResponseArray();
-  
+
   responsiveOptions: any[] = [
     { breakpoint: '1024px', numVisible: 3, numScroll: 3 },
     { breakpoint: '768px', numVisible: 2, numScroll: 2 },
     { breakpoint: '560px', numVisible: 1, numScroll: 1 }
   ];
 
-  constructor(private readingService: LeveldReadingService, private sanitizer: DomSanitizer) {}
+  constructor(private readingService: LeveldReadingService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.storyPages.storyId = 337697;
@@ -47,10 +47,18 @@ export class HtmlDialogComponent implements OnInit, ControlValueAccessor {
   }
 
   getSanitizedContent(html: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+
+    const styles = tempDiv.querySelectorAll('style');
+    styles.forEach(style => style.remove());
+
+    const scripts = tempDiv.querySelectorAll('script');
+    scripts.forEach(script => script.remove());
+
+    return this.sanitizer.bypassSecurityTrustHtml(tempDiv.innerHTML);
   }
 
-  // ControlValueAccessor Methods
   writeValue(value: any): void {
     if (value !== undefined && value !== null) {
       this.showReader = value;
