@@ -84,6 +84,9 @@
     border-radius: 8px;
     transition: background-color 0.2s ease;
     min-width: 172px;
+    max-width: 300px;
+    max-height: 56px;
+    line-height: 16px;
 
     &:hover {
       background-color: var(--neutral-grey-100);
@@ -119,6 +122,12 @@
       font-weight: 600;
       font-size: 0.9rem;
       color: var(--neutral-grey-900);
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      text-overflow: ellipsis;
     }
 
     .user-role {
