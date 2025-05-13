@@ -46,16 +46,18 @@ interface StudentSubmission {
     FormsModule,
     MenuModule,
     DialogModule,
-    TranslateModule
+    TranslateModule,
   ],
   templateUrl: './assignment-details.component.html',
-  styleUrl: './assignment-details.component.scss'
+  styleUrl: './assignment-details.component.scss',
 })
 export class AssignmentDetailsComponent implements OnInit {
   sharedService = inject(SharedService);
   selectAll: boolean = false;
   showDeleteConfirmation: boolean = false;
   router = inject(Router);
+  sortColumn: string = '';
+  sortDirection: 'asc' | 'desc' | '' = '';
 
   assignmentDetails: AssignmentDetails = {
     grade: 'Grade 5',
@@ -67,7 +69,7 @@ export class AssignmentDetailsComponent implements OnInit {
     section: 'Section A',
     assignedBy: 'John Doe',
     avgScore: 85,
-    isEnabled: true
+    isEnabled: true,
   };
 
   submissions: StudentSubmission[] = [
@@ -80,7 +82,7 @@ export class AssignmentDetailsComponent implements OnInit {
       wrongAnswers: 2,
       score: 80,
       timeSpent: '45 min',
-      selected: false
+      selected: false,
     },
     {
       id: 2,
@@ -91,8 +93,8 @@ export class AssignmentDetailsComponent implements OnInit {
       wrongAnswers: 0,
       score: 0,
       timeSpent: '-',
-      selected: false
-    }
+      selected: false,
+    },
   ];
 
   ngOnInit(): void {
@@ -135,11 +137,14 @@ export class AssignmentDetailsComponent implements OnInit {
   }
 
   viewSubmission(submissionId: number): void {
-    this.router.navigate(['/features/assignments/assignment-submission', submissionId]);
+    this.router.navigate([
+      '/features/assignments/assignment-submission',
+      submissionId,
+    ]);
   }
 
   onSelectAll(): void {
-    this.submissions.forEach(submission => {
+    this.submissions.forEach((submission) => {
       submission.selected = this.selectAll;
     });
   }
@@ -154,6 +159,13 @@ export class AssignmentDetailsComponent implements OnInit {
 
   onSort(column: string): void {
     // Implement sorting logic for each column
+    this.sortColumn = column;
+    this.sortDirection =
+      this.sortDirection === ''
+        ? 'asc'
+        : this.sortDirection === 'asc'
+        ? 'desc'
+        : '';
   }
 
   exportAs(type: 'pdf' | 'xlsx'): void {

@@ -82,7 +82,8 @@
                 [class.reverse]="!assignmentDetails.isEnabled"
               >
                 <span class="status-text">{{
-                  (assignmentDetails.isEnabled ? "ACTIVE" : "INACTIVE") | translate
+                  (assignmentDetails.isEnabled ? "ACTIVE" : "INACTIVE")
+                    | translate
                 }}</span>
                 <img
                   [src]="
@@ -236,7 +237,13 @@
           <div class="header-content">
             <span>Student Name</span>
             <img
-              src="icon-sort.svg"
+              [src]="
+                sortColumn === 'studentName'
+                  ? sortDirection === 'asc'
+                    ? 'icon-sort-asc.svg'
+                    : 'icon-sort.svg'
+                  : 'icon-sort.svg'
+              "
               alt="Sort"
               (click)="onSort('studentName')"
               class="sort-icon"
@@ -247,7 +254,13 @@
           <div class="header-content">
             <span>Submission Status</span>
             <img
-              src="icon-sort.svg"
+              [src]="
+                sortColumn === 'status'
+                  ? sortDirection === 'asc'
+                    ? 'icon-sort-asc.svg'
+                    : 'icon-sort.svg'
+                  : 'icon-sort.svg'
+              "
               alt="Sort"
               (click)="onSort('status')"
               class="sort-icon"
@@ -258,7 +271,13 @@
           <div class="header-content">
             <span>Score</span>
             <img
-              src="icon-sort.svg"
+              [src]="
+                sortColumn === 'score'
+                  ? sortDirection === 'asc'
+                    ? 'icon-sort-asc.svg'
+                    : 'icon-sort.svg'
+                  : 'icon-sort.svg'
+              "
               alt="Sort"
               (click)="onSort('score')"
               class="sort-icon"
@@ -269,7 +288,13 @@
           <div class="header-content">
             <span>Time Spent</span>
             <img
-              src="icon-sort.svg"
+              [src]="
+                sortColumn === 'timeSpent'
+                  ? sortDirection === 'asc'
+                    ? 'icon-sort-asc.svg'
+                    : 'icon-sort.svg'
+                  : 'icon-sort.svg'
+              "
               alt="Sort"
               (click)="onSort('timeSpent')"
               class="sort-icon"
@@ -285,10 +310,6 @@
         @for (submission of submissions; track submission.id) {
         <div class="submission-row">
           <div class="item student-name">
-            <p-checkbox
-              [(ngModel)]="submission.selected"
-              [binary]="true"
-            ></p-checkbox>
             <span class="initials">{{ submission.initials }}</span>
             <span class="name">{{ submission.studentName }}</span>
             <img
@@ -365,7 +386,8 @@
   </ng-template>
 </p-menu>
 
-<p-dialog [dismissableMask]="true"
+<p-dialog
+  [dismissableMask]="true"
   [(visible)]="showDeleteConfirmation"
   [modal]="false"
   [draggable]="false"
