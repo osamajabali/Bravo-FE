@@ -30,7 +30,6 @@ body {
   box-sizing: border-box;
 }
 
-
 .p-inputtext {
   background: var(--neutral-white) !important;
 }
@@ -39,7 +38,8 @@ body {
   width: 100% !important;
 }
 
-.p-select, .p-inputtext {
+.p-select,
+.p-inputtext {
   box-shadow: none !important;
   outline: none !important;
 }

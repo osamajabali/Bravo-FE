@@ -1,18 +1,18 @@
 .assignment-details {
   .header {
-    padding: var(--padding-3xl) var(--padding-2xl) var(--padding-xl);
+    padding: var(--padding-5xl) var(--padding-2xl) var(--padding-xl);
     margin: 0 -15px var(--padding-l);
     border-bottom: 1px solid var(--neutral-grey-200);
     background-color: var(--neutral-grey-50);
 
     .summary-boxes {
       display: flex;
-      gap: var(--padding-m);
+      gap: var(--padding-xs);
 
       .box {
         width: 200px;
         height: 65px;
-        border-radius: var(--radius-m);
+        border-radius: var(--radius-xs);
         background-color: var(--neutral-white);
 
         .box-content {
@@ -26,7 +26,7 @@
             align-items: center;
             justify-content: center;
             padding: var(--padding-m);
-            border-radius: var(--radius-m) 0 0 var(--radius-m);
+            border-radius: var(--radius-xs) 0 0 var(--radius-xs);
             height: 100%;
           }
 
@@ -82,7 +82,7 @@
         align-items: center;
         gap: var(--padding-s);
         padding: var(--padding-xs);
-        border-radius: 10px;
+        border-radius: var(--radius-s);
         border: 1px solid var(--primary-primary-900);
         color: var(--primary-primary-900);
         font-size: var(--font-size-s);
@@ -187,7 +187,7 @@
           .box {
             width: 130px;
             height: 60px;
-            border-radius: var(--radius-m);
+            border-radius: var(--radius-xs);
             background-color: var(--neutral-white);
 
             &.not-delivered {
@@ -208,7 +208,7 @@
                 align-items: center;
                 justify-content: center;
                 padding: var(--padding-xxs);
-                border-radius: var(--radius-m) 0 0 var(--radius-m);
+                border-radius: var(--radius-xs) 0 0 var(--radius-xs);
                 height: 100%;
               }
 
