@@ -14,9 +14,12 @@ import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { AssignmentsService } from '../../../core/services/assignment/assignments.service';
-import { AssignmentFilter } from '../../../core/models/assignment/assignment.model';
+import { AssignmentFilter, AssignmentsPayload } from '../../../core/models/assignment/assignment.model';
 import { HeaderService } from '../../../core/services/header-services/header.service';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
+import { Grade, Section, SectionFilter, Subject, SubjectGrade } from '../../../core/models/assignment/sections-filter.model';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DatePipe } from '@angular/common';
 
 interface FilterSection {
   title: string;
@@ -55,8 +58,10 @@ interface Assignment {
     SelectModule,
     DatePickerModule,
     FormsModule,
-    MenuModule
+    MenuModule,
+    MultiSelectModule
   ],
+    providers: [DatePipe],  
   templateUrl: './assignments.component.html',
   styleUrl: './assignments.component.scss'
 })
@@ -64,44 +69,14 @@ export class AssignmentsComponent implements OnInit {
   @ViewChild('actionMenu') actionMenu!: Menu;
 
   router = inject(Router);
+  datePipe = inject(DatePipe);
   selectedTab: string = 'active';
   searchTerm = '';
-  selectedSubject = null;
-  selectedGrade = null;
-  selectedHomeroom = null;
-  startDate = null;
-  endDate = null;
-  creationDate = null;
-  selectedAssignmentType = null;
-  selectedAssignmentStatus = null;
-  selectedSortOption = null;
-  selectedOrderOption = null;
-  selectedRecipient = null;
   showAdvancedSearch = false;
   sortColumn: string = '';
   sortDirection: 'asc' | 'desc' | '' = '';
-  subjects = [
-    { label: 'English', value: 'english' },
-    { label: 'Math', value: 'math' },
-    { label: 'Science', value: 'science' },
-    { label: 'Social Studies', value: 'social studies' },
-  ];
 
-  grades = [
-    { label: 'Grade 1', value: 'grade1' },
-    { label: 'Grade 2', value: 'grade2' },
-    { label: 'Grade 3', value: 'grade3' },
-    { label: 'Grade 4', value: 'grade4' },
-    { label: 'Grade 5', value: 'grade5' },
-  ];
-
-  homerooms = [
-    { label: 'Homeroom 1', value: 'homeroom1' },
-    { label: 'Homeroom 2', value: 'homeroom2' },
-    { label: 'Homeroom 3', value: 'homeroom3' },
-  ];
-
-  assignmentTypes : {assignmentTypeId : number , name : string}[] = [];
+  assignmentTypes: { assignmentTypeId: number, name: string }[] = [];
 
   // Mock data for assignments
   assignments: Assignment[] = [
@@ -165,6 +140,12 @@ export class AssignmentsComponent implements OnInit {
   selectedAssignment: Assignment | null = null;
   assignmentFilter: AssignmentFilter = new AssignmentFilter();
   private refreshSubscription!: Subscription;
+  sectionFilter: SectionFilter = new SectionFilter();
+  subjectGrade: SubjectGrade = new SubjectGrade();
+  assignmentPayload: AssignmentsPayload = new AssignmentsPayload();
+  startDate: Date = null;
+  endDate: Date = null;
+  creationDate: Date = null;
 
   constructor(private assignmentService: AssignmentsService, private headerService: HeaderService, private sharedService: SharedService) { }
 
@@ -175,15 +156,41 @@ export class AssignmentsComponent implements OnInit {
   }
 
   getAssignmentsFilter() {
-    this.assignmentService.getAssignmentFilters().subscribe(res => {
-      if (res.success) {
-        this.assignmentFilter = res.result;
-      }
-    });
+    forkJoin([
+      this.assignmentService.getAssignmentFilters(),
+      this.assignmentService.getAssignmentTypes(this.headerService.selectedSubjectId),
+      this.assignmentService.getAssignmentSectionFilters(this.subjectGrade)
+    ]).subscribe(
+      ([filterRes, typeRes, sectionRes]) => {
+        if (filterRes.success) {
+          this.assignmentFilter = filterRes.result;
+        }
 
-    this.assignmentService.getAssignmentTypes(this.headerService.selectedSubjectId).subscribe(res => {
+        if (typeRes.success) {
+          this.assignmentTypes = typeRes.result;
+        }
+
+        if (sectionRes.success) {
+          this.sectionFilter = sectionRes.result;
+          this.assignmentPayload.gradeIds = [this.sectionFilter.grades.find(x => x.isSelected === true)?.gradeId];
+          this.assignmentPayload.courseSectionIds = [this.sectionFilter.sections.find(x => x.isSelected === true)?.courseSectionId];
+          this.assignmentPayload.subjectIds = [this.sectionFilter.subjects.find(x => x.isSelected === true)?.subjectId];
+        }
+
+        if (sectionRes.success && typeRes.success && filterRes.success) {
+          this.getAssignments();
+        }
+      }
+    );
+  }
+  getAssignments() {
+    this.assignmentPayload.startDate = this.datePipe.transform(this.startDate, 'yyyy-MM-dd');
+    this.assignmentPayload.endDate = this.datePipe.transform(this.endDate, 'yyyy-MM-dd');
+    this.assignmentPayload.creationDate = this.datePipe.transform(this.creationDate, 'yyyy-MM-dd');
+
+    this.assignmentService.getAssignments(this.assignmentPayload).subscribe(res => {
       if (res.success) {
-        this.assignmentTypes = res.result;
+
       }
     })
   }
@@ -205,17 +212,7 @@ export class AssignmentsComponent implements OnInit {
   }
 
   onResetAdvancedSearch() {
-    this.selectedSubject = null;
-    this.selectedGrade = null;
-    this.selectedHomeroom = null;
-    this.startDate = null;
-    this.endDate = null;
-    this.creationDate = null;
-    this.selectedAssignmentType = null;
-    this.selectedAssignmentStatus = null;
-    this.selectedSortOption = null;
-    this.selectedOrderOption = null;
-    this.selectedRecipient = null;
+    this.assignmentPayload = new AssignmentsPayload();
   }
 
   _onSearchChange(event: Event) {

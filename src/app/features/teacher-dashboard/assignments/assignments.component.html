@@ -49,83 +49,83 @@
     <div class="content px-0" *ngIf="showAdvancedSearch">
       <div class="advanced-search" *ngIf="selectedTab === 'active'">
         <div class="advanced-filters">
-          <p-select
-            [options]="subjects"
-            [(ngModel)]="selectedSubject"
+          <p-multiselect 
+            [options]="sectionFilter.subjects"
+            [(ngModel)]="assignmentPayload.subjectIds"
             placeholder="Subjects"
             [showClear]="false"
-            optionLabel="label"
-            optionValue="value"
-          ></p-select>
-          <p-select
-            [options]="grades"
-            [(ngModel)]="selectedGrade"
+            optionLabel="name"
+            optionValue="subjectId"
+          ></p-multiselect >
+          <p-multiselect
+            [options]="sectionFilter.grades"
+            [(ngModel)]="assignmentPayload.gradeIds"
             placeholder="Grade"
             [showClear]="false"
-            optionLabel="label"
-            optionValue="value"
-          ></p-select>
-          <p-select
-            [options]="homerooms"
-            [(ngModel)]="selectedHomeroom"
+            optionLabel="name"
+            optionValue="gradeId"
+          ></p-multiselect>
+          <p-multiselect
+            [options]="sectionFilter.sections"
+            [(ngModel)]="assignmentPayload.courseSectionIds"
             placeholder="Homerooms"
             [showClear]="false"
-            optionLabel="label"
-            optionValue="value"
-          ></p-select>
+            optionLabel="name"
+            optionValue="courseSectionId"
+          ></p-multiselect>
           <p-datePicker
             [(ngModel)]="startDate"
             placeholder="Start Date"
             [showClear]="false"
-            dateFormat="dd/mm/yy"
+            dateFormat="yy-mm-dd"
           ></p-datePicker>
           <p-datePicker
             [(ngModel)]="endDate"
             placeholder="End Date"
             [showClear]="false"
-            dateFormat="dd/mm/yy"
+            dateFormat="yy-mm-dd"
           ></p-datePicker>
           <p-datePicker
             [(ngModel)]="creationDate"
             placeholder="Creation Date"
             [showClear]="false"
-            dateFormat="dd/mm/yy"
+            dateFormat="yy-mm-dd"
           ></p-datePicker>
-          <p-select
+          <p-multiselect
             [options]="assignmentTypes"
-            [(ngModel)]="selectedAssignmentType"
+            [(ngModel)]="assignmentPayload.assignmentTypeIds"
             placeholder="Assignment Type"
             [showClear]="false"
             optionLabel="name"
             optionValue="assignmentTypeId"
-          ></p-select>
-          <p-select
+          ></p-multiselect>
+          <p-multiselect
             [options]="assignmentFilter.filterStatus"
-            [(ngModel)]="selectedAssignmentStatus"
+            [(ngModel)]="assignmentPayload.assignmentStatuses"
             placeholder="Assignment Status"
             [showClear]="false"
             optionLabel="name"
             optionValue="id"
-          ></p-select>
-          <p-select
+          ></p-multiselect>
+          <p-multiselect
             [options]="assignmentFilter.filterSortBy"
-            [(ngModel)]="selectedSortOption"
+            [(ngModel)]="assignmentPayload.sortBy"
             placeholder="Sort By"
             [showClear]="false"
             optionLabel="name"
             optionValue="id"
-          ></p-select>
-          <p-select
+          ></p-multiselect>
+          <p-multiselect
             [options]="assignmentFilter.filterOrders"
-            [(ngModel)]="selectedOrderOption"
+            [(ngModel)]="assignmentPayload.order"
             placeholder="Order"
             [showClear]="false"
             optionLabel="name"
             optionValue="id"
-          ></p-select>
+          ></p-multiselect>
           <p-select
             [options]="assignmentFilter.recipientTypes"
-            [(ngModel)]="selectedRecipient"
+            [(ngModel)]="assignmentPayload.recipientId"
             placeholder="Recipient"
             [showClear]="false"
             optionLabel="name"
@@ -140,7 +140,7 @@
             pButton
             label="Search"
             class="p-button-primary"
-            (click)="onAdvancedSearch()"
+            (click)="getAssignments()"
           ></button>
         </div>
       </div>
