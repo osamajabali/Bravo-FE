@@ -164,7 +164,7 @@ export class AssignmentSubmissionComponent implements OnInit {
   }
 
   getSubmissions() {
-    this.submissionService.getStudentSubmission(1, 1).subscribe(res => {
+    this.submissionService.getStudentSubmission(this.submissionId, this.studentId).subscribe(res => {
       if (res.success) {
         this.studentSubmission = res.result;
         this.toggleSkill(this.studentSubmission.skills[0].skillId)
@@ -173,7 +173,7 @@ export class AssignmentSubmissionComponent implements OnInit {
   }
 
   toggleSkill(skillId: number): void {
-    this.submissionService.getSkillQuestions(1, 1, skillId).subscribe(res => {
+    this.submissionService.getSkillQuestions(this.submissionId, this.studentId, skillId).subscribe(res => {
       if (res.success) {
         this.questions = res.result;
       }
