@@ -90,14 +90,6 @@
     max-width: 300px;
     max-height: 56px;
     line-height: 16px;
-
-    &:hover {
-      background-color: var(--neutral-grey-100);
-
-      i {
-        color: var(--primary-primary-500);
-      }
-    }
   }
 
   .user-avatar {
