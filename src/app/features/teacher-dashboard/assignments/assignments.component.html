@@ -14,7 +14,11 @@
             (change)="_onSearchChange($event)"
             [value]="searchTerm"
           />
-          <img src="icon-search.svg" alt="search" class="position-absolute end-0 pe-3" />
+          <img
+            src="icon-search.svg"
+            alt="search"
+            class="position-absolute end-0 pe-3"
+          />
         </span>
         <button
           #filterBtn
@@ -49,14 +53,14 @@
     <div class="content px-0" *ngIf="showAdvancedSearch">
       <div class="advanced-search" *ngIf="selectedTab === 'active'">
         <div class="advanced-filters">
-          <p-multiselect 
+          <p-multiselect
             [options]="sectionFilter.subjects"
             [(ngModel)]="assignmentPayload.subjectIds"
             placeholder="Subjects"
             [showClear]="false"
             optionLabel="name"
             optionValue="subjectId"
-          ></p-multiselect >
+          ></p-multiselect>
           <p-multiselect
             [options]="sectionFilter.grades"
             [(ngModel)]="assignmentPayload.gradeIds"
@@ -139,6 +143,19 @@
           <button
             pButton
             label="Search"
+            [disabled]="
+              !assignmentPayload.subjectIds.length &&
+              !assignmentPayload.gradeIds.length &&
+              !assignmentPayload.courseSectionIds.length &&
+              !assignmentPayload.assignmentTypeIds.length &&
+              !assignmentPayload.assignmentStatuses.length &&
+              !assignmentPayload.sortBy.length &&
+              !assignmentPayload.order.length &&
+              !assignmentPayload.recipientId &&
+              !startDate &&
+              !endDate &&
+              !creationDate
+            "
             class="p-button-primary"
             (click)="getAssignments()"
           ></button>
@@ -296,7 +313,9 @@
         [class.inactive]="assignment.status === 'inactive'"
         [class.scheduled]="assignment.status === 'scheduled'"
       >
-        <div class="item title" [title]="assignment.title">{{ assignment.title }}</div>
+        <div class="item title" [title]="assignment.title">
+          {{ assignment.title }}
+        </div>
         <div class="item status">
           <span
             [class.active]="assignment.status === 'active'"
@@ -308,8 +327,12 @@
           </span>
         </div>
         <div class="item type">{{ assignment.avgScore }}</div>
-        <div class="item target" [title]="assignment.target">{{ assignment.target }}</div>
-        <div class="item assigned-by" [title]="assignment.assignedBy">{{ assignment.assignedBy }}</div>
+        <div class="item target" [title]="assignment.target">
+          {{ assignment.target }}
+        </div>
+        <div class="item assigned-by" [title]="assignment.assignedBy">
+          {{ assignment.assignedBy }}
+        </div>
         <div class="item post-date">
           {{ assignment.postDate | date : "mediumDate" }}
         </div>
