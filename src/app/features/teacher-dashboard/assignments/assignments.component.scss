@@ -206,6 +206,14 @@
           color: var(--primary-primary-900);
           font-weight: var(--font-weight-bold);
 
+          &.title {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+          }
+
           &.status {
             span {
               display: inline-flex;
@@ -255,9 +263,18 @@
             }
           }
 
+          &.target, &.assigned-by {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+          }
+
           &.actions {
             button {
               width: 100%;
+              min-width: 120px;
             }
           }
         }

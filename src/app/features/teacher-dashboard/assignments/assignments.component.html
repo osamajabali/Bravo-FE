@@ -296,7 +296,7 @@
         [class.inactive]="assignment.status === 'inactive'"
         [class.scheduled]="assignment.status === 'scheduled'"
       >
-        <div class="item title">{{ assignment.title }}</div>
+        <div class="item title" [title]="assignment.title">{{ assignment.title }}</div>
         <div class="item status">
           <span
             [class.active]="assignment.status === 'active'"
@@ -308,8 +308,8 @@
           </span>
         </div>
         <div class="item type">{{ assignment.avgScore }}</div>
-        <div class="item target">{{ assignment.target }}</div>
-        <div class="item assigned-by">{{ assignment.assignedBy }}</div>
+        <div class="item target" [title]="assignment.target">{{ assignment.target }}</div>
+        <div class="item assigned-by" [title]="assignment.assignedBy">{{ assignment.assignedBy }}</div>
         <div class="item post-date">
           {{ assignment.postDate | date : "mediumDate" }}
         </div>
