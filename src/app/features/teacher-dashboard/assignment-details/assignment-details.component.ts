@@ -9,19 +9,9 @@ import { MenuModule } from 'primeng/menu';
 import { DialogModule } from 'primeng/dialog';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-
-interface AssignmentDetails {
-  grade: string;
-  type: string;
-  status: string;
-  dueDate: Date;
-  postedDate: Date;
-  questionCount: number;
-  section: string;
-  assignedBy: string;
-  avgScore: number;
-  isEnabled: boolean;
-}
+import { AssignmentsService } from '../../../core/services/assignment/assignments.service';
+import { AssignmentDetails, StudentAssignmentDetailsResponse, StudentsAssignmentDetails, SubmissionStatus } from '../../../core/models/assignment/assignment-details.model';
+import { PaginatorState } from 'primeng/paginator';
 
 interface StudentSubmission {
   id: number;
@@ -53,52 +43,54 @@ interface StudentSubmission {
 })
 export class AssignmentDetailsComponent implements OnInit {
   sharedService = inject(SharedService);
+  assignmentsService = inject(AssignmentsService);
   selectAll: boolean = false;
   showDeleteConfirmation: boolean = false;
   router = inject(Router);
   sortColumn: string = '';
   sortDirection: 'asc' | 'desc' | '' = '';
-
-  assignmentDetails: AssignmentDetails = {
-    grade: 'Grade 5',
-    type: 'Leveled Reading',
-    status: 'Active',
-    dueDate: new Date('2024-03-15'),
-    postedDate: new Date('2024-03-01'),
-    questionCount: 10,
-    section: 'Section A',
-    assignedBy: 'John Doe',
-    avgScore: 85,
-    isEnabled: true,
-  };
-
-  submissions: StudentSubmission[] = [
-    {
-      id: 1,
-      studentName: 'John Smith',
-      initials: 'JS',
-      status: 'Pending',
-      correctAnswers: 8,
-      wrongAnswers: 2,
-      score: 80,
-      timeSpent: '45 min',
-      selected: false,
-    },
-    {
-      id: 2,
-      studentName: 'Emma Wilson',
-      initials: 'EW',
-      status: 'Active',
-      correctAnswers: 0,
-      wrongAnswers: 0,
-      score: 0,
-      timeSpent: '-',
-      selected: false,
-    },
-  ];
+  assignmentDetails: AssignmentDetails = new AssignmentDetails();
+  studentsAssignmentDetailsFilter: StudentsAssignmentDetails = new StudentsAssignmentDetails();
+  assignmentId: number;
+  submissionStatuses: SubmissionStatus[] = [];
+  studentAssignmentDetails: StudentAssignmentDetailsResponse = new StudentAssignmentDetailsResponse();
+  first: number = 0;
 
   ngOnInit(): void {
+    if (this.sharedService.getPageState('studentsSubmissions')) {
+      let pageNumber = this.sharedService.getPageState('studentsSubmissions');
+      this.studentsAssignmentDetailsFilter.pageNumber = pageNumber;
+      this.first = (pageNumber - 1) * this.studentsAssignmentDetailsFilter.pageSize;
+    }
     this.sharedService.pushTitle('ASSIGNMENT DETAILS');
+    this.assignmentId = parseInt(localStorage.getItem('assignmentId'));
+    if (this.assignmentId) {
+      this.getAssignmentDetails()
+    }
+  }
+
+  getAssignmentDetails() {
+    this.assignmentsService.getAssignmentDetails(this.assignmentId).subscribe(res => {
+      if (res.success) {
+        this.submissionStatuses = res.result
+      }
+    })
+
+    this.assignmentsService.getAssignmentMainDetails(this.assignmentId).subscribe(res => {
+      if (res.success) {
+        this.assignmentDetails = res.result
+      }
+    });
+
+    this.studentsAssignmentDetailsFilter.assignmentId = this.assignmentId;
+    this.getStudentAssignmentsDetails()
+  }
+  getStudentAssignmentsDetails() {
+    this.assignmentsService.getStudentAssignmentDetails(this.studentsAssignmentDetailsFilter).subscribe(res => {
+      if (res.success) {
+        this.studentAssignmentDetails = res.result;
+      }
+    })
   }
 
   onResend(): void {
@@ -120,6 +112,13 @@ export class AssignmentDetailsComponent implements OnInit {
     // Optional: Navigate back to assignments list or show success message
   }
 
+  nextPage($event: PaginatorState) {
+    this.studentsAssignmentDetailsFilter.pageNumber = $event.page;
+    this.sharedService.savePageState('studentsSubmissions', $event.page);
+    this.first = $event.first;
+    this.getStudentAssignmentsDetails();
+  }
+
   cancelDelete(): void {
     this.showDeleteConfirmation = false;
   }
@@ -136,17 +135,18 @@ export class AssignmentDetailsComponent implements OnInit {
     // Implement view resources logic
   }
 
-  viewSubmission(submissionId: number): void {
+  viewSubmission(submissionId: number , studentId : number): void {
+    localStorage.setItem('studentId' , studentId.toString())
+    localStorage.setItem('submissionId' , submissionId.toString())
     this.router.navigate([
-      '/features/assignments/assignment-submission',
-      submissionId,
+      '/features/assignments/assignment-submission'
     ]);
   }
 
   onSelectAll(): void {
-    this.submissions.forEach((submission) => {
-      submission.selected = this.selectAll;
-    });
+    // this.submissions.forEach((submission) => {
+    //   submission.selected = this.selectAll;
+    // });
   }
 
   correct(submissionId: number): void {
@@ -154,7 +154,7 @@ export class AssignmentDetailsComponent implements OnInit {
   }
 
   toggleActive(): void {
-    this.assignmentDetails.isEnabled = !this.assignmentDetails.isEnabled;
+    // this.assignmentDetails.isEnabled = !this.assignmentDetails.isEnabled;
   }
 
   onSort(column: string): void {
@@ -164,8 +164,8 @@ export class AssignmentDetailsComponent implements OnInit {
       this.sortDirection === ''
         ? 'asc'
         : this.sortDirection === 'asc'
-        ? 'desc'
-        : '';
+          ? 'desc'
+          : '';
   }
 
   exportAs(type: 'pdf' | 'xlsx'): void {

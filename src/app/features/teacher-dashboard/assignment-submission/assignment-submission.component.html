@@ -2,75 +2,44 @@
   <div class="header">
     <div class="d-flex justify-content-between align-items-center">
       <div class="summary-boxes">
-        <div class="box blue">
+        @for (submission of studentSubmission.submissionCards; track $index) {
+        <div class="box" [style.border]="'1px solid ' + submission.color">
           <div class="box-content">
+            <div class="bold-area" [style.background-color]="submission.color">
+              <img [src]="submission.iconUrl" width="17px" alt="warning" />
+            </div>
             <div class="info">
-              <div class="number">75%</div>
-              <div class="label">avg. score</div>
+              <div class="number">{{submission.value}}</div>
+              <div class="label">{{submission.text}}</div>
             </div>
           </div>
         </div>
-        <div class="box green">
-          <div class="box-content">
-            <div class="bold-area">
-              <img src="icon-green-check.svg" alt="Corrected" />
-            </div>
-            <div class="info">
-              <div class="number">10</div>
-              <div class="label">Correct</div>
-            </div>
-          </div>
-        </div>
-        <div class="box red">
-          <div class="box-content">
-            <div class="bold-area">
-              <img src="icon-red-close.svg" alt="warning" />
-            </div>
-            <div class="info">
-              <div class="number">10</div>
-              <div class="label">Wrong</div>
-            </div>
-          </div>
-        </div>
-        <div class="box yellow">
-          <div class="box-content">
-            <div class="bold-area">
-              <img src="icon-yellow-clock.svg" alt="time" />
-            </div>
-            <div class="info">
-              <div class="number">0:00:25</div>
-              <div class="label">Time Spent</div>
-            </div>
-          </div>
-        </div>
+        }
       </div>
     </div>
   </div>
 
   <!-- Skills Sections -->
   <div class="skills-container">
-    @for (skill of skills; track skill.id) {
+    @for (skill of studentSubmission.skills; track skill.skillId) {
     <div class="skill-section">
-      <div class="skill-header" (click)="toggleSkill(skill.id)">
+      <div class="skill-header" (click)="toggleSkill(skill.skillId)">
         <div class="skill-header-left">
-          <i
-            class="pi"
-            [ngClass]="skill.expanded ? 'pi-chevron-down' : 'pi-chevron-right'"
-          ></i>
+          <i class="pi" [ngClass]="skill.expanded ? 'pi-chevron-down' : 'pi-chevron-right'"></i>
           <span class="skill-name">{{ skill.name }}</span>
         </div>
         <div class="skill-header-right">
           <div class="skill-stat correct">
             <img src="icon-green-check.svg" alt="Corrected" />
-            Correct: <span class="fw-bold">{{ skill.correctAnswers }}</span>
+            Correct: <span class="fw-bold">{{ 'missing' }}</span>
           </div>
           <div class="skill-stat wrong">
             <img src="icon-light-red-close.svg" alt="warning" />
-            Wrong: <span class="fw-bold">{{ skill.wrongAnswers }}</span>
+            Wrong: <span class="fw-bold">{{ 'missing' }}</span>
           </div>
           <div class="skill-stat time">
             <img src="icon-light-yellow-clock.svg" alt="time" />
-            Time Spent: <span class="fw-bold">{{ skill.timeSpent }}</span>
+            Time Spent: <span class="fw-bold">{{ 'missing' }}</span>
           </div>
         </div>
       </div>
@@ -83,40 +52,29 @@
           <div class="question-header-item answer">Student Answer</div>
         </div>
 
-        @for (question of skill.questions; track question.id) {
+        @for (question of questions; track $index) {
         <div
-          class="question-row"
-          [ngClass]="{
-            'wrong-answer': hasWrongAnswer(question),
-            'correct-answer': hasOnlyCorrectAnswers(question)
-          }"
-        >
+          class="question-row">
           <div class="question-item question">{{ question.text }}</div>
           <div class="question-item difficulty">
             <span
               class="difficulty-badge"
-              [ngClass]="question.difficulty.toLowerCase()"
+              [style.background-color]="question.color"
             >
-              @if (question.difficulty === 'Beginner') {
-              <img src="icon-difficulty-beginner.svg" alt="beginner" />
-              } @else if (question.difficulty === 'Medium') {
-              <img src="icon-difficulty-medium.svg" alt="medium" />
-              } @else if (question.difficulty === 'Advanced') {
-              <img src="icon-difficulty-advanced.svg" alt="advanced" />
-              }
-              {{ question.difficulty }}
+              <img [src]="question.answerBtnIconUrl" [alt]="question.difficulty.text" />
+              {{ question.difficulty.text }}
             </span>
           </div>
           <div class="question-item answer">
-            @if (question.studentAnswers.correct > 0) {
+            @if (true) {
             <span class="answer-badge correct pointer">
-                Show right answer
-                <img src="icon-green-eye.svg" alt="correct" />
+              Show right answer
+              <img src="icon-green-eye.svg" alt="correct" />
             </span>
-            } @if (question.studentAnswers.wrong > 0) {
+            } @if (true) {
             <span class="answer-badge wrong pointer">
-                Show wrong answer
-                <img src="icon-red-eye.svg" alt="wrong" />
+              Show wrong answer
+              <img src="icon-red-eye.svg" alt="wrong" />
             </span>
             }
           </div>

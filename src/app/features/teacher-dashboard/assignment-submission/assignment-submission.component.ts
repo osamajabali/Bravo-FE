@@ -2,6 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { SubmissionService } from '../../../core/services/assignment/submission.service';
+import { StudentSubmission, SubmissionQuestion } from '../../../core/models/assignment/student-submission.model';
 
 interface Question {
   id: number;
@@ -32,7 +34,8 @@ interface Skill {
 })
 export class AssignmentSubmissionComponent implements OnInit {
   sharedService = inject(SharedService);
-  
+  submissionService = inject(SubmissionService);
+
   skills: Skill[] = [
     {
       id: 1,
@@ -146,16 +149,42 @@ export class AssignmentSubmissionComponent implements OnInit {
       ]
     }
   ];
+  studentSubmission: StudentSubmission = new StudentSubmission();
+  questions: SubmissionQuestion[] = [];
+  studentId: number;
+  submissionId: number;
 
   ngOnInit(): void {
     this.sharedService.pushTitle('ASSIGNMENT SUBMISSION');
+    if (localStorage.getItem('submissionId') && localStorage.getItem('studentId')) {
+      this.submissionId = parseInt(localStorage.getItem('submissionId'))
+      this.studentId = parseInt(localStorage.getItem('studentId'))
+      this.getSubmissions();
+    }
+  }
+
+  getSubmissions() {
+    this.submissionService.getStudentSubmission(1, 1).subscribe(res => {
+      if (res.success) {
+        this.studentSubmission = res.result;
+        this.toggleSkill(this.studentSubmission.skills[0].skillId)
+      }
+    })
   }
 
   toggleSkill(skillId: number): void {
-    const skill = this.skills.find(s => s.id === skillId);
-    if (skill) {
-      skill.expanded = !skill.expanded;
+    this.submissionService.getSkillQuestions(1, 1, skillId).subscribe(res => {
+      if (res.success) {
+        this.questions = res.result;
+      }
+    })
+  this.studentSubmission.skills.forEach(skill => {
+    if (skill.skillId === skillId) {
+      skill.expanded = !skill.expanded; // toggle clicked skill
+    } else {
+      skill.expanded = false; // close others
     }
+  });
   }
 
   hasWrongAnswer(question: Question): boolean {

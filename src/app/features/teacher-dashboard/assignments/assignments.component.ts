@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { Router } from '@angular/router';
 import { PopoverModule } from 'primeng/popover';
@@ -14,12 +14,13 @@ import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { AssignmentsService } from '../../../core/services/assignment/assignments.service';
-import { AssignmentFilter, AssignmentsPayload } from '../../../core/models/assignment/assignment.model';
+import { Assignment, AssignmentFilter, AssignmentResponse, AssignmentsPayload } from '../../../core/models/assignment/assignment.model';
 import { HeaderService } from '../../../core/services/header-services/header.service';
 import { forkJoin, Subscription } from 'rxjs';
 import { Grade, Section, SectionFilter, Subject, SubjectGrade } from '../../../core/models/assignment/sections-filter.model';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePipe } from '@angular/common';
+import { PaginatorState } from 'primeng/paginator';
 
 interface FilterSection {
   title: string;
@@ -31,18 +32,6 @@ interface FilterSection {
 interface FilterOption {
   label: string;
   value: string;
-}
-
-interface Assignment {
-  id: number;
-  title: string;
-  status: 'active' | 'inactive' | 'scheduled';
-  postDate: Date;
-  dueDate: Date;
-  submissions: string;
-  assignedBy: string;
-  target: string;
-  avgScore: string;
 }
 
 @Component({
@@ -61,11 +50,11 @@ interface Assignment {
     MenuModule,
     MultiSelectModule
   ],
-    providers: [DatePipe],  
+  providers: [DatePipe],
   templateUrl: './assignments.component.html',
   styleUrl: './assignments.component.scss'
 })
-export class AssignmentsComponent implements OnInit {
+export class AssignmentsComponent implements OnInit, OnDestroy {
   @ViewChild('actionMenu') actionMenu!: Menu;
 
   router = inject(Router);
@@ -79,41 +68,6 @@ export class AssignmentsComponent implements OnInit {
   assignmentTypes: { assignmentTypeId: number, name: string }[] = [];
 
   // Mock data for assignments
-  assignments: Assignment[] = [
-    {
-      id: 1,
-      title: 'Reading Comprehension',
-      status: 'scheduled',
-      postDate: new Date('2024-03-01'),
-      dueDate: new Date('2024-03-15'),
-      submissions: '12 out of 15',
-      assignedBy: 'Teacher name',
-      target: 'G4A, G4B',
-      avgScore: '85%'
-    },
-    {
-      id: 2,
-      title: 'Vocabulary Practice',
-      status: 'active',
-      postDate: new Date('2024-03-05'),
-      dueDate: new Date('2024-03-20'),
-      submissions: '12 out of 15',
-      assignedBy: 'System',
-      target: 'G4A, G4B',
-      avgScore: '85%'
-    },
-    {
-      id: 3,
-      title: 'Math Practice',
-      status: 'inactive',
-      postDate: new Date('2024-03-10'),
-      dueDate: new Date('2024-03-25'),
-      submissions: '12 out of 15',
-      assignedBy: 'System',
-      target: 'G4A, G4B',
-      avgScore: '85%'
-    }
-  ];
 
   filterSections: FilterSection[] = [
     {
@@ -146,13 +100,25 @@ export class AssignmentsComponent implements OnInit {
   startDate: Date = null;
   endDate: Date = null;
   creationDate: Date = null;
+  assignments: AssignmentResponse = new AssignmentResponse();
+  first: number = 0;
 
-  constructor(private assignmentService: AssignmentsService, private headerService: HeaderService, private sharedService: SharedService) { }
+  constructor(
+    private assignmentService: AssignmentsService,
+    private headerService: HeaderService,
+    private sharedService: SharedService
+  ) { }
 
   ngOnInit(): void {
     this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
       this.getAssignmentsFilter();
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
   }
 
   getAssignmentsFilter() {
@@ -174,7 +140,7 @@ export class AssignmentsComponent implements OnInit {
           this.sectionFilter = sectionRes.result;
           this.assignmentPayload.gradeIds = [this.sectionFilter.grades.find(x => x.isSelected === true)?.gradeId];
           this.assignmentPayload.courseSectionIds = [this.sectionFilter.sections.find(x => x.isSelected === true)?.courseSectionId];
-          this.assignmentPayload.subjectIds = [this.sectionFilter.subjects.find(x => x.isSelected === true)?.subjectId];
+          this.assignmentPayload.subjectId = this.sectionFilter.subjects.find(x => x.isSelected === true)?.subjectId;
         }
 
         if (sectionRes.success && typeRes.success && filterRes.success) {
@@ -183,6 +149,7 @@ export class AssignmentsComponent implements OnInit {
       }
     );
   }
+
   getAssignments() {
     this.assignmentPayload.startDate = this.datePipe.transform(this.startDate, 'yyyy-MM-dd');
     this.assignmentPayload.endDate = this.datePipe.transform(this.endDate, 'yyyy-MM-dd');
@@ -190,10 +157,17 @@ export class AssignmentsComponent implements OnInit {
 
     this.assignmentService.getAssignments(this.assignmentPayload).subscribe(res => {
       if (res.success) {
-
+        this.assignments = res.result;
       }
-    })
+    });
   }
+
+    nextPage($event: PaginatorState) {
+      this.assignmentPayload.pageNumber = $event.page;
+      this.sharedService.savePageState('studentsSubmissions', $event.page);
+      this.first = $event.first;
+      this.getAssignments();
+    }
 
   onTabClick(tab: string) {
     this.selectedTab = tab;
@@ -204,7 +178,9 @@ export class AssignmentsComponent implements OnInit {
   }
 
   viewAssignment(id: number) {
-    this.router.navigate(['/features/assignments', id]);
+    localStorage.setItem('assignmentId', id.toString());
+    sessionStorage.removeItem('studentsSubmissions')
+    this.router.navigate(['/features/assignmentsDetails']);
   }
 
   onAdvancedSearch() {
@@ -242,29 +218,22 @@ export class AssignmentsComponent implements OnInit {
   }
 
   resendAssignment() {
-    // Implement resend functionality
-    console.log('Resend assignment:', this.selectedAssignment?.id);
     this.actionMenu.hide();
   }
 
   deactivateAssignment() {
-    // Implement deactivate functionality
-    console.log('Deactivate assignment:', this.selectedAssignment?.id);
     this.actionMenu.hide();
   }
 
   editAssignment() {
-    // Implement edit functionality
     this.actionMenu.hide();
   }
 
   viewQuestions() {
-    // Implement view questions functionality
     this.actionMenu.hide();
   }
 
   onSort(column: string): void {
-    // Implement sorting logic for each column
     this.sortColumn = column;
     this.sortDirection =
       this.sortDirection === ''
@@ -275,8 +244,6 @@ export class AssignmentsComponent implements OnInit {
   }
 
   exportAssignment() {
-    // Implement export functionality
-    console.log('Export assignment:', this.selectedAssignment?.id);
     this.actionMenu.hide();
   }
 }

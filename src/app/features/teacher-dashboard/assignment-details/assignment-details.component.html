@@ -2,56 +2,26 @@
   <div class="header">
     <div class="d-flex justify-content-between align-items-center">
       <div class="summary-boxes">
-        <div class="box red">
+        @for (submission of submissionStatuses; track $index) {
+        <div class="box" [style.border]="'1px solid ' + submission.color">
           <div class="box-content">
-            <div class="bold-area">
-              <img src="icon-red-x.svg" alt="warning" />
+            <div class="bold-area" [style.background-color]="submission.color">
+              <img [src]="submission.iconUrl" width="17px" alt="warning" />
             </div>
             <div class="info">
-              <div class="number">10</div>
-              <div class="label">Did Not Submitted</div>
+              <div class="number">{{submission.value}}</div>
+              <div class="label">{{submission.text}}</div>
             </div>
           </div>
         </div>
-        <div class="box yellow">
-          <div class="box-content">
-            <div class="bold-area">
-              <img src="icon-yellow-check.svg" alt="submitted" />
-            </div>
-            <div class="info">
-              <div class="number">10</div>
-              <div class="label">Submitted</div>
-            </div>
-          </div>
-        </div>
-        <div class="box green">
-          <div class="box-content">
-            <div class="bold-area">
-              <img src="icon-double-check.svg" alt="Corrected" />
-            </div>
-            <div class="info">
-              <div class="number">10</div>
-              <div class="label">Corrected</div>
-            </div>
-          </div>
-        </div>
+        }
       </div>
       <div class="buttons">
-        <button
-          pButton
-          label=""
-          class="p-button-outlined show-button"
-          (click)="viewResources()"
-        >
+        <button pButton label="" class="p-button-outlined show-button" (click)="viewResources()">
           <span>View Resources</span>
           <img src="icon-eye.svg" alt="view resources" />
         </button>
-        <button
-          pButton
-          label=""
-          class="p-button-outlined show-button"
-          (click)="exportBtn.toggle($event)"
-        >
+        <button pButton label="" class="p-button-outlined show-button" (click)="exportBtn.toggle($event)">
           <span>Export as</span>
           <img src="arrow-green-down.svg" alt="export" />
         </button>
@@ -68,72 +38,38 @@
       <div class="details-row">
         <div class="left-section">
           <div class="info-item">
-            <div class="value grade">{{ assignmentDetails.grade }}</div>
-            <div class="value type">{{ assignmentDetails.type }}</div>
+            <div class="value grade">{{ assignmentDetails.assignmentTitle }}</div>
+            <div class="value type">{{ assignmentDetails.assignmentType }}</div>
           </div>
           <div class="custom-radio-container">
-            <div
-              class="custom-radio"
-              [class.active]="assignmentDetails.isEnabled"
-              (click)="toggleActive()"
-            >
-              <div
-                class="radio-content"
-                [class.reverse]="!assignmentDetails.isEnabled"
-              >
+            <div class="custom-radio" [class.active]="true" (click)="toggleActive()">
+              <div class="radio-content" [class.reverse]="!true">
                 <span class="status-text">{{
-                  (assignmentDetails.isEnabled ? "ACTIVE" : "INACTIVE")
-                    | translate
-                }}</span>
-                <img
-                  [src]="
-                    assignmentDetails.isEnabled
+                  (true ? "ACTIVE" : "INACTIVE")
+                  | translate
+                  }}</span>
+                <img [src]="
+                    true
                       ? 'icon-radio-checked.svg'
                       : 'icon-radio-unchecked.svg'
-                  "
-                  alt="check"
-                />
+                  " alt="check" />
               </div>
             </div>
           </div>
         </div>
         <div class="right-section">
-          <button
-            pButton
-            type="button"
-            label=""
-            class="p-button-secondary"
-            (click)="onResend()"
-          >
+          <button pButton type="button" label="" class="p-button-secondary" (click)="onResend()">
             <img src="icon-eye.svg" alt="view all questions" />
             View All Questions
           </button>
-          <button
-            pButton
-            type="button"
-            label=""
-            class="p-button-secondary"
-            (click)="onReminder()"
-          >
+          <button pButton type="button" label="" class="p-button-secondary" (click)="onReminder()">
             <img src="icon-reminder.svg" alt="Reminder" />
             Send Reminder
           </button>
-          <button
-            pButton
-            type="button"
-            label=""
-            class="p-button-secondary"
-            (click)="onEdit()"
-          >
+          <button pButton type="button" label="" class="p-button-secondary" (click)="onEdit()">
             <img src="icon-pencil.svg" alt="Edit" />
           </button>
-          <button
-            pButton
-            type="button"
-            label=""
-            class="p-button-danger"
-            (click)="onDelete()"
-          >
+          <button pButton type="button" label="" class="p-button-danger" (click)="onDelete()">
             <img src="icon-red-trash.svg" alt="Delete" />
           </button>
         </div>
@@ -142,34 +78,14 @@
       <!-- Second Row -->
       <div class="details-row">
         <div class="info-grid">
+          @if (assignmentDetails.detailsSections.length) {
+          @for (item of assignmentDetails.detailsSections; track $index) {
           <div class="info-item">
-            <span class="title">Status</span>
-            <span class="value">{{ assignmentDetails.status }}</span>
+            <span class="title">{{item.title}}</span>
+            <span class="value">{{ item.value }}</span>
           </div>
-          <div class="info-item">
-            <span class="title">Section</span>
-            <span class="value">{{ assignmentDetails.section }}</span>
-          </div>
-          <div class="info-item">
-            <span class="title">Assigned By</span>
-            <span class="value">{{ assignmentDetails.assignedBy }}</span>
-          </div>
-          <div class="info-item">
-            <span class="title">Questions</span>
-            <span class="value">{{ assignmentDetails.questionCount }}</span>
-          </div>
-          <div class="info-item">
-            <span class="title">Posted On</span>
-            <span class="value">{{
-              assignmentDetails.postedDate | date : "mediumDate"
-            }}</span>
-          </div>
-          <div class="info-item">
-            <span class="title">Due On</span>
-            <span class="value">{{
-              assignmentDetails.dueDate | date : "mediumDate"
-            }}</span>
-          </div>
+          }
+          }
         </div>
       </div>
 
@@ -177,53 +93,35 @@
       <div class="details-row score">
         <div class="score-container">
           <div class="title">Overall Average Score</div>
-          <div class="value">{{ assignmentDetails.avgScore }}%</div>
+          <div class="value">{{ assignmentDetails.overAllAvgScore }}</div>
         </div>
         <div class="summary-boxes">
-          <div class="box not-delivered">
-            <div class="box-content">
-              <div class="info">
-                <div class="label">Did not delivered</div>
-                <div class="number">5</div>
-              </div>
-            </div>
-          </div>
-          <div class="box red">
-            <div class="box-content">
-              <div class="bold-area"></div>
+
+          @if (assignmentDetails.scoresDetails.length) {
+          @for (item of assignmentDetails.scoresDetails; track $index) {
+          @if (item.isHighlighted) {
+          <div class="box">
+            <div class="box-content" [style.border]="'1px solid ' + item.color"
+              style="border-radius: var(--radius-xs) 0 0 var(--radius-xs);">
+              <div class="bold-area" [style.background-color]="item.color"></div>
               <div class="info">
                 <div class="label">Weak</div>
                 <div class="number">3</div>
               </div>
             </div>
           </div>
-          <div class="box yellow">
+          }@else {
+          <div class="box not-delivered">
             <div class="box-content">
-              <div class="bold-area"></div>
               <div class="info">
-                <div class="label">Good</div>
-                <div class="number">1</div>
+                <div class="label">{{item.title}}</div>
+                <div class="number">{{item.value}}</div>
               </div>
             </div>
           </div>
-          <div class="box blue">
-            <div class="box-content">
-              <div class="bold-area"></div>
-              <div class="info">
-                <div class="label">Very Good</div>
-                <div class="number">4</div>
-              </div>
-            </div>
-          </div>
-          <div class="box green">
-            <div class="box-content">
-              <div class="bold-area"></div>
-              <div class="info">
-                <div class="label">Excellent</div>
-                <div class="number">1</div>
-              </div>
-            </div>
-          </div>
+          }
+          }
+          }
         </div>
       </div>
     </div>
@@ -236,69 +134,49 @@
         <div class="header-item">
           <div class="header-content">
             <span>Student Name</span>
-            <img
-              [src]="
+            <img [src]="
                 sortColumn === 'studentName'
                   ? sortDirection === 'asc'
                     ? 'icon-sort-asc.svg'
                     : 'icon-sort.svg'
                   : 'icon-sort.svg'
-              "
-              alt="Sort"
-              (click)="onSort('studentName')"
-              class="sort-icon"
-            />
+              " alt="Sort" (click)="onSort('studentName')" class="sort-icon" />
           </div>
         </div>
         <div class="header-item">
           <div class="header-content">
             <span>Submission Status</span>
-            <img
-              [src]="
+            <img [src]="
                 sortColumn === 'status'
                   ? sortDirection === 'asc'
                     ? 'icon-sort-asc.svg'
                     : 'icon-sort.svg'
                   : 'icon-sort.svg'
-              "
-              alt="Sort"
-              (click)="onSort('status')"
-              class="sort-icon"
-            />
+              " alt="Sort" (click)="onSort('status')" class="sort-icon" />
           </div>
         </div>
         <div class="header-item">
           <div class="header-content">
             <span>Score</span>
-            <img
-              [src]="
+            <img [src]="
                 sortColumn === 'score'
                   ? sortDirection === 'asc'
                     ? 'icon-sort-asc.svg'
                     : 'icon-sort.svg'
                   : 'icon-sort.svg'
-              "
-              alt="Sort"
-              (click)="onSort('score')"
-              class="sort-icon"
-            />
+              " alt="Sort" (click)="onSort('score')" class="sort-icon" />
           </div>
         </div>
         <div class="header-item">
           <div class="header-content">
             <span>Time Spent</span>
-            <img
-              [src]="
+            <img [src]="
                 sortColumn === 'timeSpent'
                   ? sortDirection === 'asc'
                     ? 'icon-sort-asc.svg'
                     : 'icon-sort.svg'
                   : 'icon-sort.svg'
-              "
-              alt="Sort"
-              (click)="onSort('timeSpent')"
-              class="sort-icon"
-            />
+              " alt="Sort" (click)="onSort('timeSpent')" class="sort-icon" />
           </div>
         </div>
         <div class="header-item">Reflection</div>
@@ -307,60 +185,50 @@
 
       <!-- Submissions List -->
       <div class="submissions-list">
-        @for (submission of submissions; track submission.id) {
+        @if (studentAssignmentDetails) {
+        @for (item of studentAssignmentDetails.studentsDetails; track $index) {
         <div class="submission-row">
           <div class="item student-name">
-            <span class="initials">{{ submission.initials }}</span>
-            <span class="name">{{ submission.studentName }}</span>
-            <img
-              src="icon-warning.svg"
-              alt="warning"
-              *ngIf="submission.status === 'Pending'"
-            />
+            <span class="initials">{{ item.studentName }}</span>
+            <span class="name">{{ item.studentName }}</span>
+            @if (item.warningIconUrl) {
+              <img [src]="item.warningIconUrl" width="21px" alt="warning" />
+            }
           </div>
-          <div class="item status" [class]="submission.status.toLowerCase()">
-            {{ submission.status }}
+          <div class="item status" [class]="item.submissionStatus.title.toLowerCase()">
+            {{ item.submissionStatus.title }}
           </div>
           <div class="item score">
             <div class="score-item">
               <span class="title">Correct</span>
-              <span class="value">{{ submission.correctAnswers }}</span>
+              <span class="value">{{ item.correctScore }}</span>
             </div>
             <div class="score-item">
               <span class="title">Wrong</span>
-              <span class="value">{{ submission.wrongAnswers }}</span>
+              <span class="value">{{ item.wrongScore }}</span>
             </div>
             <div class="score-item">
               <span class="title">Score</span>
-              <span class="value">{{ submission.score }}%</span>
+              <span class="value">{{ item.totalScore }}</span>
             </div>
           </div>
-          <div class="item time-spent">{{ submission.timeSpent }}</div>
+          <div class="item time-spent">{{ item.timeSpent }}</div>
           <div class="item attachment">
             <img src="icon-red-attachment.svg" alt="Attachment" />
           </div>
           <div class="item actions d-flex gap-2">
-            <button
-              pButton
-              type="button"
-              label="Correct"
-              class="p-button-primary"
-              (click)="correct(submission.id)"
-            ></button>
-            <button
-              pButton
-              type="button"
-              label="View Submission"
-              class="p-button-secondary view-submission"
-              (click)="viewSubmission(submission.id)"
-            ></button>
+            <button pButton type="button" label="Correct" class="p-button-primary" (click)="correct(item.id)"></button>
+            <button pButton type="button" label="View Submission" class="p-button-secondary view-submission"
+              (click)="viewSubmission(item.submissionStatus.id , item.studentId)"></button>
           </div>
         </div>
+        }
         }
       </div>
 
       <!-- Pagination -->
-      <app-pagination [rows]="10" [totalRecords]="100"></app-pagination>
+      <app-pagination [rows]="studentAssignmentDetails.pageSize" [totalRecords]="studentAssignmentDetails.totalRecords"
+        [first]="first" itemLabel="Submission" (pageChange)="nextPage($event)"></app-pagination>
     </div>
   </div>
 </div>
@@ -368,17 +236,11 @@
 <p-menu #exportBtn [popup]="true">
   <ng-template #start>
     <div class="export-menu-content">
-      <div
-        class="export-item"
-        (click)="exportAs('pdf'); exportBtn.toggle($event)"
-      >
+      <div class="export-item" (click)="exportAs('pdf'); exportBtn.toggle($event)">
         <span class="label">PDF</span>
         <img src="icon-download.svg" alt="download" />
       </div>
-      <div
-        class="export-item"
-        (click)="exportAs('xlsx'); exportBtn.toggle($event)"
-      >
+      <div class="export-item" (click)="exportAs('xlsx'); exportBtn.toggle($event)">
         <span class="label">XLSX</span>
         <img src="icon-download.svg" alt="download" />
       </div>
@@ -386,19 +248,9 @@
   </ng-template>
 </p-menu>
 
-<p-dialog
-  [dismissableMask]="true"
-  [(visible)]="showDeleteConfirmation"
-  [modal]="false"
-  [draggable]="false"
-  [resizable]="false"
-  [style]="{ width: '450px' }"
-  styleClass="delete-confirmation-dialog"
-  [closeOnEscape]="true"
-  [dismissableMask]="true"
-  [showHeader]="true"
-  [closable]="true"
->
+<p-dialog [dismissableMask]="true" [(visible)]="showDeleteConfirmation" [modal]="false" [draggable]="false"
+  [resizable]="false" [style]="{ width: '450px' }" styleClass="delete-confirmation-dialog" [closeOnEscape]="true"
+  [dismissableMask]="true" [showHeader]="true" [closable]="true">
   <!-- <div class="board-header">
     <button class="close-button" (click)="cancelDelete()">
       <img src="icon-exit.svg" alt="close" />
@@ -409,20 +261,10 @@
       Are you sure you want to delete the assignment?
     </div>
     <div class="delete-actions">
-      <button
-        pButton
-        type="button"
-        label="Cancel"
-        class="p-button-secondary cancel-button"
-        (click)="cancelDelete()"
-      ></button>
-      <button
-        pButton
-        type="button"
-        label="Delete"
-        class="p-button-primary delete-button"
-        (click)="confirmDelete()"
-      ></button>
+      <button pButton type="button" label="Cancel" class="p-button-secondary cancel-button"
+        (click)="cancelDelete()"></button>
+      <button pButton type="button" label="Delete" class="p-button-primary delete-button"
+        (click)="confirmDelete()"></button>
     </div>
   </div>
 </p-dialog>

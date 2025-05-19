@@ -1,0 +1,28 @@
+export interface Skill {
+expanded: boolean;
+  skillId: number;
+  name: string;
+}
+
+export interface SubmissionCard {
+  value: string;
+  text: string;
+  color: string;
+  backgroundColor: string;
+  iconUrl?: string;
+}
+
+export class StudentSubmission {
+  skills: Skill[];
+  submissionCards: SubmissionCard[];
+}
+
+export class SubmissionQuestion {
+  answerBtnColor!: string;
+  answerBtnIconUrl!: string;
+  answerBtnText!: string;
+  color!: string;
+  difficulty!: { text: string; color: string };
+  questionId!: number;
+  text!: string;
+}

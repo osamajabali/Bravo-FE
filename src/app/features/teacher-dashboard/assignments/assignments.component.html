@@ -2,44 +2,20 @@
   <div class="header">
     <div class="d-flex justify-content-between align-items-center">
       <div class="search-container">
-        <span
-          dir="ltr"
-          class="p-input-icon-left d-flex align-items-center position-relative"
-        >
-          <input
-            type="text"
-            pInputText
-            placeholder="Search"
-            class="search-input"
-            (change)="_onSearchChange($event)"
-            [value]="searchTerm"
-          />
+        <span dir="ltr" class="p-input-icon-left d-flex align-items-center position-relative">
+          <input type="text" pInputText placeholder="Search" class="search-input" (change)="_onSearchChange($event)"
+            [value]="searchTerm" />
           <i class="pi pi-search position-absolute end-0 pe-3"></i>
         </span>
-        <button
-          #filterBtn
-          pButton
-          type="button"
-          class="p-button-text filter-button"
-          (click)="filterContent.toggle($event)"
-        >
+        <button #filterBtn pButton type="button" class="p-button-text filter-button"
+          (click)="filterContent.toggle($event)">
           <img src="icon-filter.svg" alt="filter" />
         </button>
-        <button
-          pButton
-          type="button"
-          label="Advanced Search"
-          class="p-button-primary advanced-search-button"
-          (click)="onAdvancedSearch()"
-        ></button>
+        <button pButton type="button" label="Advanced Search" class="p-button-primary advanced-search-button"
+          (click)="onAdvancedSearch()"></button>
       </div>
       <div class="buttons">
-        <button
-          pButton
-          label=""
-          class="p-button-outlined show-button"
-          (click)="newAssignment()"
-        >
+        <button pButton label="" class="p-button-outlined show-button" (click)="newAssignment()">
           <span>New Assignment</span>
           <img src="icon-plus.svg" alt="plus" />
         </button>
@@ -49,116 +25,45 @@
     <div class="content px-0" *ngIf="showAdvancedSearch">
       <div class="advanced-search" *ngIf="selectedTab === 'active'">
         <div class="advanced-filters">
-          <p-multiselect 
-            [options]="sectionFilter.subjects"
-            [(ngModel)]="assignmentPayload.subjectIds"
-            placeholder="Subjects"
-            [showClear]="false"
-            optionLabel="name"
-            optionValue="subjectId"
-          ></p-multiselect >
-          <p-multiselect
-            [options]="sectionFilter.grades"
-            [(ngModel)]="assignmentPayload.gradeIds"
-            placeholder="Grade"
-            [showClear]="false"
-            optionLabel="name"
-            optionValue="gradeId"
-          ></p-multiselect>
-          <p-multiselect
-            [options]="sectionFilter.sections"
-            [(ngModel)]="assignmentPayload.courseSectionIds"
-            placeholder="Homerooms"
-            [showClear]="false"
-            optionLabel="name"
-            optionValue="courseSectionId"
-          ></p-multiselect>
-          <p-datePicker
-            [(ngModel)]="startDate"
-            placeholder="Start Date"
-            [showClear]="false"
-            dateFormat="yy-mm-dd"
-          ></p-datePicker>
-          <p-datePicker
-            [(ngModel)]="endDate"
-            placeholder="End Date"
-            [showClear]="false"
-            dateFormat="yy-mm-dd"
-          ></p-datePicker>
-          <p-datePicker
-            [(ngModel)]="creationDate"
-            placeholder="Creation Date"
-            [showClear]="false"
-            dateFormat="yy-mm-dd"
-          ></p-datePicker>
-          <p-multiselect
-            [options]="assignmentTypes"
-            [(ngModel)]="assignmentPayload.assignmentTypeIds"
-            placeholder="Assignment Type"
-            [showClear]="false"
-            optionLabel="name"
-            optionValue="assignmentTypeId"
-          ></p-multiselect>
-          <p-multiselect
-            [options]="assignmentFilter.filterStatus"
-            [(ngModel)]="assignmentPayload.assignmentStatuses"
-            placeholder="Assignment Status"
-            [showClear]="false"
-            optionLabel="name"
-            optionValue="id"
-          ></p-multiselect>
-          <p-multiselect
-            [options]="assignmentFilter.filterSortBy"
-            [(ngModel)]="assignmentPayload.sortBy"
-            placeholder="Sort By"
-            [showClear]="false"
-            optionLabel="name"
-            optionValue="id"
-          ></p-multiselect>
-          <p-multiselect
-            [options]="assignmentFilter.filterOrders"
-            [(ngModel)]="assignmentPayload.order"
-            placeholder="Order"
-            [showClear]="false"
-            optionLabel="name"
-            optionValue="id"
-          ></p-multiselect>
-          <p-select
-            [options]="assignmentFilter.recipientTypes"
-            [(ngModel)]="assignmentPayload.recipientId"
-            placeholder="Recipient"
-            [showClear]="false"
-            optionLabel="name"
-            optionValue="recipientId"
-          ></p-select>
+          <p-select [options]="sectionFilter.subjects" [(ngModel)]="assignmentPayload.subjectId" placeholder="Subjects"
+            [showClear]="false" optionLabel="name" optionValue="subjectId"></p-select>
+          <p-multiselect [options]="sectionFilter.grades" [(ngModel)]="assignmentPayload.gradeIds" placeholder="Grade"
+            [showClear]="false" optionLabel="name" optionValue="gradeId"></p-multiselect>
+          <p-multiselect [options]="sectionFilter.sections" [(ngModel)]="assignmentPayload.courseSectionIds"
+            placeholder="Homerooms" [showClear]="false" optionLabel="name"
+            optionValue="courseSectionId"></p-multiselect>
+          <p-datePicker [(ngModel)]="startDate" placeholder="Start Date" [showClear]="false"
+            dateFormat="yy-mm-dd"></p-datePicker>
+          <p-datePicker [(ngModel)]="endDate" placeholder="End Date" [showClear]="false"
+            dateFormat="yy-mm-dd"></p-datePicker>
+          <p-datePicker [(ngModel)]="creationDate" placeholder="Creation Date" [showClear]="false"
+            dateFormat="yy-mm-dd"></p-datePicker>
+          <p-multiselect [options]="assignmentTypes" [(ngModel)]="assignmentPayload.assignmentTypeIds"
+            placeholder="Assignment Type" [showClear]="false" optionLabel="name"
+            optionValue="assignmentTypeId"></p-multiselect>
+          <p-multiselect [options]="assignmentFilter.filterStatus" [(ngModel)]="assignmentPayload.assignmentStatuses"
+            placeholder="Assignment Status" [showClear]="false" optionLabel="name" optionValue="id"></p-multiselect>
+          <p-select [options]="assignmentFilter.filterSortBy" [(ngModel)]="assignmentPayload.sortBy"
+            placeholder="Sort By" [showClear]="false" optionLabel="name" optionValue="id"></p-select>
+          <p-select [options]="assignmentFilter.filterOrders" [(ngModel)]="assignmentPayload.order" placeholder="Order"
+            [showClear]="false" optionLabel="name" optionValue="id"></p-select>
+          <p-select [options]="assignmentFilter.recipientTypes" [(ngModel)]="assignmentPayload.recipientId"
+            placeholder="Recipient" [showClear]="false" optionLabel="name" optionValue="recipientId"></p-select>
         </div>
         <div class="advanced-search-actions">
           <div class="clear-button" (click)="onResetAdvancedSearch()">
             <span>Clear Filters</span>
           </div>
-          <button
-            pButton
-            label="Search"
-            class="p-button-primary"
-            (click)="getAssignments()"
-          ></button>
+          <button pButton label="Search" class="p-button-primary" (click)="getAssignments()"></button>
         </div>
       </div>
     </div>
 
     <div class="tabs">
-      <div
-        class="tab"
-        [class.selected]="selectedTab === 'active'"
-        (click)="onTabClick('active')"
-      >
+      <div class="tab" [class.selected]="selectedTab === 'active'" (click)="onTabClick('active')">
         Active
       </div>
-      <div
-        class="tab"
-        [class.selected]="selectedTab === 'closed'"
-        (click)="onTabClick('closed')"
-      >
+      <div class="tab" [class.selected]="selectedTab === 'closed'" (click)="onTabClick('closed')">
         Closed
       </div>
     </div>
@@ -168,20 +73,15 @@
     <div class="grid-header">
       <div class="header-item title">
         <span>Title</span>
-        <img
-          src="icon-sort.svg"
-          alt="sort"
-          (click)="onSort('title')"
-          [src]="
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('title')" [src]="
             sortColumn === 'title'
               ? sortDirection === 'asc'
                 ? 'icon-sort-asc.svg'
                 : 'icon-sort.svg'
               : 'icon-sort.svg'
-          "
-        />
+          " />
       </div>
-      <div class="header-item status">
+      <!-- <div class="header-item status">
         <span>Status</span>
         <img
           src="icon-sort.svg"
@@ -195,149 +95,102 @@
               : 'icon-sort.svg'
           "
         />
-      </div>
+      </div> -->
       <div class="header-item avg-score">
         <span>AVG. Score</span>
-        <img
-          src="icon-sort.svg"
-          alt="sort"
-          (click)="onSort('avgScore')"
-          [src]="
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('avgScore')" [src]="
             sortColumn === 'avgScore'
               ? sortDirection === 'asc'
                 ? 'icon-sort-asc.svg'
                 : 'icon-sort.svg'
               : 'icon-sort.svg'
-          "
-        />
+          " />
       </div>
       <div class="header-item target">
         <span>Target</span>
-        <img
-          src="icon-sort.svg"
-          alt="sort"
-          (click)="onSort('target')"
-          [src]="
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('target')" [src]="
             sortColumn === 'target'
               ? sortDirection === 'asc'
                 ? 'icon-sort-asc.svg'
                 : 'icon-sort.svg'
               : 'icon-sort.svg'
-          "
-        />
+          " />
       </div>
       <div class="header-item assigned-by">
         <span>Assigned By</span>
-        <img
-          src="icon-sort.svg"
-          alt="sort"
-          (click)="onSort('assignedBy')"
-          [src]="
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('assignedBy')" [src]="
             sortColumn === 'assignedBy'
               ? sortDirection === 'asc'
                 ? 'icon-sort-asc.svg'
                 : 'icon-sort.svg'
               : 'icon-sort.svg'
-          "
-        />
+          " />
       </div>
       <div class="header-item post-date">
         <span>Post Date</span>
-        <img
-          src="icon-sort.svg"
-          alt="sort"
-          (click)="onSort('postDate')"
-          [src]="
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('postDate')" [src]="
             sortColumn === 'postDate'
               ? sortDirection === 'asc'
                 ? 'icon-sort-asc.svg'
                 : 'icon-sort.svg'
               : 'icon-sort.svg'
-          "
-        />
+          " />
       </div>
       <div class="header-item due-date">
         <span>Due On</span>
-        <img
-          src="icon-sort.svg"
-          alt="sort"
-          (click)="onSort('dueDate')"
-          [src]="
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('dueDate')" [src]="
             sortColumn === 'dueDate'
               ? sortDirection === 'asc'
                 ? 'icon-sort-asc.svg'
                 : 'icon-sort.svg'
               : 'icon-sort.svg'
-          "
-        />
+          " />
       </div>
       <div class="header-item submissions">
         <span>Submissions</span>
-        <img
-          src="icon-sort.svg"
-          alt="sort"
-          (click)="onSort('submissions')"
-          [src]="
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('submissions')" [src]="
             sortColumn === 'submissions'
               ? sortDirection === 'asc'
                 ? 'icon-sort-asc.svg'
                 : 'icon-sort.svg'
               : 'icon-sort.svg'
-          "
-        />
+          " />
       </div>
     </div>
     <!-- Assignment List -->
     <div class="assignments-list">
-      @for (assignment of assignments; track assignment.id) {
-      <div
-        class="assignment-row"
-        [class.active]="assignment.status === 'active'"
-        [class.inactive]="assignment.status === 'inactive'"
-        [class.scheduled]="assignment.status === 'scheduled'"
-      >
+      @for (assignment of assignments.assignments; track $index) {
+      <div class="assignment-row" [class.active]="'active' === 'active'">
         <div class="item title">{{ assignment.title }}</div>
-        <div class="item status">
-          <span
-            [class.active]="assignment.status === 'active'"
-            [class.inactive]="assignment.status === 'inactive'"
-            [class.scheduled]="assignment.status === 'scheduled'"
-          >
+        <!-- <div class="item status">
+          <span>
             <div class="dot"></div>
             {{ assignment.status }}
           </span>
-        </div>
+        </div> -->
         <div class="item type">{{ assignment.avgScore }}</div>
         <div class="item target">{{ assignment.target }}</div>
-        <div class="item assigned-by">{{ assignment.assignedBy }}</div>
+        <!-- <div class="item assigned-by">{{ assignment.assignedBy }}</div> -->
         <div class="item post-date">
-          {{ assignment.postDate | date : "mediumDate" }}
+          {{ assignment.startDate | date : "mediumDate" }}
         </div>
         <div class="item due-date">
-          {{ assignment.dueDate | date : "mediumDate" }}
+          {{ assignment.endDate | date : "mediumDate" }}
         </div>
-        <div class="item submissions">{{ assignment.submissions }}</div>
+        <div class="item submissions">{{ assignment.submission }}</div>
         <div class="item actions d-flex">
-          <button
-            pButton
-            type="button"
-            label="View Details"
-            class="p-button-primary"
-            (click)="viewAssignment(assignment.id)"
-          ></button>
-          <img
-            src="icon-more-vertical.svg"
-            alt="more"
-            class="pointer more-actions"
-            (click)="showActionMenu($event, assignment)"
-          />
+          <button pButton type="button" label="View Details" class="p-button-primary"
+            (click)="viewAssignment(assignment.assignmentId)"></button>
+          <img src="icon-more-vertical.svg" alt="more" class="pointer more-actions"
+            (click)="showActionMenu($event, assignment)" />
         </div>
       </div>
       }
     </div>
 
     <!-- Pagination -->
-    <app-pagination [rows]="10" [totalRecords]="100"></app-pagination>
+    <app-pagination [rows]="assignments.pageSize" [totalRecords]="assignments.totalRecords" [first]="first"
+      itemLabel="Submission" (pageChange)="nextPage($event)"></app-pagination>
   </div>
 </div>
 
@@ -346,10 +199,7 @@
     <!-- Header with title and close button -->
     <div class="filter-overlay-header">
       <h3 class="filter-overlay-title">Filter Sub Skills</h3>
-      <button
-        class="filter-overlay-close"
-        (click)="filterContent.toggle($event)"
-      >
+      <button class="filter-overlay-close" (click)="filterContent.toggle($event)">
         <i class="pi pi-times"></i>
       </button>
     </div>
@@ -361,16 +211,9 @@
     <div class="filter-sections">
       @for (section of filterSections; track section.title) {
       <div class="filter-section">
-        <div
-          class="filter-section-header"
-          (click)="toggleFilterSection(section)"
-        >
+        <div class="filter-section-header" (click)="toggleFilterSection(section)">
           <span class="filter-section-title">{{ section.title }}</span>
-          <i
-            class="pi"
-            [class.pi-chevron-up]="section.expanded"
-            [class.pi-chevron-down]="!section.expanded"
-          ></i>
+          <i class="pi" [class.pi-chevron-up]="section.expanded" [class.pi-chevron-down]="!section.expanded"></i>
         </div>
 
         @if (section.expanded) {
@@ -378,29 +221,15 @@
           @for (option of section.options; track option.value) {
           <div class="filter-option">
             <div class="custom-checkbox">
-              <input
-                type="checkbox"
-                [id]="option.value"
-                [name]="section.title"
-                [value]="option.value"
+              <input type="checkbox" [id]="option.value" [name]="section.title" [value]="option.value"
                 [checked]="section.selectedOptions.includes(option.value)"
-                (change)="toggleCheckbox(section, option.value)"
-                class="visually-hidden"
-              />
+                (change)="toggleCheckbox(section, option.value)" class="visually-hidden" />
               <label [for]="option.value" class="checkbox-label">
                 <span class="checkbox-icon">
                   @if (section.selectedOptions.includes(option.value)) {
-                  <img
-                    src="icon-checkbox-checked.svg"
-                    alt="Checked"
-                    class="checkbox-checked"
-                  />
+                  <img src="icon-checkbox-checked.svg" alt="Checked" class="checkbox-checked" />
                   } @else {
-                  <img
-                    src="icon-checkbox-unchecked.svg"
-                    alt="Unchecked"
-                    class="checkbox-unchecked"
-                  />
+                  <img src="icon-checkbox-unchecked.svg" alt="Unchecked" class="checkbox-unchecked" />
                   }
                 </span>
                 <span class="filter-option-label">{{ option.label }}</span>
@@ -449,11 +278,7 @@
     <div class="menu-separator"></div>
 
     <div class="menu-item" (click)="viewQuestions()">
-      <img
-        src="icon-view-questions.svg"
-        alt="view questions"
-        class="menu-icon"
-      />
+      <img src="icon-view-questions.svg" alt="view questions" class="menu-icon" />
       <span class="menu-text">View Questions</span>
     </div>
     <div class="menu-separator"></div>

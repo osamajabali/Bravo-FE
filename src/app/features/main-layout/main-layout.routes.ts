@@ -144,22 +144,22 @@ export const Main_Layout_Routes: Routes = [
             (m) => m.QuestionsComponent
           ),
       },
+      // {
+      //   path: 'assignments',
+      //   loadComponent: () =>
+      //     import('../teacher-dashboard/assignments/assignments.component').then(
+      //       (m) => m.AssignmentsComponent
+      //     ),
+      // },
       {
-        path: 'assignments',
-        loadComponent: () =>
-          import('../teacher-dashboard/assignments/assignments.component').then(
-            (m) => m.AssignmentsComponent
-          ),
-      },
-      {
-        path: 'assignments/:id',
+        path: 'assignmentsDetails',
         loadComponent: () =>
           import('../teacher-dashboard/assignment-details/assignment-details.component').then(
             (m) => m.AssignmentDetailsComponent
           ),
       },
       {
-        path: 'assignments/assignment-submission/:id',
+        path: 'assignments/assignment-submission',
         loadComponent: () =>
           import('../teacher-dashboard/assignment-submission/assignment-submission.component').then(
             (m) => m.AssignmentSubmissionComponent
