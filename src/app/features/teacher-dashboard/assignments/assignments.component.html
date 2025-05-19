@@ -2,10 +2,23 @@
   <div class="header">
     <div class="d-flex justify-content-between align-items-center">
       <div class="search-container">
-        <span dir="ltr" class="p-input-icon-left d-flex align-items-center position-relative">
-          <input type="text" pInputText placeholder="Search" class="search-input" (change)="_onSearchChange($event)"
-            [value]="searchTerm" />
-          <i class="pi pi-search position-absolute end-0 pe-3"></i>
+        <span
+          dir="ltr"
+          class="p-input-icon-left d-flex align-items-center position-relative"
+        >
+          <input
+            type="text"
+            pInputText
+            placeholder="Search"
+            class="search-input"
+            (change)="_onSearchChange($event)"
+            [value]="searchTerm"
+          />
+          <img
+            src="icon-search.svg"
+            alt="search"
+            class="position-absolute end-0 pe-3"
+          />
         </span>
         <button #filterBtn pButton type="button" class="p-button-text filter-button"
           (click)="filterContent.toggle($event)">
@@ -17,7 +30,7 @@
       <div class="buttons">
         <button pButton label="" class="p-button-outlined show-button" (click)="newAssignment()">
           <span>New Assignment</span>
-          <img src="icon-plus.svg" alt="plus" />
+          <img src="icon-plus-sml.svg" alt="plus" />
         </button>
       </div>
     </div>
@@ -54,7 +67,25 @@
           <div class="clear-button" (click)="onResetAdvancedSearch()">
             <span>Clear Filters</span>
           </div>
-          <button pButton label="Search" class="p-button-primary" (click)="getAssignments()"></button>
+          <button
+            pButton
+            label="Search"
+            [disabled]="
+              !assignmentPayload.subjectId &&
+              !assignmentPayload.gradeIds.length &&
+              !assignmentPayload.courseSectionIds.length &&
+              !assignmentPayload.assignmentTypeIds.length &&
+              !assignmentPayload.assignmentStatuses.length &&
+              !assignmentPayload.sortBy &&
+              !assignmentPayload.order &&
+              !assignmentPayload.recipientId &&
+              !startDate &&
+              !endDate &&
+              !creationDate
+            "
+            class="p-button-primary"
+            (click)="getAssignments()"
+          ></button>
         </div>
       </div>
     </div>
