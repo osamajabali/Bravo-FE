@@ -7,10 +7,12 @@ import { SkeletonComponent } from "../skeleton/skeleton.component";
 import { PaginationComponent } from "../pagination/pagination.component";
 import { PaginatorState } from 'primeng/paginator';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-unit-cards',
-  imports: [],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './unit-cards.component.html',
   styleUrl: './unit-cards.component.scss'
 })

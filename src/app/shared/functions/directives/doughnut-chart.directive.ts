@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { Chart, Plugin, registerables, ChartOptions } from 'chart.js';
 import { isPlatformBrowser } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 // ✅ Center Percentage Text Plugin
 const CenterTextPlugin: Plugin = {
@@ -51,7 +52,8 @@ export class DoughnutChartDirective implements OnChanges {
 
   constructor(
     private el: ElementRef,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private translate: TranslateService
   ) {
     if (isPlatformBrowser(this.platformId)) {
       Chart.register(...registerables);
@@ -61,7 +63,7 @@ export class DoughnutChartDirective implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (
       isPlatformBrowser(this.platformId) &&
-      (changes['data'] || changes['labels'] || changes['color'])
+      (changes['data'] || changes['labels'] || changes['color'] || changes['activeCount'] || changes['inactiveCount'])
     ) {
       this.renderChart();
     }
@@ -78,72 +80,78 @@ export class DoughnutChartDirective implements OnChanges {
       this.chart.destroy();
     }
 
-    let chartData: number[]; 
-    const backgroundColor = ['#E0E0E0', this.color]; // ✅ Inactive on top (reversed order)
+    // Fetch translations for Active and Inactive Skills labels
+    this.translate.get(['ACTIVE_SKILLS', 'INACTIVE_SKILLS']).subscribe(translations => {
+      const activeLabel = translations['ACTIVE_SKILLS'];
+      const inactiveLabel = translations['INACTIVE_SKILLS'];
 
-    if (this.data.length === 1) {
-      const percentage = this.data[0];
-      chartData = [100 - percentage, percentage]; // Inactive on top
-    } else {
-      const totalValue = this.data.reduce((sum, value) => sum + value, 0);
-      chartData = totalValue > 0 ? 
-        [((this.inactiveCount / totalValue) * 100), ((this.activeCount / totalValue) * 100)] : [100, 0]; // Inactive on top
-    }
+      let chartData: number[];
+      const backgroundColor = ['#E0E0E0', this.color]; // Inactive on top (lighter color first)
 
-    // ✅ Explicitly type `options` to avoid `cutout` error
-    const chartOptions: ChartOptions<'doughnut'> = {
-      responsive: true,
-      maintainAspectRatio: false,
-      cutout: '75%', // ✅ Now TypeScript recognizes `cutout`
-      plugins: {
-        legend: {
-          display: this.isSkills, // ✅ Legend only for skill charts
-          position: 'right',
-          onClick: () => {}, // ❌ Disable click behavior
-          labels: {
-            boxWidth: 10,
-            padding: 5,
-            font: {
-              size: 12,
+      if (this.data.length === 1) {
+        const percentage = this.data[0];
+        chartData = [100 - percentage, percentage]; // Inactive on top
+      } else {
+        const totalValue = this.data.reduce((sum, value) => sum + value, 0);
+        chartData = totalValue > 0
+          ? [
+              (this.inactiveCount / totalValue) * 100,
+              (this.activeCount / totalValue) * 100,
+            ]
+          : [100, 0]; // Inactive on top
+      }
+
+      const chartOptions: ChartOptions<'doughnut'> = {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '75%',
+        plugins: {
+          legend: {
+            display: this.isSkills,
+            position: 'right',
+            onClick: () => {},
+            labels: {
+              boxWidth: 10,
+              padding: 5,
+              font: {
+                size: 12,
+              },
+            },
+          },
+          tooltip: {
+            enabled: this.isSkills,
+            callbacks: {
+              label: function (context) {
+                const label = context.label || '';
+                if (!label.toLowerCase().includes(inactiveLabel.toLowerCase())) {
+                  return `${Math.round(context.raw as number)}% ${activeLabel}`;
+                } else {
+                  return `${Math.round(context.raw as number)}% ${inactiveLabel}`;
+                }
+              },
+              title: () => '', // Hide tooltip title
             },
           },
         },
-        tooltip: {
-          enabled: this.isSkills, // ✅ Tooltips only for skill charts
-          callbacks: {
-            label: function (context) {
-              if (!context.label.toLowerCase().includes("inactive")) {
-                return `${Math.round(context.raw as number)}% Active Skills`; // Display percentage of active skills
-              }else{
-                return `${Math.round(context.raw as number)}% Inactive Skills`;
-              }
-            },
-            // Optional: Remove the title or additional information if needed
-            title: function() {
-              return ''; // Hides the title
-            }
-          },
-        },
-        
-      },
-    };
+      };
 
-    this.chart = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: this.isSkills 
-          ? [`${this.inactiveCount} Inactive Skills`, `${this.activeCount} Active Skills`] // Inactive on top
-          : [], // Use active/inactive counts as labels
-        datasets: [
-          {
-            data: chartData,
-            backgroundColor: backgroundColor,
-            borderWidth: 0,
-          },
-        ],
-      },
-      options: chartOptions,
-      plugins: !this.isSkills ? [CenterTextPlugin] : [],
+      this.chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: this.isSkills
+            ? [`${this.inactiveCount} ${inactiveLabel}`, `${this.activeCount} ${activeLabel}`]
+            : [],
+          datasets: [
+            {
+              data: chartData,
+              backgroundColor: backgroundColor,
+              borderWidth: 0,
+            },
+          ],
+        },
+        options: chartOptions,
+        plugins: !this.isSkills ? [CenterTextPlugin] : [],
+      });
     });
   }
 }

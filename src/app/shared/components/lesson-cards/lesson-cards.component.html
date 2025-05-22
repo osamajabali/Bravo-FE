@@ -5,46 +5,55 @@
         <h3 class="unit-title">
           {{ card.name ? card.name : isSkillCurriculum(card) ? card.domainName : card.name }}
         </h3>
-        <p class="unit-description">Number of Skills: {{ card.skillsCount }}</p>
+        <p class="unit-description">{{'NUMBER_OF_SKILLS' | translate }}: {{ card.skillsCount }}</p>
       </div>
       <div class="unit-actions">
         <button pButton label="" class="assignment-button">
           <img src="icon-plus.svg" alt="plus" />
-          <span>Assignment</span>
+          <span>{{'ASSIGNMENT' | translate }}</span>
         </button>
 
         @if(isLesson(card)) {
         <button pButton label="" class="p-button-primary view-button" (click)="clickedCard(card)">
-          <span>{{ getViewButtonText(card) }}</span>
+          <span>{{ getViewButtonText(card) | translate }}</span>
+          @if ('ltr' == ('DIR' | translate)) {
           <img src="arrow-small-right.svg" alt="view" />
+          }@else {
+          <i class="pi pi-chevron-left" style="color: var(--primary-color); font-size: 10px"></i>
+          }
         </button>
         } @else if (!isLesson(card) && card.skillsCount > 0) {
         <button pButton label="" class="p-button-primary view-button" (click)="clickedCard(card)">
-          <span>{{ getViewButtonText(card) }}</span>
+          <span>{{ getViewButtonText(card) | translate}}</span>
+          @if ('ltr' == ('DIR' | translate)) {
           <img src="arrow-small-right.svg" alt="view" />
+          }@else {
+          <i class="pi pi-chevron-left" style="color: var(--primary-color); font-size: 10px"></i>
+          }
         </button>
         }
 
-        <div class="custom-radio-container">
+        <div class="custom-radio-container" dir="ltr">
           <div class="custom-radio" [class.active]="card.isEnabled" (click)="toggleActive(card)">
             <div class="radio-content" [class.reverse]="!card.isEnabled">
               <span class="status-text">{{ (card.isEnabled ? 'ACTIVE' : 'INACTIVE') | translate }}</span>
               <img [src]="card.isEnabled ? 'icon-radio-checked.svg' : 'icon-radio-unchecked.svg'" alt="check">
             </div>
           </div>
-          
+
           @if(card.activationDate) {
           <div class="activation-date">
             <span>{{ card.activationDate }}</span>
           </div>
           }
-          
+
         </div>
-        
+
       </div>
     </div>
   </a>
 </div>
 
-<app-skill-activation-modal [(visible)]="activateSkill" [buttonLabel]="card.isEnabled ? 'Deactivate' : 'Activate'" [style]="{ width: '450px' }" [modal]="true" [closable]="true" [sections]="sections"
-  [closeOnEscape]="true" (activateSections)="_activateSkill($event)"></app-skill-activation-modal>
+<app-skill-activation-modal [(visible)]="activateSkill" [buttonLabel]="card.isEnabled ? 'Deactivate' : 'Activate'"
+  [style]="{ width: '450px' }" [modal]="true" [closable]="true" [sections]="sections" [closeOnEscape]="true"
+  (activateSections)="_activateSkill($event)"></app-skill-activation-modal>

@@ -3,6 +3,7 @@ import { PopoverModule } from 'primeng/popover';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StatisticsResponse } from '../../../core/models/teacher-dashboard-models/statistics.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface FilterSection {
   title: string;
@@ -26,7 +27,7 @@ export interface SkillSummaryData {
 @Component({
   selector: 'app-skill-summary',
   standalone: true,
-  imports: [PopoverModule, CommonModule, FormsModule],
+  imports: [PopoverModule, CommonModule, FormsModule, TranslateModule],
   templateUrl: './skill-summary.component.html',
   styleUrls: ['./skill-summary.component.scss'],
 })

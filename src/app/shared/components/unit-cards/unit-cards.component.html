@@ -8,7 +8,7 @@
         <p class="unit-description">{{ card.unitName }}</p>
       </div>
       <div class="unit-icon">
-        <img src="icon-blue-arrow-square.svg" alt="arrow-right" />
+        <img src="icon-blue-arrow-square.svg" [style]="'ltr' == ('DIR' | translate) ? '' : 'transform: rotate(180deg);'" alt="arrow-right" />
       </div>
     </div>
   </a>

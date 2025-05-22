@@ -5,13 +5,13 @@
           <h3 class="unit-title">{{ isSingleSkill(skill) ? skill.displayName : skill.skillName }}</h3>
           <div class="d-flex gap-3">
             <div class="badge">
-              Beginner <span class="number">{{ skill.easyStudentsCount || 0 }}</span>
+              {{'BEGINNER' | translate}} <span class="number">{{ skill.easyStudentsCount || 0 }}</span>
             </div>
             <div class="badge">
-              Average <span class="number">{{ skill.meduimStudentsCount || 0 }}</span>
+              {{'AVERAGE' | translate}} <span class="number">{{ skill.meduimStudentsCount || 0 }}</span>
             </div>
             <div class="badge">
-              Advanced <span class="number">{{ skill.hardStudentsCount || 0 }}</span>
+              {{'ADVANCED' | translate}} <span class="number">{{ skill.hardStudentsCount || 0 }}</span>
             </div>
           </div>
         </div>
@@ -20,20 +20,20 @@
             <a (click)="getStudents(skill.learningOutcomeId ?skill.learningOutcomeId : skill.id)">
               <div class="action-icon">
                 <img src="icon-multiple-users.svg" alt="users" />
-                <span class="action-icon-text">Students</span>
+                <span class="action-icon-text">{{'STUDENTS' | translate }}</span>
               </div>
             </a>
             <a (click)="getSmartBoardDetails(skill)">
               <div class="action-icon">
                 <img src="icon-cards.svg" alt="cards" />
-                <span class="action-icon-text">Resources</span>
+                <span class="action-icon-text">{{'RESOURCES' | translate}}</span>
               </div>
             </a>
             <button pButton label="" class="assignment-button">
               <img src="icon-plus.svg" alt="plus" />
-              <span>Assignment</span>
+              <span>{{'ASSIGNMENT' | translate}}</span>
             </button>
-            <div class="custom-radio-container">
+            <div class="custom-radio-container" dir="ltr">
               <div class="custom-radio" [class.active]="skill.isEnabled" (click)="toggleActive(skill)">
                 <div class="radio-content" [class.reverse]="!skill.isEnabled">
                   <span class="status-text">{{ (skill.isEnabled ? 'ACTIVE' : 'INACTIVE') | translate }}</span>

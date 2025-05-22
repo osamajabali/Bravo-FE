@@ -41,6 +41,13 @@
     "SHOWING": "عرض",
     "OF": "من",
     "items": "عناصر",
-    "ACTIVE" : "فعالة",
-    "INACTIVE" : "غير فعالة"
+    "ACTIVE": "فعالة",
+    "SKIP": "تخطي",
+    "INACTIVE": "غير فعالة",
+    "SEARCH": "بحث",
+    "VIEW_CURRICULUM": "عرض المنهج",
+    "ACTIVE_SKILLS": "المهارات الفعالة",
+    "RESOURCES": "الموارد",
+    "INACTIVE_SKILLS": "المهارات غير الفعالة",
+    "VIEW_BB_SKILL": "عرض مهارة BB"
 }

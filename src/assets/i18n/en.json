@@ -1,4 +1,5 @@
 {
+    "DIR": "ltr",
     "CHOOSE_PROPERTIES": "Choose properties",
     "SUBJECTS": "Subjects",
     "GRADES": "Grades",
@@ -40,6 +41,13 @@
     "SHOWING": "Showing",
     "OF": "of",
     "items": "items",
-    "ACTIVE" : "Active",
-    "INACTIVE" : "Inactive"
+    "ACTIVE": "Active",
+    "SKI[": "Skip",
+    "INACTIVE": "Inactive",
+    "SEARCH": "Search",
+    "VIEW_CURRICULUM": "View Curriculum",
+    "ACTIVE_SKILLS": "Active Skills",
+    "RESOURCES": "Resources",
+    "INACTIVE_SKILLS": "Inactive Skills",
+    "VIEW_BB_SKILL": "View BB Skill"
 }

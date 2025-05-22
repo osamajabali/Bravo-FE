@@ -18,12 +18,12 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-lesson-cards',
-  imports: [SkillActivationModalComponent,TranslateModule],
+  imports: [SkillActivationModalComponent, TranslateModule],
   templateUrl: './lesson-cards.component.html',
   styleUrl: './lesson-cards.component.scss',
 })
 export class LessonCardsComponent implements OnInit {
-  @Input() card: Lessons | LessonsCurriculums | SkillCurriculum = {} as Lessons | LessonsCurriculums  | SkillCurriculum;
+  @Input() card: Lessons | LessonsCurriculums | SkillCurriculum = {} as Lessons | LessonsCurriculums | SkillCurriculum;
   @Input() first: number = 0;
   @Input() showPagination: boolean;
   @Input() rows: number = 0;
@@ -34,10 +34,10 @@ export class LessonCardsComponent implements OnInit {
   @Output() cardClick = new EventEmitter<(Lessons | LessonsCurriculums | SkillCurriculum)>();
   activateSkill: boolean = false;
   skillToActivate: Lessons | LessonsCurriculums | SkillCurriculum | null = null;
-  skillActivationModel : SkillActivation = new SkillActivation();
+  skillActivationModel: SkillActivation = new SkillActivation();
   private refreshSubscription!: Subscription;
 
-  constructor(private router: Router, private sharedService: SharedService , private skillActivationService : SkillActivationService) {
+  constructor(private router: Router, private sharedService: SharedService, private skillActivationService: SkillActivationService) {
 
   }
   ngOnInit(): void {
@@ -58,8 +58,8 @@ export class LessonCardsComponent implements OnInit {
   }
 
   getViewButtonText(card: Lessons | LessonsCurriculums | SkillCurriculum): string {
-    if ((card as Lessons).lessonId) return 'View Curriculum';
-    return 'View BB Skill';
+    if ((card as Lessons).lessonId) return 'VIEW_CURRICULUM';
+    return 'VIEW_BB_SKILL';
   }
 
   toggleActive(card: Lessons | LessonsCurriculums | SkillCurriculum) {
@@ -67,32 +67,32 @@ export class LessonCardsComponent implements OnInit {
     this.activateSkill = !this.activateSkill;
   }
 
-  _activateSkill(selectedIds : number[]) {
+  _activateSkill(selectedIds: number[]) {
     this.activateSkill = false;
-    if((this.skillToActivate as Lessons).lessonId ){
+    if ((this.skillToActivate as Lessons).lessonId) {
       this.skillActivationModel.lessonId = (this.skillToActivate as Lessons).lessonId;
       this.skillActivationModel.courseSectionIdList = selectedIds;
       this.skillActivationModel.activationStatus = this.skillToActivate.isEnabled;
-      this.skillActivationService.activateLesson(this.skillActivationModel).subscribe(res =>{
-        if(res.success){
+      this.skillActivationService.activateLesson(this.skillActivationModel).subscribe(res => {
+        if (res.success) {
           this.skillToActivate.activationDate = res.result.activationDate;
         }
       })
-    }else if( (this.skillToActivate as LessonsCurriculums).curriculumLearningOutcomeId){
+    } else if ((this.skillToActivate as LessonsCurriculums).curriculumLearningOutcomeId) {
       this.skillActivationModel.curriculumLearningOutcomeId = (this.skillToActivate as LessonsCurriculums).curriculumLearningOutcomeId;
       this.skillActivationModel.courseSectionIdList = selectedIds;
       this.skillActivationModel.activationStatus = this.skillToActivate.isEnabled;
-      this.skillActivationService.activateCurriculum(this.skillActivationModel).subscribe(res =>{
-        if(res.success){
+      this.skillActivationService.activateCurriculum(this.skillActivationModel).subscribe(res => {
+        if (res.success) {
           this.skillToActivate.activationDate = res.result.activationDate;
         }
       })
-    }else{
+    } else {
       this.skillActivationModel.learningOutcomeId = (this.skillToActivate as SkillCurriculum).id;
       this.skillActivationModel.courseSectionIdList = selectedIds;
       this.skillActivationModel.activationStatus = this.skillToActivate.isEnabled;
-      this.skillActivationService.activateSkill(this.skillActivationModel).subscribe(res =>{
-        if(res.success){
+      this.skillActivationService.activateSkill(this.skillActivationModel).subscribe(res => {
+        if (res.success) {
           this.skillToActivate.activationDate = res.result.activationDate;
         }
       })

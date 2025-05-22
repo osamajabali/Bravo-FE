@@ -7,7 +7,7 @@
       <input
         type="text"
         pInputText
-        placeholder="Search"
+        [placeholder]="'SEARCH' | translate"
         class="search-input"
         [(ngModel)]="searchTerm"
         (ngModelChange)="_onSearchChange()"
