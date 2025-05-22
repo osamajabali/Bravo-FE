@@ -36,7 +36,7 @@
     </div>
 
     <div class="content px-0" *ngIf="showAdvancedSearch">
-      <div class="advanced-search" *ngIf="selectedTab === 'active'">
+      <div class="advanced-search" *ngIf="selectedTab === 'live'">
         <div class="advanced-filters">
           <p-select [options]="sectionFilter.subjects" [(ngModel)]="assignmentPayload.subjectId" placeholder="Subjects"
             [showClear]="false" optionLabel="name" optionValue="subjectId"></p-select>
@@ -91,8 +91,8 @@
     </div>
 
     <div class="tabs">
-      <div class="tab" [class.selected]="selectedTab === 'active'" (click)="onTabClick('active')">
-        Active
+      <div class="tab" [class.selected]="selectedTab === 'live'" (click)="onTabClick('live')">
+        Live
       </div>
       <div class="tab" [class.selected]="selectedTab === 'closed'" (click)="onTabClick('closed')">
         Closed
@@ -112,7 +112,7 @@
               : 'icon-sort.svg'
           " />
       </div>
-      <!-- <div class="header-item status">
+      <div class="header-item status">
         <span>Status</span>
         <img
           src="icon-sort.svg"
@@ -126,7 +126,7 @@
               : 'icon-sort.svg'
           "
         />
-      </div> -->
+      </div>
       <div class="header-item avg-score">
         <span>AVG. Score</span>
         <img src="icon-sort.svg" alt="sort" (click)="onSort('avgScore')" [src]="
@@ -187,26 +187,36 @@
               : 'icon-sort.svg'
           " />
       </div>
+      <div class="header-item submissions">
+        <span>actions</span>
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('submissions')" [src]="
+            sortColumn === 'submissions'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          " />
+      </div>
     </div>
     <!-- Assignment List -->
     <div class="assignments-list">
       @for (assignment of assignments.assignments; track $index) {
-      <div class="assignment-row" [class.active]="'active' === 'active'">
+      <div class="assignment-row" [class.active]="'live' === 'live'">
         <div class="item title">{{ assignment.title }}</div>
-        <!-- <div class="item status">
+        <div class="item status">
           <span>
             <div class="dot"></div>
             {{ assignment.status }}
           </span>
-        </div> -->
+        </div>
         <div class="item type">{{ assignment.avgScore }}</div>
         <div class="item target">{{ assignment.target }}</div>
-        <!-- <div class="item assigned-by">{{ assignment.assignedBy }}</div> -->
+        <div class="item assigned-by">{{ assignment.assignedBy }}</div>
         <div class="item post-date">
-          {{ assignment.startDate | date : "mediumDate" }}
+          {{ assignment.startDate }}
         </div>
         <div class="item due-date">
-          {{ assignment.endDate | date : "mediumDate" }}
+          {{ assignment.endDate}}
         </div>
         <div class="item submissions">{{ assignment.submission }}</div>
         <div class="item actions d-flex">
@@ -221,7 +231,7 @@
 
     <!-- Pagination -->
     <app-pagination [rows]="assignments.pageSize" [totalRecords]="assignments.totalRecords" [first]="first"
-      itemLabel="Submission" (pageChange)="nextPage($event)"></app-pagination>
+      itemLabel="Assignments" (pageChange)="nextPage($event)"></app-pagination>
   </div>
 </div>
 

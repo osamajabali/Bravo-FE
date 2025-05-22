@@ -143,6 +143,18 @@ export class AssignmentDetailsComponent implements OnInit {
     ]);
   }
 
+  getInitials(fullName: string): string {
+  if (!fullName) return '';
+  const words = fullName.trim().split(/\s+/);
+  if (words.length === 1) {
+    return words[0].charAt(0).toUpperCase();
+  }
+  const firstInitial = words[0].charAt(0).toUpperCase();
+  const lastInitial = words[words.length - 1].charAt(0).toUpperCase();
+  return firstInitial + lastInitial;
+}
+
+
   onSelectAll(): void {
     // this.submissions.forEach((submission) => {
     //   submission.selected = this.selectAll;
