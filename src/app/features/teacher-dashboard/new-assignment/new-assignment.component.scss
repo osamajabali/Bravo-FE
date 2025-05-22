@@ -1,0 +1,61 @@
+.new-assignment-container {
+  padding: 80px 0;
+}
+.assignment-footer {
+  padding: var(--padding-m);
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: var(--primary-primary-50);
+
+  &.center {
+    justify-content: center;
+  }
+
+  .p-button-primary,
+  .p-button-outlined {
+    font-size: var(--font-size-l) !important;
+    padding: var(--padding-xs) var(--padding-3xl) !important;
+  }
+}
+
+::ng-deep {
+  .p-steps {
+    max-width: 40%;
+    margin: 0 auto;
+  }
+
+  .p-steps-item:before {
+    top: 72% !important;
+  }
+
+  .p-steps-item-number {
+    border: 1px solid var(--neutral-grey-400) !important;
+  }
+
+  .p-steps-item-active .p-steps-item-number {
+    border: 1px solid var(--primary-primary-600) !important;
+    color: var(--primary-primary-50) !important;
+  }
+
+  .p-steps-item-completed {
+    .p-steps-item-number {
+      background-color: var(--primary-primary-900) !important;
+      border: none !important;
+      color: var(--neutral-white) !important;
+
+      &::before {
+        content: '\2713' !important; // Checkmark symbol
+        font-family: 'PrimeIcons' !important;
+        font-size: var(--font-size-m) !important;
+      }
+    }
+
+    .p-steps-item-label {
+      color: var(--primary-primary-900) !important;
+    }
+  }
+}

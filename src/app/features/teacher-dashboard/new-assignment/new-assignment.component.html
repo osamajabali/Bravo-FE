@@ -1,0 +1,46 @@
+<div class="container new-assignment-container">
+  <app-custom-steps
+    [items]="items"
+    [activeIndex]="activeStep"
+  />  
+  @if (activeStep === 0) {
+  <app-assignment-type-selector
+    [(selectedAssignmentType)]="selectedAssignmentType"
+  />
+  } @if (activeStep === 1) {
+  <app-assignment-information
+    [(assignmentInformation)]="assignmentInformation"
+  />
+  } @if (activeStep === 2 && selectedAssignmentType?.name === 'skills') {
+  <app-assignment-domains-and-skills />
+  }
+</div>
+<div class="assignment-footer" [ngClass]="activeStep === 0 ? 'center' : ''">
+  <div>
+    <button
+      pButton
+      type="button"
+      label="Back"
+      class="p-button-outlined"
+      *ngIf="activeStep !== 0"
+      (click)="back()"
+    ></button>
+  </div>
+  <div class="d-flex gap-4">
+    <button
+      pButton
+      type="button"
+      label="Preview Assignment"
+      class="p-button-outlined"
+      *ngIf="activeStep !== 0"
+      (click)="previewAssignment()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Next"
+      class="p-button-primary"
+      (click)="next()"
+    ></button>
+  </div>
+</div>

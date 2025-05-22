@@ -89,6 +89,13 @@ export const Main_Layout_Routes: Routes = [
           ).then((m) => m.AssignmentsComponent),
       },
       {
+        path: 'assignments/new',
+        loadComponent: () =>
+          import(
+            '../teacher-dashboard/new-assignment/new-assignment.component'
+          ).then((m) => m.NewAssignmentComponent),
+      },
+      {
         path: 'skills/skills-level-one',
         loadComponent: () =>
           import(

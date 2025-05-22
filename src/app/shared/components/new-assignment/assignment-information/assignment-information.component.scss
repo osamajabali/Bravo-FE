@@ -1,0 +1,101 @@
+.assignment-information {
+  padding: var(--padding-xl);
+  max-width: 70%;
+  margin: 0 auto;
+
+  .pick-word {
+    font-size: var(--font-size-xxl);
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-primary-900);
+    margin-bottom: var(--padding-xl);
+    text-align: center;
+  }
+
+  .form-group {
+    margin-bottom: var(--padding-l);
+
+    .label {
+      display: block;
+      margin-bottom: var(--padding-xs);
+      color: var(--neutral-black);
+      font-size: var(--font-size-s);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .target-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--padding-s);
+
+      .target-chip {
+        padding: var(--padding-s) var(--padding-l);
+        background: var(--neutral-white);
+        border: 1px solid var(--primary-primary-800);
+        border-radius: var(--radius-s);
+        color: var(--primary-primary-900);
+        font-size: var(--font-size-l);
+        font-weight: var(--font-weight-bold);
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &.selected {
+          background: var(--primary-primary-300);
+          border-color: var(--primary-primary-600);
+          border: 1px solid var(--primary-primary-300);
+        }
+      }
+    }
+
+    ::ng-deep {
+      .p-select {
+        width: 100%;
+        background: var(--neutral-white);
+        border: 1px solid var(--neutral-grey-200);
+        border-radius: var(--radius-m);
+        transition: all 0.2s ease;
+
+        &:hover {
+          border-color: var(--primary-primary-400);
+        }
+
+        &.p-focus {
+          border-color: var(--primary-primary-600);
+          box-shadow: 0 0 0 2px var(--primary-primary-100);
+        }
+
+        .p-select-label {
+          padding: var(--padding-s) var(--padding-m);
+          color: var(--neutral-grey-900);
+        }
+
+        .p-select-trigger {
+          width: 2.5rem;
+          color: var(--neutral-grey-600);
+        }
+
+        .p-select-panel {
+          background: var(--neutral-white);
+          border: 1px solid var(--neutral-grey-200);
+          border-radius: var(--radius-m);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+          .p-select-item {
+            padding: var(--padding-s) var(--padding-m);
+            color: var(--neutral-grey-900);
+            transition: all 0.2s ease;
+
+            &:hover {
+              background: var(--primary-primary-50);
+            }
+
+            &.p-highlight {
+              background: var(--primary-primary-100);
+              color: var(--primary-primary-900);
+            }
+          }
+        }
+      }
+    }
+  }
+}

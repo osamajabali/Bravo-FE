@@ -1,0 +1,14 @@
+<div class="pick-a-type">Pick A type</div>
+<div class="assignment-type-container">
+  <div
+    class="assignment-type-item"
+    *ngFor="let assignmentType of assignmentTypes; let i = index"
+    [class.selected]="selectedAssignmentType?.name === assignmentType.name"
+    (click)="selectAssignmentType(assignmentType)"
+  >
+    <div class="assignment-type-item-icon">
+      <img [src]="assignmentType.icon + '.svg'" alt="" />
+    </div>
+    <div class="assignment-type-item-title">{{ assignmentType.title }}</div>
+  </div>
+</div> 
