@@ -34,6 +34,8 @@ export class Assignment {
   target: string;
   startDate: Date;
   endDate: Date;
+  assignedBy: string;
+  status: string;
 }
 export class AssignmentResponse extends PaginationFilter {
   assignments: Assignment[] = [];

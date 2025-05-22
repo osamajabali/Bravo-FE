@@ -92,6 +92,7 @@ export class SidebarComponent {
   toggleSubMenu(item: MenuItem): void {
     // If the item doesn't have children, set it as active and collapse all items
     if (!item.children || item.children.length === 0) {
+      localStorage.removeItem('title')
       this.activeMenuItem = item;
       this.collapseAllItems();
       return;

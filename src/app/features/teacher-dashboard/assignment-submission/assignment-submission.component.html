@@ -29,18 +29,12 @@
           <span class="skill-name">{{ skill.name }}</span>
         </div>
         <div class="skill-header-right">
-          <div class="skill-stat correct">
-            <img src="icon-green-check.svg" alt="Corrected" />
-            Correct: <span class="fw-bold">{{ 'missing' }}</span>
+          @for (flag of skill.flags; track $index) {
+            <div class="skill-stat">
+            <img [src]="flag.iconUrl" alt="Corrected" />
+            {{flag.title}}: <span class="fw-bold">{{ flag.value }}</span>
           </div>
-          <div class="skill-stat wrong">
-            <img src="icon-light-red-close.svg" alt="warning" />
-            Wrong: <span class="fw-bold">{{ 'missing' }}</span>
-          </div>
-          <div class="skill-stat time">
-            <img src="icon-light-yellow-clock.svg" alt="time" />
-            Time Spent: <span class="fw-bold">{{ 'missing' }}</span>
-          </div>
+          }
         </div>
       </div>
 
@@ -66,17 +60,10 @@
             </span>
           </div>
           <div class="question-item answer">
-            @if (true) {
-            <span class="answer-badge correct pointer">
-              Show right answer
-              <img src="icon-green-eye.svg" alt="correct" />
+            <span class="answer-badge pointer" [style.background-color]="question.answerBtnColor" [style.border]="'1px solid ' + question.color">
+              {{question.answerBtnText}}
+              <img [src]="question.answerBtnIconUrl" alt="correct" />
             </span>
-            } @if (true) {
-            <span class="answer-badge wrong pointer">
-              Show wrong answer
-              <img src="icon-red-eye.svg" alt="wrong" />
-            </span>
-            }
           </div>
         </div>
         }

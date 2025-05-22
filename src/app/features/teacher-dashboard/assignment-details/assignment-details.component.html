@@ -189,13 +189,14 @@
         @for (item of studentAssignmentDetails.studentsDetails; track $index) {
         <div class="submission-row">
           <div class="item student-name">
-            <span class="initials">{{ item.studentName }}</span>
+            <span class="initials">{{ getInitials(item.studentName) }}</span>
             <span class="name">{{ item.studentName }}</span>
             @if (item.warningIconUrl) {
-              <img [src]="item.warningIconUrl" width="21px" alt="warning" />
+            <img [src]="item.warningIconUrl" width="21px" alt="warning" />
             }
           </div>
-          <div class="item status" [class]="item.submissionStatus.title.toLowerCase()">
+          <div class="item status"       
+          [style.background-color]="item.submissionStatus.color">
             {{ item.submissionStatus.title }}
           </div>
           <div class="item score">
@@ -228,7 +229,7 @@
 
       <!-- Pagination -->
       <app-pagination [rows]="studentAssignmentDetails.pageSize" [totalRecords]="studentAssignmentDetails.totalRecords"
-        [first]="first" itemLabel="Submission" (pageChange)="nextPage($event)"></app-pagination>
+        [first]="first" itemLabel="Assignments" (pageChange)="nextPage($event)"></app-pagination>
     </div>
   </div>
 </div>
