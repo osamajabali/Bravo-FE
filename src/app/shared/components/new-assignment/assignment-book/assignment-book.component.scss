@@ -1,0 +1,351 @@
+.assignment-book {
+  padding: 0 var(--padding-xl) var(--padding-xl);
+  max-width: 70%;
+  margin: 0 auto;
+
+  .title {
+    color: var(--primary-primary-900);
+    font-size: var(--font-size-xxl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--padding-2xl);
+    text-align: center;
+  }
+
+  .selection-boxes {
+    display: flex;
+    gap: var(--padding-m);
+    margin-bottom: var(--padding-l);
+
+    .selection-box {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: var(--padding-s);
+      padding: var(--padding-m);
+      background-color: var(--neutral-grey-25);
+      border: 1px solid var(--neutral-grey-100);
+      border-radius: var(--radius-m);
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      span {
+        color: var(--primary-primary-900);
+        font-size: var(--font-size-s);
+        font-weight: var(--font-weight-bold);
+      }
+
+      &.selected {
+        background-color: var(--primary-primary-50);
+        border-color: var(--primary-primary-200);
+      }
+
+      ::ng-deep {
+        .p-checkbox {
+          .p-checkbox-box {
+            border-color: var(--neutral-grey-400);
+          }
+
+          &.p-checkbox-checked {
+            .p-checkbox-box {
+              background-color: var(--primary-primary-600);
+              border-color: var(--primary-primary-600);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .form-group {
+    margin-bottom: var(--padding-l);
+
+    .label {
+      display: block;
+      margin-bottom: var(--padding-xs);
+      color: var(--primary-primary-900);
+      font-size: var(--font-size-s);
+      font-weight: var(--font-weight-bold);
+    }
+
+    ::ng-deep {
+      .p-select {
+        width: 100%;
+        background: var(--neutral-white);
+        border: 1px solid var(--neutral-grey-200);
+        border-radius: var(--radius-m);
+        transition: all 0.2s ease;
+
+        &:hover {
+          border-color: var(--primary-primary-400);
+        }
+
+        &.p-focus {
+          border-color: var(--primary-primary-600);
+          box-shadow: 0 0 0 2px var(--primary-primary-100);
+        }
+
+        .p-select-label {
+          padding: var(--padding-s) var(--padding-m);
+          color: var(--neutral-grey-900);
+        }
+
+        .p-select-trigger {
+          width: 2.5rem;
+          color: var(--neutral-grey-600);
+        }
+      }
+    }
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--padding-xl);
+
+    ::ng-deep {
+      .p-button {
+        font-size: var(--font-size-l);
+        padding: var(--padding-xs) var(--padding-3xl);
+      }
+    }
+  }
+
+  .disclaimer {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: var(--padding-xxs);
+
+    .text {
+      color: var(--primary-primary-800);
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  .selected-book {
+    margin-top: var(--padding-l);
+
+    .title {
+      display: block;
+      margin-bottom: var(--padding-xs);
+      color: var(--primary-primary-900);
+      font-size: var(--font-size-s);
+      font-weight: var(--font-weight-bold);
+      text-align: start;
+    }
+
+    .book-card {
+      display: flex;
+      background-color: var(--neutral-white);
+      border: 1px solid var(--neutral-grey-200);
+      border-radius: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+
+      .book-cover {
+        width: 140px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .book-details {
+        width: calc(100% - 140px);
+        padding: var(--padding-m);
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .title {
+          font-size: var(--font-size-s);
+          color: var(--primary-primary-900);
+          font-weight: var(--font-weight-bold);
+          margin-bottom: var(--padding-xs);
+          text-align: start;
+        }
+
+        p {
+          font-size: var(--font-size-xs);
+          color: var(--neutral-grey-600);
+          margin-bottom: var(--padding-xxs);
+        }
+      }
+      .book-actions {
+        display: flex;
+        gap: var(--padding-m);
+        margin-top: var(--padding-s);
+        align-self: flex-start;
+        padding-inline-end: var(--padding-m);
+
+        .p-button-outlined {
+          display: flex;
+          align-items: center;
+          gap: var(--padding-xs);
+          padding: var(--padding-xs) !important;
+
+          img {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .p-drawer {
+    padding-top: var(--padding-m);
+    .p-drawer-header {
+      padding: var(--padding-l);
+
+      h2 {
+        color: var(--primary-primary-900);
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-bold);
+        margin: 0;
+      }
+    }
+
+    .p-drawer-content {
+      padding: 0 var(--padding-l) var(--padding-l);
+    }
+  }
+}
+
+.drawer-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .filters {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-bottom: var(--padding-m);
+    gap: var(--padding-m);
+
+    .search-box {
+      flex: 1;
+      max-width: 300px;
+
+      .p-input-icon-left {
+        width: 100%;
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        img {
+          color: var(--neutral-grey-600);
+          position: absolute;
+          right: 10px;
+        }
+
+        input {
+          width: 100%;
+          height: 46px;
+          padding: var(--padding-xs) var(--padding-s);
+          border-radius: 4px;
+          border: 1px solid var(--neutral-grey-200);
+          font-size: var(--font-size-xs);
+
+          &:focus {
+            border-color: var(--primary-primary-500);
+            box-shadow: 0 0 0 2px var(--primary-primary-100);
+          }
+
+          &::placeholder {
+            color: var(--neutral-grey-200);
+          }
+        }
+      }
+    }
+
+    .level-filters {
+      display: flex;
+      gap: var(--padding-m);
+
+      ::ng-deep {
+        .p-dropdown {
+          min-width: 200px;
+          border: 1px solid var(--primary-primary-900) !important;
+
+          .p-dropdown-label {
+            padding: var(--padding-xs) var(--padding-m);
+            font-size: var(--font-size-xs);
+            color: var(--primary-primary-900);
+          }
+
+          &:not(.p-disabled).p-focus {
+            border-color: var(--primary-primary-500);
+            box-shadow: 0 0 0 2px var(--primary-primary-100);
+          }
+        }
+      }
+    }
+  }
+
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--padding-m);
+    overflow-y: auto;
+
+    .book-card {
+      display: flex;
+      background-color: var(--neutral-white);
+      border: 1px solid var(--neutral-grey-200);
+      border-radius: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+
+      &:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .book-cover {
+        width: 140px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .book-details {
+        width: calc(100% - 140px);
+        padding: var(--padding-m);
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .title {
+          font-size: var(--font-size-s);
+          color: var(--primary-primary-900);
+          font-weight: var(--font-weight-bold);
+        }
+
+        p {
+          font-size: var(--font-size-xs);
+          color: var(--neutral-grey-600);
+          margin-bottom: var(--padding-xxs);
+        }
+
+        .book-actions {
+          display: flex;
+          gap: var(--padding-m);
+          .p-button-primary {
+            flex: 1;
+          }
+
+          .p-button-outlined {
+            padding: 3px 10px !important;
+          }
+        }
+      }
+    }
+  }
+}

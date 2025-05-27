@@ -1,0 +1,165 @@
+<div class="assignment-book">
+  <div class="title">Assignment Book</div>
+
+  <div class="selection-boxes">
+    <div
+      class="selection-box"
+      [class.selected]="isBookSelected"
+      (click)="isBookSelected = !isBookSelected"
+    >
+      <p-checkbox [(ngModel)]="isBookSelected" [binary]="true"></p-checkbox>
+      <span>Select the book</span>
+    </div>
+    <div
+      class="selection-box"
+      [class.selected]="isStudentLevelSelected"
+      (click)="isStudentLevelSelected = !isStudentLevelSelected"
+    >
+      <p-checkbox
+        [(ngModel)]="isStudentLevelSelected"
+        [binary]="true"
+      ></p-checkbox>
+      <span>Send based on the student level</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="label">Selection Type</div>
+    <p-select
+      [options]="selectionTypes"
+      [(ngModel)]="selectedType"
+      optionLabel="name"
+      placeholder="Teacher Selection"
+      class="w-100"
+    ></p-select>
+  </div>
+
+  @if (!selectedBook) {
+    <div class="button-container">
+      <button
+        pButton
+        type="button"
+        label="Select a Book"
+        class="p-button-outlined w-100"
+        (click)="onSelectBook()"
+      >
+        <img src="icon-add-circle.svg" alt="" />
+      </button>
+    </div>
+    <div class="disclaimer">
+      <img src="icon-info-circle.svg" alt="" />
+      <span class="text">You can only pick one book</span>
+    </div>
+  } @else {
+    <div class="selected-book">
+      <div class="title">Selected Book</div>
+      <div class="book-card">
+        <div class="book-cover">
+          <img [src]="selectedBook.coverUrl" [alt]="selectedBook.title" />
+        </div>
+        <div class="book-details">
+          <div class="title">{{ selectedBook.title }}</div>
+          <p class="sub-level"><b>Sub Level:</b> {{ selectedBook.levelName }}</p>
+          <p class="author">
+            Author: <b>{{ selectedBook.authorName }}</b>
+          </p>
+          <p class="student-level">
+            Student level: <b>{{ selectedBook.studentLevel }}</b>
+          </p>
+        </div>
+        <div class="book-actions">
+          <button pButton label="" class="p-button-outlined">
+            <img src="icon-rotate.svg" alt="view" />
+          </button>
+          <button pButton label="" class="p-button-outlined">
+            <img src="icon-eye.svg" alt="view" />
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<p-drawer
+  [(visible)]="showBookDrawer"
+  [position]="'right'"
+  [style]="{ width: '50%' }"
+  [modal]="true"
+  [showCloseIcon]="true"
+  [baseZIndex]="1000"
+  (onHide)="onCloseDrawer()"
+  [dismissible]="false"
+  [closable]="false"
+  [closeOnEscape]="false"
+>
+  <ng-template pTemplate="header">
+    <h2>Select a Book</h2>
+    <img src="icon-green-close-large.svg" alt="close" class="pointer" (click)="onCloseDrawer()">
+  </ng-template>
+
+  <div class="drawer-content">
+    <div class="filters">
+      <div class="search-box">
+        <span class="p-input-icon-left">
+          <img src="icon-search.svg" alt="search" />
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="readingFilter.searchValue"
+            placeholder="Search books..."
+          />
+        </span>
+      </div>
+      <div class="level-filters">
+        <p-dropdown
+          [options]="mainLevels"
+          [(ngModel)]="readingFilter.readingMainLevelId"
+          placeholder="Select Main Level"
+          optionLabel="name"
+          optionValue="mainLevelId"
+          [showClear]="false"
+          (ngModelChange)="onMainLevelChange($event)"
+          styleClass="main-level-dropdown"
+        ></p-dropdown>
+        <p-dropdown
+          [options]="subLevels"
+          [(ngModel)]="readingFilter.readingSubLevelId"
+          placeholder="Select Sub Level"
+          [showClear]="false"
+          optionLabel="name"
+          optionValue="subLevelId"
+          (ngModelChange)="
+            onSubLevelChange(readingFilter.readingMainLevelId, $event)
+          "
+          styleClass="sub-level-dropdown"
+        ></p-dropdown>
+      </div>
+    </div>
+
+    <div class="books-grid">
+      @for (book of books; track book.id) {
+      <div class="book-card">
+        <div class="book-cover">
+          <img [src]="book.coverUrl" [alt]="book.title" />
+        </div>
+        <div class="book-details">
+          <div class="title">{{ book.title }}</div>
+          <p class="sub-level"><b>Sub Level:</b> {{ book.levelName }}</p>
+          <p class="author">
+            Author: <b>{{ book.authorName }}</b>
+          </p>
+          <p class="student-level">
+            Student level: <b>{{ book.studentLevel }}</b>
+          </p>
+          <div class="book-actions">
+            <button pButton class="p-button-primary" (click)="onBookSelect(book)">Select Book</button>
+            <button pButton label="" class="p-button-outlined">
+              <img src="icon-eye.svg" alt="hide" />
+            </button>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</p-drawer>

@@ -1,14 +1,21 @@
-.assignment-information {
-  padding: var(--padding-xl);
+.assignment-setup {
+  padding: 0 var(--padding-xl) var(--padding-xl);
   max-width: 70%;
   margin: 0 auto;
 
-  .pick-word {
+  .title {
     font-size: var(--font-size-xxl);
     font-weight: var(--font-weight-bold);
     color: var(--primary-primary-900);
-    margin-bottom: var(--padding-xl);
+    margin: var(--padding-m) 0 var(--padding-xl);
     text-align: center;
+  }
+
+  .sub-title {
+    color: var(--primary-primary-900);
+    font-size: var(--font-size-l);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--padding-m);
   }
 
   .form-group {
@@ -25,7 +32,6 @@
     .target-chips {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       gap: var(--padding-s);
 
       .target-chip {
@@ -38,6 +44,8 @@
         font-weight: var(--font-weight-bold);
         cursor: pointer;
         transition: all 0.2s ease;
+        flex: 1;
+        text-align: center;
 
         &.selected {
           background: var(--primary-primary-300);
@@ -97,5 +105,12 @@
         }
       }
     }
+  }
+
+  .line-separator {
+    height: 1px;
+    width: 100%;
+    background-color: var(--neutral-grey-100);
+    margin: var(--padding-5xl) 0;
   }
 }

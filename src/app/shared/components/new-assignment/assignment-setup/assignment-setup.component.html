@@ -1,0 +1,124 @@
+<div class="assignment-setup">
+  <div class="title">Assignment Setup</div>
+  <div class="form-group">
+    <div class="sub-title">Target</div>
+    <div class="target-chips">
+      @for (target of targets; track target.id) {
+      <div
+        class="target-chip"
+        [class.selected]="isTargetSelected(target)"
+        (click)="onTargetChange(target)"
+      >
+        {{ target.name }}
+      </div>
+      }
+    </div>
+  </div>
+  @if (assignmentInformation.target?.id === 1) {
+  <div class="form-group">
+    <div class="label">Pick Grade</div>
+    <p-select
+      id="grade"
+      [options]="grades"
+      [(ngModel)]="assignmentInformation.grade"
+      optionLabel="name"
+      placeholder="Select Grade"
+      [showClear]="true"
+      (onChange)="onGradeChange($event.value)"
+      class="w-100"
+    ></p-select>
+  </div>
+
+  <div class="form-group">
+    <div class="label">Pick Section</div>
+    <p-select
+      id="section"
+      [options]="sections"
+      [(ngModel)]="assignmentInformation.section"
+      optionLabel="name"
+      placeholder="Select Section"
+      [showClear]="true"
+      (onChange)="onSectionChange($event.value)"
+      class="w-100"
+    ></p-select>
+  </div>
+  } @else if (assignmentInformation.target?.id === 2){
+  <div class="form-group">
+    <div class="label">Pick Homerooms</div>
+    <p-select
+      id="homerooms"
+      [options]="grades"
+      [(ngModel)]="assignmentInformation.homeroom"
+      optionLabel="name"
+      placeholder="Select homerooms"
+      [showClear]="true"
+      class="w-100"
+    ></p-select>
+  </div>
+  } @else if (assignmentInformation.target?.id === 3){
+  <div class="form-group">
+    <div class="label">Pick Groups</div>
+    <p-select
+      id="homerooms"
+      [options]="groups"
+      [(ngModel)]="assignmentInformation.group"
+      optionLabel="name"
+      placeholder="Select Groups"
+      [showClear]="true"
+      class="w-100"
+    ></p-select>
+  </div>
+  } @else if (assignmentInformation.target?.id === 4){
+  <div class="form-group">
+    <div class="label">Pick Students</div>
+    <p-select
+      id="homerooms"
+      [options]="students"
+      [(ngModel)]="assignmentInformation.student"
+      optionLabel="name"
+      placeholder="Select students"
+      [showClear]="true"
+      class="w-100"
+    ></p-select>
+  </div>
+  }
+
+  <div class="line-separator"></div>
+
+  <div class="sub-title">Assignment Information</div>
+
+  <div class="form-group">
+    <div class="label">Assignment Title</div>
+    <input
+      pInputText
+      type="text"
+      class="w-100"
+      placeholder="Enter assignment title"
+      [(ngModel)]="assignmentInformation.title"
+      (ngModelChange)="updateAssignmentInformation({ title: $event })"
+    />
+  </div>
+
+  <div class="form-group d-flex gap-3">
+    <div style="flex: 1">
+      <div class="label">Start Date</div>
+      <p-calendar
+        [(ngModel)]="assignmentInformation.startDate"
+        dateFormat="dd/mm/yy"
+        placeholder="Select start date"
+        styleClass="w-100"
+        [showIcon]="true"
+      ></p-calendar>
+    </div>
+    <div style="flex: 1">
+      <div class="label">Due Date</div>
+      <p-calendar
+        [(ngModel)]="assignmentInformation.dueDate"
+        dateFormat="dd/mm/yy"
+        placeholder="Select due date"
+        styleClass="w-100"
+        [showIcon]="true"
+      ></p-calendar>
+    </div>
+  </div>
+</div>
