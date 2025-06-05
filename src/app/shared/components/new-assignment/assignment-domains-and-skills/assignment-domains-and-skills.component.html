@@ -1,1 +1,151 @@
-<p>assignment-domains-and-skills works!</p>
+<div class="domain">
+  <div class="title">Assignment Domains and skills</div>
+
+  <div class="selection-boxes">
+    <div
+      class="selection-box"
+      [class.selected]="selectedOption === 'showCorrectAnswer'"
+      (click)="selectedOption = 'showCorrectAnswer'"
+    >
+      <p-radioButton
+        [(ngModel)]="selectedOption"
+        value="showCorrectAnswer"
+        [inputId]="'showCorrectAnswer'"
+      ></p-radioButton>
+      <span>Show correct answer</span>
+    </div>
+    <div
+      class="selection-box"
+      [class.selected]="selectedOption === 'allQuestions'"
+      (click)="selectedOption = 'allQuestions'"
+    >
+      <p-radioButton
+        [(ngModel)]="selectedOption"
+        value="allQuestions"
+        [inputId]="'allQuestions'"
+      ></p-radioButton>
+      <div>
+        <span>Same questions for all students </span>
+        <div class="sub-title">
+          System shows different questions if unselected.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="total">Total questions: 21</div>
+
+  <div class="domain-list">
+    <p-panel
+      *ngFor="let domain of domains"
+      [toggleable]="true"
+      [collapsed]="domain.isCollapsed"
+    >
+      <ng-template pTemplate="header">
+        <div class="panel-header">
+          <span class="header-label">Domain details</span>
+          <div class="header-actions">
+            <div class="total-questions">
+              <span>Total questions: 0</span>
+            </div>
+            <img
+              src="icon-trash-red-large.svg"
+              alt=""
+              (click)="removeDomain(domain.id)"
+            />
+            <img
+              src="arrow-gray-down.svg"
+              alt=""
+              (click)="toggleCollapse(domain)"
+              [class.rotated]="!domain.isCollapsed"
+            />
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="panel-content">
+        <div class="domain-selection">
+          <div class="control-title">Pick a skill domain</div>
+          <p-dropdown
+            [options]="skillDomains"
+            [(ngModel)]="domain.selectedDomain"
+            placeholder="Pick a skill domain"
+            (onChange)="onDomainSelect(domain)"
+            [style]="{ width: '100%' }"
+          ></p-dropdown>
+        </div>
+
+        <div class="search-container">
+          <span class="p-input-icon-left">
+            <img src="icon-search.svg" alt="search" />
+            <input
+              pInputText
+              type="text"
+              placeholder="Search for a skill"
+              [(ngModel)]="domain.searchText"
+              class="search-input"
+            />
+          </span>
+        </div>
+
+        <div class="skills-grid" *ngIf="domain.skills.length > 0">
+          <div class="grid-header">
+            <div class="header-cell">Skill</div>
+            <div class="header-cell">Beginner</div>
+            <div class="header-cell">Medium</div>
+            <div class="header-cell">Advanced</div>
+          </div>
+          <div class="grid-row" *ngFor="let skill of domain.skills">
+            <div class="grid-cell">{{ skill.name }}</div>
+            <div class="grid-cell">
+              <div class="input-container">
+                <p-inputNumber
+                  [(ngModel)]="skill.beginner"
+                  [showButtons]="false"
+                  [min]="0"
+                  [style]="{ width: '100%' }"
+                ></p-inputNumber>
+                <div class="out-of">23</div>
+              </div>
+              <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
+            </div>
+            <div class="grid-cell">
+              <div class="input-container">
+                <p-inputNumber
+                  [(ngModel)]="skill.medium"
+                  [showButtons]="false"
+                  [min]="0"
+                  [style]="{ width: '100%' }"
+                ></p-inputNumber>
+                <div class="out-of">23</div>
+              </div>
+              <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
+            </div>
+            <div class="grid-cell">
+              <div class="input-container">
+                <p-inputNumber
+                  [(ngModel)]="skill.advanced"
+                  [showButtons]="false"
+                  [min]="0"
+                  [style]="{ width: '100%' }"
+                ></p-inputNumber>
+                <div class="out-of">23</div>
+              </div>
+              <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-panel>
+
+    <button
+      pButton
+      label=""
+      class="p-button-outlined add-domain-btn"
+      (click)="addDomain()"
+    >
+      <img src="icon-add-circle.svg" alt="" />
+      <span>Add domain</span>
+    </button>
+  </div>
+</div>

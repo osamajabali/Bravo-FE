@@ -11,6 +11,9 @@ import { AssignmentInformation } from '../../../shared/models/assignment-informa
 import { AssignmentDomainsAndSkillsComponent } from '../../../shared/components/new-assignment/assignment-domains-and-skills/assignment-domains-and-skills.component';
 import { AssignmentBookComponent } from '../../../shared/components/new-assignment/assignment-book/assignment-book.component';
 import { ListeningAssignmentBookComponent } from '../../../shared/components/new-assignment/listening-assignment-book/listening-assignment-book.component';
+import { SkillsReviewComponent } from '../../../shared/components/new-assignment/skills-review/skills-review.component';
+import { DialogModule } from 'primeng/dialog';
+import { Router } from '@angular/router';
 
 interface AssignmentType {
   name: string;
@@ -36,7 +39,9 @@ export interface StepItem {
     AssignmentSetupComponent,
     AssignmentDomainsAndSkillsComponent,
     AssignmentBookComponent,
-    ListeningAssignmentBookComponent
+    ListeningAssignmentBookComponent,
+    SkillsReviewComponent,
+    DialogModule
   ],
   templateUrl: './new-assignment.component.html',
   styleUrl: './new-assignment.component.scss',
@@ -44,6 +49,8 @@ export interface StepItem {
 export class NewAssignmentComponent implements OnInit {
   activeStep: number = 0;
   selectedAssignmentType: AssignmentType | null = null;
+  isReviewPage: boolean = false;
+  showSuccessDialog: boolean = false;
   assignmentInformation: AssignmentInformation = {
     target: null,
     grade: null,
@@ -53,6 +60,7 @@ export class NewAssignmentComponent implements OnInit {
     dueDate: null,
   };
   sharedService = inject(SharedService);
+  private router = inject(Router);
   items: StepItem[] = [
     {
       id: '0',
@@ -79,7 +87,7 @@ export class NewAssignmentComponent implements OnInit {
 
   next() {
     if (this.activeStep === Number(this.items[this.items.length - 1].id)) {
-      return;
+      this.isReviewPage = true;
     }
     this.activeStep = this.activeStep + 1;
 
@@ -90,6 +98,20 @@ export class NewAssignmentComponent implements OnInit {
     this.activeStep = this.activeStep - 1;
 
     this.updateStepsCompletion();
+  }
+
+  submit() {
+    this.showSuccessDialog = true;
+  }
+
+  onAssignmentDetails() {
+    this.showSuccessDialog = false;
+    // Navigate to assignment details page
+  }
+
+  onConfirm() {
+    this.showSuccessDialog = false;
+    // Navigate to assignments list
   }
 
   updateStepsCompletion() {

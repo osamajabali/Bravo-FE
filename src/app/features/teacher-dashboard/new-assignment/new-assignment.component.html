@@ -1,5 +1,9 @@
 <div class="container new-assignment-container">
-  <app-custom-steps [items]="items" [activeIndex]="activeStep" />
+  <app-custom-steps
+    [items]="items"
+    [activeIndex]="activeStep"
+    *ngIf="!isReviewPage"
+  />
   @if (activeStep === 0) {
   <app-assignment-type-selector
     [(selectedAssignmentType)]="selectedAssignmentType"
@@ -14,6 +18,8 @@
   } @if (activeStep === 2 && selectedAssignmentType?.name ===
   'listening-comprehension') {
   <app-listening-assignment-book />
+  } @if(selectedAssignmentType?.name === 'skills' && isReviewPage) {
+  <app-skills-review />
   }
 </div>
 <div class="assignment-footer" [ngClass]="activeStep === 0 ? 'center' : ''">
@@ -43,6 +49,48 @@
       class="p-button-primary"
       (click)="next()"
       [disabled]="activeStep === 0 && !selectedAssignmentType"
+      *ngIf="!isReviewPage"
+    ></button>
+    <button
+      *ngIf="isReviewPage"
+      pButton
+      type="button"
+      label="Submit"
+      class="p-button-primary"
+      (click)="submit()"
+      [disabled]="activeStep === 0 && !selectedAssignmentType"
     ></button>
   </div>
 </div>
+
+<p-dialog
+  [(visible)]="showSuccessDialog"
+  [modal]="true"
+  [style]="{ width: '450px' }"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="true"
+  [showHeader]="false"
+  class="success-dialog"
+>
+  <div class="dialog-content">
+    <img src="icon-check-circle.svg" alt="" />
+    <div class="success-message">Assignment Submitted Successfully!</div>
+    <div class="dialog-buttons">
+      <button
+        pButton
+        type="button"
+        label="Assignment Details"
+        class="p-button-outlined"
+        (click)="onAssignmentDetails()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Confirm"
+        class="p-button-primary"
+        (click)="onConfirm()"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

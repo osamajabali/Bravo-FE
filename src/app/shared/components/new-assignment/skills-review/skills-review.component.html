@@ -1,0 +1,111 @@
+<div class="skills-review">
+  <div class="title">Review Assignment</div>
+  <div class="assignment-summary">
+    <div class="upper-section">
+      <div class="left">
+        <div class="icon">
+          <img src="icon-cards-square.svg" alt="" class="pointer" />
+        </div>
+        <div>
+          <div class="assignment-title">Assignment title</div>
+          <div class="assignment-sub-title">Skills</div>
+        </div>
+      </div>
+      <div>
+        <img src="icon-edit-square.svg" alt="edit" />
+      </div>
+    </div>
+    <div class="separator"></div>
+    <div class="lower-section">
+      <div class="item">
+        <div class="header">Grade</div>
+        <div class="value">Grade 1</div>
+      </div>
+      <div class="item">
+        <div class="header">Section</div>
+        <div class="value">All sections</div>
+      </div>
+      <div class="item">
+        <div class="header">Questions</div>
+        <div class="value">20</div>
+      </div>
+      <div class="item">
+        <div class="header">Start Date</div>
+        <div class="value">20/08/2022</div>
+      </div>
+      <div class="item">
+        <div class="header">Due Date</div>
+        <div class="value">20/08/2022</div>
+      </div>
+    </div>
+  </div>
+  <div class="assignment-details">
+    <div class="upper-section">
+      <div class="left">
+        <div class="assignment-title">8 Skill Domains</div>
+      </div>
+      <div>
+        <img src="icon-edit-square.svg" alt="edit" class="pointer" />
+      </div>
+    </div>
+    <div class="separator"></div>
+    <div class="lower-section">
+      <div class="domain-list">
+        <p-panel
+          *ngFor="let domain of domains"
+          [toggleable]="true"
+          [collapsed]="domain.isCollapsed"
+        >
+          <ng-template pTemplate="header">
+            <div class="panel-header">
+              <span class="header-label">Domain details</span>
+              <div class="header-actions">
+                <div class="total-questions">
+                  <span>Total questions: {{ getTotalQuestions(domain) }}</span>
+                </div>
+                <img
+                  src="arrow-gray-down.svg"
+                  alt=""
+                  (click)="toggleCollapse(domain)"
+                  [class.rotated]="!domain.isCollapsed"
+                />
+              </div>
+            </div>
+          </ng-template>
+
+          <div class="panel-content">
+            <div class="skills-grid">
+              <div class="grid-header">
+                <div class="header-cell">Skill</div>
+                <div class="header-cell">Beginner</div>
+                <div class="header-cell">Medium</div>
+                <div class="header-cell">Advanced</div>
+              </div>
+              <div class="grid-row" *ngFor="let skill of domain.skills">
+                <div class="grid-cell">{{ skill.name }}</div>
+                <div class="grid-cell">
+                  <div class="input-container">
+                    <span class="value">{{ skill.beginner }}</span>
+                  </div>
+                  <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
+                </div>
+                <div class="grid-cell">
+                  <div class="input-container">
+                    <span class="value">{{ skill.medium }}</span>
+                  </div>
+                  <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
+                </div>
+                <div class="grid-cell">
+                  <div class="input-container">
+                    <span class="value">{{ skill.advanced }}</span>
+                  </div>
+                  <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </p-panel>
+      </div>
+    </div>
+  </div>
+</div>

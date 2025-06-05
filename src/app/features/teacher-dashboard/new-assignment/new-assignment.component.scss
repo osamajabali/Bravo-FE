@@ -56,4 +56,37 @@
       color: var(--primary-primary-900) !important;
     }
   }
+
+  .success-dialog {
+    .p-dialog-header {
+      padding-bottom: 0 !important;
+    }
+
+    .dialog-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--padding-xl);
+
+      .success-message {
+        color: var(--primary-primary-900);
+        font-size: var(--font-size-l);
+        font-weight: var(--font-weight-bold);
+        text-align: center;
+        padding: 0 40px;
+      }
+
+      .dialog-buttons {
+        display: flex;
+        gap: var(--padding-m);
+        width: 100%;
+
+        .p-button {
+          flex: 1;
+          font-size: var(--font-size-s) !important;
+          padding: var(--padding-s) var(--padding-m) !important;
+        }
+      }
+    }
+  }
 }
