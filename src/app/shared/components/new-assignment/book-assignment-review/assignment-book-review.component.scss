@@ -1,0 +1,171 @@
+.skills-review {
+  padding: 0 var(--padding-xl) var(--padding-xl);
+  max-width: 70%;
+  margin: 0 auto;
+
+  .title {
+    text-align: center;
+    color: var(--primary-primary-900);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-xxl);
+    margin-bottom: var(--padding-m);
+  }
+
+  .assignment-summary {
+    border: 1px solid var(--neutral-grey-200);
+    border-radius: var(--radius-s) var(--radius-s) 0px 0px;
+    padding: var(--padding-m);
+    margin-bottom: var(--padding-m);
+
+    .upper-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .left {
+        display: flex;
+        gap: var(--padding-xs);
+
+        .icon {
+          padding-top: 5px;
+        }
+
+        .assignment-title {
+          font-weight: var(--font-weight-bold);
+          color: var(--primary-primary-600);
+          font-size: var(--font-size-m);
+        }
+
+        .assignment-sub-title {
+          color: var(--primary-primary-900);
+          font-size: var(--font-size-xs);
+        }
+      }
+    }
+
+    .separator {
+      background: var(--neutral-grey-200);
+      height: 1px;
+      margin: var(--padding-m) -16px;
+    }
+
+    .lower-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--padding-xs) 0;
+
+      .item {
+        .header {
+          font-size: var(--font-size-xs);
+          color: var(--neutral-grey-600);
+          margin-bottom: var(--padding-xxs);
+        }
+        .value {
+          font-size: var(--font-size-xs);
+          color: var(--primary-primary-900);
+        }
+      }
+    }
+  }
+
+  .assignment-details {
+    border: 1px solid var(--neutral-grey-200);
+    border-radius: var(--radius-s) var(--radius-s) 0px 0px;
+
+    .upper-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--padding-m);
+
+      .left {
+        .assignment-title {
+          font-weight: var(--font-weight-bold);
+          color: var(--primary-primary-900);
+          font-size: var(--font-size-s);
+        }
+      }
+    }
+
+    .separator {
+      background: var(--neutral-grey-200);
+      height: 1px;
+      margin-bottom: var(--padding-m);
+    }
+
+    .lower-section {
+      .selected-book {
+        margin: var(--padding-l);
+
+        .title {
+          display: block;
+          margin-bottom: var(--padding-xs);
+          color: var(--primary-primary-900);
+          font-size: var(--font-size-s);
+          font-weight: var(--font-weight-bold);
+          text-align: start;
+        }
+
+        .book-card {
+          display: flex;
+          background-color: var(--neutral-white);
+          border: 1px solid var(--neutral-grey-200);
+          border-radius: 8px;
+          transition: transform 0.2s, box-shadow 0.2s;
+
+          .book-cover {
+            width: 140px;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+
+          .book-details {
+            width: calc(100% - 140px);
+            padding: var(--padding-m);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            .title {
+              font-size: var(--font-size-s);
+              color: var(--primary-primary-900);
+              font-weight: var(--font-weight-bold);
+              margin-bottom: var(--padding-xs);
+              text-align: start;
+            }
+
+            p {
+              font-size: var(--font-size-xs);
+              color: var(--neutral-grey-600);
+              margin-bottom: var(--padding-xxs);
+            }
+          }
+          .book-actions {
+            display: flex;
+            gap: var(--padding-m);
+            margin-top: var(--padding-s);
+            align-self: flex-start;
+            padding-inline-end: var(--padding-m);
+
+            .p-button-outlined {
+              display: flex;
+              align-items: center;
+              gap: var(--padding-xs);
+              padding: var(--padding-xs) !important;
+
+              img {
+                width: 16px;
+                height: 16px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

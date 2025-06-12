@@ -28,21 +28,22 @@
       class="w-100"
     ></p-select>
   </div>
+  } @else if (assignmentInformation.target?.id === 2){
 
   <div class="form-group">
-    <div class="label">Pick Section</div>
+    <div class="label">Pick Grade</div>
     <p-select
-      id="section"
-      [options]="sections"
-      [(ngModel)]="assignmentInformation.section"
+      id="grade"
+      [options]="grades"
+      [(ngModel)]="assignmentInformation.grade"
       optionLabel="name"
-      placeholder="Select Section"
+      placeholder="Select Grade"
       [showClear]="true"
-      (onChange)="onSectionChange($event.value)"
+      (onChange)="onGradeChange($event.value)"
       class="w-100"
     ></p-select>
   </div>
-  } @else if (assignmentInformation.target?.id === 2){
+
   <div class="form-group">
     <div class="label">Pick Homerooms</div>
     <p-select

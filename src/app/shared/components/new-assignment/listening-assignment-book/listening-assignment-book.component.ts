@@ -2,13 +2,17 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { CheckboxModule } from 'primeng/checkbox';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { DrawerModule } from 'primeng/drawer';
 
 interface SelectionType {
+  id: number;
+  name: string;
+}
+
+interface LevelType {
   id: number;
   name: string;
 }
@@ -20,6 +24,8 @@ interface Book {
   levelName: string;
   authorName: string;
   studentLevel: string;
+  pages: number;
+  wordsCount: number;
 }
 
 @Component({
@@ -29,7 +35,6 @@ interface Book {
     CommonModule,
     FormsModule,
     ButtonModule,
-    CheckboxModule,
     SelectModule,
     InputTextModule,
     DropdownModule,
@@ -39,8 +44,24 @@ interface Book {
   styleUrl: './listening-assignment-book.component.scss',
 })
 export class ListeningAssignmentBookComponent {
+  selectedOption: string = 'isBookSelected';
   showBookDrawer = false;
   selectedBook: Book | null = null;
+
+  selectionTypes: SelectionType[] = [
+    { id: 1, name: 'Teacher Selection' },
+    { id: 2, name: 'Student Selection' },
+    { id: 3, name: 'Random Selection' },
+  ];
+
+  levels: LevelType[] = [
+    { id: 1, name: 'Level 1' },
+    { id: 2, name: 'Level 2' },
+    { id: 3, name: 'Level 3' },
+  ];
+
+  selectedType: SelectionType | null = null;
+  selectedLevel: LevelType | null = null;
 
   // Mock data for books
   books: Book[] = [
@@ -51,6 +72,8 @@ export class ListeningAssignmentBookComponent {
       levelName: 'Level 2',
       authorName: 'John Smith',
       studentLevel: 'Beginner',
+      pages: 10,
+      wordsCount: 180,
     },
     {
       id: 2,
@@ -59,6 +82,8 @@ export class ListeningAssignmentBookComponent {
       levelName: 'Level 3',
       authorName: 'Jane Doe',
       studentLevel: 'Beginner',
+      pages: 15,
+      wordsCount: 250,
     },
     {
       id: 3,
@@ -67,6 +92,8 @@ export class ListeningAssignmentBookComponent {
       levelName: 'Level 1',
       authorName: 'Mike Johnson',
       studentLevel: 'Beginner',
+      pages: 12,
+      wordsCount: 200,
     },
     {
       id: 4,
@@ -75,6 +102,8 @@ export class ListeningAssignmentBookComponent {
       levelName: 'Level 2',
       authorName: 'Sarah Wilson',
       studentLevel: 'Beginner',
+      pages: 8,
+      wordsCount: 150,
     },
   ];
 
@@ -93,8 +122,6 @@ export class ListeningAssignmentBookComponent {
 
   readingFilter = {
     searchValue: '',
-    readingMainLevelId: null,
-    readingSubLevelId: null,
   };
 
   onSelectBook() {

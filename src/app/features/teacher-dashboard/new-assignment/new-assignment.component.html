@@ -12,14 +12,22 @@
   <app-assignment-setup [(assignmentInformation)]="assignmentInformation" />
   } @if (activeStep === 2 && selectedAssignmentType?.name === 'skills') {
   <app-assignment-domains-and-skills />
-  } @if (activeStep === 2 && (selectedAssignmentType?.name ===
-  'reading-comprehension' || selectedAssignmentType?.name === 'oral-reading')) {
+  } @if (activeStep === 2 && selectedAssignmentType?.name ===
+  'reading-comprehension') {
   <app-assignment-book />
+  } @if (activeStep === 2 && selectedAssignmentType?.name === 'oral-reading') {
+  <app-oral-assignment-book />
   } @if (activeStep === 2 && selectedAssignmentType?.name ===
   'listening-comprehension') {
   <app-listening-assignment-book />
   } @if(selectedAssignmentType?.name === 'skills' && isReviewPage) {
   <app-skills-review />
+  } @if((selectedAssignmentType?.name === 'reading-comprehension' ||
+  selectedAssignmentType?.name === 'oral-reading' ||
+  selectedAssignmentType?.name === 'listening-comprehension') && isReviewPage) {
+  <app-assignment-book-review
+    (stepChange)="handleStepChange($event)"
+  ></app-assignment-book-review>
   }
 </div>
 <div class="assignment-footer" [ngClass]="activeStep === 0 ? 'center' : ''">
@@ -39,7 +47,7 @@
       type="button"
       label="Preview Assignment"
       class="p-button-outlined"
-      *ngIf="activeStep !== 0"
+      *ngIf="activeStep !== 0 && isReviewPage"
       (click)="previewAssignment()"
     ></button>
     <button

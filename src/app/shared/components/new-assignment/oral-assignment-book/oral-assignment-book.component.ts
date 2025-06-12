@@ -30,7 +30,7 @@ interface Book {
 }
 
 @Component({
-  selector: 'app-assignment-book',
+  selector: 'app-oral-assignment-book',
   standalone: true,
   imports: [
     CommonModule,
@@ -42,10 +42,10 @@ interface Book {
     DropdownModule,
     DrawerModule,
   ],
-  templateUrl: './assignment-book.component.html',
-  styleUrl: './assignment-book.component.scss',
+  templateUrl: './oral-assignment-book.component.html',
+  styleUrl: './oral-assignment-book.component.scss',
 })
-export class AssignmentBookComponent {
+export class OralAssignmentBookComponent {
   selectedOption: string = 'isBookSelected';
   showBookDrawer = false;
   selectedBook: Book | null = null;
@@ -75,7 +75,7 @@ export class AssignmentBookComponent {
       authorName: 'John Smith',
       studentLevel: 'Beginner',
       pages: 10,
-      wordsCount: 180
+      wordsCount: 180,
     },
     {
       id: 2,
@@ -85,7 +85,7 @@ export class AssignmentBookComponent {
       authorName: 'Jane Doe',
       studentLevel: 'Beginner',
       pages: 15,
-      wordsCount: 250
+      wordsCount: 250,
     },
     {
       id: 3,
@@ -95,7 +95,7 @@ export class AssignmentBookComponent {
       authorName: 'Mike Johnson',
       studentLevel: 'Beginner',
       pages: 12,
-      wordsCount: 200
+      wordsCount: 200,
     },
     {
       id: 4,
@@ -105,7 +105,7 @@ export class AssignmentBookComponent {
       authorName: 'Sarah Wilson',
       studentLevel: 'Beginner',
       pages: 8,
-      wordsCount: 150
+      wordsCount: 150,
     },
   ];
 

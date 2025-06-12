@@ -32,4 +32,10 @@
   &.selected {
     background: var(--primary-primary-200);
   }
-} 
+
+  .assignment-type-item-title {
+    font-size: var(--font-size-xxl);
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-primary-900);
+  }
+}

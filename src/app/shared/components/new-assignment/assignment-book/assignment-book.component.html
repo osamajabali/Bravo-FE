@@ -4,22 +4,29 @@
   <div class="selection-boxes">
     <div
       class="selection-box"
-      [class.selected]="isBookSelected"
-      (click)="isBookSelected = !isBookSelected"
+      [class.selected]="selectedOption === 'isBookSelected'"
+      (click)="selectedOption = 'isBookSelected'"
     >
-      <p-checkbox [(ngModel)]="isBookSelected" [binary]="true"></p-checkbox>
+      <p-radioButton
+        [(ngModel)]="selectedOption"
+        value="isBookSelected"
+        [inputId]="'isBookSelected'"
+      ></p-radioButton>
       <span>Select the book</span>
     </div>
     <div
       class="selection-box"
-      [class.selected]="isStudentLevelSelected"
-      (click)="isStudentLevelSelected = !isStudentLevelSelected"
+      [class.selected]="selectedOption === 'isStudentLevelSelected'"
+      (click)="selectedOption = 'isStudentLevelSelected'"
     >
-      <p-checkbox
-        [(ngModel)]="isStudentLevelSelected"
-        [binary]="true"
-      ></p-checkbox>
-      <span>Send based on the student level</span>
+      <p-radioButton
+        [(ngModel)]="selectedOption"
+        value="isStudentLevelSelected"
+        [inputId]="'isStudentLevelSelected'"
+      ></p-radioButton>
+      <div>
+        <span>Send based on the student level </span>
+      </div>
     </div>
   </div>
 
@@ -34,56 +41,73 @@
     ></p-select>
   </div>
 
+  <div class="form-group" *ngIf="selectedOption !== 'isStudentLevelSelected'">
+    <div class="label">Select Level</div>
+    <p-select
+      [options]="levels"
+      [(ngModel)]="selectedLevel"
+      optionLabel="name"
+      placeholder="Select Level"
+      class="w-100"
+    ></p-select>
+  </div>
+
   @if (!selectedBook) {
-    <div class="button-container">
+
+  <div class="select-assignment-book-container">
+    <div class="image-container">
+      <img src="icon-books.svg" alt="books" />
+    </div>
+    <div>
+      <div class="main-title">Select Assignment Book</div>
+      <div class="sub-title">You can only pick one</div>
+    </div>
+    <div>
       <button
         pButton
         type="button"
         label="Select a Book"
-        class="p-button-outlined w-100"
+        class="p-button-primary"
         (click)="onSelectBook()"
       >
         <img src="icon-add-circle.svg" alt="" />
       </button>
     </div>
-    <div class="disclaimer">
-      <img src="icon-info-circle.svg" alt="" />
-      <span class="text">You can only pick one book</span>
-    </div>
+  </div>
   } @else {
-    <div class="selected-book">
-      <div class="title">Selected Book</div>
-      <div class="book-card">
-        <div class="book-cover">
-          <img [src]="selectedBook.coverUrl" [alt]="selectedBook.title" />
-        </div>
-        <div class="book-details">
-          <div class="title">{{ selectedBook.title }}</div>
-          <p class="sub-level"><b>Sub Level:</b> {{ selectedBook.levelName }}</p>
-          <p class="author">
-            Author: <b>{{ selectedBook.authorName }}</b>
-          </p>
-          <p class="student-level">
-            Student level: <b>{{ selectedBook.studentLevel }}</b>
-          </p>
-        </div>
-        <div class="book-actions">
-          <button pButton label="" class="p-button-outlined">
-            <img src="icon-rotate.svg" alt="view" />
-          </button>
-          <button pButton label="" class="p-button-outlined">
-            <img src="icon-eye.svg" alt="view" />
-          </button>
-        </div>
+  <div class="selected-book">
+    <div class="title">Selected Book</div>
+    <div class="book-card">
+      <div class="book-cover">
+        <img [src]="selectedBook.coverUrl" [alt]="selectedBook.title" />
+      </div>
+      <div class="book-details">
+        <div class="title">{{ selectedBook.title }}</div>
+        <p class="sub-level">Sub Level: <b>{{ selectedBook.levelName }}</b></p>
+        <p class="author">
+          Author Name: <b>{{ selectedBook.authorName }}</b>
+        </p>
+        <p class="student-level">
+          Student level: <b>{{ selectedBook.studentLevel }}</b>
+        </p>
+      </div>
+      <div class="book-actions">
+        <button pButton label="" class="p-button-outlined" (click)="selectedBook = null">
+          <img src="icon-trash-empty.svg" alt="view" />
+        </button>
+        <button pButton label="" class="p-button-outlined">
+          <img src="icon-eye.svg" alt="view" />
+        </button>
       </div>
     </div>
+  </div>
   }
 </div>
 
 <p-drawer
   [(visible)]="showBookDrawer"
   [position]="'right'"
-  [style]="{ width: '50%' }"
+  [style]="{ width: '75%' }"
   [modal]="true"
   [showCloseIcon]="true"
   [baseZIndex]="1000"
@@ -94,7 +118,12 @@
 >
   <ng-template pTemplate="header">
     <h2>Select a Book</h2>
-    <img src="icon-green-close-large.svg" alt="close" class="pointer" (click)="onCloseDrawer()">
+    <img
+      src="icon-green-close-large.svg"
+      alt="close"
+      class="pointer"
+      (click)="onCloseDrawer()"
+    />
   </ng-template>
 
   <div class="drawer-content">
@@ -110,53 +139,39 @@
           />
         </span>
       </div>
-      <div class="level-filters">
-        <p-dropdown
-          [options]="mainLevels"
-          [(ngModel)]="readingFilter.readingMainLevelId"
-          placeholder="Select Main Level"
-          optionLabel="name"
-          optionValue="mainLevelId"
-          [showClear]="false"
-          (ngModelChange)="onMainLevelChange($event)"
-          styleClass="main-level-dropdown"
-        ></p-dropdown>
-        <p-dropdown
-          [options]="subLevels"
-          [(ngModel)]="readingFilter.readingSubLevelId"
-          placeholder="Select Sub Level"
-          [showClear]="false"
-          optionLabel="name"
-          optionValue="subLevelId"
-          (ngModelChange)="
-            onSubLevelChange(readingFilter.readingMainLevelId, $event)
-          "
-          styleClass="sub-level-dropdown"
-        ></p-dropdown>
-      </div>
     </div>
 
     <div class="books-grid">
       @for (book of books; track book.id) {
-      <div class="book-card">
-        <div class="book-cover">
+      <div class="book-row">
+        <div class="book-image">
           <img [src]="book.coverUrl" [alt]="book.title" />
         </div>
-        <div class="book-details">
-          <div class="title">{{ book.title }}</div>
-          <p class="sub-level"><b>Sub Level:</b> {{ book.levelName }}</p>
-          <p class="author">
-            Author: <b>{{ book.authorName }}</b>
-          </p>
-          <p class="student-level">
-            Student level: <b>{{ book.studentLevel }}</b>
-          </p>
-          <div class="book-actions">
-            <button pButton class="p-button-primary" (click)="onBookSelect(book)">Select Book</button>
-            <button pButton label="" class="p-button-outlined">
-              <img src="icon-eye.svg" alt="hide" />
-            </button>
+        <div class="book-info">
+          <div class="info-item">
+            <span class="label">Title</span>
+            <span class="value">{{ book.title }}</span>
           </div>
+          <div class="info-item">
+            <span class="label">Pages</span>
+            <span class="value">{{ book.pages }} pages</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Words Count</span>
+            <span class="value">{{ book.wordsCount }} words</span>
+          </div>
+        </div>
+        <div class="book-actions">
+          <button pButton label="" class="p-button-outlined">
+            <span>View Book</span>
+            <img src="icon-view-book-sml.svg" alt="view" />
+          </button>
+          <button
+            pButton
+            label="Select Book"
+            class="p-button-primary"
+            (click)="onBookSelect(book)"
+          ></button>
         </div>
       </div>
       }

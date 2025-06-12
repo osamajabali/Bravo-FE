@@ -14,6 +14,8 @@ import { ListeningAssignmentBookComponent } from '../../../shared/components/new
 import { SkillsReviewComponent } from '../../../shared/components/new-assignment/skills-review/skills-review.component';
 import { DialogModule } from 'primeng/dialog';
 import { Router } from '@angular/router';
+import { AssignmentBookReviewComponent } from '../../../shared/components/new-assignment/book-assignment-review/assignment-book-review.component';
+import { OralAssignmentBookComponent } from "../../../shared/components/new-assignment/oral-assignment-book/oral-assignment-book.component";
 
 interface AssignmentType {
   name: string;
@@ -41,8 +43,10 @@ export interface StepItem {
     AssignmentBookComponent,
     ListeningAssignmentBookComponent,
     SkillsReviewComponent,
-    DialogModule
-  ],
+    DialogModule,
+    AssignmentBookReviewComponent,
+    OralAssignmentBookComponent
+],
   templateUrl: './new-assignment.component.html',
   styleUrl: './new-assignment.component.scss',
 })
@@ -97,6 +101,7 @@ export class NewAssignmentComponent implements OnInit {
   back() {
     this.activeStep = this.activeStep - 1;
 
+    this.isReviewPage = false;
     this.updateStepsCompletion();
   }
 
@@ -118,5 +123,12 @@ export class NewAssignmentComponent implements OnInit {
     for (let i = 0; i < this.items.length; i++) {
       this.items[i].isStepCompleted = i < this.activeStep;
     }
+  }
+
+  handleStepChange(step: number) {
+    this.isReviewPage = false;
+    this.activeStep = step;
+
+    this.updateStepsCompletion()
   }
 }

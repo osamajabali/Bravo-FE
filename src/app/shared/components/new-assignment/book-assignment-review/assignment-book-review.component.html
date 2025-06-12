@@ -1,0 +1,73 @@
+<div class="skills-review">
+  <div class="title">Review Assignment</div>
+  <div class="assignment-summary">
+    <div class="upper-section">
+      <div class="left">
+        <div class="icon">
+          <img src="icon-cards-square.svg" alt="" class="pointer" />
+        </div>
+        <div>
+          <div class="assignment-title">Assignment title</div>
+          <div class="assignment-sub-title">Skills</div>
+        </div>
+      </div>
+      <div class="pointer" (click)="moveToStep(1)">
+        <img src="icon-edit-square.svg" alt="edit" />
+      </div>
+    </div>
+    <div class="separator"></div>
+    <div class="lower-section">
+      <div class="item">
+        <div class="header">Grade</div>
+        <div class="value">Grade 1</div>
+      </div>
+      <div class="item">
+        <div class="header">Section</div>
+        <div class="value">All sections</div>
+      </div>
+      <div class="item">
+        <div class="header">Start Date</div>
+        <div class="value">20/08/2022</div>
+      </div>
+      <div class="item">
+        <div class="header">Due Date</div>
+        <div class="value">20/08/2022</div>
+      </div>
+    </div>
+  </div>
+  <div class="assignment-details">
+    <div class="upper-section">
+      <div class="left">
+        <div class="assignment-title">Book Selected By Teacher</div>
+      </div>
+      <div (click)="moveToStep(2)">
+        <img src="icon-edit-square.svg" alt="edit" class="pointer" />
+      </div>
+    </div>
+    <div class="separator"></div>
+    <div class="lower-section">
+      <div class="selected-book">
+        <div class="book-card">
+          <div class="book-cover">
+            <img [src]="selectedBook.coverUrl" [alt]="selectedBook.title" />
+          </div>
+          <div class="book-details">
+            <div class="title">{{ selectedBook.title }}</div>
+            <p class="sub-level">Sub Level: <b>{{ selectedBook.levelName }}</b></p>
+            <p class="author">
+              Author Name: <b>{{ selectedBook.authorName }}</b>
+            </p>
+            <p class="student-level">
+              Student level: <b>{{ selectedBook.studentLevel }}</b>
+            </p>
+          </div>
+          <div class="book-actions">
+            <button pButton label="" class="p-button-outlined">
+              <img src="icon-eye.svg" alt="view" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
