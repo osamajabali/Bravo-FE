@@ -1,0 +1,397 @@
+<div class="writing-speaking-assignment">
+  <div class="title">{{ title() }}</div>
+
+  <div class="questions-list">
+    <p-panel
+      *ngFor="let question of questions; let i = index"
+      [toggleable]="true"
+      [collapsed]="question.isCollapsed"
+    >
+      <ng-template pTemplate="header">
+        <div class="panel-header">
+          <span class="header-label">Question {{ i + 1 }}</span>
+          <div class="header-actions">
+            <img
+              src="icon-trash-red-large.svg"
+              alt=""
+              (click)="removeQuestion(question.id)"
+            />
+            <img
+              src="arrow-gray-down.svg"
+              alt=""
+              (click)="toggleCollapse(question)"
+              [class.rotated]="!question.isCollapsed"
+            />
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="panel-content">
+        <div class="form-group">
+          <div class="control-title">Question Text</div>
+          <input
+            pInputText
+            type="text"
+            [(ngModel)]="question.questionText"
+            placeholder="Add Here"
+            class="question-input"
+            (ngModelChange)="onQuestionTextChange()"
+          />
+        </div>
+
+        <div class="form-group">
+          <div class="control-title">Question Format</div>
+          <div class="format-options">
+            <div
+              class="format-option"
+              [class.selected]="question.questionFormat === 'text'"
+              (click)="onQuestionFormatChange(question, 'text')"
+            >
+              <img src="icon-text.svg" alt="text" />
+              Text
+            </div>
+            <div
+              class="format-option"
+              [class.selected]="question.questionFormat === 'image'"
+              (click)="onQuestionFormatChange(question, 'image')"
+            >
+              <img src="icon-image.svg" alt="image" />
+              Image
+            </div>
+            <div
+              class="format-option"
+              [class.selected]="question.questionFormat === 'voice'"
+              (click)="onQuestionFormatChange(question, 'voice')"
+            >
+              <img src="icon-voice.svg" alt="voice" />
+              Voice
+            </div>
+            <div
+              class="format-option"
+              [class.selected]="question.questionFormat === 'video'"
+              (click)="onQuestionFormatChange(question, 'video')"
+            >
+              <img src="icon-video-sml.svg" alt="video" />
+              Video
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Format Content -->
+        <div *ngIf="question.questionFormat === 'text'" class="format-content">
+          <div class="form-group">
+            <div class="control-title">Description</div>
+            <textarea
+              pInputTextarea
+              [(ngModel)]="question.description"
+              placeholder="Describe your assignment here .."
+              rows="4"
+              class="description-textarea"
+              (ngModelChange)="onDescriptionChange()"
+            ></textarea>
+          </div>
+          <div class="radio-options">
+            <div
+              class="selection-box"
+              [class.selected]="question.answerType === 'keyboard'"
+              (click)="question.answerType = 'keyboard'"
+            >
+              <p-radioButton
+                [(ngModel)]="question.answerType"
+                value="keyboard"
+                [inputId]="'keyboard_' + question.id"
+              ></p-radioButton>
+              <span>Answer with Keyboard Input</span>
+            </div>
+            <div
+              class="selection-box"
+              [class.selected]="question.answerType === 'system'"
+              (click)="question.answerType = 'system'"
+            >
+              <p-radioButton
+                [(ngModel)]="question.answerType"
+                value="system"
+                [inputId]="'system_' + question.id"
+              ></p-radioButton>
+              <span>System Correction</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image Format Content -->
+        <div *ngIf="question.questionFormat === 'image'" class="format-content">
+          <div class="form-group">
+            <div class="control-title">Upload Image</div>
+
+            <!-- Upload button - show when no file or invalid file -->
+            <div
+              *ngIf="
+                !question.uploadedImageFile ||
+                (question.imageFileValidation &&
+                  !question.imageFileValidation.isValid)
+              "
+            >
+              <button
+                pButton
+                type="button"
+                class="p-button-outlined upload-btn"
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  (change)="onFileUpload($event, question)"
+                  style="display: none"
+                  #imageInput
+                />
+                <img src="icon-upload-sml.svg" alt="upload" />
+                <span (click)="imageInput.click()">Upload</span>
+              </button>
+            </div>
+
+            <!-- File validation error -->
+            <div
+              *ngIf="
+                question.imageFileValidation &&
+                !question.imageFileValidation.isValid
+              "
+              class="file-error"
+            >
+              This file is invalid
+            </div>
+
+            <!-- Upload notes - show when no valid file -->
+            <div
+              *ngIf="
+                !question.uploadedImageFile ||
+                (question.imageFileValidation &&
+                  !question.imageFileValidation.isValid)
+              "
+              class="upload-notes"
+            >
+              <div>- Formats allowed: JPG, PNG, JPEG</div>
+              <div>- Max file size: 5MB</div>
+              <div>- Recommended size: At least 800x600 pixels for clarity</div>
+            </div>
+
+            <!-- Uploaded file display - show when valid file -->
+            <div
+              *ngIf="
+                question.uploadedImageFile &&
+                question.imageFileValidation &&
+                question.imageFileValidation.isValid
+              "
+              class="uploaded-file"
+            >
+              <div class="file-preview">
+                <img
+                  [src]="getImagePreviewUrl(question.uploadedImageFile)"
+                  [alt]="question.uploadedImageFileName"
+                  class="preview-image"
+                />
+              </div>
+              <div class="file-info">
+                <div class="file-name">
+                  {{ question.uploadedImageFileName }}
+                </div>
+                <div class="file-size">
+                  {{ question.uploadedImageFileSize }}
+                </div>
+              </div>
+              <img
+                src="icon-trash-red.svg"
+                alt="delete"
+                class="delete-icon"
+                (click)="removeUploadedFile(question, 'image')"
+              />
+            </div>
+          </div>
+          <div class="radio-options">
+            <div
+              class="selection-box"
+              [class.selected]="question.answerType === 'keyboard'"
+              (click)="question.answerType = 'keyboard'"
+            >
+              <p-radioButton
+                [(ngModel)]="question.answerType"
+                value="keyboard"
+                [inputId]="'keyboard_img_' + question.id"
+              ></p-radioButton>
+              <span>Answer with Keyboard Input</span>
+            </div>
+            <div
+              class="selection-box"
+              [class.selected]="question.answerType === 'upload'"
+              (click)="question.answerType = 'upload'"
+            >
+              <p-radioButton
+                [(ngModel)]="question.answerType"
+                value="upload"
+                [inputId]="'upload_' + question.id"
+              ></p-radioButton>
+              <span>Answer by Uploading an Image</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Voice Format Content -->
+        <div *ngIf="question.questionFormat === 'voice'" class="format-content">
+          <div class="form-group">
+            <div class="control-title">Upload Audio</div>
+
+            <!-- Upload button - show when no file or invalid file -->
+            <div
+              *ngIf="
+                !question.uploadedVoiceFile ||
+                (question.voiceFileValidation &&
+                  !question.voiceFileValidation.isValid)
+              "
+            >
+              <button
+                pButton
+                type="button"
+                class="p-button-outlined upload-btn"
+              >
+                <input
+                  type="file"
+                  accept="audio/*"
+                  (change)="onFileUpload($event, question)"
+                  style="display: none"
+                  #audioInput
+                />
+                <img src="icon-upload-sml.svg" alt="upload" />
+                <span (click)="audioInput.click()">Upload</span>
+              </button>
+            </div>
+
+            <!-- File validation error -->
+            <div
+              *ngIf="
+                question.voiceFileValidation &&
+                !question.voiceFileValidation.isValid
+              "
+              class="file-error"
+            >
+              This file is invalid
+            </div>
+
+            <!-- Upload notes - show when no valid file -->
+            <div
+              *ngIf="
+                !question.uploadedVoiceFile ||
+                (question.voiceFileValidation &&
+                  !question.voiceFileValidation.isValid)
+              "
+              class="upload-notes"
+            >
+              <div>- File format should be an MP3</div>
+              <div>- Duration must be less than 5 minutes</div>
+            </div>
+
+            <!-- Uploaded file display - show when valid file -->
+            <div
+              *ngIf="
+                question.uploadedVoiceFile &&
+                question.voiceFileValidation &&
+                question.voiceFileValidation.isValid
+              "
+              class="uploaded-file voice-file"
+            >
+              <img src="icon-player-large.svg" alt="voice" />
+              <div class="file-info">
+                <div class="file-name">
+                  {{ question.uploadedVoiceFileName }}
+                </div>
+                <div class="file-size">
+                  {{ question.uploadedVoiceFileSize }}
+                </div>
+              </div>
+              <img
+                src="icon-trash-red.svg"
+                alt="delete"
+                class="delete-icon"
+                (click)="removeUploadedFile(question, 'voice')"
+              />
+            </div>
+          </div>
+          <div class="radio-options">
+            <div
+              class="selection-box"
+              [class.selected]="question.answerType === 'keyboard'"
+              (click)="question.answerType = 'keyboard'"
+            >
+              <p-radioButton
+                [(ngModel)]="question.answerType"
+                value="keyboard"
+                [inputId]="'keyboard_voice_' + question.id"
+              ></p-radioButton>
+              <span>Answer with Keyboard Input</span>
+            </div>
+            <div
+              class="selection-box"
+              [class.selected]="question.answerType === 'upload'"
+              (click)="question.answerType = 'upload'"
+            >
+              <p-radioButton
+                [(ngModel)]="question.answerType"
+                value="upload"
+                [inputId]="'upload_voice_' + question.id"
+              ></p-radioButton>
+              <span>Answer by Uploading an Image</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video Format Content -->
+        <div *ngIf="question.questionFormat === 'video'" class="format-content">
+          <div class="form-group">
+            <div class="control-title">Video URL</div>
+            <input
+              pInputText
+              type="text"
+              [(ngModel)]="question.videoUrl"
+              placeholder="Enter video URL"
+              class="question-input"
+              (ngModelChange)="onVideoUrlChange()"
+            />
+          </div>
+          <div class="radio-options">
+            <div
+              class="selection-box"
+              [class.selected]="question.answerType === 'keyboard'"
+              (click)="question.answerType = 'keyboard'"
+            >
+              <p-radioButton
+                [(ngModel)]="question.answerType"
+                value="keyboard"
+                [inputId]="'keyboard_video_' + question.id"
+              ></p-radioButton>
+              <span>Answer with Keyboard Input</span>
+            </div>
+            <div
+              class="selection-box"
+              [class.selected]="question.answerType === 'system'"
+              (click)="question.answerType = 'system'"
+            >
+              <p-radioButton
+                [(ngModel)]="question.answerType"
+                value="system"
+                [inputId]="'system_video_' + question.id"
+              ></p-radioButton>
+              <span>System Correction</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-panel>
+
+    <button
+      pButton
+      label=""
+      class="p-button-outlined add-question-btn"
+      (click)="addQuestion()"
+    >
+      <img src="icon-add-circle.svg" alt="" />
+      <span>Add another question</span>
+    </button>
+  </div>
+</div>

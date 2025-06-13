@@ -18,6 +18,14 @@
     font-size: var(--font-size-l) !important;
     padding: var(--padding-xs) var(--padding-3xl) !important;
   }
+
+  ::ng-deep {
+    .p-button-outlined {
+      .p-button-label {
+        font-weight: var(--font-weight-regular) !important;
+      }
+    }
+  }
 }
 
 ::ng-deep {

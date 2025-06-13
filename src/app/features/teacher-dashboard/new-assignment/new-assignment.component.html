@@ -20,6 +20,13 @@
   } @if (activeStep === 2 && selectedAssignmentType?.name ===
   'listening-comprehension') {
   <app-listening-assignment-book />
+  } @if(activeStep === 2 && (selectedAssignmentType?.name === 'speaking' ||
+  selectedAssignmentType?.name === 'writing')) {
+  <app-writing-speaking-assignment 
+    [type]="selectedAssignmentType?.name" 
+    [questions]="writingSpeakingQuestions"
+    (questionsChange)="onQuestionsChange($event)"
+  />
   } @if(selectedAssignmentType?.name === 'skills' && isReviewPage) {
   <app-skills-review />
   } @if((selectedAssignmentType?.name === 'reading-comprehension' ||
@@ -28,6 +35,13 @@
   <app-assignment-book-review
     (stepChange)="handleStepChange($event)"
   ></app-assignment-book-review>
+  } @if((selectedAssignmentType?.name === 'speaking' ||
+  selectedAssignmentType?.name === 'writing') && isReviewPage) {
+  <app-review-writing-speaking
+    (stepChange)="handleStepChange($event)"
+    [type]="selectedAssignmentType?.name"
+    [questions]="writingSpeakingQuestions"
+  ></app-review-writing-speaking>
   }
 </div>
 <div class="assignment-footer" [ngClass]="activeStep === 0 ? 'center' : ''">
@@ -35,7 +49,7 @@
     <button
       pButton
       type="button"
-      label="Back"
+      label="Previous"
       class="p-button-outlined"
       *ngIf="activeStep !== 0"
       (click)="back()"

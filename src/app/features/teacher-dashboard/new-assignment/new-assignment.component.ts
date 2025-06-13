@@ -15,7 +15,9 @@ import { SkillsReviewComponent } from '../../../shared/components/new-assignment
 import { DialogModule } from 'primeng/dialog';
 import { Router } from '@angular/router';
 import { AssignmentBookReviewComponent } from '../../../shared/components/new-assignment/book-assignment-review/assignment-book-review.component';
-import { OralAssignmentBookComponent } from "../../../shared/components/new-assignment/oral-assignment-book/oral-assignment-book.component";
+import { OralAssignmentBookComponent } from '../../../shared/components/new-assignment/oral-assignment-book/oral-assignment-book.component';
+import { WritingSpeakingAssignmentComponent } from '../../../shared/components/new-assignment/writing-speaking-assignment/writing-speaking-assignment.component';
+import { ReviewWritingSpeakingComponent } from '../../../shared/components/new-assignment/review-writing-speaking/review-writing-speaking.component';
 
 interface AssignmentType {
   name: string;
@@ -27,6 +29,30 @@ export interface StepItem {
   id: string;
   label: string;
   isStepCompleted: boolean;
+}
+
+export interface Question {
+  id: number;
+  questionText: string;
+  questionFormat: 'text' | 'image' | 'voice' | 'video';
+  description?: string;
+  videoUrl?: string;
+  uploadedImageFile?: File;
+  uploadedImageFileName?: string;
+  uploadedImageFileSize?: string;
+  imageFileValidation?: {
+    isValid: boolean;
+    errorMessage?: string;
+  };
+  uploadedVoiceFile?: File;
+  uploadedVoiceFileName?: string;
+  uploadedVoiceFileSize?: string;
+  voiceFileValidation?: {
+    isValid: boolean;
+    errorMessage?: string;
+  };
+  answerType: string;
+  isCollapsed: boolean;
 }
 
 @Component({
@@ -45,8 +71,10 @@ export interface StepItem {
     SkillsReviewComponent,
     DialogModule,
     AssignmentBookReviewComponent,
-    OralAssignmentBookComponent
-],
+    OralAssignmentBookComponent,
+    WritingSpeakingAssignmentComponent,
+    ReviewWritingSpeakingComponent,
+  ],
   templateUrl: './new-assignment.component.html',
   styleUrl: './new-assignment.component.scss',
 })
@@ -63,6 +91,19 @@ export class NewAssignmentComponent implements OnInit {
     startDate: null,
     dueDate: null,
   };
+
+  // Shared data for writing/speaking assignments
+  writingSpeakingQuestions: Question[] = [
+    {
+      id: 1,
+      questionText: '',
+      questionFormat: 'text',
+      description: '',
+      answerType: 'keyboard',
+      isCollapsed: false
+    }
+  ];
+
   sharedService = inject(SharedService);
   private router = inject(Router);
   items: StepItem[] = [
@@ -85,6 +126,10 @@ export class NewAssignmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.sharedService.pushTitle('ADD NEW ASSIGNMENT');
+  }
+
+  onQuestionsChange(questions: Question[]) {
+    this.writingSpeakingQuestions = questions;
   }
 
   previewAssignment() {}
@@ -129,6 +174,6 @@ export class NewAssignmentComponent implements OnInit {
     this.isReviewPage = false;
     this.activeStep = step;
 
-    this.updateStepsCompletion()
+    this.updateStepsCompletion();
   }
 }
