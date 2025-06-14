@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { PanelModule } from 'primeng/panel';
+import { QuestionPreviewPopupComponent } from '../../question-preview-popup/question-preview-popup.component';
 
 interface Skill {
   name: string;
@@ -36,6 +37,7 @@ interface Domain {
     ButtonModule,
     InputNumberModule,
     PanelModule,
+    QuestionPreviewPopupComponent,
   ],
   templateUrl: './assignment-domains-and-skills.component.html',
   styleUrl: './assignment-domains-and-skills.component.scss',
@@ -55,6 +57,11 @@ export class AssignmentDomainsAndSkillsComponent {
     { label: 'Language Arts', value: 'language' },
     { label: 'Computer Science', value: 'cs' }
   ];
+
+  // Popup state
+  showQuestionPreview: boolean = false;
+  selectedSkillName: string = '';
+  selectedDifficultyLevel: string = '';
 
   addDomain() {
     this.domains.push({
@@ -82,5 +89,18 @@ export class AssignmentDomainsAndSkillsComponent {
         { name: 'Calculus', beginner: 0, medium: 0, advanced: 0 }
       ];
     }
+  }
+
+  openQuestionPreview(skillName: string, difficultyLevel: string) {
+    console.log('Opening question preview for:', skillName, difficultyLevel);
+    this.selectedSkillName = skillName;
+    this.selectedDifficultyLevel = difficultyLevel;
+    this.showQuestionPreview = true;
+    console.log('Popup visibility set to:', this.showQuestionPreview);
+  }
+
+  onQuestionsSelected(questions: any[]) {
+    console.log('Selected questions:', questions);
+    // Handle the selected questions - update the skill counts, etc.
   }
 }

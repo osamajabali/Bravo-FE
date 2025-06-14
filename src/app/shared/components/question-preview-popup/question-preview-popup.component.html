@@ -1,0 +1,106 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="false"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="false"
+  [blockScroll]="true"
+  styleClass="question-preview-dialog"
+  [style]="{ width: '90vw', maxWidth: '70vw', height: '90vh' }"
+  (onHide)="onHide()"
+>
+  <ng-template pTemplate="header">
+    <div class="dialog-header">
+      <div class="filter-options">
+        <div
+          *ngFor="let option of filterOptions"
+          (click)="selectFilter(option)"
+          class="filter-box-container"
+        >
+          <div class="filter-box" [class.selected]="selectedFilter === option">
+            {{ option }}
+          </div>
+          <div class="out-of">
+            <span>20</span>
+          </div>
+        </div>
+      </div>
+      <button
+        pButton
+        icon="pi pi-times"
+        class="p-button-text close-btn"
+        (click)="onCancel()"
+      ></button>
+    </div>
+  </ng-template>
+
+  <div class="dialog-content">
+    <div class="slide-count">
+      {{ currentSlideIndex + 1 }} / {{ questions.length }}
+    </div>
+    <div class="image-slider">
+      <div class="slide-container">
+        <div class="slide-navigation">
+          <button
+            pButton
+            class="p-button-text prev-btn nav-btn"
+            [disabled]="currentSlideIndex === 0"
+            (click)="previousSlide()"
+          >
+            <img src="arrow-right-dark.svg" alt="Previous" />
+          </button>
+
+          <div class="slide-image">
+            <div class="question-checkbox">
+              <p-checkbox
+                [ngModel]="currentQuestion.isSelected"
+                [binary]="true"
+                (ngModelChange)="
+                  toggleQuestionSelection(currentQuestion, $event)
+                "
+              ></p-checkbox>
+              <label>Select Question</label>
+            </div>
+            <img
+              [src]="currentQuestion.image"
+              [alt]="'Question ' + currentQuestion.id"
+            />
+          </div>
+
+          <button
+            pButton
+            class="p-button-text nav-btn"
+            [disabled]="currentSlideIndex === questions.length - 1"
+            (click)="nextSlide()"
+          >
+            <img src="arrow-right-dark.svg" alt="Next" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <div class="selected-count">
+        <div class="count-label">Total Selected Questions</div>
+        <div class="count-value">{{ totalSelectedQuestions }}</div>
+      </div>
+      <div class="footer-buttons">
+        <button
+          pButton
+          label="Cancel"
+          class="p-button-outlined cancel-btn"
+          (click)="onCancel()"
+        ></button>
+        <button
+          pButton
+          label="Submit"
+          class="p-button-primary submit-btn"
+          (click)="onSubmit()"
+        ></button>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>

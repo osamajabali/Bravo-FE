@@ -107,7 +107,12 @@
                 ></p-inputNumber>
                 <div class="out-of">23</div>
               </div>
-              <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
+              <img 
+                src="icon-eye-blue-box.svg" 
+                class="pointer" 
+                alt="" 
+                (click)="openQuestionPreview(skill.name, 'beginner')"
+              />
             </div>
             <div class="grid-cell">
               <div class="input-container">
@@ -119,7 +124,12 @@
                 ></p-inputNumber>
                 <div class="out-of">23</div>
               </div>
-              <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
+              <img 
+                src="icon-eye-blue-box.svg" 
+                class="pointer" 
+                alt="" 
+                (click)="openQuestionPreview(skill.name, 'medium')"
+              />
             </div>
             <div class="grid-cell">
               <div class="input-container">
@@ -131,7 +141,12 @@
                 ></p-inputNumber>
                 <div class="out-of">23</div>
               </div>
-              <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
+              <img 
+                src="icon-eye-blue-box.svg" 
+                class="pointer" 
+                alt="" 
+                (click)="openQuestionPreview(skill.name, 'advanced')"
+              />
             </div>
           </div>
         </div>
@@ -148,4 +163,12 @@
       <span>Add domain</span>
     </button>
   </div>
+
+  <!-- Question Preview Popup -->
+  <app-question-preview-popup
+    [(visible)]="showQuestionPreview"
+    [skillName]="selectedSkillName"
+    [difficultyLevel]="selectedDifficultyLevel"
+    (questionsSelected)="onQuestionsSelected($event)"
+  ></app-question-preview-popup>
 </div>
