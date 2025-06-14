@@ -83,7 +83,9 @@
       </div>
       <div class="book-details">
         <div class="title">{{ selectedBook.title }}</div>
-        <p class="sub-level">Sub Level: <b>{{ selectedBook.levelName }}</b></p>
+        <p class="sub-level">
+          Sub Level: <b>{{ selectedBook.levelName }}</b>
+        </p>
         <p class="author">
           Author Name: <b>{{ selectedBook.authorName }}</b>
         </p>
@@ -92,10 +94,15 @@
         </p>
       </div>
       <div class="book-actions">
-        <button pButton label="" class="p-button-outlined" (click)="selectedBook = null">
+        <button
+          pButton
+          label=""
+          class="p-button-outlined"
+          (click)="selectedBook = null"
+        >
           <img src="icon-trash-empty.svg" alt="view" />
         </button>
-        <button pButton label="" class="p-button-outlined">
+        <button pButton label="" class="p-button-outlined" (click)="onViewBook(selectedBook)">
           <img src="icon-eye.svg" alt="view" />
         </button>
       </div>
@@ -158,11 +165,18 @@
           </div>
           <div class="info-item">
             <span class="label">Words Count</span>
-            <span class="value">{{ book.wordsCount }} words</span>
+            <div class="value">
+              {{ book.wordsCount }} words
+              <img
+                src="icon-yellow-info.svg"
+                alt="info"
+                title="You must select pages under 200 words"
+              />
+            </div>
           </div>
         </div>
         <div class="book-actions">
-          <button pButton label="" class="p-button-outlined">
+          <button pButton label="" class="p-button-outlined" (click)="onViewBook(book)">
             <span>View Book</span>
             <img src="icon-view-book-sml.svg" alt="view" />
           </button>
@@ -178,3 +192,11 @@
     </div>
   </div>
 </p-drawer>
+
+<!-- Book Preview Popup -->
+<app-book-preview-popup
+  [(visible)]="showPreviewPopup"
+  [skillName]="previewBookTitle"
+  [difficultyLevel]="'Book Preview'"
+  (questionsSelected)="onQuestionsSelected($event)"
+></app-book-preview-popup>

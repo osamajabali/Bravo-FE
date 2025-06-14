@@ -7,6 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { DrawerModule } from 'primeng/drawer';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { BookPreviewPopupComponent } from '../../book-preview-popup/book-preview-popup.component';
 
 interface SelectionType {
   id: number;
@@ -41,6 +42,7 @@ interface Book {
     InputTextModule,
     DropdownModule,
     DrawerModule,
+    BookPreviewPopupComponent,
   ],
   templateUrl: './assignment-book.component.html',
   styleUrl: './assignment-book.component.scss',
@@ -49,6 +51,10 @@ export class AssignmentBookComponent {
   selectedOption: string = 'isBookSelected';
   showBookDrawer = false;
   selectedBook: Book | null = null;
+  
+  // Preview popup state
+  showPreviewPopup: boolean = false;
+  previewBookTitle: string = '';
 
   selectionTypes: SelectionType[] = [
     { id: 1, name: 'Teacher Selection' },
@@ -151,5 +157,16 @@ export class AssignmentBookComponent {
 
   onRemoveBook() {
     this.selectedBook = null;
+  }
+
+  onViewBook(book: Book) {
+    this.onCloseDrawer();
+    this.previewBookTitle = book.title;
+    this.showPreviewPopup = true;
+  }
+
+  onQuestionsSelected(questions: any[]) {
+    console.log('Selected questions for book:', questions);
+    // Handle the selected questions from the book preview
   }
 }

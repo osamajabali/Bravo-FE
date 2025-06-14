@@ -118,7 +118,14 @@
           </div>
           <div class="info-item">
             <span class="label">Words Count</span>
-            <span class="value">{{ book.wordsCount }} words</span>
+            <div class="value">
+              {{ book.wordsCount }} words
+              <img
+                src="icon-yellow-info.svg"
+                alt="info"
+                title="You must select pages under 200 words"
+              />
+            </div>
           </div>
         </div>
         <div class="book-actions">
