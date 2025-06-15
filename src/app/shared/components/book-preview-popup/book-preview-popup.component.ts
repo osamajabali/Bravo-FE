@@ -47,6 +47,19 @@ export class BookPreviewPopupComponent {
     return this.questions[this.currentSlideIndex];
   }
 
+  get currentPages(): Question[] {
+    const pages = [];
+    // Left page (even index)
+    if (this.currentSlideIndex < this.questions.length) {
+      pages.push(this.questions[this.currentSlideIndex]);
+    }
+    // Right page (odd index)
+    if (this.currentSlideIndex + 1 < this.questions.length) {
+      pages.push(this.questions[this.currentSlideIndex + 1]);
+    }
+    return pages;
+  }
+
   selectFilter(filter: string) {
     this.selectedFilter = filter;
     // In real app, this would filter the questions based on type
@@ -54,13 +67,19 @@ export class BookPreviewPopupComponent {
 
   previousSlide() {
     if (this.currentSlideIndex > 0) {
-      this.currentSlideIndex--;
+      this.currentSlideIndex -= 2; // Move back by 2 pages
+      if (this.currentSlideIndex < 0) {
+        this.currentSlideIndex = 0;
+      }
     }
   }
 
   nextSlide() {
     if (this.currentSlideIndex < this.questions.length - 1) {
-      this.currentSlideIndex++;
+      this.currentSlideIndex += 2; // Move forward by 2 pages
+      if (this.currentSlideIndex >= this.questions.length) {
+        this.currentSlideIndex = this.questions.length - 1;
+      }
     }
   }
 

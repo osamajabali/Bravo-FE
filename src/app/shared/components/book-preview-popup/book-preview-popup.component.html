@@ -56,27 +56,33 @@
             <img src="arrow-right-dark.svg" alt="Previous" />
           </button>
 
-          <div class="slide-image" [class.selected]="currentQuestion.isSelected">
-            <div class="slide-header">
-              <div class="question-checkbox">
-                <p-checkbox
-                  [ngModel]="currentQuestion.isSelected"
-                  [binary]="true"
-                  (ngModelChange)="
-                    toggleQuestionSelection(currentQuestion, $event)
-                  "
-                ></p-checkbox>
-                <label>Select Page</label>
+          <div class="pages-container">
+            <div 
+              *ngFor="let page of currentPages; let i = index" 
+              class="slide-image" 
+              [class.selected]="page.isSelected"
+              [class.left-page]="i === 0"
+              [class.right-page]="i === 1"
+            >
+              <div class="slide-header">
+                <div class="question-checkbox">
+                  <p-checkbox
+                    [ngModel]="page.isSelected"
+                    [binary]="true"
+                    (ngModelChange)="toggleQuestionSelection(page, $event)"
+                  ></p-checkbox>
+                  <label>Select Page</label>
+                </div>
+                <div class="words-count">
+                  <span>Words Count</span>
+                </div>
+                <div class="count-badge">134</div>
               </div>
-              <div class="words-count">
-                <span>Words Count</span>
-              </div>
-              <div class="count-badge">134</div>
+              <img
+                [src]="page.image"
+                [alt]="'Page ' + page.id"
+              />
             </div>
-            <img
-              [src]="currentQuestion.image"
-              [alt]="'Question ' + currentQuestion.id"
-            />
           </div>
 
           <button
