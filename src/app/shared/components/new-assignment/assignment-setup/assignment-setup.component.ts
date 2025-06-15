@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
@@ -10,6 +10,12 @@ import {
   AssignmentGrade,
   AssignmentSection,
 } from '../../../../shared/models/assignment-information.model';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { AddingAssignmentService } from '../../../../core/services/assignment/adding-assignment.service';
+import { AssignmentRecipientTypes } from '../../../../core/models/assignment/assignment-types.model';
+import { HeaderService } from '../../../../core/services/header-services/header.service';
+import { TargetEnum } from '../../../../core/models/shared-models/enums';
+import { AssignmentSetup } from '../../../../core/models/assignment/assignment-setup.model';
 
 @Component({
   selector: 'app-assignment-setup',
@@ -20,73 +26,90 @@ import {
     SelectModule,
     InputTextModule,
     CalendarModule,
+    MultiSelectModule
   ],
   templateUrl: './assignment-setup.component.html',
   styleUrl: './assignment-setup.component.scss',
 })
 export class AssignmentSetupComponent implements OnInit {
-  @Input() assignmentInformation: AssignmentInformation = {
-    target: null,
-    grade: null,
-    section: null,
-    title: null,
-    startDate: null,
-    dueDate: null,
-  };
-  @Output() assignmentInformationChange =
-    new EventEmitter<AssignmentInformation>();
 
-  targets: AssignmentTarget[] = [
-    { id: 1, name: 'Grade 2' },
-    { id: 2, name: 'Homerooms' },
-    { id: 3, name: 'Groups' },
-    { id: 4, name: 'Students' },
-  ];
-
-  grades: AssignmentGrade[] = [
-    { id: 1, name: 'Grade 1' },
-    { id: 2, name: 'Grade 2' },
-    { id: 3, name: 'Grade 3' },
-    { id: 4, name: 'Grade 4' },
-    { id: 5, name: 'Grade 5' },
-  ];
-
-  sections: AssignmentSection[] = [
-    { id: 1, name: 'Section A' },
-    { id: 2, name: 'Section B' },
-    { id: 3, name: 'Section C' },
-    { id: 4, name: 'Section D' },
-  ];
-
-  homerooms = [{ id: 1, name: 'Item 1' }];
-  groups = [{ id: 1, name: 'Item 1' }];
-  students = [{ id: 1, name: 'Item 1' }];
+  addingAssignmentService = inject(AddingAssignmentService);
+  headerService = inject(HeaderService);
+  targets: AssignmentRecipientTypes[] = [];
+  selectedTarget: AssignmentRecipientTypes = new AssignmentRecipientTypes();
+  grades: { gradeId: number; name: string; }[] = [];
+  sections: { sectionId: number; name: string; }[] = [];
+  groups: { groupId: number; name: string; }[] = [];
+  students: { studentId: number; fullName: string; }[] = [];
+  targetEnum = TargetEnum;
+  assignmentSetup : AssignmentSetup = new AssignmentSetup()
+  selectedGrades : { gradeId: number; name: string; }[] = [];
 
   ngOnInit(): void {
-    this.onTargetChange(this.targets[0]);
+    this.getTargets();
   }
 
-  updateAssignmentInformation(updates: Partial<AssignmentInformation>) {
-    this.assignmentInformation = {
-      ...this.assignmentInformation,
-      ...updates,
-    };
-    this.assignmentInformationChange.emit(this.assignmentInformation);
+
+  getTargets() {
+    this.addingAssignmentService.getAssignmentRecipientTypes().subscribe(res => {
+      if (res.success) {
+        this.targets = res.result;
+        this.targets.find(x => x.name == 'Grades').selected = true;
+        this.selectedTarget = this.targets.find(x => x.name == 'Grades');
+        this.getLookups()
+      }
+    });
+
   }
 
-  onTargetChange(target: AssignmentInformation['target']) {
-    this.updateAssignmentInformation({ target });
+  getLookups() {
+    this.addingAssignmentService.getAssignmentGrades(this.headerService.selectedSubjectId).subscribe(res => {
+      if (res.success) {
+        this.grades = res.result;
+      }
+    })
   }
 
-  onGradeChange(grade: AssignmentInformation['grade']) {
-    this.updateAssignmentInformation({ grade });
+  toggleSelected(target: AssignmentRecipientTypes): void {
+    this.assignmentSetup.selectedGrades = [];
+    this.sections = [];
+    if (target.selected) return;
+
+    this.targets.forEach(t => t.selected = false);
+    this.selectedTarget = target;
+    target.selected = true;
   }
 
-  onSectionChange(section: AssignmentInformation['section']) {
-    this.updateAssignmentInformation({ section });
+  getSections = () => {
+    this.sections = [];
+    this.addingAssignmentService.getAssignmentSections(this.headerService.selectedSubjectId, this.assignmentSetup.selectedGrades).subscribe(res => {
+      if (res.success) {
+        this.sections = res.result;
+      }
+    })
   }
 
-  isTargetSelected(target: AssignmentTarget): boolean {
-    return this.assignmentInformation.target?.id === target.id;
+  getGroups = () => {
+    this.groups = [];
+    this.addingAssignmentService.getAssignmentGroups(this.headerService.selectedSubjectId, this.assignmentSetup.selectedGrades).subscribe(res => {
+      if (res.success) {
+        this.groups = res.result;
+      }
+    })
   }
+
+  getStudents = () => {
+    this.students = [];
+    this.addingAssignmentService.getAssignmentStudents(this.assignmentSetup.selectedSections).subscribe(res => {
+      if (res.success) {
+        this.students = res.result;
+      }
+    })
+  }
+
+  assignmentSetupUpdate = () =>{
+    this.assignmentSetup.selectedGradesNames = this.grades.filter(x => this.assignmentSetup.selectedGrades.includes(x.gradeId)).map(x => x.name);
+    localStorage.setItem('assignmentSetup', JSON.stringify(this.assignmentSetup));
+  }
+
 }

@@ -20,3 +20,18 @@ export enum ResourceTypeEnum {
     Curriculum = 5
   }
   
+  export enum TargetEnum{
+    Grades=1,
+    Sections = 2,
+    Groups = 3,
+    Students = 6
+  }
+
+  export enum AssygnmentAddTypesEnum{
+    Skills = 1,
+    ReadingComprehension = 2,
+    OralReading = 3,
+    Listening = 4,
+    Writing = 5,
+    Speaking = 6
+}
