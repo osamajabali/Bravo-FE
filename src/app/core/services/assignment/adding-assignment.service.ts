@@ -48,8 +48,8 @@ export class AddingAssignmentService {
     return this.apiHlpr.post<Result<SkillsDomainResponse>>(`${this.controller}/add-assignment-skills`, assignmentsDomainSkills);
   }
 
-  getAssignmentReadingSublevels = (assignmentsDomainSkills : AssignmentsDomainSkills): Observable<Result<SkillsDomainResponse>> => {
-    return this.apiHlpr.post<Result<SkillsDomainResponse>>(`${this.controller}/add-assignment-reading-sub-levels`, assignmentsDomainSkills);
+  getAssignmentReadingSublevels = (): Observable<Result<{ readingSubLevelId: number; name: string; }[]>> => {
+    return this.apiHlpr.post<Result<{ readingSubLevelId: number; name: string; }[]>>(`${this.controller}/add-assignment-reading-sub-levels`, null);
   }
 
 }

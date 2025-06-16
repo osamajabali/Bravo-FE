@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -8,6 +8,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DrawerModule } from 'primeng/drawer';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BookPreviewPopupComponent } from '../../book-preview-popup/book-preview-popup.component';
+import { AddingAssignmentService } from '../../../../core/services/assignment/adding-assignment.service';
 
 interface SelectionType {
   id: number;
@@ -47,11 +48,13 @@ interface Book {
   templateUrl: './assignment-book.component.html',
   styleUrl: './assignment-book.component.scss',
 })
-export class AssignmentBookComponent {
+export class AssignmentBookComponent implements OnInit {
+
+  addingAssignmentService = inject(AddingAssignmentService);
   selectedOption: string = 'isBookSelected';
   showBookDrawer = false;
   selectedBook: Book | null = null;
-  
+
   // Preview popup state
   showPreviewPopup: boolean = false;
   previewBookTitle: string = '';
@@ -122,15 +125,22 @@ export class AssignmentBookComponent {
     { mainLevelId: 3, name: 'Level 3' },
   ];
 
-  subLevels = [
-    { subLevelId: 1, name: 'Sub Level A' },
-    { subLevelId: 2, name: 'Sub Level B' },
-    { subLevelId: 3, name: 'Sub Level C' },
-  ];
-
   readingFilter = {
     searchValue: '',
   };
+  subLevels: { readingSubLevelId: number; name: string; }[] = [];
+
+  ngOnInit(): void {
+    this.getSublevelReading();
+  }
+
+  getSublevelReading() {
+    this.addingAssignmentService.getAssignmentReadingSublevels().subscribe(res => {
+      if (res.success) {
+        this.subLevels = res.result;
+      }
+    })
+  }
 
   onSelectBook() {
     this.showBookDrawer = true;

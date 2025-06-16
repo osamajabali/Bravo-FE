@@ -44,7 +44,7 @@
   <div class="form-group" *ngIf="selectedOption !== 'isStudentLevelSelected'">
     <div class="label">Select Level</div>
     <p-select
-      [options]="levels"
+      [options]="subLevels"
       [(ngModel)]="selectedLevel"
       optionLabel="name"
       placeholder="Select Level"
