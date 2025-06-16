@@ -4,7 +4,7 @@
     <div class="upper-section">
       <div class="left">
         <div class="icon">
-          <img src="icon-cards-square.svg" alt="" class="pointer" />
+          <a><img src="icon-cards-square.svg" alt="" class="pointer" /></a>
         </div>
         <div>
           <div class="assignment-title">Assignment title</div>
@@ -18,31 +18,35 @@
     <div class="separator"></div>
     <div class="lower-section">
       <div class="item">
-        <div class="header">Grade</div>
-        <div class="value">Grade 1</div>
+        <div class="header">Grades</div>
+        @for (item of assignmentSetup.selectedGradesNames; track $index) {
+        <div class="value">{{item}}</div>
+        }
       </div>
       <div class="item">
         <div class="header">Section</div>
-        <div class="value">All sections</div>
+        @for (item of assignmentSetup.selectedSections; track $index) {
+        <div class="value">{{item}}</div>
+        }
       </div>
       <div class="item">
         <div class="header">Questions</div>
-        <div class="value">20</div>
+        <div class="value">{{domainTotals}}</div>
       </div>
       <div class="item">
         <div class="header">Start Date</div>
-        <div class="value">20/08/2022</div>
+        <div class="value">{{assignmentSetup.startDate}}</div>
       </div>
       <div class="item">
         <div class="header">Due Date</div>
-        <div class="value">20/08/2022</div>
+        <div class="value">{{assignmentSetup.dueDate}}</div>
       </div>
     </div>
   </div>
   <div class="assignment-details">
     <div class="upper-section">
       <div class="left">
-        <div class="assignment-title">8 Skill Domains</div>
+        <div class="assignment-title">{{domains.length}} Skill Domains</div>
       </div>
       <div>
         <img src="icon-edit-square.svg" alt="edit" class="pointer" />
@@ -51,24 +55,16 @@
     <div class="separator"></div>
     <div class="lower-section">
       <div class="domain-list">
-        <p-panel
-          *ngFor="let domain of domains"
-          [toggleable]="true"
-          [collapsed]="domain.isCollapsed"
-        >
+        <p-panel *ngFor="let domain of domains" [toggleable]="true" [collapsed]="domain.isCollapsed">
           <ng-template pTemplate="header">
             <div class="panel-header">
               <span class="header-label">Domain details</span>
               <div class="header-actions">
                 <div class="total-questions">
-                  <span>Total questions: {{ getTotalQuestions(domain) }}</span>
+                  <span>Total questions: {{ domain.totalQuestions }}</span>
                 </div>
-                <img
-                  src="arrow-gray-down.svg"
-                  alt=""
-                  (click)="toggleCollapse(domain)"
-                  [class.rotated]="!domain.isCollapsed"
-                />
+                <img src="arrow-gray-down.svg" alt="" (click)="toggleCollapse(domain)"
+                  [class.rotated]="!domain.isCollapsed" />
               </div>
             </div>
           </ng-template>
@@ -81,27 +77,29 @@
                 <div class="header-cell">Medium</div>
                 <div class="header-cell">Advanced</div>
               </div>
-              <div class="grid-row" *ngFor="let skill of domain.skills">
+              @for (skill of domain.skills; track $index) {
+              <div class="grid-row">
                 <div class="grid-cell">{{ skill.name }}</div>
                 <div class="grid-cell">
                   <div class="input-container">
-                    <span class="value">{{ skill.beginner }}</span>
+                    <span class="value">{{ skill.beginnerValue }}</span>
                   </div>
                   <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
                 </div>
                 <div class="grid-cell">
                   <div class="input-container">
-                    <span class="value">{{ skill.medium }}</span>
+                    <span class="value">{{ skill.intermediateValue }}</span>
                   </div>
                   <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
                 </div>
                 <div class="grid-cell">
                   <div class="input-container">
-                    <span class="value">{{ skill.advanced }}</span>
+                    <span class="value">{{ skill.advanceValue }}</span>
                   </div>
                   <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
                 </div>
               </div>
+              }
             </div>
           </div>
         </p-panel>

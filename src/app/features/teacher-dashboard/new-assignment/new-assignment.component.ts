@@ -18,12 +18,8 @@ import { AssignmentBookReviewComponent } from '../../../shared/components/new-as
 import { OralAssignmentBookComponent } from '../../../shared/components/new-assignment/oral-assignment-book/oral-assignment-book.component';
 import { WritingSpeakingAssignmentComponent } from '../../../shared/components/new-assignment/writing-speaking-assignment/writing-speaking-assignment.component';
 import { ReviewWritingSpeakingComponent } from '../../../shared/components/new-assignment/review-writing-speaking/review-writing-speaking.component';
-
-interface AssignmentType {
-  name: string;
-  icon: string;
-  title: string;
-}
+import { AssignmentTypes } from '../../../core/models/assignment/assignment-types.model';
+import { AssygnmentAddTypesEnum } from '../../../core/models/shared-models/enums';
 
 export interface StepItem {
   id: string;
@@ -80,9 +76,10 @@ export interface Question {
 })
 export class NewAssignmentComponent implements OnInit {
   activeStep: number = 0;
-  selectedAssignmentType: AssignmentType | null = null;
+  selectedAssignmentType: AssignmentTypes| null = null;
   isReviewPage: boolean = false;
   showSuccessDialog: boolean = false;
+  assygnmentAddTypesEnum = AssygnmentAddTypesEnum;
   assignmentInformation: AssignmentInformation = {
     target: null,
     grade: null,

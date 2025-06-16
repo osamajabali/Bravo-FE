@@ -11,34 +11,36 @@ import { AssignmentDetails, StudentAssignmentDetailsResponse, StudentsAssignment
 })
 export class AssignmentsService {
 
+  controller : string = 'assignment';
+
   constructor(private apiHlpr: HttpService) { }
 
 
   getAssignmentFilters = (): Observable<Result<AssignmentFilter>> => {
-    return this.apiHlpr.post<Result<AssignmentFilter>>(`assignment/assignment-filters` , null);
+    return this.apiHlpr.post<Result<AssignmentFilter>>(`${this.controller}/assignment-filters` , null);
   }
 
   getAssignmentTypes = (subjectId : number): Observable<Result<{assignmentTypeId : number , name : string}[]>> => {
-    return this.apiHlpr.post<Result<{assignmentTypeId : number , name : string}[]>>(`assignment/assignment-types` , {subjectId : subjectId});
+    return this.apiHlpr.post<Result<{assignmentTypeId : number , name : string}[]>>(`${this.controller}/assignment-types` , {subjectId : subjectId});
   }
 
   getAssignmentSectionFilters = (subjectGrade : SubjectGrade): Observable<Result<SectionFilter>> => {
-    return this.apiHlpr.post<Result<SectionFilter>>(`assignment/assignment-section-filters` , subjectGrade);
+    return this.apiHlpr.post<Result<SectionFilter>>(`${this.controller}/assignment-section-filters` , subjectGrade);
   }
 
   getAssignments = (assignmentsPayload : AssignmentsPayload): Observable<Result<AssignmentResponse>> => {
-    return this.apiHlpr.post<Result<AssignmentResponse>>(`assignment/assignments` , assignmentsPayload);
+    return this.apiHlpr.post<Result<AssignmentResponse>>(`${this.controller}/assignments` , assignmentsPayload);
   }
 
   getAssignmentDetails = (assignmentId : number): Observable<Result<SubmissionStatus[]>> => {
-    return this.apiHlpr.post<Result<SubmissionStatus[]>>(`assignment/assignment-detials-students-submission` , {assignmentId : assignmentId});
+    return this.apiHlpr.post<Result<SubmissionStatus[]>>(`${this.controller}/assignment-detials-students-submission` , {assignmentId : assignmentId});
   }
 
   getAssignmentMainDetails = (assignmentId : number): Observable<Result<AssignmentDetails>> => {
-    return this.apiHlpr.post<Result<AssignmentDetails>>(`assignment/assignment-main-details` , {assignmentId : assignmentId});
+    return this.apiHlpr.post<Result<AssignmentDetails>>(`${this.controller}/assignment-main-details` , {assignmentId : assignmentId});
   }
 
   getStudentAssignmentDetails = (studentsAssignmentDetails : StudentsAssignmentDetails): Observable<Result<StudentAssignmentDetailsResponse>> => {
-    return this.apiHlpr.post<Result<StudentAssignmentDetailsResponse>>(`assignment/assignment-details-students` , studentsAssignmentDetails);
+    return this.apiHlpr.post<Result<StudentAssignmentDetailsResponse>>(`${this.controller}/assignment-details-students` , studentsAssignmentDetails);
   }
 }

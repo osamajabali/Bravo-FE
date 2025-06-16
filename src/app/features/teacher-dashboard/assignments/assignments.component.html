@@ -35,8 +35,10 @@
       </div>
     </div>
 
-    <div class="content px-0" *ngIf="showAdvancedSearch">
-      <div class="advanced-search" *ngIf="selectedTab === 'live'">
+    @if (showAdvancedSearch) {
+      <div class="content px-0">
+      @if (selectedTab === 'live') {
+        <div class="advanced-search">
         <div class="advanced-filters">
           <p-select [options]="sectionFilter.subjects" [(ngModel)]="assignmentPayload.subjectId" placeholder="Subjects"
             [showClear]="false" optionLabel="name" optionValue="subjectId"></p-select>
@@ -88,7 +90,9 @@
           ></button>
         </div>
       </div>
+      }
     </div>
+    }
 
     <div class="tabs">
       <div class="tab" [class.selected]="selectedTab === 'live'" (click)="onTabClick('live')">
@@ -128,7 +132,7 @@
         />
       </div>
       <div class="header-item avg-score">
-        <span>AVG. Score</span>
+        <span>AVG.Score</span>
         <img src="icon-sort.svg" alt="sort" (click)="onSort('avgScore')" [src]="
             sortColumn === 'avgScore'
               ? sortDirection === 'asc'

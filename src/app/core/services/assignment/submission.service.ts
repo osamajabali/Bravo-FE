@@ -9,14 +9,16 @@ import { StudentSubmission, SubmissionQuestion } from '../../models/assignment/s
 })
 export class SubmissionService {
 
+  controller: string = 'assignment';
+
   constructor(private apiHlpr: HttpService) { }
 
 
-  getStudentSubmission = (submissionId : number , studentId : number): Observable<Result<StudentSubmission>> => {
-    return this.apiHlpr.post<Result<StudentSubmission>>(`assignment/student-submission` , {assignmentId : submissionId , studentId : studentId});
+  getStudentSubmission = (submissionId: number, studentId: number): Observable<Result<StudentSubmission>> => {
+    return this.apiHlpr.post<Result<StudentSubmission>>(`${this.controller}/student-submission`, { assignmentId: submissionId, studentId: studentId });
   }
 
-  getSkillQuestions = (submissionId : number , studentId : number , skillId : number): Observable<Result<SubmissionQuestion[]>> => {
-    return this.apiHlpr.post<Result<SubmissionQuestion[]>>(`assignment/skill-questions` , {assignmentId : submissionId , studentId : studentId , skillId : skillId});
+  getSkillQuestions = (submissionId: number, studentId: number, skillId: number): Observable<Result<SubmissionQuestion[]>> => {
+    return this.apiHlpr.post<Result<SubmissionQuestion[]>>(`${this.controller}/skill-questions`, { assignmentId: submissionId, studentId: studentId, skillId: skillId });
   }
 }

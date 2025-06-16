@@ -1,11 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-interface AssignmentType {
-  name: string;
-  icon: string;
-  title: string;
-}
+import { AddingAssignmentService } from '../../../../core/services/assignment/adding-assignment.service';
+import { AssignmentTypes } from '../../../../core/models/assignment/assignment-types.model';
+import { Subscription } from 'rxjs';
+import { SharedService } from '../../../../core/services/shared-services/shared.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-assignment-type-selector',
@@ -14,45 +13,39 @@ interface AssignmentType {
   templateUrl: './assignment-type-selector.component.html',
   styleUrl: './assignment-type-selector.component.scss'
 })
-export class AssignmentTypeSelectorComponent {
-  @Input() selectedAssignmentType: AssignmentType | null = null;
-  @Output() selectedAssignmentTypeChange = new EventEmitter<AssignmentType>();
+export class AssignmentTypeSelectorComponent implements OnInit, OnDestroy {
 
-  assignmentTypes: AssignmentType[] = [
-    {
-      name: 'skills',
-      icon: 'icon-skills-large',
-      title: 'Skills',
-    },
-    {
-      name: 'reading-comprehension',
-      icon: 'icon-reading-comprehension',
-      title: 'Reading Comprehension',
-    },
-    {
-      name: 'oral-reading',
-      icon: 'icon-oral-reading',
-      title: 'Oral Reading',
-    },
-    {
-      name: 'listening-comprehension',
-      icon: 'icon-listening-comprehension',
-      title: 'Listening Comprehension',
-    },
-    {
-      name: 'writing',
-      icon: 'icon-writing',
-      title: 'Writing',
-    },
-    {
-      name: 'speaking',
-      icon: 'icon-speaking',
-      title: 'Speaking',
-    },
-  ];
+  @Input() selectedAssignmentType: AssignmentTypes | null = null;
+  @Input() callApi: boolean = false;
+  @Output() selectedAssignmentTypeChange = new EventEmitter<AssignmentTypes>();
+  @Output() callApiChange = new EventEmitter<boolean>();
+  addingAssignmentsService = inject(AddingAssignmentService);
+  sharedService = inject(SharedService);
+  route = inject(ActivatedRoute);
+  private refreshSubscription!: Subscription;
 
-  selectAssignmentType(assignmentType: AssignmentType) {
+  assignmentTypes: AssignmentTypes[] = [];
+
+  ngOnInit(): void {
+    this.getAssignmentsTypes();
+  }
+
+  getAssignmentsTypes() {
+    this.addingAssignmentsService.getAssignmenttypes().subscribe(res => {
+      if (res.success) {
+        this.assignmentTypes = res.result;
+      }
+    });
+  }
+
+  selectAssignmentType(assignmentType: AssignmentTypes) {
     this.selectedAssignmentType = assignmentType;
     this.selectedAssignmentTypeChange.emit(assignmentType);
   }
-} 
+
+  ngOnDestroy(): void {
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
+  }
+}

@@ -59,9 +59,9 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
 
   router = inject(Router);
   datePipe = inject(DatePipe);
-  selectedTab: string = 'active';
+  selectedTab: string = 'live';
   searchTerm = '';
-  showAdvancedSearch = false;
+  showAdvancedSearch : boolean= false;
   sortColumn: string = '';
   sortDirection: 'asc' | 'desc' | '' = '';
 
@@ -69,27 +69,7 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
 
   // Mock data for assignments
 
-  filterSections: FilterSection[] = [
-    {
-      title: 'Level',
-      expanded: true,
-      options: [
-        { label: 'Beginner', value: 'Beginner' },
-        { label: 'Average', value: 'Average' },
-        { label: 'Advanced', value: 'Advanced' },
-      ],
-      selectedOptions: [],
-    },
-    {
-      title: 'Status',
-      expanded: true,
-      options: [
-        { label: 'Active', value: 'active' },
-        { label: 'Inactive', value: 'inactive' },
-      ],
-      selectedOptions: [],
-    },
-  ];
+  filterSections: FilterSection[] = [];
 
   selectedAssignment: Assignment | null = null;
   assignmentFilter: AssignmentFilter = new AssignmentFilter();
@@ -185,6 +165,9 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
 
   onAdvancedSearch() {
     this.showAdvancedSearch = !this.showAdvancedSearch;
+    if(this.showAdvancedSearch){
+      this.getAssignmentsFilter();
+    }
   }
 
   onResetAdvancedSearch() {
