@@ -43,7 +43,9 @@
       </div>
       <div class="book-details">
         <div class="title">{{ selectedBook.title }}</div>
-        <p class="sub-level">Sub Level: <b>{{ selectedBook.levelName }}</b></p>
+        <p class="sub-level">
+          Sub Level: <b>{{ selectedBook.levelName }}</b>
+        </p>
         <p class="author">
           Author Name: <b>{{ selectedBook.authorName }}</b>
         </p>
@@ -52,7 +54,12 @@
         </p>
       </div>
       <div class="book-actions">
-        <button pButton label="" class="p-button-outlined" (click)="selectedBook = null">
+        <button
+          pButton
+          label=""
+          class="p-button-outlined"
+          (click)="selectedBook = null"
+        >
           <img src="icon-trash-empty.svg" alt="view" />
         </button>
         <button pButton label="" class="p-button-outlined">
@@ -129,7 +136,13 @@
           </div>
         </div>
         <div class="book-actions">
-          <button pButton label="" class="p-button-outlined">
+          <button
+            pButton
+            label=""
+            class="p-button-outlined"
+            (click)="onViewBook(book)"
+            [class]="{ invisible: book.wordsCount < 200 }"
+          >
             <span>View Book</span>
             <img src="icon-view-book-sml.svg" alt="view" />
           </button>
@@ -145,3 +158,11 @@
     </div>
   </div>
 </p-drawer>
+
+<!-- Book Preview Popup -->
+<app-book-preview-popup
+  [(visible)]="showPreviewPopup"
+  [skillName]="previewBookTitle"
+  [difficultyLevel]="'Book Preview'"
+  (questionsSelected)="onQuestionsSelected($event)"
+></app-book-preview-popup>

@@ -158,7 +158,13 @@
           </div>
         </div>
         <div class="book-actions">
-          <button pButton label="" class="p-button-outlined">
+          <button
+            pButton
+            label=""
+            class="p-button-outlined"
+            (click)="onViewBook(book)"
+            [class]="{ invisible: book.wordsCount < 200 }"
+          >
             <span>View Book</span>
             <img src="icon-view-book-sml.svg" alt="view" />
           </button>
@@ -174,3 +180,11 @@
     </div>
   </div>
 </p-drawer>
+
+<!-- Book Preview Popup -->
+<app-book-preview-popup
+  [(visible)]="showPreviewPopup"
+  [skillName]="previewBookTitle"
+  [difficultyLevel]="'Book Preview'"
+  (questionsSelected)="onQuestionsSelected($event)"
+></app-book-preview-popup>
