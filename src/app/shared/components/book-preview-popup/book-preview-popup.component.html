@@ -12,18 +12,6 @@
 >
   <ng-template pTemplate="header">
     <div class="dialog-header">
-      <div class="filter-options">
-        <div
-          *ngFor="let option of filterOptions"
-          (click)="selectFilter(option)"
-          class="filter-box-container"
-        >
-          <div class="filter-box" [class.selected]="selectedFilter === option">
-            <span>{{ option }}</span>
-            <div class="count-badge">20</div>
-          </div>
-        </div>
-      </div>
       <div class="filter-options-container">
         <div class="filter-options">
           <div class="filter-box-container">
@@ -103,10 +91,6 @@
 
   <ng-template pTemplate="footer">
     <div class="dialog-footer">
-      <div class="selected-count">
-        <div class="count-label">Total Selected Questions</div>
-        <div class="count-value">{{ totalSelectedQuestions }}</div>
-      </div>
       <div class="footer-buttons">
         <button
           pButton

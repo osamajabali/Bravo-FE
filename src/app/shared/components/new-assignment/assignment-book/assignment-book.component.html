@@ -102,7 +102,12 @@
         >
           <img src="icon-trash-empty.svg" alt="view" />
         </button>
-        <button pButton label="" class="p-button-outlined" (click)="onViewBook(selectedBook)">
+        <button
+          pButton
+          label=""
+          class="p-button-outlined"
+          (click)="onViewBook(selectedBook)"
+        >
           <img src="icon-eye.svg" alt="view" />
         </button>
       </div>
@@ -176,7 +181,13 @@
           </div>
         </div>
         <div class="book-actions">
-          <button pButton label="" class="p-button-outlined" (click)="onViewBook(book)">
+          <button
+            pButton
+            label=""
+            class="p-button-outlined"
+            (click)="onViewBook(book)"
+            [class]="{ invisible: book.wordsCount < 200 }"
+          >
             <span>View Book</span>
             <img src="icon-view-book-sml.svg" alt="view" />
           </button>
