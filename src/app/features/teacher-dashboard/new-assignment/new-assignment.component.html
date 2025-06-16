@@ -4,11 +4,11 @@
   }
 
   @if (activeStep === 0) {
-  <app-assignment-type-selector [(selectedAssignmentType)]="selectedAssignmentType" />
+  <app-assignment-type-selector [(selectedAssignmentType)]="selectedAssignmentType" (selectedAssignmentTypeChange)="isSetupValid = false" />
   }
 
   @if (activeStep === 1) {
-  <app-assignment-setup />
+  <app-assignment-setup (isSetupValid)="checkValidity($event)" />
   }
 
   @if (activeStep === 2 && selectedAssignmentType.assignmentTypeId == assygnmentAddTypesEnum.Skills) {
@@ -34,7 +34,7 @@
   }
 
   @if(selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.Skills && isReviewPage) {
-  <app-skills-review />
+  <app-skills-review (activeStep)="changeActiveStep($event)" />
   }
 
   @if((selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.ReadingComprehension ||
@@ -58,7 +58,7 @@
     <button pButton type="button" label="Preview Assignment" class="p-button-outlined"
       *ngIf="activeStep !== 0 && isReviewPage" (click)="previewAssignment()"></button>
     <button pButton type="button" label="Next" class="p-button-primary" (click)="next()"
-      [disabled]="activeStep === 0 && !selectedAssignmentType" *ngIf="!isReviewPage"></button>
+      [disabled]="isSetupValid" *ngIf="!isReviewPage"></button>
     <button *ngIf="isReviewPage" pButton type="button" label="Submit" class="p-button-primary" (click)="submit()"
       [disabled]="activeStep === 0 && !selectedAssignmentType"></button>
   </div>

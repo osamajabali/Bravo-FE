@@ -8,7 +8,7 @@ export class AssignmentsDomain {
   selectedStudents: number[];
 }
 
-export class AssignmentsDomainSkills extends PaginationFilter {
+export class AssignmentsDomainSkills {
   subjectId: number;
   domainId: number;
   selectedGrades: number[];

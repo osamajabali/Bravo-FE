@@ -42,11 +42,12 @@
       <div class="panel-content">
         <div class="domain-selection">
           <div class="control-title">Pick a skill domain</div>
-          <p-dropdown [options]="domain.skillDomains" name="selectedSkillId" [(ngModel)]="selectedSkillId"
+          <p-dropdown [options]="domain.skillDomains" name="selectedSkillId" [(ngModel)]="domain.id"
             optionLabel="name" optionValue="domainId" placeholder="Pick a skill domain"
             (ngModelChange)="onDomainSelect($event , domain)" [style]="{ width: '100%' }"></p-dropdown>
         </div>
 
+        @if (domain.skills.length) {
         <div class="search-container">
           <span class="p-input-icon-left">
             <img src="icon-search.svg" alt="search" />
@@ -54,8 +55,9 @@
               (ngModelChange)="onDomainSelect(selectedSkillId , domain)" class="search-input" />
           </span>
         </div>
+      }
 
-        @if (skills.learningOutcomes) {
+        @if (domain.skills.length) {
         <div class="skills-grid">
           <div class="grid-header">
             <div class="header-cell">Skill</div>
@@ -63,13 +65,13 @@
             <div class="header-cell">Medium</div>
             <div class="header-cell">Advanced</div>
           </div>
-          @for (skill of skills.learningOutcomes; track $index) {
+          @for (skill of domain.skills; track $index) {
           <div class="grid-row">
             <div class="grid-cell">{{ skill.name }}</div>
             <div class="grid-cell">
               <div class="input-container">
                 <p-inputNumber [showButtons]="false" [name]="'beginnerValue' + $index" [(ngModel)]="skill.beginnerValue"
-                  (ngModelChange)="updateValues()" [min]="0" [max]="skill.beginnerQuestionsCount"
+                  (ngModelChange)="updateValues(skill, 'beginner' , domain)" [min]="0" [max]="skill.beginnerQuestionsCount"
                   [style]="{ width: '100%' }"></p-inputNumber>
                 <div class="out-of">{{skill.beginnerQuestionsCount}}</div>
               </div>
@@ -79,17 +81,17 @@
             <div class="grid-cell">
               <div class="input-container">
                 <p-inputNumber [showButtons]="false" [name]="'intermediateValue' + $index"
-                  [(ngModel)]="skill.intermediateValue" (ngModelChange)="updateValues()" [min]="0"
+                  [(ngModel)]="skill.intermediateValue" (ngModelChange)="updateValues(skill, 'intermediate' , domain)" [min]="0"
                   [max]="skill.intermediateQuestionsCount" [style]="{ width: '100%' }"></p-inputNumber>
                 <div class="out-of">{{skill.intermediateQuestionsCount}}</div>
               </div>
               <img src="icon-eye-blue-box.svg" class="pointer" alt=""
-                (click)="openQuestionPreview(skill.name, 'medium')" />
+                (click)="openQuestionPreview(skill.name, 'intermediate')" />
             </div>
             <div class="grid-cell">
               <div class="input-container">
                 <p-inputNumber [showButtons]="false" [name]="'advanceValue' + $index" [(ngModel)]="skill.advanceValue"
-                  (ngModelChange)="updateValues()" [min]="0" [max]="skill.advanceQuestionsCount"
+                  (ngModelChange)="updateValues(skill, 'advanced' , domain)" [min]="0" [max]="skill.advanceQuestionsCount"
                   [style]="{ width: '100%' }"></p-inputNumber>
                 <div class="out-of">{{skill.advanceQuestionsCount}}</div>
               </div>
@@ -98,8 +100,7 @@
             </div>
           </div>
           }
-          <app-pagination [rows]="skills.pageSize" [totalRecords]="skills.totalRecords" [first]="first"
-            itemLabel="Assignments" (pageChange)="nextPage($event)"></app-pagination>
+
         </div>
         }
       </div>

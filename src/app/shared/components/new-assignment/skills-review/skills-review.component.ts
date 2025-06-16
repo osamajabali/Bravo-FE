@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PanelModule } from 'primeng/panel';
 import { Domain } from '../assignment-domains-and-skills/assignment-domains-and-skills.component';
@@ -21,9 +21,9 @@ interface Skill {
   styleUrl: './skills-review.component.scss',
 })
 export class SkillsReviewComponent implements OnInit {
-
+  @Output() activeStep = new EventEmitter<number>();
   domains: Domain[] = [];
-  domainTotals : number = 0;
+  domainTotals: number = 0;
   domainNames = {
     'math': 'Mathematics',
     'science': 'Science',
@@ -42,10 +42,15 @@ export class SkillsReviewComponent implements OnInit {
     this.assignmentSetup = JSON.parse(assignmentSetup);
     this.getDomainsTotal()
   }
+
   getDomainsTotal() {
-    this.domains.forEach(domain =>{
-      this.domainTotals+=domain.totalQuestions;
+    this.domains.forEach(domain => {
+      this.domainTotals += domain.totalQuestions;
     })
+  }
+
+  checkStep = (step : number) =>{
+    this.activeStep.emit(step);
   }
 
   toggleCollapse(domain: Domain) {
@@ -58,7 +63,7 @@ export class SkillsReviewComponent implements OnInit {
       this.totalIntermediateValue += skill.intermediateValue;
       this.totalAdvanceValue += skill.advanceValue;
     });
-    
-    return this.totalBeginnerValue 
+
+    return this.totalBeginnerValue
   }
 }

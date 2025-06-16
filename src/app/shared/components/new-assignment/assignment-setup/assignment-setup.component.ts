@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
@@ -33,6 +33,8 @@ import { AssignmentSetup } from '../../../../core/models/assignment/assignment-s
 })
 export class AssignmentSetupComponent implements OnInit {
 
+  @Output() isSetupValid  = new EventEmitter<boolean>();
+
   addingAssignmentService = inject(AddingAssignmentService);
   headerService = inject(HeaderService);
   targets: AssignmentRecipientTypes[] = [];
@@ -42,21 +44,24 @@ export class AssignmentSetupComponent implements OnInit {
   groups: { groupId: number; name: string; }[] = [];
   students: { studentId: number; fullName: string; }[] = [];
   targetEnum = TargetEnum;
-  assignmentSetup : AssignmentSetup = new AssignmentSetup()
+  assignmentSetup : AssignmentSetup = new AssignmentSetup();
   selectedGrades : { gradeId: number; name: string; }[] = [];
 
   ngOnInit(): void {
     this.getTargets();
   }
-
-
+  
+  
   getTargets() {
+    this.isSetupValid.emit(true)
     this.addingAssignmentService.getAssignmentRecipientTypes().subscribe(res => {
       if (res.success) {
         this.targets = res.result;
-        this.targets.find(x => x.name == 'Grades').selected = true;
         this.selectedTarget = this.targets.find(x => x.name == 'Grades');
-        this.getLookups()
+        this.assignmentSetup.target = this.selectedTarget;
+        if(this.targets.length){
+          this.getLookups()
+        }
       }
     });
 
@@ -66,17 +71,35 @@ export class AssignmentSetupComponent implements OnInit {
     this.addingAssignmentService.getAssignmentGrades(this.headerService.selectedSubjectId).subscribe(res => {
       if (res.success) {
         this.grades = res.result;
+        this.targets.find(x => x.name == 'Grades').selected = true;
+        if(localStorage.getItem('assignmentSetup') && this.grades.length){
+          let retrievedData : AssignmentSetup = JSON.parse(localStorage.getItem('assignmentSetup'))
+          this.selectedTarget = retrievedData.target;
+          
+          this.targets.find(x => x.assignmentRecipientTypeId == this.selectedTarget.assignmentRecipientTypeId).selected = true;
+          this.toggleSelected(this.selectedTarget);
+          retrievedData.startDate = new Date(retrievedData.startDate);
+          retrievedData.dueDate = new Date(retrievedData.dueDate);
+          this.assignmentSetup = retrievedData;
+          this.isSetupValid.emit(false);
+        }
       }
     })
   }
 
   toggleSelected(target: AssignmentRecipientTypes): void {
     this.assignmentSetup.selectedGrades = [];
+    this.assignmentSetup.selectedGroups = [];
+    this.assignmentSetup.selectedSections = [];
+    this.assignmentSetup.selectedStudents = [];
+    this.assignmentSetup.selectedGradesNames = [];
+    this.isSetupValid.emit(true)
     this.sections = [];
     if (target.selected) return;
 
     this.targets.forEach(t => t.selected = false);
     this.selectedTarget = target;
+    this.assignmentSetup.target = this.selectedTarget;
     target.selected = true;
   }
 
@@ -107,9 +130,17 @@ export class AssignmentSetupComponent implements OnInit {
     })
   }
 
-  assignmentSetupUpdate = () =>{
-    this.assignmentSetup.selectedGradesNames = this.grades.filter(x => this.assignmentSetup.selectedGrades.includes(x.gradeId)).map(x => x.name);
+  assignmentSetupUpdate = (setupForm : NgForm) =>{
+    if(this.assignmentSetup.selectedGrades.length > 0){
+      this.assignmentSetup.selectedGradesNames = this.grades.filter(x => this.assignmentSetup.selectedGrades.includes(x.gradeId)).map(x => x.name);
+    }
     localStorage.setItem('assignmentSetup', JSON.stringify(this.assignmentSetup));
+    
+    if(setupForm.invalid){
+      this.isSetupValid.emit(true)
+    }else{
+      this.isSetupValid.emit(false)
+    }
   }
 
 }

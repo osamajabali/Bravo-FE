@@ -33,6 +33,7 @@ export interface Domain {
   skillDomains: { domainId: number; name: string; }[],
   isCollapsed: boolean;
   totalQuestions: number;
+  updatedSkills: SkillsDomain[];
 }
 
 @Component({
@@ -47,8 +48,7 @@ export interface Domain {
     ButtonModule,
     InputNumberModule,
     PanelModule,
-    QuestionPreviewPopupComponent,
-    PaginationComponent
+    QuestionPreviewPopupComponent
   ],
   templateUrl: './assignment-domains-and-skills.component.html',
   styleUrl: './assignment-domains-and-skills.component.scss',
@@ -64,7 +64,8 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
     skills: [],
     isCollapsed: false,
     skillDomains: [],
-    totalQuestions: 0
+    totalQuestions: 0,
+    updatedSkills: []
   }];
 
 
@@ -81,6 +82,7 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
   first: number = 0;
   assignmentsDomainSkills: AssignmentsDomainSkills = new AssignmentsDomainSkills();
   totalQuestions: number = 0;
+  updatedSkills: SkillsDomain[] = [];
 
   ngOnInit(): void {
     this.getDomains();
@@ -109,7 +111,12 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
     this.addingAssignmentService.getAssignmentDomains(this.assignmentDomain).subscribe(res => {
       if (res.success) {
         this.skillDomains = res.result
-        this.domains[0].skillDomains = this.skillDomains;
+        if (localStorage.getItem('AssignmentDomainsAndSkills')) {
+          let retrievedData: Domain[] = JSON.parse(localStorage.getItem('AssignmentDomainsAndSkills'));
+          this.domains = retrievedData;
+        } else {
+          this.domains[0].skillDomains = this.skillDomains;
+        }
       }
     })
   }
@@ -130,11 +137,11 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
       skills: [],
       isCollapsed: false,
       skillDomains: newSkillDomains,
-      totalQuestions: 0
+      totalQuestions: 0,
+      updatedSkills: []
     });
 
-    this.updateValues();
-    this.getDomainsTotal
+    this.getDomainsTotal();
   }
 
 
@@ -153,33 +160,51 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
 
     this.assignmentsDomainSkills = {
       domainId: domainId,
-      pageNumber: this.sharedService.pagination.pageNumber,
-      pageSize: this.sharedService.pagination.pageSize,
-      searchValue: this.searchValue,
       selectedGrades: this.assignmentData.selectedGrades,
       selectedGroups: this.assignmentData.selectedGroups,
       selectedSections: this.assignmentData.selectedSections,
       selectedStudents: this.assignmentData.selectedStudents,
       subjectId: this.headerService.selectedSubjectId,
-      sortColumn: this.sharedService.pagination.sortColumn,
-      sortColumnDirection: this.sharedService.pagination.sortColumnDirection,
-      totalPages: this.sharedService.pagination.totalPages,
-      totalRecords: this.sharedService.pagination.totalRecords
     }
 
     this.addingAssignmentService.getAssignmentDomainsSkills(this.assignmentsDomainSkills).subscribe(res => {
       if (res.success) {
         this.skills = res.result;
         this.domains.find(x => x.id == domain.id).skills = this.skills.learningOutcomes;
-        this.updateValues();
       }
     })
   }
 
-  updateValues = () => {
-    this.domains[this.domains.length - 1].totalQuestions = this.calculateTotalSummation();
+  updateValues = (skill: SkillsDomain, skillLevel: string, domain: Domain) => {
+    if (!domain) return;
+
+    this.domains.find(x => x.id == domain.id).totalQuestions = this.calculateTotalSummation();
+
+    // Create a temporary object to store skill data
+    const updatedSkill = { ...skill };
+
+    // Dynamically set the value for beginner, intermediate, or advanced based on the skill level.
+    updatedSkill[`${skillLevel}Value`] = skill[`${skillLevel}Value`];
+
+    // Check if the skill already exists in the updatedSkills array.
+    const skillExists = this.updatedSkills.some(
+      (existingSkill) => existingSkill.name === updatedSkill.name
+    );
+
+    // If the skill doesn't exist, add it to the array.
+    if (!skillExists) {
+      this.updatedSkills.push(updatedSkill);
+    } else {
+      // If the skill exists, update the corresponding skill in the array.
+      const index = this.updatedSkills.findIndex((existingSkill) => existingSkill.name === updatedSkill.name);
+      this.updatedSkills[index] = updatedSkill;
+    }
+
+    console.log('Updated Skills:', this.updatedSkills);
+    this.domains.find(x => x.id == domain.id).updatedSkills = this.updatedSkills;
     localStorage.setItem('AssignmentDomainsAndSkills', JSON.stringify(this.domains))
   }
+
 
   calculateTotalSummation = (): number => {
     let totalSummation = 0;
@@ -199,28 +224,12 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
     console.log('Total Summation:', totalSummation);
 
     return totalSummation;
-    
+
   }
 
-    getDomainsTotal() {
-    this.domains.forEach(domain =>{
-      this.totalQuestions+=domain.totalQuestions;
-    })
-  }
-
-  nextPage($event: PaginatorState) {
-    this.sharedService.savePageState('studentsSubmissions', $event.page);
-    this.first = $event.first;
-    this.assignmentsDomainSkills.pageNumber = $event.page;
-    this.getPaginatedSkills();
-  }
-
-  getPaginatedSkills() {
-    this.addingAssignmentService.getAssignmentDomainsSkills(this.assignmentsDomainSkills).subscribe(res => {
-      if (res.success) {
-        this.skills = res.result;
-        this.updateValues();
-      }
+  getDomainsTotal() {
+    this.domains.forEach(domain => {
+      this.totalQuestions += domain.totalQuestions;
     })
   }
 

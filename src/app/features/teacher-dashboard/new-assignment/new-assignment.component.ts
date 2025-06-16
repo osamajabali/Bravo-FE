@@ -75,8 +75,10 @@ export interface Question {
   styleUrl: './new-assignment.component.scss',
 })
 export class NewAssignmentComponent implements OnInit {
+
+  isSetupValid: boolean = false;
   activeStep: number = 0;
-  selectedAssignmentType: AssignmentTypes| null = null;
+  selectedAssignmentType: AssignmentTypes | null = null;
   isReviewPage: boolean = false;
   showSuccessDialog: boolean = false;
   assygnmentAddTypesEnum = AssygnmentAddTypesEnum;
@@ -100,6 +102,12 @@ export class NewAssignmentComponent implements OnInit {
       isCollapsed: false
     }
   ];
+
+  changeActiveStep(step: number) {
+    
+    this.activeStep = step;
+    this.isReviewPage = false;
+  }
 
   sharedService = inject(SharedService);
   private router = inject(Router);
@@ -129,7 +137,11 @@ export class NewAssignmentComponent implements OnInit {
     this.writingSpeakingQuestions = questions;
   }
 
-  previewAssignment() {}
+  checkValidity($event: boolean) {
+    this.isSetupValid = $event;
+  }
+
+  previewAssignment() { }
 
   next() {
     if (this.activeStep === Number(this.items[this.items.length - 1].id)) {
