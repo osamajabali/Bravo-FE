@@ -8,7 +8,7 @@
         </div>
         <div>
           <div class="assignment-title">Assignment title</div>
-          <div class="assignment-sub-title">Skills</div>
+          <div class="assignment-sub-title">{{assignmentSetup.title}}</div>
         </div>
       </div>
       <div>
@@ -85,19 +85,19 @@
                 <div class="grid-cell">{{ skill.name }}</div>
                 <div class="grid-cell">
                   <div class="input-container">
-                    <span class="value">{{ skill.beginnerValue }}</span>
+                    <span class="value">{{ skill.beginnerValue == null ? 0 :skill.beginnerValue  }}</span>
                   </div>
                   <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
                 </div>
                 <div class="grid-cell">
                   <div class="input-container">
-                    <span class="value">{{ skill.intermediateValue }}</span>
+                    <span class="value">{{ skill.intermediateValue == null ? 0 : skill.intermediateValue }}</span>
                   </div>
                   <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
                 </div>
                 <div class="grid-cell">
                   <div class="input-container">
-                    <span class="value">{{ skill.advanceValue }}</span>
+                    <span class="value">{{ skill.advanceValue == null ? 0 : skill.advanceValue }}</span>
                   </div>
                   <img src="icon-eye-blue-box.svg" class="pointer" alt="" />
                 </div>

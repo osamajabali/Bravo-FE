@@ -2,6 +2,7 @@ import { PaginationFilter } from "../shared-models/pagination.model";
 
 export class AssignmentStories extends PaginationFilter {
   readingSubLevelId: number; 
+  assignmentTypeId : number;
 }
 
 export class Story {
@@ -12,6 +13,7 @@ export class Story {
     storyId: number;
     title: string;
     wordsCount: number;
+    mainLevelName : string;
 }
 
 export class StoryPaginationResponse extends PaginationFilter {

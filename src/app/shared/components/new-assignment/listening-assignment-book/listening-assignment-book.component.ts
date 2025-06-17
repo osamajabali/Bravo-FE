@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -7,27 +7,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { DrawerModule } from 'primeng/drawer';
 import { BookPreviewPopupComponent } from '../../book-preview-popup/book-preview-popup.component';
-
-interface SelectionType {
-  id: number;
-  name: string;
-}
-
-interface LevelType {
-  id: number;
-  name: string;
-}
-
-interface Book {
-  id: number;
-  title: string;
-  coverUrl: string;
-  levelName: string;
-  authorName: string;
-  studentLevel: string;
-  pages: number;
-  wordsCount: number;
-}
+import { PaginatorState } from 'primeng/paginator';
+import { AssignmentStories, Story, StoryPaginationResponse } from '../../../../core/models/assignment/assignment-stories.model';
+import { AssignmentTypes } from '../../../../core/models/assignment/assignment-types.model';
+import { AddingAssignmentService } from '../../../../core/services/assignment/adding-assignment.service';
+import { PaginationComponent } from "../../pagination/pagination.component";
 
 @Component({
   selector: 'app-listening-assignment-book',
@@ -41,130 +25,100 @@ interface Book {
     DropdownModule,
     DrawerModule,
     BookPreviewPopupComponent,
-  ],
+    PaginationComponent
+],
   templateUrl: './listening-assignment-book.component.html',
   styleUrl: './listening-assignment-book.component.scss',
 })
 export class ListeningAssignmentBookComponent {
-  selectedOption: string = 'isBookSelected';
-  showBookDrawer = false;
-  selectedBook: Book | null = null;
-
-  // Preview popup state
-  showPreviewPopup: boolean = false;
-  previewBookTitle: string = '';
-
-  selectionTypes: SelectionType[] = [
-    { id: 1, name: 'Teacher Selection' },
-    { id: 2, name: 'Student Selection' },
-    { id: 3, name: 'Random Selection' },
-  ];
-
-  levels: LevelType[] = [
-    { id: 1, name: 'Level 1' },
-    { id: 2, name: 'Level 2' },
-    { id: 3, name: 'Level 3' },
-  ];
-
-  selectedType: SelectionType | null = null;
-  selectedLevel: LevelType | null = null;
-
-  // Mock data for books
-  books: Book[] = [
-    {
-      id: 1,
-      title: 'The Adventure Begins',
-      coverUrl: 'assets/images/book-image.svg',
-      levelName: 'Level 2',
-      authorName: 'John Smith',
-      studentLevel: 'Beginner',
-      pages: 10,
-      wordsCount: 180,
-    },
-    {
-      id: 2,
-      title: 'Mystery Island',
-      coverUrl: 'assets/images/book-image.svg',
-      levelName: 'Level 3',
-      authorName: 'Jane Doe',
-      studentLevel: 'Beginner',
-      pages: 15,
-      wordsCount: 250,
-    },
-    {
-      id: 3,
-      title: 'Space Explorers',
-      coverUrl: 'assets/images/book-image.svg',
-      levelName: 'Level 1',
-      authorName: 'Mike Johnson',
-      studentLevel: 'Beginner',
-      pages: 12,
-      wordsCount: 200,
-    },
-    {
-      id: 4,
-      title: 'Ocean Discovery',
-      coverUrl: 'assets/images/book-image.svg',
-      levelName: 'Level 2',
-      authorName: 'Sarah Wilson',
-      studentLevel: 'Beginner',
-      pages: 8,
-      wordsCount: 150,
-    },
-  ];
-
-  // Mock data for filters
-  mainLevels = [
-    { mainLevelId: 1, name: 'Level 1' },
-    { mainLevelId: 2, name: 'Level 2' },
-    { mainLevelId: 3, name: 'Level 3' },
-  ];
-
-  subLevels = [
-    { subLevelId: 1, name: 'Sub Level A' },
-    { subLevelId: 2, name: 'Sub Level B' },
-    { subLevelId: 3, name: 'Sub Level C' },
-  ];
-
-  readingFilter = {
-    searchValue: '',
-  };
-
-  onSelectBook() {
-    this.showBookDrawer = true;
-  }
-
-  onCloseDrawer() {
-    this.showBookDrawer = false;
-  }
-
-  onMainLevelChange(event: any) {
-    // Handle main level change
-    console.log('Main level changed:', event);
-  }
-
-  onSubLevelChange(mainLevelId: number, event: any) {
-    // Handle sub level change
-    console.log('Sub level changed:', event);
-  }
-
-  onBookSelect(book: Book) {
-    this.selectedBook = book;
-    this.showBookDrawer = false;
-  }
-
-  onRemoveBook() {
-    this.selectedBook = null;
-  }
-
-  onViewBook(book: Book) {
-    this.onCloseDrawer();
-    this.previewBookTitle = book.title;
-    this.showPreviewPopup = true;
-  }
-
-  onQuestionsSelected(questions: any[]) {
-    console.log('Selected questions for book:', questions);
-    // Handle the selected questions from the book preview
-  }
-}
+ 
+   selectedOption: string = 'isBookSelected';
+   showBookDrawer = false;
+   selectedBook: Story | null = null;
+ 
+   // Preview popup state
+   showPreviewPopup: boolean = false;
+   previewBookTitle: string = '';
+ 
+   readingFilter = {
+     searchValue: '',
+   };
+ 
+   assignmentStories: AssignmentStories = new AssignmentStories();
+   addingAssignmentService = inject(AddingAssignmentService);
+   subLevels: { readingSubLevelId: number; name: string; }[] = [];
+   books: StoryPaginationResponse = new StoryPaginationResponse();
+   first: number = 0;
+   assignmentType : AssignmentTypes = new AssignmentTypes();
+ 
+   ngOnInit(): void {
+     this.getSublevelReading();
+   }
+ 
+   getSublevelReading() {
+     this.addingAssignmentService.getAssignmentReadingSublevels().subscribe(res => {
+       if (res.success) {
+         this.subLevels = res.result;
+       }
+     });
+ 
+     if(localStorage.getItem('selectedAssignmentType')){
+       this.assignmentType = JSON.parse(localStorage.getItem('selectedAssignmentType'));   
+     }
+   }
+ 
+   getAssignmentStories() {
+     let assignmentSetup: AssignmentTypes = JSON.parse(localStorage.getItem('selectedAssignmentType'));
+     this.assignmentStories.assignmentTypeId = assignmentSetup.assignmentTypeId;
+     this.addingAssignmentService.getAssignmentStories(this.assignmentStories).subscribe(res => {
+       if (res.success) {
+         this.books = res.result
+       }
+     })
+   }
+ 
+   nextPage($event: PaginatorState) {
+     this.assignmentStories.pageNumber = $event.page;
+     this.first = $event.first;
+     this.getAssignmentStories();
+   }
+ 
+   onSelectBook() {
+     this.showBookDrawer = true;
+   }
+ 
+   onCloseDrawer() {
+     this.showBookDrawer = false;
+   }
+ 
+   onMainLevelChange(event: any) {
+     // Handle main level change
+     console.log('Main level changed:', event);
+   }
+ 
+   onSubLevelChange(mainLevelId: number, event: any) {
+     // Handle sub level change
+     console.log('Sub level changed:', event);
+   }
+ 
+   onBookSelect(book: Story) {
+     this.selectedBook = book;
+     this.showBookDrawer = false;
+   }
+ 
+   onRemoveBook() {
+     this.selectedBook = null;
+   }
+ 
+   onViewBook(book: Story) {
+     this.onCloseDrawer();
+     this.previewBookTitle = book.title;
+     this.showPreviewPopup = true;
+   }
+ 
+   onQuestionsSelected(questions: any[]) {
+     console.log('Selected questions for book:', questions);
+     // Handle the selected questions from the book preview
+   }
+ }
+ 

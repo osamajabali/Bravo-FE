@@ -96,7 +96,7 @@
     <div class="form-group">
       <div class="label">Assignment Title</div>
       <input pInputText type="text" class="w-100" name="title" [(ngModel)]="assignmentSetup.title"
-        placeholder="Enter assignment title" (ngModelChange)="assignmentSetupUpdate(setupForm)" />
+        placeholder="Enter assignment title" required (ngModelChange)="assignmentSetupUpdate(setupForm)" />
     </div>
 
     <div class="form-group d-flex gap-3">
@@ -108,7 +108,7 @@
       </div>
       <div style="flex: 1">
         <div class="label">Due Date</div>
-        <p-calendar dateFormat="dd/mm/yy" placeholder="Select due date" name="dueDate"
+        <p-calendar dateFormat="dd/mm/yy" placeholder="Select due date" name="dueDate" [minDate]="assignmentSetup.startDate"
           [(ngModel)]="assignmentSetup.dueDate" required styleClass="w-100" [showIcon]="true"
           (ngModelChange)="assignmentSetupUpdate(setupForm)"></p-calendar>
       </div>

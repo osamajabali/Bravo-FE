@@ -106,6 +106,14 @@ export class WritingSpeakingAssignmentComponent implements OnInit {
   }
 
   onQuestionFormatChange(question: Question, format: 'text' | 'image' | 'voice' | 'video') {
+    question.uploadedImageFile = undefined;
+    question.uploadedImageFileName = undefined;
+    question.uploadedImageFileSize = undefined;
+    question.imageFileValidation = undefined;
+    question.uploadedVoiceFile = undefined;
+    question.uploadedVoiceFileName = undefined;
+    question.uploadedVoiceFileSize = undefined;
+    question.voiceFileValidation = undefined;
     question.questionFormat = format;
     // Reset answer type based on format
     if (format === 'text' || format === 'video') {

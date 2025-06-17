@@ -52,7 +52,7 @@
           <span class="p-input-icon-left">
             <img src="icon-search.svg" alt="search" />
             <input pInputText type="text" placeholder="Search for a skill" name="searchValue" [(ngModel)]="searchValue"
-              (ngModelChange)="onDomainSelect(selectedSkillId , domain)" class="search-input" />
+              (ngModelChange)="filterData(domain)" class="search-input" />
           </span>
         </div>
         }
@@ -65,7 +65,8 @@
             <div class="header-cell">Medium</div>
             <div class="header-cell">Advanced</div>
           </div>
-          @for (skill of domain.skills; track $index) {
+          <div class="grid-body">
+            @for (skill of domain.skills; track $index) {
           <div class="grid-row">
             <div class="grid-cell">{{ skill.name }}</div>
             <div class="grid-cell">
@@ -100,7 +101,8 @@
             </div>
           </div>
           }
-          <div class="d-flex justify-content-between align-items-center my-4">
+          </div>
+          <!-- <div class="d-flex justify-content-between align-items-center my-4">
             @if(domain.skills.length){
             <div class="pagination-info">
               {{'SHOWING' | translate}} {{ domain.learningOutcomes.length ? (domain.first ? domain.first +1 : 1) : 0 }}-{{ Math.min(domain.first + rows,
@@ -110,7 +112,7 @@
               <p-paginator [first]="domain.first" [rows]="rows" [totalRecords]="domain.learningOutcomes.length"
               (onPageChange)="onPageChange($event , domain)" class="paginator"></p-paginator>
             }
-          </div>
+          </div> -->
 
         </div>
         }

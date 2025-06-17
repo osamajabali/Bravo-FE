@@ -12,6 +12,8 @@ import { AddingAssignmentService } from '../../../../core/services/assignment/ad
 import { AssignmentStories, Story, StoryPaginationResponse } from '../../../../core/models/assignment/assignment-stories.model';
 import { PaginatorState } from 'primeng/paginator';
 import { PaginationComponent } from "../../pagination/pagination.component";
+import { AssignmentSetup } from '../../../../core/models/assignment/assignment-setup.model';
+import { AssignmentTypes } from '../../../../core/models/assignment/assignment-types.model';
 
 interface SelectionType {
   id: number;
@@ -48,7 +50,7 @@ interface Book {
     DrawerModule,
     BookPreviewPopupComponent,
     PaginationComponent
-],
+  ],
   templateUrl: './assignment-book.component.html',
   styleUrl: './assignment-book.component.scss',
 })
@@ -77,13 +79,7 @@ export class AssignmentBookComponent implements OnInit {
 
   selectedType: SelectionType | null = null;
   selectedLevel: LevelType | null = null;
-
-  // Mock data for filters
-  mainLevels = [
-    { mainLevelId: 1, name: 'Level 1' },
-    { mainLevelId: 2, name: 'Level 2' },
-    { mainLevelId: 3, name: 'Level 3' },
-  ];
+  assignmentType : AssignmentTypes = new AssignmentTypes();
 
   readingFilter = {
     searchValue: '',
@@ -102,10 +98,16 @@ export class AssignmentBookComponent implements OnInit {
       if (res.success) {
         this.subLevels = res.result;
       }
-    })
+    });
+
+    if (localStorage.getItem('selectedAssignmentType')) {
+      this.assignmentType = JSON.parse(localStorage.getItem('selectedAssignmentType'));
+    }
   }
 
   getAssignmentStories() {
+    let assignmentSetup: AssignmentTypes = JSON.parse(localStorage.getItem('selectedAssignmentType'));
+    this.assignmentStories.assignmentTypeId = assignmentSetup.assignmentTypeId;
     this.addingAssignmentService.getAssignmentStories(this.assignmentStories).subscribe(res => {
       if (res.success) {
         this.books = res.result

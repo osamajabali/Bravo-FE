@@ -43,6 +43,7 @@ export class AssignmentTypeSelectorComponent implements OnInit, OnDestroy {
     localStorage.removeItem('assignmentSetup');
     localStorage.removeItem('AssignmentDomainsAndSkills');
     this.selectedAssignmentType = assignmentType;
+    localStorage.setItem('selectedAssignmentType' , JSON.stringify(this.selectedAssignmentType))
     this.selectedAssignmentTypeChange.emit(assignmentType);
   }
 
