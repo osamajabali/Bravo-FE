@@ -4,6 +4,7 @@ import { Result } from '../../models/shared-models/result';
 import { HttpService } from '../shared-services/http.service';
 import { AssignmentRecipientTypes, AssignmentTypes } from '../../models/assignment/assignment-types.model';
 import { AssignmentsDomain, AssignmentsDomainSkills, SkillsDomainResponse } from '../../models/assignment/assignment-domain.model';
+import { AssignmentStories, StoryPaginationResponse } from '../../models/assignment/assignment-stories.model';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,10 @@ export class AddingAssignmentService {
 
   getAssignmentReadingSublevels = (): Observable<Result<{ readingSubLevelId: number; name: string; }[]>> => {
     return this.apiHlpr.post<Result<{ readingSubLevelId: number; name: string; }[]>>(`${this.controller}/add-assignment-reading-sub-levels`, null);
+  }
+
+  getAssignmentStories = (assignmentStories : AssignmentStories): Observable<Result<StoryPaginationResponse>> => {
+    return this.apiHlpr.post<Result<StoryPaginationResponse>>(`${this.controller}/add-assignment-stories`, assignmentStories);
   }
 
 }

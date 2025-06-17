@@ -9,6 +9,9 @@ import { DrawerModule } from 'primeng/drawer';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BookPreviewPopupComponent } from '../../book-preview-popup/book-preview-popup.component';
 import { AddingAssignmentService } from '../../../../core/services/assignment/adding-assignment.service';
+import { AssignmentStories, Story, StoryPaginationResponse } from '../../../../core/models/assignment/assignment-stories.model';
+import { PaginatorState } from 'primeng/paginator';
+import { PaginationComponent } from "../../pagination/pagination.component";
 
 interface SelectionType {
   id: number;
@@ -44,7 +47,8 @@ interface Book {
     DropdownModule,
     DrawerModule,
     BookPreviewPopupComponent,
-  ],
+    PaginationComponent
+],
   templateUrl: './assignment-book.component.html',
   styleUrl: './assignment-book.component.scss',
 })
@@ -53,7 +57,7 @@ export class AssignmentBookComponent implements OnInit {
   addingAssignmentService = inject(AddingAssignmentService);
   selectedOption: string = 'isBookSelected';
   showBookDrawer = false;
-  selectedBook: Book | null = null;
+  selectedBook: Story | null = null;
 
   // Preview popup state
   showPreviewPopup: boolean = false;
@@ -74,50 +78,6 @@ export class AssignmentBookComponent implements OnInit {
   selectedType: SelectionType | null = null;
   selectedLevel: LevelType | null = null;
 
-  // Mock data for books
-  books: Book[] = [
-    {
-      id: 1,
-      title: 'The Adventure Begins',
-      coverUrl: 'assets/images/book-image.svg',
-      levelName: 'Level 2',
-      authorName: 'John Smith',
-      studentLevel: 'Beginner',
-      pages: 10,
-      wordsCount: 180
-    },
-    {
-      id: 2,
-      title: 'Mystery Island',
-      coverUrl: 'assets/images/book-image.svg',
-      levelName: 'Level 3',
-      authorName: 'Jane Doe',
-      studentLevel: 'Beginner',
-      pages: 15,
-      wordsCount: 250
-    },
-    {
-      id: 3,
-      title: 'Space Explorers',
-      coverUrl: 'assets/images/book-image.svg',
-      levelName: 'Level 1',
-      authorName: 'Mike Johnson',
-      studentLevel: 'Beginner',
-      pages: 12,
-      wordsCount: 200
-    },
-    {
-      id: 4,
-      title: 'Ocean Discovery',
-      coverUrl: 'assets/images/book-image.svg',
-      levelName: 'Level 2',
-      authorName: 'Sarah Wilson',
-      studentLevel: 'Beginner',
-      pages: 8,
-      wordsCount: 150
-    },
-  ];
-
   // Mock data for filters
   mainLevels = [
     { mainLevelId: 1, name: 'Level 1' },
@@ -129,6 +89,9 @@ export class AssignmentBookComponent implements OnInit {
     searchValue: '',
   };
   subLevels: { readingSubLevelId: number; name: string; }[] = [];
+  assignmentStories: AssignmentStories = new AssignmentStories();
+  books: StoryPaginationResponse = new StoryPaginationResponse();
+  first: number = 0;
 
   ngOnInit(): void {
     this.getSublevelReading();
@@ -138,6 +101,14 @@ export class AssignmentBookComponent implements OnInit {
     this.addingAssignmentService.getAssignmentReadingSublevels().subscribe(res => {
       if (res.success) {
         this.subLevels = res.result;
+      }
+    })
+  }
+
+  getAssignmentStories() {
+    this.addingAssignmentService.getAssignmentStories(this.assignmentStories).subscribe(res => {
+      if (res.success) {
+        this.books = res.result
       }
     })
   }
@@ -160,7 +131,7 @@ export class AssignmentBookComponent implements OnInit {
     console.log('Sub level changed:', event);
   }
 
-  onBookSelect(book: Book) {
+  onBookSelect(book: Story) {
     this.selectedBook = book;
     this.showBookDrawer = false;
   }
@@ -169,10 +140,16 @@ export class AssignmentBookComponent implements OnInit {
     this.selectedBook = null;
   }
 
-  onViewBook(book: Book) {
+  onViewBook(book: Story) {
     this.onCloseDrawer();
     this.previewBookTitle = book.title;
     this.showPreviewPopup = true;
+  }
+
+  nextPage($event: PaginatorState) {
+    this.assignmentStories.pageNumber = $event.page;
+    this.first = $event.first;
+    this.getAssignmentStories();
   }
 
   onQuestionsSelected(questions: any[]) {

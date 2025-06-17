@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AssignmentTypeSelectorComponent } from '../../../shared/components/new-assignment/assignment-type-selector/assignment-type-selector.component';
 import { AssignmentSetupComponent } from '../../../shared/components/new-assignment/assignment-setup/assignment-setup.component';
-import { AssignmentInformation } from '../../../shared/models/assignment-information.model';
 import { AssignmentDomainsAndSkillsComponent } from '../../../shared/components/new-assignment/assignment-domains-and-skills/assignment-domains-and-skills.component';
 import { AssignmentBookComponent } from '../../../shared/components/new-assignment/assignment-book/assignment-book.component';
 import { ListeningAssignmentBookComponent } from '../../../shared/components/new-assignment/listening-assignment-book/listening-assignment-book.component';
@@ -82,14 +81,6 @@ export class NewAssignmentComponent implements OnInit {
   isReviewPage: boolean = false;
   showSuccessDialog: boolean = false;
   assygnmentAddTypesEnum = AssygnmentAddTypesEnum;
-  assignmentInformation: AssignmentInformation = {
-    target: null,
-    grade: null,
-    section: null,
-    title: null,
-    startDate: null,
-    dueDate: null,
-  };
 
   // Shared data for writing/speaking assignments
   writingSpeakingQuestions: Question[] = [

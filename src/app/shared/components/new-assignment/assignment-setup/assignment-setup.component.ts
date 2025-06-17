@@ -4,12 +4,6 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
-import {
-  AssignmentInformation,
-  AssignmentTarget,
-  AssignmentGrade,
-  AssignmentSection,
-} from '../../../../shared/models/assignment-information.model';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { AddingAssignmentService } from '../../../../core/services/assignment/adding-assignment.service';
 import { AssignmentRecipientTypes } from '../../../../core/models/assignment/assignment-types.model';

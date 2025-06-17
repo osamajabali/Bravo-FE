@@ -42,9 +42,9 @@
       <div class="panel-content">
         <div class="domain-selection">
           <div class="control-title">Pick a skill domain</div>
-          <p-dropdown [options]="domain.skillDomains" name="selectedSkillId" [(ngModel)]="domain.id"
-            optionLabel="name" optionValue="domainId" placeholder="Pick a skill domain"
-            (ngModelChange)="onDomainSelect($event , domain)" [style]="{ width: '100%' }"></p-dropdown>
+          <p-dropdown [options]="domain.skillDomains" name="selectedSkillId" [(ngModel)]="domain.id" optionLabel="name"
+            optionValue="domainId" placeholder="Pick a skill domain" (ngModelChange)="onDomainSelect($event , domain)"
+            [style]="{ width: '100%' }"></p-dropdown>
         </div>
 
         @if (domain.skills.length) {
@@ -55,7 +55,7 @@
               (ngModelChange)="onDomainSelect(selectedSkillId , domain)" class="search-input" />
           </span>
         </div>
-      }
+        }
 
         @if (domain.skills.length) {
         <div class="skills-grid">
@@ -71,8 +71,8 @@
             <div class="grid-cell">
               <div class="input-container">
                 <p-inputNumber [showButtons]="false" [name]="'beginnerValue' + $index" [(ngModel)]="skill.beginnerValue"
-                  (ngModelChange)="updateValues(skill, 'beginner' , domain)" [min]="0" [max]="skill.beginnerQuestionsCount"
-                  [style]="{ width: '100%' }"></p-inputNumber>
+                  (ngModelChange)="updateValues(skill, 'beginner' , domain)" [min]="0"
+                  [max]="skill.beginnerQuestionsCount" [style]="{ width: '100%' }"></p-inputNumber>
                 <div class="out-of">{{skill.beginnerQuestionsCount}}</div>
               </div>
               <img src="icon-eye-blue-box.svg" class="pointer" alt=""
@@ -81,8 +81,8 @@
             <div class="grid-cell">
               <div class="input-container">
                 <p-inputNumber [showButtons]="false" [name]="'intermediateValue' + $index"
-                  [(ngModel)]="skill.intermediateValue" (ngModelChange)="updateValues(skill, 'intermediate' , domain)" [min]="0"
-                  [max]="skill.intermediateQuestionsCount" [style]="{ width: '100%' }"></p-inputNumber>
+                  [(ngModel)]="skill.intermediateValue" (ngModelChange)="updateValues(skill, 'intermediate' , domain)"
+                  [min]="0" [max]="skill.intermediateQuestionsCount" [style]="{ width: '100%' }"></p-inputNumber>
                 <div class="out-of">{{skill.intermediateQuestionsCount}}</div>
               </div>
               <img src="icon-eye-blue-box.svg" class="pointer" alt=""
@@ -91,8 +91,8 @@
             <div class="grid-cell">
               <div class="input-container">
                 <p-inputNumber [showButtons]="false" [name]="'advanceValue' + $index" [(ngModel)]="skill.advanceValue"
-                  (ngModelChange)="updateValues(skill, 'advanced' , domain)" [min]="0" [max]="skill.advanceQuestionsCount"
-                  [style]="{ width: '100%' }"></p-inputNumber>
+                  (ngModelChange)="updateValues(skill, 'advanced' , domain)" [min]="0"
+                  [max]="skill.advanceQuestionsCount" [style]="{ width: '100%' }"></p-inputNumber>
                 <div class="out-of">{{skill.advanceQuestionsCount}}</div>
               </div>
               <img src="icon-eye-blue-box.svg" class="pointer" alt=""
@@ -100,6 +100,17 @@
             </div>
           </div>
           }
+          <div class="d-flex justify-content-between align-items-center my-4">
+            @if(domain.skills.length){
+            <div class="pagination-info">
+              {{'SHOWING' | translate}} {{ domain.learningOutcomes.length ? (domain.first ? domain.first +1 : 1) : 0 }}-{{ Math.min(domain.first + rows,
+              domain.learningOutcomes.length) }} {{'OF' | translate}}
+              {{ domain.learningOutcomes.length }} {{ 'SKILLS' | translate}}
+            </div>
+              <p-paginator [first]="domain.first" [rows]="rows" [totalRecords]="domain.learningOutcomes.length"
+              (onPageChange)="onPageChange($event , domain)" class="paginator"></p-paginator>
+            }
+          </div>
 
         </div>
         }

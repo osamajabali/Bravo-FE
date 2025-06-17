@@ -2,28 +2,15 @@
   <div class="title">Assignment Book</div>
 
   <div class="selection-boxes">
-    <div
-      class="selection-box"
-      [class.selected]="selectedOption === 'isBookSelected'"
-      (click)="selectedOption = 'isBookSelected'"
-    >
-      <p-radioButton
-        [(ngModel)]="selectedOption"
-        value="isBookSelected"
-        [inputId]="'isBookSelected'"
-      ></p-radioButton>
+    <div class="selection-box" [class.selected]="selectedOption === 'isBookSelected'"
+      (click)="selectedOption = 'isBookSelected'">
+      <p-radioButton [(ngModel)]="selectedOption" value="isBookSelected" [inputId]="'isBookSelected'"></p-radioButton>
       <span>Select the book</span>
     </div>
-    <div
-      class="selection-box"
-      [class.selected]="selectedOption === 'isStudentLevelSelected'"
-      (click)="selectedOption = 'isStudentLevelSelected'"
-    >
-      <p-radioButton
-        [(ngModel)]="selectedOption"
-        value="isStudentLevelSelected"
-        [inputId]="'isStudentLevelSelected'"
-      ></p-radioButton>
+    <div class="selection-box" [class.selected]="selectedOption === 'isStudentLevelSelected'"
+      (click)="selectedOption = 'isStudentLevelSelected'">
+      <p-radioButton [(ngModel)]="selectedOption" value="isStudentLevelSelected"
+        [inputId]="'isStudentLevelSelected'"></p-radioButton>
       <div>
         <span>Send based on the student level </span>
       </div>
@@ -32,26 +19,18 @@
 
   <div class="form-group">
     <div class="label">Selection Type</div>
-    <p-select
-      [options]="selectionTypes"
-      [(ngModel)]="selectedType"
-      optionLabel="name"
-      placeholder="Teacher Selection"
-      class="w-100"
-    ></p-select>
+    <p-select [options]="selectionTypes" [(ngModel)]="selectedType" optionLabel="name" placeholder="Teacher Selection"
+      class="w-100"></p-select>
   </div>
 
   <div class="form-group" *ngIf="selectedOption !== 'isStudentLevelSelected'">
     <div class="label">Select Level</div>
-    <p-select
-      [options]="subLevels"
-      [(ngModel)]="selectedLevel"
-      optionLabel="name"
-      placeholder="Select Level"
-      class="w-100"
-    ></p-select>
+    <p-select [options]="subLevels" [(ngModel)]="assignmentStories.readingSubLevelId"
+      (ngModelChange)="getAssignmentStories()" optionLabel="name" optionValue="readingSubLevelId"
+      placeholder="Select Level" class="w-100"></p-select>
   </div>
 
+  @if(assignmentStories.readingSubLevelId){
   @if (!selectedBook) {
 
   <div class="select-assignment-book-container">
@@ -63,13 +42,7 @@
       <div class="sub-title">You can only pick one</div>
     </div>
     <div>
-      <button
-        pButton
-        type="button"
-        label="Select a Book"
-        class="p-button-primary"
-        (click)="onSelectBook()"
-      >
+      <button pButton type="button" label="Select a Book" class="p-button-primary" (click)="onSelectBook()">
         <img src="icon-add-circle.svg" alt="" />
       </button>
     </div>
@@ -79,63 +52,40 @@
     <div class="title">Selected Book</div>
     <div class="book-card">
       <div class="book-cover">
-        <img [src]="selectedBook.coverUrl" [alt]="selectedBook.title" />
+        <img [src]="selectedBook.coverImageUrl" [alt]="selectedBook.title" />
       </div>
       <div class="book-details">
         <div class="title">{{ selectedBook.title }}</div>
         <p class="sub-level">
-          Sub Level: <b>{{ selectedBook.levelName }}</b>
+          Sub Level: <b>{{ 'missing value' }}</b>
         </p>
         <p class="author">
           Author Name: <b>{{ selectedBook.authorName }}</b>
         </p>
         <p class="student-level">
-          Student level: <b>{{ selectedBook.studentLevel }}</b>
+          Student level: <b>{{ 'missing value' }}</b>
         </p>
       </div>
       <div class="book-actions">
-        <button
-          pButton
-          label=""
-          class="p-button-outlined"
-          (click)="selectedBook = null"
-        >
+        <button pButton label="" class="p-button-outlined" (click)="selectedBook = null">
           <img src="icon-trash-empty.svg" alt="view" />
         </button>
-        <button
-          pButton
-          label=""
-          class="p-button-outlined"
-          (click)="onViewBook(selectedBook)"
-        >
+        <button pButton label="" class="p-button-outlined" (click)="onViewBook(selectedBook)">
           <img src="icon-eye.svg" alt="view" />
         </button>
       </div>
     </div>
   </div>
   }
+  }
 </div>
 
-<p-drawer
-  [(visible)]="showBookDrawer"
-  [position]="'right'"
-  [style]="{ width: '75%' }"
-  [modal]="true"
-  [showCloseIcon]="true"
-  [baseZIndex]="1000"
-  (onHide)="onCloseDrawer()"
-  [dismissible]="false"
-  [closable]="false"
-  [closeOnEscape]="false"
->
+<p-drawer [(visible)]="showBookDrawer" [position]="'right'" [style]="{ width: '75%' }" [modal]="true"
+  [showCloseIcon]="true" [baseZIndex]="1000" (onHide)="onCloseDrawer()" [dismissible]="false" [closable]="false"
+  [closeOnEscape]="false">
   <ng-template pTemplate="header">
     <h2>Select a Book</h2>
-    <img
-      src="icon-green-close-large.svg"
-      alt="close"
-      class="pointer"
-      (click)="onCloseDrawer()"
-    />
+    <img src="icon-green-close-large.svg" alt="close" class="pointer" (click)="onCloseDrawer()" />
   </ng-template>
 
   <div class="drawer-content">
@@ -143,21 +93,16 @@
       <div class="search-box">
         <span class="p-input-icon-left">
           <img src="icon-search.svg" alt="search" />
-          <input
-            type="text"
-            pInputText
-            [(ngModel)]="readingFilter.searchValue"
-            placeholder="Search books..."
-          />
+          <input type="text" pInputText [(ngModel)]="readingFilter.searchValue" placeholder="Search books..." />
         </span>
       </div>
     </div>
 
     <div class="books-grid">
-      @for (book of books; track book.id) {
+      @for (book of books.stories; track $index) {
       <div class="book-row">
         <div class="book-image">
-          <img [src]="book.coverUrl" [alt]="book.title" />
+          <img [src]="book.coverImageUrl" [alt]="book.title" />
         </div>
         <div class="book-info">
           <div class="info-item">
@@ -166,48 +111,32 @@
           </div>
           <div class="info-item">
             <span class="label">Pages</span>
-            <span class="value">{{ book.pages }} pages</span>
+            <span class="value">{{ book.pagesCount }} pages</span>
           </div>
           <div class="info-item">
             <span class="label">Words Count</span>
             <div class="value">
               {{ book.wordsCount }} words
-              <img
-                src="icon-yellow-info.svg"
-                alt="info"
-                title="You must select pages under 200 words"
-              />
+              <img src="icon-yellow-info.svg" alt="info" title="You must select pages under 200 words" />
             </div>
           </div>
         </div>
         <div class="book-actions">
-          <button
-            pButton
-            label=""
-            class="p-button-outlined"
-            (click)="onViewBook(book)"
-            [class]="{ invisible: book.wordsCount < 200 }"
-          >
+          <button pButton label="" class="p-button-outlined" (click)="onViewBook(book)"
+            [class]="{ invisible: book.wordsCount < 200 }">
             <span>View Book</span>
             <img src="icon-view-book-sml.svg" alt="view" />
           </button>
-          <button
-            pButton
-            label="Select Book"
-            class="p-button-primary"
-            (click)="onBookSelect(book)"
-          ></button>
+          <button pButton label="Select Book" class="p-button-primary" (click)="onBookSelect(book)"></button>
         </div>
       </div>
       }
+      <app-pagination [first]="first" [rows]="books.pageSize" [totalRecords]="books.totalRecords" itemLabel="stories"
+        (pageChange)="nextPage($event)"></app-pagination>
     </div>
   </div>
 </p-drawer>
 
 <!-- Book Preview Popup -->
-<app-book-preview-popup
-  [(visible)]="showPreviewPopup"
-  [skillName]="previewBookTitle"
-  [difficultyLevel]="'Book Preview'"
-  (questionsSelected)="onQuestionsSelected($event)"
-></app-book-preview-popup>
+<app-book-preview-popup [(visible)]="showPreviewPopup" [skillName]="previewBookTitle" [difficultyLevel]="'Book Preview'"
+  (questionsSelected)="onQuestionsSelected($event)"></app-book-preview-popup>

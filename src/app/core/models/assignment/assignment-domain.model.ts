@@ -28,6 +28,6 @@ export class SkillsDomain {
     advanceValue : number = 0;
 }
 
-export class SkillsDomainResponse extends PaginationFilter {
+export class SkillsDomainResponse {
     learningOutcomes : SkillsDomain[] = [];
 }
