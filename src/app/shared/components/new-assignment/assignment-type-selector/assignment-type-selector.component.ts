@@ -22,12 +22,20 @@ export class AssignmentTypeSelectorComponent implements OnInit, OnDestroy {
   addingAssignmentsService = inject(AddingAssignmentService);
   sharedService = inject(SharedService);
   route = inject(ActivatedRoute);
-  private refreshSubscription!: Subscription;
 
   assignmentTypes: AssignmentTypes[] = [];
+  isFirst: boolean = false;
 
   ngOnInit(): void {
-    this.getAssignmentsTypes();
+    if (this.callApi) {
+      this.getAssignmentsTypes();
+    } else {
+      this.sharedService.refresh$.subscribe((data) => {
+        if (data) {
+          this.getAssignmentsTypes();
+        }
+      })
+    }
   }
 
   getAssignmentsTypes() {
@@ -42,14 +50,13 @@ export class AssignmentTypeSelectorComponent implements OnInit, OnDestroy {
   selectAssignmentType(assignmentType: AssignmentTypes) {
     localStorage.removeItem('assignmentSetup');
     localStorage.removeItem('AssignmentDomainsAndSkills');
+    localStorage.removeItem('SkillsSelectedOptions');
+    localStorage.removeItem('assignmentBookReading');
     this.selectedAssignmentType = assignmentType;
-    localStorage.setItem('selectedAssignmentType' , JSON.stringify(this.selectedAssignmentType))
+    localStorage.setItem('selectedAssignmentType', JSON.stringify(this.selectedAssignmentType))
     this.selectedAssignmentTypeChange.emit(assignmentType);
   }
 
   ngOnDestroy(): void {
-    if (this.refreshSubscription) {
-      this.refreshSubscription.unsubscribe();
-    }
   }
 }

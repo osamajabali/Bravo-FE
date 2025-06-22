@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PanelModule } from 'primeng/panel';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { AssignmentReadingPayload, Story } from '../../../../core/models/assignment/assignment-stories.model';
+import { AssignmentSetup } from '../../../../core/models/assignment/assignment-setup.model';
 
 interface Skill {
   name: string;
@@ -29,18 +31,23 @@ interface Domain {
   templateUrl: './assignment-book-review.component.html',
   styleUrl: './assignment-book-review.component.scss',
 })
-export class AssignmentBookReviewComponent {
+export class AssignmentBookReviewComponent implements OnInit{
   @Output() stepChange = new EventEmitter<number>();
-
-  selectedBook = {
-    id: 4,
-    title: 'Ocean Discovery',
-    coverUrl: 'assets/images/book-image.svg',
-    levelName: 'Level 2',
-    authorName: 'Sarah Wilson',
-    studentLevel: 'Beginner',
+  
+  selectedBook : Story = new Story();
+  assignmentSetup : AssignmentSetup = new AssignmentSetup();
+  assignmentTypeName: string;
+  
+  ngOnInit(): void {
+    this.getAssignmentBook()
   }
 
+  getAssignmentBook() {
+    this.assignmentSetup = JSON.parse(localStorage.getItem('assignmentSetup'));
+    let assignmentBookReading : AssignmentReadingPayload = JSON.parse(localStorage.getItem('assignmentBookReading'));
+    this.selectedBook = assignmentBookReading.book;
+    this.assignmentTypeName = assignmentBookReading.assignmentTypeName;
+  }
   moveToStep(step: number) {
     this.stepChange.emit(step);
   }

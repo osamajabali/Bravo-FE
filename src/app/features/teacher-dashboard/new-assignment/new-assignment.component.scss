@@ -34,6 +34,10 @@
     margin: 0 auto;
   }
 
+  .p-disabled{
+    cursor: no-drop;
+  }
+
   .p-steps-item:before {
     top: 72% !important;
   }

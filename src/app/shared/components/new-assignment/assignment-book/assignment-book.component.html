@@ -1,32 +1,30 @@
 <div class="assignment-book">
-  <div class="title">Assignment Book</div>
+  <div class="title">Assignment Details</div>
 
-  <div class="selection-boxes">
-    <div class="selection-box" [class.selected]="selectedOption === 'isBookSelected'"
-      (click)="selectedOption = 'isBookSelected'">
-      <p-radioButton [(ngModel)]="selectedOption" value="isBookSelected" [inputId]="'isBookSelected'"></p-radioButton>
-      <span>Select the book</span>
-    </div>
-    <div class="selection-box" [class.selected]="selectedOption === 'isStudentLevelSelected'"
-      (click)="selectedOption = 'isStudentLevelSelected'">
-      <p-radioButton [(ngModel)]="selectedOption" value="isStudentLevelSelected"
-        [inputId]="'isStudentLevelSelected'"></p-radioButton>
-      <div>
-        <span>Send based on the student level </span>
-      </div>
+<div class="selection-boxes">
+  <div class="selection-box" [class.selected]="selectedOption === true" (click)="selectedOption = true">
+    <p-radioButton [(ngModel)]="selectedOption" [value]="true" (ngModelChange)="updateValue()"></p-radioButton>
+    <span>Select the book</span>
+  </div>
+  <div class="selection-box" [class.selected]="selectedOption === false" (click)="selectedOption = false">
+    <p-radioButton [(ngModel)]="selectedOption" [value]="false" (ngModelChange)="updateValue()"></p-radioButton>
+    <div>
+      <span>Send based on the student level</span>
     </div>
   </div>
+</div>
+
 
   <div class="form-group">
     <div class="label">Selection Type</div>
-    <p-select [options]="selectionTypes" [(ngModel)]="selectedType" optionLabel="name" placeholder="Teacher Selection"
+    <p-select [options]="selectionTypes" [(ngModel)]="selectedType" (ngModelChange)="updateValue()" optionLabel="name" placeholder="Teacher Selection"
       class="w-100"></p-select>
   </div>
 
-  <div class="form-group" *ngIf="selectedOption !== 'isStudentLevelSelected'">
+  <div class="form-group" *ngIf="selectedOption">
     <div class="label">Select Level</div>
-    <p-select [options]="subLevels" [(ngModel)]="assignmentStories.readingSubLevelId"
-      (ngModelChange)="getAssignmentStories()" optionLabel="name" optionValue="readingSubLevelId"
+    <p-select [options]="subLevels" [(ngModel)]="assignmentStories.readingSubLevelId" (ngModelChange)="updateValue() ; onRemoveBook()"
+      optionLabel="name" optionValue="readingSubLevelId"
       placeholder="Select Level" class="w-100"></p-select>
   </div>
 
@@ -57,17 +55,17 @@
       <div class="book-details">
         <div class="title">{{ selectedBook.title }}</div>
         <p class="sub-level">
-          Sub Level: <b>{{ assignmentType.name }}</b>
+          Sub Level: <b>{{ selectedBook.assignmentTypeName }}</b>
         </p>
         <p class="author">
           Author Name: <b>{{ selectedBook.authorName }}</b>
         </p>
         <p class="student-level">
-          Student level: <b>{{ selectedBook.mainLevelName }}</b>
+          Main level: <b>{{ selectedBook.mainLevelName }}</b>
         </p>
       </div>
       <div class="book-actions">
-        <button pButton label="" class="p-button-outlined" (click)="selectedBook = null">
+        <button pButton label="" class="p-button-outlined" (click)="selectedBook = null ; updateValue()">
           <img src="icon-trash-empty.svg" alt="view" />
         </button>
         <button pButton label="" class="p-button-outlined" (click)="onViewBook(selectedBook)">

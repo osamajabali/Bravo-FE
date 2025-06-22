@@ -4,7 +4,7 @@
   }
 
   @if (activeStep === 0) {
-  <app-assignment-type-selector [(selectedAssignmentType)]="selectedAssignmentType" (selectedAssignmentTypeChange)="isSetupValid = false" />
+  <app-assignment-type-selector [(callApi)]="callApi" [(selectedAssignmentType)]="selectedAssignmentType" (selectedAssignmentTypeChange)="isSetupValid = false" />
   }
 
   @if (activeStep === 1) {
@@ -12,19 +12,19 @@
   }
 
   @if (activeStep === 2 && selectedAssignmentType.assignmentTypeId == assygnmentAddTypesEnum.Skills) {
-  <app-assignment-domains-and-skills />
+  <app-assignment-domains-and-skills (isSetupValid)="checkValidity($event)" />
   }
 
   @if (activeStep === 2 && selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.ReadingComprehension) {
-  <app-assignment-book />
+  <app-assignment-book (isSetupValid)="checkValidity($event)" />
   }
 
   @if (activeStep === 2 && selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.OralReading) {
-  <app-oral-assignment-book />
+  <app-oral-assignment-book (isSetupValid)="checkValidity($event)" />
   }
 
   @if (activeStep === 2 && selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.Listening) {
-  <app-listening-assignment-book />
+  <app-listening-assignment-book (isSetupValid)="checkValidity($event)" />
   }
 
   @if(activeStep === 2 && (selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.Speaking ||
@@ -65,7 +65,7 @@
 </div>
 
 <p-dialog [(visible)]="showSuccessDialog" [modal]="true" [style]="{ width: '450px' }" [draggable]="false"
-  [resizable]="false" [closable]="true" [showHeader]="false" class="success-dialog">
+  [resizable]="false" [closable]="true" [showHeader]="false" class="success-dialog" (onHide)="activeStep = 0" >
   <div class="dialog-content">
     <img src="icon-check-circle.svg" alt="" />
     <div class="success-message">Assignment Submitted Successfully!</div>

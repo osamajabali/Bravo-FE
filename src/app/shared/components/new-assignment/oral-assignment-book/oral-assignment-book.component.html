@@ -1,42 +1,27 @@
 <div class="assignment-book">
   <div class="title">Assignment Book</div>
 
-  <div class="selection-boxes">
-    <div
-      class="selection-box"
-      [class.selected]="selectedOption === 'systemCorrection'"
-      (click)="selectedOption = 'systemCorrection'"
-    >
-      <p-radioButton
-        [(ngModel)]="selectedOption"
-        value="systemCorrection"
-        [inputId]="'systemCorrection'"
-      ></p-radioButton>
-      <span>System Correction</span>
-    </div>
-    <div
-      class="selection-box"
-      [class.selected]="selectedOption === 'teacherCorrection'"
-      (click)="selectedOption = 'teacherCorrection'"
-    >
-      <p-radioButton
-        [(ngModel)]="selectedOption"
-        value="teacherCorrection"
-        [inputId]="'teacherCorrection'"
-      ></p-radioButton>
-      <div>
-        <span>Teacher Correction</span>
-      </div>
+<div class="selection-boxes">
+  <div class="selection-box" [class.selected]="selectedOption === true" (click)="selectedOption = true">
+    <p-radioButton [(ngModel)]="selectedOption" [value]="true" (ngModelChange)="updateValue()"></p-radioButton>
+    <span>System Correction</span>
+  </div>
+  <div class="selection-box" [class.selected]="selectedOption === false" (click)="selectedOption = false">
+    <p-radioButton [(ngModel)]="selectedOption" [value]="false" (ngModelChange)="updateValue()"></p-radioButton>
+    <div>
+      <span>Teacher Correction</span>
     </div>
   </div>
+</div>
 
-  <div class="form-group" *ngIf="!selectedBook">
+  <div class="form-group">
     <div class="label">Select Level</div>
-    <p-select [options]="subLevels" [(ngModel)]="assignmentStories.readingSubLevelId"
-      (ngModelChange)="getAssignmentStories()" optionLabel="name" optionValue="readingSubLevelId"
+    <p-select [options]="subLevels" [(ngModel)]="assignmentStories.readingSubLevelId" (ngModelChange)="updateValue() ; onRemoveBook()"
+      optionLabel="name" optionValue="readingSubLevelId"
       placeholder="Select Level" class="w-100"></p-select>
   </div>
 
+  @if(assignmentStories.readingSubLevelId){
   @if (!selectedBook) {
 
   <div class="select-assignment-book-container">
@@ -48,13 +33,7 @@
       <div class="sub-title">You can only pick one</div>
     </div>
     <div>
-      <button
-        pButton
-        type="button"
-        label="Select a Book"
-        class="p-button-primary"
-        (click)="onSelectBook()"
-      >
+      <button pButton type="button" label="Select a Book" class="p-button-primary" (click)="onSelectBook()">
         <img src="icon-add-circle.svg" alt="" />
       </button>
     </div>
@@ -68,24 +47,27 @@
       </div>
       <div class="book-details">
         <div class="title">{{ selectedBook.title }}</div>
-        <p class="sub-level">Sub Level: <b>{{ assignmentType.name }}</b></p>
+        <p class="sub-level">
+          Sub Level: <b>{{ selectedBook.assignmentTypeName }}</b>
+        </p>
         <p class="author">
           Author Name: <b>{{ selectedBook.authorName }}</b>
         </p>
         <p class="student-level">
-          Student level: <b>{{ selectedBook.mainLevelName }}</b>
+          Main level: <b>{{ selectedBook.mainLevelName }}</b>
         </p>
       </div>
       <div class="book-actions">
-        <button pButton label="" class="p-button-outlined" (click)="selectedBook = null">
+        <button pButton label="" class="p-button-outlined" (click)="selectedBook = null ; updateValue()">
           <img src="icon-trash-empty.svg" alt="view" />
         </button>
-        <button pButton label="" class="p-button-outlined">
+        <button pButton label="" class="p-button-outlined" (click)="onViewBook(selectedBook)">
           <img src="icon-eye.svg" alt="view" />
         </button>
       </div>
     </div>
   </div>
+  }
   }
 </div>
 
@@ -147,9 +129,5 @@
 </p-drawer>
 
 <!-- Book Preview Popup -->
-<app-book-preview-popup
-  [(visible)]="showPreviewPopup"
-  [skillName]="previewBookTitle"
-  [difficultyLevel]="'Book Preview'"
-  (questionsSelected)="onQuestionsSelected($event)"
-></app-book-preview-popup>
+<app-book-preview-popup [(visible)]="showPreviewPopup" [skillName]="previewBookTitle" [difficultyLevel]="'Book Preview'"
+  (questionsSelected)="onQuestionsSelected($event)"></app-book-preview-popup>

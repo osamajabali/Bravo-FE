@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AssignmentTypeSelectorComponent } from '../../../shared/components/new-assignment/assignment-type-selector/assignment-type-selector.component';
 import { AssignmentSetupComponent } from '../../../shared/components/new-assignment/assignment-setup/assignment-setup.component';
-import { AssignmentDomainsAndSkillsComponent } from '../../../shared/components/new-assignment/assignment-domains-and-skills/assignment-domains-and-skills.component';
+import { AssignmentDomainsAndSkillsComponent, Domain } from '../../../shared/components/new-assignment/assignment-domains-and-skills/assignment-domains-and-skills.component';
 import { AssignmentBookComponent } from '../../../shared/components/new-assignment/assignment-book/assignment-book.component';
 import { ListeningAssignmentBookComponent } from '../../../shared/components/new-assignment/listening-assignment-book/listening-assignment-book.component';
 import { SkillsReviewComponent } from '../../../shared/components/new-assignment/skills-review/skills-review.component';
@@ -19,6 +19,14 @@ import { WritingSpeakingAssignmentComponent } from '../../../shared/components/n
 import { ReviewWritingSpeakingComponent } from '../../../shared/components/new-assignment/review-writing-speaking/review-writing-speaking.component';
 import { AssignmentTypes } from '../../../core/models/assignment/assignment-types.model';
 import { AssygnmentAddTypesEnum } from '../../../core/models/shared-models/enums';
+import { AddingAssignmentService } from '../../../core/services/assignment/adding-assignment.service';
+import { AssignmentPayload } from '../../../core/models/assignment/assignment-payload';
+import { AssignmentSetup } from '../../../core/models/assignment/assignment-setup.model';
+import { LoginService } from '../../../core/services/login-services/login.service';
+import { HeaderService } from '../../../core/services/header-services/header.service';
+import { Role } from '../../../core/models/login-models/logged-in-user';
+import { AssignmentReading } from '../../../core/models/assignment/assignment-reading.model';
+import { AssignmentReadingPayload } from '../../../core/models/assignment/assignment-stories.model';
 
 export interface StepItem {
   id: string;
@@ -81,8 +89,13 @@ export class NewAssignmentComponent implements OnInit {
   isReviewPage: boolean = false;
   showSuccessDialog: boolean = false;
   assygnmentAddTypesEnum = AssygnmentAddTypesEnum;
-
-  // Shared data for writing/speaking assignments
+  addingAssignmentService = inject(AddingAssignmentService);
+  loginService = inject(LoginService);
+  headerService = inject(HeaderService);
+  assignment: AssignmentPayload = new AssignmentPayload();
+  assignmentSetup: AssignmentSetup = new AssignmentSetup();
+  assignmentDomain: Domain[] = [];
+  assignmentReading: AssignmentReading = new AssignmentReading();
   writingSpeakingQuestions: Question[] = [
     {
       id: 1,
@@ -93,9 +106,11 @@ export class NewAssignmentComponent implements OnInit {
       isCollapsed: false
     }
   ];
+  roles: Role[] = [];
+  callApi: boolean = false;
 
   changeActiveStep(step: number) {
-    
+
     this.activeStep = step;
     this.isReviewPage = false;
   }
@@ -120,8 +135,17 @@ export class NewAssignmentComponent implements OnInit {
     },
   ];
 
+  selectedOptions: {
+    isShowCorrectAnswer: boolean;
+    isSameQuestionsForAllStudents: boolean;
+  } = {
+      isShowCorrectAnswer: false,
+      isSameQuestionsForAllStudents: false
+    };
+  assignmentBook: AssignmentReadingPayload = new AssignmentReadingPayload()
+
   ngOnInit(): void {
-    this.sharedService.pushTitle('ADD NEW ASSIGNMENT');
+    this.sharedService.pushTitle('Back to Assignments');
   }
 
   onQuestionsChange(questions: Question[]) {
@@ -147,11 +171,117 @@ export class NewAssignmentComponent implements OnInit {
     this.activeStep = this.activeStep - 1;
 
     this.isReviewPage = false;
+    if(this.activeStep == 0){
+      this.callApi = true;
+    }
     this.updateStepsCompletion();
   }
 
-  submit() {
-    this.showSuccessDialog = true;
+  submit() {debugger
+    this.assignmentSetup = JSON.parse(localStorage.getItem('assignmentSetup'));
+    if (localStorage.getItem('AssignmentDomainsAndSkills')) {
+      this.assignmentDomain = JSON.parse(localStorage.getItem('AssignmentDomainsAndSkills'));
+    }
+    if (localStorage.getItem('assignmentBookReading')) {
+      this.assignmentBook = JSON.parse(localStorage.getItem('assignmentBookReading'));
+    }
+    if (localStorage.getItem('assignmentBookReading')) {
+      this.selectedOptions = JSON.parse(localStorage.getItem('SkillsSelectedOptions'));
+    }
+
+    this.roles = JSON.parse(localStorage.getItem('loginRoles'))
+    if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.Skills) {
+      this.addAssigmentSkill();
+    } else if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.ReadingComprehension) {
+      this.addAssignmentReading();
+    } else if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.OralReading) {
+      this.addAssignmentReading();
+    }else if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.Listening) {
+      this.addAssignmentReading();
+    }
+  }
+
+  addAssigmentSkill() {
+    this.assignment = {
+      assignmentTypeId: this.selectedAssignmentType.assignmentTypeId,
+      dueDate: this.assignmentSetup.dueDate,
+      isSameQuestionsForAllStudents: this.selectedOptions.isSameQuestionsForAllStudents,
+      isShowCorrectAnswer: this.selectedOptions.isShowCorrectAnswer,
+      recipientTypeId: this.assignmentSetup.target.assignmentRecipientTypeId.toString(),
+      schoolId: this.roles[0].schools[0].schoolId,
+      selectedDomains: this.assignmentDomain.map(domain => ({
+        domainId: domain.domainId,
+        skills: domain.skills
+      })),
+      selectedGrades: this.assignmentSetup.selectedGrades,
+      selectedGroups: this.assignmentSetup.selectedGroups,
+      selectedSections: this.assignmentSetup.selectedSections,
+      selectedStudents: this.assignmentSetup.selectedStudents,
+      startDate: this.assignmentSetup.startDate,
+      subjectId: this.headerService.selectedSubjectId,
+      title: this.assignmentSetup.title,
+      totalSelectedQuestions: this.getDomainsTotal()
+    };
+    this.addingAssignmentService.addAssignment(this.assignment).subscribe(res => {
+      if (res.success) {
+        this.showSuccessDialog = true;
+      }
+    })
+  }
+
+  getDomainsTotal = (): number => {
+    let domainTotal: number = 0;
+    this.assignmentDomain.forEach(domain => {
+      domainTotal += domain.totalQuestions;
+    })
+    return domainTotal;
+  }
+
+  addAssignmentReading() {
+    this.assignmentReading = {
+      assignmentTypeId: this.selectedAssignmentType.assignmentTypeId,
+      dueDate: this.assignmentSetup.dueDate,
+      bookSelectionCriteria: this.assignmentBook.bookSelectionCreteria,
+      recipientTypeId: this.assignmentSetup.target.assignmentRecipientTypeId.toString(),
+      schoolId: this.roles[0].schools[0].schoolId,
+      selectedBookId: this.assignmentBook.book.storyId,
+      selectedGrades: this.assignmentSetup.selectedGrades,
+      selectedGroups: this.assignmentSetup.selectedGroups,
+      selectedReadingSubLevelId: this.assignmentBook.assignmentStories.readingSubLevelId,
+      selectedSections: this.assignmentSetup.selectedSections,
+      selectedStudents: this.assignmentSetup.selectedStudents,
+      startDate: this.assignmentSetup.startDate,
+      subjectId: this.headerService.selectedSubjectId,
+      title: this.assignmentSetup.title,
+      correctionType: this.assignmentBook.correctionType
+    }
+    if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.ReadingComprehension) {
+      this.addingAssignmentService.addAssignmentReading(this.assignmentReading).subscribe(res => {
+        if (res.success) {
+          this.showSuccessDialog = true;
+          this.isReviewPage = false;
+          this.activeStep = 0;
+        }
+      })
+    }
+    if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.OralReading) {
+      this.addingAssignmentService.addAssignmentOralReading(this.assignmentReading).subscribe(res => {
+        if (res.success) {
+          this.showSuccessDialog = true;
+          this.isReviewPage = false;
+          this.activeStep = 0;
+        }
+      })
+    }
+
+    if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.Listening) {
+      this.addingAssignmentService.addAssignmentListeningReading(this.assignmentReading).subscribe(res => {
+        if (res.success) {
+          this.showSuccessDialog = true;
+          this.activeStep = 0;
+        }
+      })
+    }
   }
 
   onAssignmentDetails() {
@@ -161,6 +291,7 @@ export class NewAssignmentComponent implements OnInit {
 
   onConfirm() {
     this.showSuccessDialog = false;
+    this.router.navigate(['/features/assignments'])
     // Navigate to assignments list
   }
 

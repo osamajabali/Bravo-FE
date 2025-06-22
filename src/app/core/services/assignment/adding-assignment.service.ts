@@ -5,6 +5,8 @@ import { HttpService } from '../shared-services/http.service';
 import { AssignmentRecipientTypes, AssignmentTypes } from '../../models/assignment/assignment-types.model';
 import { AssignmentsDomain, AssignmentsDomainSkills, SkillsDomainResponse } from '../../models/assignment/assignment-domain.model';
 import { AssignmentStories, StoryPaginationResponse } from '../../models/assignment/assignment-stories.model';
+import { AssignmentPayload } from '../../models/assignment/assignment-payload';
+import { AssignmentReading } from '../../models/assignment/assignment-reading.model';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +57,22 @@ export class AddingAssignmentService {
 
   getAssignmentStories = (assignmentStories : AssignmentStories): Observable<Result<StoryPaginationResponse>> => {
     return this.apiHlpr.post<Result<StoryPaginationResponse>>(`${this.controller}/add-assignment-stories`, assignmentStories);
+  }
+
+  addAssignment = (assignment : AssignmentPayload): Observable<Result<{isSuccess : boolean}>> => {
+    return this.apiHlpr.post<Result<{isSuccess : boolean}>>(`${this.controller}/add-skill-assignment`, assignment);
+  }
+
+  addAssignmentReading = (assignmentReading : AssignmentReading): Observable<Result<{isSuccess : boolean}>> => {
+    return this.apiHlpr.post<Result<{isSuccess : boolean}>>(`${this.controller}/add-reading-comprehension-assignment`, assignmentReading);
+  }
+
+  addAssignmentOralReading = (assignmentOralReading : AssignmentReading): Observable<Result<{isSuccess : boolean}>> => {
+    return this.apiHlpr.post<Result<{isSuccess : boolean}>>(`${this.controller}/add-oral-reading-assignment`, assignmentOralReading);
+  }
+
+  addAssignmentListeningReading = (assignmentOralReading : AssignmentReading): Observable<Result<{isSuccess : boolean}>> => {
+    return this.apiHlpr.post<Result<{isSuccess : boolean}>>(`${this.controller}/add-listening-assignment`, assignmentOralReading);
   }
 
 }

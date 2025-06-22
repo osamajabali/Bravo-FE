@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -9,13 +9,13 @@ import { DrawerModule } from 'primeng/drawer';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BookPreviewPopupComponent } from '../../book-preview-popup/book-preview-popup.component';
 import { AddingAssignmentService } from '../../../../core/services/assignment/adding-assignment.service';
-import { AssignmentStories, Story, StoryPaginationResponse } from '../../../../core/models/assignment/assignment-stories.model';
+import { AssignmentReadingPayload, AssignmentStories, Story, StoryPaginationResponse } from '../../../../core/models/assignment/assignment-stories.model';
 import { PaginatorState } from 'primeng/paginator';
 import { PaginationComponent } from "../../pagination/pagination.component";
 import { AssignmentSetup } from '../../../../core/models/assignment/assignment-setup.model';
 import { AssignmentTypes } from '../../../../core/models/assignment/assignment-types.model';
 
-interface SelectionType {
+export interface SelectionType {
   id: number;
   name: string;
 }
@@ -55,9 +55,10 @@ interface Book {
   styleUrl: './assignment-book.component.scss',
 })
 export class AssignmentBookComponent implements OnInit {
+  @Output() isSetupValid = new EventEmitter<boolean>();
 
   addingAssignmentService = inject(AddingAssignmentService);
-  selectedOption: string = 'isBookSelected';
+  selectedOption: boolean = false;
   showBookDrawer = false;
   selectedBook: Story | null = null;
 
@@ -79,7 +80,7 @@ export class AssignmentBookComponent implements OnInit {
 
   selectedType: SelectionType | null = null;
   selectedLevel: LevelType | null = null;
-  assignmentType : AssignmentTypes = new AssignmentTypes();
+  assignmentType: AssignmentTypes = new AssignmentTypes();
 
   readingFilter = {
     searchValue: '',
@@ -88,15 +89,26 @@ export class AssignmentBookComponent implements OnInit {
   assignmentStories: AssignmentStories = new AssignmentStories();
   books: StoryPaginationResponse = new StoryPaginationResponse();
   first: number = 0;
+  assignmentBook: AssignmentReadingPayload = new AssignmentReadingPayload()
 
   ngOnInit(): void {
     this.getSublevelReading();
   }
 
   getSublevelReading() {
+    this.isSetupValid.emit(true);
     this.addingAssignmentService.getAssignmentReadingSublevels().subscribe(res => {
       if (res.success) {
         this.subLevels = res.result;
+        if (localStorage.getItem('assignmentBookReading')) {
+          this.assignmentBook = JSON.parse(localStorage.getItem('assignmentBookReading'));
+          this.selectedBook = this.assignmentBook.book;
+          this.selectedType = this.selectionTypes.find(x => x.id == this.assignmentType.assignmentTypeId);
+          this.assignmentStories = this.assignmentBook.assignmentStories;
+          this.selectedOption = this.assignmentBook.isSelectBook;
+          this.assignmentType.name = this.assignmentBook.assignmentTypeName;
+          this.updateValue()
+        }
       }
     });
 
@@ -110,13 +122,33 @@ export class AssignmentBookComponent implements OnInit {
     this.assignmentStories.assignmentTypeId = assignmentSetup.assignmentTypeId;
     this.addingAssignmentService.getAssignmentStories(this.assignmentStories).subscribe(res => {
       if (res.success) {
-        this.books = res.result
+        this.books = res.result;
+        this.showBookDrawer = true;
       }
     })
   }
 
   onSelectBook() {
-    this.showBookDrawer = true;
+    this.getAssignmentStories()
+  }
+
+  updateValue() {
+    this.assignmentBook = {
+      book: this.selectedBook,
+      isSelectBook: this.selectedOption,
+      selectedType: this.selectedType,
+      assignmentStories: this.assignmentStories,
+      assignmentTypeName: this.assignmentStories.readingSubLevelId ? this.subLevels.find(x => x.readingSubLevelId == this.assignmentStories.readingSubLevelId).name : '',
+      bookSelectionCreteria : this.selectedOption ? 1 : 0,
+      correctionType : null
+    }
+    if (this.assignmentBook.assignmentStories && this.assignmentBook.book && this.assignmentBook.selectedType) {
+      this.isSetupValid.emit(false);
+    } else {
+      this.isSetupValid.emit(true)
+    }
+
+    localStorage.setItem('assignmentBookReading', JSON.stringify(this.assignmentBook))
   }
 
   onCloseDrawer() {
@@ -136,6 +168,9 @@ export class AssignmentBookComponent implements OnInit {
   onBookSelect(book: Story) {
     this.selectedBook = book;
     this.showBookDrawer = false;
+    this.selectedBook.assignmentTypeName = this.subLevels.find(x => x.readingSubLevelId == this.assignmentStories.readingSubLevelId).name;
+
+    this.updateValue()
   }
 
   onRemoveBook() {

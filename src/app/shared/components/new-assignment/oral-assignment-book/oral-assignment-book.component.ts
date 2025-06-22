@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -9,10 +9,11 @@ import { DrawerModule } from 'primeng/drawer';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BookPreviewPopupComponent } from '../../book-preview-popup/book-preview-popup.component';
 import { AssignmentTypes } from '../../../../core/models/assignment/assignment-types.model';
-import { AssignmentStories, Story, StoryPaginationResponse } from '../../../../core/models/assignment/assignment-stories.model';
+import { AssignmentReadingPayload, AssignmentStories, Story, StoryPaginationResponse } from '../../../../core/models/assignment/assignment-stories.model';
 import { AddingAssignmentService } from '../../../../core/services/assignment/adding-assignment.service';
 import { PaginatorState } from 'primeng/paginator';
 import { PaginationComponent } from "../../pagination/pagination.component";
+import { SelectionType } from '../assignment-book/assignment-book.component';
 
 @Component({
   selector: 'app-oral-assignment-book',
@@ -28,13 +29,15 @@ import { PaginationComponent } from "../../pagination/pagination.component";
     DrawerModule,
     BookPreviewPopupComponent,
     PaginationComponent
-],
+  ],
   templateUrl: './oral-assignment-book.component.html',
   styleUrl: './oral-assignment-book.component.scss',
 })
 export class OralAssignmentBookComponent implements OnInit {
+  @Output() isSetupValid = new EventEmitter<boolean>();
 
-  selectedOption: string = 'isBookSelected';
+  addingAssignmentService = inject(AddingAssignmentService);
+  selectedOption: boolean = false;
   showBookDrawer = false;
   selectedBook: Story | null = null;
 
@@ -42,30 +45,47 @@ export class OralAssignmentBookComponent implements OnInit {
   showPreviewPopup: boolean = false;
   previewBookTitle: string = '';
 
+  selectionTypes: SelectionType[] = [
+    { id: 1, name: 'Teacher Selection' },
+    { id: 2, name: 'Student Selection' },
+    { id: 3, name: 'Random Selection' },
+  ];
+
+  selectedType: SelectionType | null = null;
+  assignmentType: AssignmentTypes = new AssignmentTypes();
+
   readingFilter = {
     searchValue: '',
   };
-
-  assignmentStories: AssignmentStories = new AssignmentStories();
-  addingAssignmentService = inject(AddingAssignmentService);
   subLevels: { readingSubLevelId: number; name: string; }[] = [];
+  assignmentStories: AssignmentStories = new AssignmentStories();
   books: StoryPaginationResponse = new StoryPaginationResponse();
   first: number = 0;
-  assignmentType : AssignmentTypes = new AssignmentTypes();
+  assignmentBook: AssignmentReadingPayload = new AssignmentReadingPayload()
 
   ngOnInit(): void {
     this.getSublevelReading();
   }
 
   getSublevelReading() {
+    this.isSetupValid.emit(true);
     this.addingAssignmentService.getAssignmentReadingSublevels().subscribe(res => {
       if (res.success) {
         this.subLevels = res.result;
+        if (localStorage.getItem('assignmentBookReading')) {
+          this.assignmentBook = JSON.parse(localStorage.getItem('assignmentBookReading'));
+          this.selectedBook = this.assignmentBook.book;
+          this.selectedType = this.selectionTypes.find(x => x.id == this.assignmentType.assignmentTypeId);
+          this.assignmentStories = this.assignmentBook.assignmentStories;
+          this.selectedOption = this.assignmentBook.isSelectBook;
+          this.assignmentType.name = this.assignmentBook.assignmentTypeName;
+          this.updateValue()
+        }
       }
     });
 
-    if(localStorage.getItem('selectedAssignmentType')){
-      this.assignmentType = JSON.parse(localStorage.getItem('selectedAssignmentType'));   
+    if (localStorage.getItem('selectedAssignmentType')) {
+      this.assignmentType = JSON.parse(localStorage.getItem('selectedAssignmentType'));
     }
   }
 
@@ -74,19 +94,33 @@ export class OralAssignmentBookComponent implements OnInit {
     this.assignmentStories.assignmentTypeId = assignmentSetup.assignmentTypeId;
     this.addingAssignmentService.getAssignmentStories(this.assignmentStories).subscribe(res => {
       if (res.success) {
-        this.books = res.result
+        this.books = res.result;
+        this.showBookDrawer = true;
       }
     })
   }
 
-  nextPage($event: PaginatorState) {
-    this.assignmentStories.pageNumber = $event.page;
-    this.first = $event.first;
-    this.getAssignmentStories();
+  onSelectBook() {
+    this.getAssignmentStories()
   }
 
-  onSelectBook() {
-    this.showBookDrawer = true;
+  updateValue() {
+    this.assignmentBook = {
+      book: this.selectedBook,
+      isSelectBook: this.selectedOption,
+      selectedType: this.selectedType,
+      assignmentStories: this.assignmentStories,
+      assignmentTypeName: this.assignmentStories.readingSubLevelId ? this.subLevels.find(x => x.readingSubLevelId == this.assignmentStories.readingSubLevelId).name : '',
+      bookSelectionCreteria: null,
+      correctionType : this.selectedOption ? 1 : 0
+    }
+    if (this.assignmentBook.assignmentStories && this.assignmentBook.book) {
+      this.isSetupValid.emit(false);
+    } else {
+      this.isSetupValid.emit(true)
+    }
+
+    localStorage.setItem('assignmentBookReading', JSON.stringify(this.assignmentBook))
   }
 
   onCloseDrawer() {
@@ -106,6 +140,9 @@ export class OralAssignmentBookComponent implements OnInit {
   onBookSelect(book: Story) {
     this.selectedBook = book;
     this.showBookDrawer = false;
+    this.selectedBook.assignmentTypeName = this.subLevels.find(x => x.readingSubLevelId == this.assignmentStories.readingSubLevelId).name;
+
+    this.updateValue()
   }
 
   onRemoveBook() {
@@ -116,6 +153,12 @@ export class OralAssignmentBookComponent implements OnInit {
     this.onCloseDrawer();
     this.previewBookTitle = book.title;
     this.showPreviewPopup = true;
+  }
+
+  nextPage($event: PaginatorState) {
+    this.assignmentStories.pageNumber = $event.page;
+    this.first = $event.first;
+    this.getAssignmentStories();
   }
 
   onQuestionsSelected(questions: any[]) {

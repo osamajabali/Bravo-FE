@@ -1,24 +1,23 @@
 <div class="domain">
-  <div class="title">Assignment Domains and skills</div>
+  <div class="title">Assignment Details</div>
 
-  <div class="selection-boxes">
-    <div class="selection-box" [class.selected]="selectedOption === 'showCorrectAnswer'"
-      (click)="selectedOption = 'showCorrectAnswer'">
-      <p-radioButton [(ngModel)]="selectedOption" value="showCorrectAnswer"
-        [inputId]="'showCorrectAnswer'"></p-radioButton>
-      <span>Show correct answer</span>
-    </div>
-    <div class="selection-box" [class.selected]="selectedOption === 'allQuestions'"
-      (click)="selectedOption = 'allQuestions'">
-      <p-radioButton [(ngModel)]="selectedOption" value="allQuestions" [inputId]="'allQuestions'"></p-radioButton>
-      <div>
-        <span>Same questions for all students </span>
-        <div class="sub-title">
-          System shows different questions if unselected.
-        </div>
+<div class="selection-boxes">
+  <div class="selection-box" [class.selected]="selectedOptions.isShowCorrectAnswer">
+    <p-checkbox [(ngModel)]="selectedOptions.isShowCorrectAnswer" (ngModelChange)="updateValue()" binary="true"></p-checkbox>
+    <span>Show correct answer</span>
+  </div>
+  
+  <div class="selection-box" [class.selected]="selectedOptions.isSameQuestionsForAllStudents">
+    <p-checkbox [(ngModel)]="selectedOptions.isSameQuestionsForAllStudents" (ngModelChange)="updateValue()" binary="true"></p-checkbox>
+    <div>
+      <span>Same questions for all students</span>
+      <div class="sub-title">
+        System shows different questions if unselected.
       </div>
     </div>
   </div>
+</div>
+
 
   <div class="total">Total questions: {{totalQuestions}}</div>
 
@@ -32,7 +31,7 @@
             <div class="total-questions">
               <span>Total questions: {{domain.totalQuestions}}</span>
             </div>
-            <img src="icon-trash-red-large.svg" alt="" (click)="removeDomain(domain.id)" />
+            <img src="icon-trash-red-large.svg" alt="" (click)="removeDomain(domain.domainId)" />
             <img src="arrow-gray-down.svg" alt="" (click)="toggleCollapse(domain)"
               [class.rotated]="!domain.isCollapsed" />
           </div>
@@ -42,9 +41,9 @@
       <div class="panel-content">
         <div class="domain-selection">
           <div class="control-title">Pick a skill domain</div>
-          <p-dropdown [options]="domain.skillDomains" name="selectedSkillId" [(ngModel)]="domain.id" optionLabel="name"
-            optionValue="domainId" placeholder="Pick a skill domain" (ngModelChange)="onDomainSelect($event , domain)"
-            [style]="{ width: '100%' }"></p-dropdown>
+          <p-dropdown [options]="domain.skillDomains" name="selectedSkillId" [(ngModel)]="domain.domainId"
+            optionLabel="name" optionValue="domainId" placeholder="Pick a skill domain"
+            (ngModelChange)="onDomainSelect($event , domain)" [style]="{ width: '100%' }"></p-dropdown>
         </div>
 
         @if (domain.skills.length) {
@@ -67,40 +66,40 @@
           </div>
           <div class="grid-body">
             @for (skill of domain.skills; track $index) {
-          <div class="grid-row">
-            <div class="grid-cell">{{ skill.name }}</div>
-            <div class="grid-cell">
-              <div class="input-container">
-                <p-inputNumber [showButtons]="false" [name]="'beginnerValue' + $index" [(ngModel)]="skill.beginnerValue"
-                  (ngModelChange)="updateValues(skill, 'beginner' , domain)" [min]="0"
-                  [max]="skill.beginnerQuestionsCount" [style]="{ width: '100%' }"></p-inputNumber>
-                <div class="out-of">{{skill.beginnerQuestionsCount}}</div>
+            <div class="grid-row">
+              <div class="grid-cell">{{ skill.name }}</div>
+              <div class="grid-cell">
+                <div class="input-container">
+                  <p-inputNumber [showButtons]="false" [name]="'beginnerValue' + $index"
+                    [(ngModel)]="skill.beginnerValue" (ngModelChange)="updateValues(skill, 'beginner' , domain)"
+                    [min]="0" [max]="skill.beginnerQuestionsCount" [style]="{ width: '100%' }"></p-inputNumber>
+                  <div class="out-of">{{skill.beginnerQuestionsCount}}</div>
+                </div>
+                <img src="icon-eye-blue-box.svg" class="pointer" alt=""
+                  (click)="openQuestionPreview(skill.name, 'beginner')" />
               </div>
-              <img src="icon-eye-blue-box.svg" class="pointer" alt=""
-                (click)="openQuestionPreview(skill.name, 'beginner')" />
-            </div>
-            <div class="grid-cell">
-              <div class="input-container">
-                <p-inputNumber [showButtons]="false" [name]="'intermediateValue' + $index"
-                  [(ngModel)]="skill.intermediateValue" (ngModelChange)="updateValues(skill, 'intermediate' , domain)"
-                  [min]="0" [max]="skill.intermediateQuestionsCount" [style]="{ width: '100%' }"></p-inputNumber>
-                <div class="out-of">{{skill.intermediateQuestionsCount}}</div>
+              <div class="grid-cell">
+                <div class="input-container">
+                  <p-inputNumber [showButtons]="false" [name]="'intermediateValue' + $index"
+                    [(ngModel)]="skill.intermediateValue" (ngModelChange)="updateValues(skill, 'intermediate' , domain)"
+                    [min]="0" [max]="skill.intermediateQuestionsCount" [style]="{ width: '100%' }"></p-inputNumber>
+                  <div class="out-of">{{skill.intermediateQuestionsCount}}</div>
+                </div>
+                <img src="icon-eye-blue-box.svg" class="pointer" alt=""
+                  (click)="openQuestionPreview(skill.name, 'intermediate')" />
               </div>
-              <img src="icon-eye-blue-box.svg" class="pointer" alt=""
-                (click)="openQuestionPreview(skill.name, 'intermediate')" />
-            </div>
-            <div class="grid-cell">
-              <div class="input-container">
-                <p-inputNumber [showButtons]="false" [name]="'advanceValue' + $index" [(ngModel)]="skill.advanceValue"
-                  (ngModelChange)="updateValues(skill, 'advanced' , domain)" [min]="0"
-                  [max]="skill.advanceQuestionsCount" [style]="{ width: '100%' }"></p-inputNumber>
-                <div class="out-of">{{skill.advanceQuestionsCount}}</div>
+              <div class="grid-cell">
+                <div class="input-container">
+                  <p-inputNumber [showButtons]="false" [name]="'advanceValue' + $index" [(ngModel)]="skill.advanceValue"
+                    (ngModelChange)="updateValues(skill, 'advanced' , domain)" [min]="0"
+                    [max]="skill.advanceQuestionsCount" [style]="{ width: '100%' }"></p-inputNumber>
+                  <div class="out-of">{{skill.advanceQuestionsCount}}</div>
+                </div>
+                <img src="icon-eye-blue-box.svg" class="pointer" alt=""
+                  (click)="openQuestionPreview(skill.name, 'advanced')" />
               </div>
-              <img src="icon-eye-blue-box.svg" class="pointer" alt=""
-                (click)="openQuestionPreview(skill.name, 'advanced')" />
             </div>
-          </div>
-          }
+            }
           </div>
           <!-- <div class="d-flex justify-content-between align-items-center my-4">
             @if(domain.skills.length){

@@ -10,6 +10,8 @@ import { AssignmentRecipientTypes } from '../../../../core/models/assignment/ass
 import { HeaderService } from '../../../../core/services/header-services/header.service';
 import { TargetEnum } from '../../../../core/models/shared-models/enums';
 import { AssignmentSetup } from '../../../../core/models/assignment/assignment-setup.model';
+import { SharedService } from '../../../../core/services/shared-services/shared.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-assignment-setup',
@@ -27,10 +29,11 @@ import { AssignmentSetup } from '../../../../core/models/assignment/assignment-s
 })
 export class AssignmentSetupComponent implements OnInit {
 
-  @Output() isSetupValid  = new EventEmitter<boolean>();
+  @Output() isSetupValid = new EventEmitter<boolean>();
 
   addingAssignmentService = inject(AddingAssignmentService);
   headerService = inject(HeaderService);
+  sharedService = inject(SharedService);
   targets: AssignmentRecipientTypes[] = [];
   selectedTarget: AssignmentRecipientTypes = new AssignmentRecipientTypes();
   grades: { gradeId: number; name: string; }[] = [];
@@ -38,14 +41,14 @@ export class AssignmentSetupComponent implements OnInit {
   groups: { groupId: number; name: string; }[] = [];
   students: { studentId: number; fullName: string; }[] = [];
   targetEnum = TargetEnum;
-  assignmentSetup : AssignmentSetup = new AssignmentSetup();
-  selectedGrades : { gradeId: number; name: string; }[] = [];
+  assignmentSetup: AssignmentSetup = new AssignmentSetup();
+  selectedGrades: { gradeId: number; name: string; }[] = [];
 
   ngOnInit(): void {
     this.getTargets();
   }
-  
-  
+
+
   getTargets() {
     this.isSetupValid.emit(true)
     this.addingAssignmentService.getAssignmentRecipientTypes().subscribe(res => {
@@ -53,36 +56,37 @@ export class AssignmentSetupComponent implements OnInit {
         this.targets = res.result;
         this.selectedTarget = this.targets.find(x => x.name == 'Grades');
         this.assignmentSetup.target = this.selectedTarget;
-        if(this.targets.length){
+        if (this.targets.length) {
           this.getLookups()
         }
       }
     });
-
   }
 
   getLookups() {
     this.addingAssignmentService.getAssignmentGrades(this.headerService.selectedSubjectId).subscribe(res => {
       if (res.success) {
         this.grades = res.result;
-        this.targets.find(x => x.name == 'Grades').selected = true;
-        if(localStorage.getItem('assignmentSetup') && this.grades.length){
-          let retrievedData : AssignmentSetup = JSON.parse(localStorage.getItem('assignmentSetup'))
+
+        if (localStorage.getItem('assignmentSetup') && this.grades.length) {
+          let retrievedData: AssignmentSetup = JSON.parse(localStorage.getItem('assignmentSetup'))
           this.selectedTarget = retrievedData.target;
-          
           this.targets.find(x => x.assignmentRecipientTypeId == this.selectedTarget.assignmentRecipientTypeId).selected = true;
           this.toggleSelected(this.selectedTarget);
           retrievedData.startDate = new Date(retrievedData.startDate);
           retrievedData.dueDate = new Date(retrievedData.dueDate);
           this.assignmentSetup = retrievedData;
+          this.getGroups();
+          this.getSections();
           this.isSetupValid.emit(false);
+        } else {
+          this.targets.find(x => x.name == 'Grades').selected = true;
         }
       }
     })
   }
 
   toggleSelected(target: AssignmentRecipientTypes): void {
-    this.assignmentSetup.selectedGrades = [];
     this.assignmentSetup.selectedGroups = [];
     this.assignmentSetup.selectedSections = [];
     this.assignmentSetup.selectedStudents = [];
@@ -90,11 +94,19 @@ export class AssignmentSetupComponent implements OnInit {
     this.isSetupValid.emit(true)
     this.sections = [];
     if (target.selected) return;
+    if(this.assignmentSetup.selectedGrades && (target.assignmentRecipientTypeId == this.targetEnum.Sections || target.assignmentRecipientTypeId == this.targetEnum.Students )){
+      this.getSections()
+    }
 
+    if(this.assignmentSetup.selectedGrades && target.assignmentRecipientTypeId == this.targetEnum.Groups){
+      this.getGroups()
+    }
+    
     this.targets.forEach(t => t.selected = false);
     this.selectedTarget = target;
     this.assignmentSetup.target = this.selectedTarget;
     target.selected = true;
+    
   }
 
   getSections = () => {
@@ -124,15 +136,17 @@ export class AssignmentSetupComponent implements OnInit {
     })
   }
 
-  assignmentSetupUpdate = (setupForm : NgForm) =>{
-    if(this.assignmentSetup.selectedGrades.length > 0){
+  assignmentSetupUpdate = (setupForm: NgForm) => {
+    if (this.assignmentSetup.selectedGrades) {
       this.assignmentSetup.selectedGradesNames = this.grades.filter(x => this.assignmentSetup.selectedGrades.includes(x.gradeId)).map(x => x.name);
+    } else {
+      this.isSetupValid.emit(true)
     }
     localStorage.setItem('assignmentSetup', JSON.stringify(this.assignmentSetup));
-    
-    if(setupForm.invalid){
+
+    if (setupForm.invalid) {
       this.isSetupValid.emit(true)
-    }else{
+    } else {
       this.isSetupValid.emit(false)
     }
   }

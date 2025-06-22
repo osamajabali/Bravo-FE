@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -18,6 +18,7 @@ import { json } from 'stream/consumers';
 import { PaginationComponent } from "../../pagination/pagination.component";
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { TranslateModule } from '@ngx-translate/core';
+import { CheckboxModule } from 'primeng/checkbox';
 
 interface Skill {
   name: string;
@@ -27,7 +28,7 @@ interface Skill {
 }
 
 export interface Domain {
-  id: number;
+  domainId: number;
   selectedDomain?: string;
   searchText: string;
   skills: SkillsDomain[];
@@ -53,18 +54,27 @@ export interface Domain {
     PanelModule,
     QuestionPreviewPopupComponent,
     TranslateModule,
-    PaginatorModule
+    PaginatorModule,
+    CheckboxModule
   ],
   templateUrl: './assignment-domains-and-skills.component.html',
   styleUrl: './assignment-domains-and-skills.component.scss',
 })
 export class AssignmentDomainsAndSkillsComponent implements OnInit {
+  @Output() isSetupValid = new EventEmitter<boolean>();
+
   addingAssignmentService = inject(AddingAssignmentService);
   headerService = inject(HeaderService);
   sharedService = inject(SharedService);
-  selectedOption: string = '';
+  selectedOptions: {
+    isShowCorrectAnswer: boolean;
+    isSameQuestionsForAllStudents: boolean;
+  } = {
+      isShowCorrectAnswer: false,
+      isSameQuestionsForAllStudents: false
+    };
   domains: Domain[] = [{
-    id: 0,
+    domainId: 0,
     searchText: '',
     skills: [],
     isCollapsed: false,
@@ -92,6 +102,7 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
   protected Math = Math;
 
   ngOnInit(): void {
+    this.isSetupValid.emit(true);
     this.getDomains();
   }
 
@@ -100,10 +111,10 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
     if (retrievedData) {
       this.assignmentData = JSON.parse(retrievedData);
       // this.assignmentDomain ={
-      //   selectedGrades : assignmentData.selectedGrades,
-      //   selectedGroups : assignmentData.selectedGroups,
-      //   selectedSections : assignmentData.selectedSections,
-      //   selectedStudents : assignmentData.selectedStudents,
+      //   selectedGrades : this.assignmentData.selectedGrades,
+      //   selectedGroups : this.assignmentData.selectedGroups,
+      //   selectedSections : this.assignmentData.selectedSections,
+      //   selectedStudents : this.assignmentData.selectedStudents,
       //   subjectId : this.headerService.selectedSubjectId
       // }
       this.assignmentDomain = {
@@ -115,12 +126,17 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
       }
     }
 
+    if (localStorage.getItem('SkillsSelectedOptions')) {
+      this.selectedOptions = JSON.parse(localStorage.getItem('SkillsSelectedOptions'))
+    }
+
     this.addingAssignmentService.getAssignmentDomains(this.assignmentDomain).subscribe(res => {
       if (res.success) {
         this.skillDomains = res.result
         if (localStorage.getItem('AssignmentDomainsAndSkills')) {
           let retrievedData: Domain[] = JSON.parse(localStorage.getItem('AssignmentDomainsAndSkills'));
           this.domains = retrievedData;
+          this.updateValue()
           this.getDomainsTotal()
         } else {
           this.domains[0].skillDomains = this.skillDomains;
@@ -130,17 +146,29 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
   }
 
   addDomain() {
-    // Get all existing domainIds
-    const existingDomainIds = this.domains.map(domain => domain.id);
+    if (this.domains.length == 0 || this.domains == null) {
+      this.domains.push({
+        domainId: 0,
+        searchText: '',
+        skills: [],
+        isCollapsed: false,
+        skillDomains: this.skillDomains,
+        totalQuestions: 0,
+        updatedSkills: [],
+        first: 0,
+        learningOutcomes: []
+      });
+    }else{
+          // Get all existing domainIds
+    const existingDomainIds = this.domains.map(domain => domain.domainId);
 
     // Filter out the domainId from skillDomains that matches the previous domain IDs
     const newSkillDomains = this.domains[0].skillDomains.filter(skillDomain =>
       !existingDomainIds.includes(skillDomain.domainId)
     );
-
     // Add the new domain with the filtered skillDomains
     this.domains.push({
-      id: 0,
+      domainId: 0,
       searchText: '',
       skills: [],
       isCollapsed: false,
@@ -150,29 +178,20 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
       first: 0,
       learningOutcomes: []
     });
-
+    }
   }
 
 
   removeDomain(id: number) {
-    this.domains = this.domains.filter(domain => domain.id !== id);
+    this.domains = this.domains.filter(domain => domain.domainId !== id);
     localStorage.setItem('AssignmentDomainsAndSkills', JSON.stringify(this.domains));
-    if (!this.domains.length) {
-      this.domains = [{
-        id: 0,
-        searchText: '',
-        skills: [],
-        isCollapsed: false,
-        skillDomains: this.skillDomains,
-        totalQuestions: 0,
-        updatedSkills: [],
-        learningOutcomes: [],
-        first: 0
-      }];
-    }
   }
 
-  filterData = (domain : Domain) =>{
+  updateValue = () => {
+    localStorage.setItem('SkillsSelectedOptions', JSON.stringify(this.selectedOptions));
+  }
+
+  filterData = (domain: Domain) => {
     domain.skills = domain.learningOutcomes.filter(skill => skill.name.toLowerCase().includes(this.searchValue.toLowerCase()))
   }
 
@@ -181,7 +200,7 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
   }
 
   onDomainSelect(domainId: number, domain: Domain) {
-    this.domains.find(x => x.id == domain.id).id = domainId;
+    this.domains.find(x => x.domainId == domain.domainId).domainId = domainId;
     console.log(this.domains);
 
     this.assignmentsDomainSkills = {
@@ -195,7 +214,7 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
 
     this.addingAssignmentService.getAssignmentDomainsSkills(this.assignmentsDomainSkills).subscribe(res => {
       if (res.success) {
-        let currentDomain = this.domains.find(x => x.id == domainId);
+        let currentDomain = this.domains.find(x => x.domainId == domainId);
         currentDomain.skills = res.result.learningOutcomes;
         currentDomain.learningOutcomes = res.result.learningOutcomes;
       }
@@ -212,7 +231,7 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
     updatedSkill[`${skillLevel}Value`] = skill[`${skillLevel}Value`];
 
     // Find the domain where the skills need to be updated
-    const domainSkills = this.domains.find(x => x.id === domain.id);
+    const domainSkills = this.domains.find(x => x.domainId === domain.domainId);
 
     if (!domainSkills) {
       console.log("Domain not found");
@@ -241,7 +260,14 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
     domainSkills.totalQuestions = this.calculateTotalSummation(domain);
 
     // Save the updated domains with skills to localStorage
+    if (this.domains.find(x => x.totalQuestions == 0)) {
+      this.isSetupValid.emit(true);
+    } else {
+      this.isSetupValid.emit(false)
+    }
     localStorage.setItem('AssignmentDomainsAndSkills', JSON.stringify(this.domains));
+    localStorage.setItem('SkillsSelectedOptions', JSON.stringify(this.selectedOptions));
+
     this.getDomainsTotal();
   };
 

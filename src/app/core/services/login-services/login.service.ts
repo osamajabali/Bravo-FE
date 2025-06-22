@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { AccessToken } from '../../models/login-models/access-token';
-import { LoggedInUser } from '../../models/login-models/logged-in-user';
+import { LoggedInUser, Role } from '../../models/login-models/logged-in-user';
 import { LogIn } from '../../models/login-models/login.model';
 import { HttpService } from '../shared-services/http.service';
 import { Result } from '../../models/shared-models/result';
