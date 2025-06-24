@@ -14,14 +14,15 @@
   <form #setupForm="ngForm">
 
     @if (selectedTarget) {
-          <!-- Grades -->
+    <!-- Grades -->
 
     @if (selectedTarget.assignmentRecipientTypeId == targetEnum.Grades){
     <div class="form-group">
       <div class="label">Pick Grades</div>
-      <p-multiselect id="grade" [options]="grades" required name="selectedGrades" [(ngModel)]="assignmentSetup.selectedGrades"
-        (ngModelChange)="assignmentSetupUpdate(setupForm)" optionLabel="name" optionValue="gradeId" placeholder="Select Grade"
-        [showClear]="true" class="w-100"></p-multiselect>
+      <p-multiselect id="grade" [options]="grades" required name="selectedGrades"
+        [(ngModel)]="assignmentSetup.selectedGrades" (ngModelChange)="assignmentSetupUpdate(setupForm)"
+        optionLabel="name" optionValue="gradeId" placeholder="Select Grade" [showClear]="true"
+        class="w-100"></p-multiselect>
     </div>
     }
 
@@ -30,15 +31,16 @@
     @else if (selectedTarget.assignmentRecipientTypeId == targetEnum.Sections){
     <div class="form-group">
       <div class="label">Pick Grades</div>
-      <p-multiselect id="grade" [options]="grades" required name="selectedGrades" [(ngModel)]="assignmentSetup.selectedGrades"
-        optionLabel="name" optionValue="gradeId" placeholder="Select Grade" [showClear]="true"
-        (ngModelChange)="getSections();" class="w-100"></p-multiselect>
+      <p-multiselect id="grade" [options]="grades" required name="selectedGrades"
+        [(ngModel)]="assignmentSetup.selectedGrades" optionLabel="name" optionValue="gradeId" placeholder="Select Grade"
+        [showClear]="true" (ngModelChange)="getSections();" class="w-100"></p-multiselect>
 
       @if (sections.length) {
       <div class="label mt-2">Pick {{selectedTarget.name}}</div>
       <p-multiselect id="homerooms" [options]="sections" required name="selectedSections"
-        [(ngModel)]="assignmentSetup.selectedSections" (ngModelChange)="assignmentSetupUpdate(setupForm)" optionLabel="name"
-        optionValue="sectionId" placeholder="Select homerooms" [showClear]="true" class="w-100"></p-multiselect>
+        [(ngModel)]="assignmentSetup.selectedSections" (ngModelChange)="assignmentSetupUpdate(setupForm)"
+        optionLabel="name" optionValue="sectionId" placeholder="Select homerooms" [showClear]="true"
+        class="w-100"></p-multiselect>
       }
     </div>
     }
@@ -49,9 +51,9 @@
     <div class="form-group">
 
       <div class="label">Pick Grades</div>
-      <p-multiselect id="grade" [options]="grades" required name="selectedGrades" [(ngModel)]="assignmentSetup.selectedGrades"
-        optionLabel="name" optionValue="gradeId" placeholder="Select Grade" [showClear]="true"
-        (ngModelChange)="getSections();" class="w-100"></p-multiselect>
+      <p-multiselect id="grade" [options]="grades" required name="selectedGrades"
+        [(ngModel)]="assignmentSetup.selectedGrades" optionLabel="name" optionValue="gradeId" placeholder="Select Grade"
+        [showClear]="true" (ngModelChange)="getSections();" class="w-100"></p-multiselect>
 
       @if (sections.length) {
       <div class="label mt-2">Pick Homerooms </div>
@@ -64,8 +66,9 @@
       @if (students.length) {
       <div class="label mt-2">Pick {{selectedTarget.name}}</div>
       <p-multiselect id="homerooms" required [options]="students" name="selectedStudents"
-        [(ngModel)]="assignmentSetup.selectedStudents" (ngModelChange)="assignmentSetupUpdate(setupForm)" optionLabel="fullName"
-        optionValue="studentId" placeholder="Select students" [showClear]="true" class="w-100"></p-multiselect>
+        [(ngModel)]="assignmentSetup.selectedStudents" (ngModelChange)="assignmentSetupUpdate(setupForm)"
+        optionLabel="fullName" optionValue="studentId" placeholder="Select students" [showClear]="true"
+        class="w-100"></p-multiselect>
       }
     </div>
     }
@@ -75,14 +78,15 @@
     @else if (selectedTarget.assignmentRecipientTypeId == targetEnum.Groups){
     <div class="form-group">
       <div class="label">Pick Grades</div>
-      <p-multiselect id="grade" required [options]="grades" name="selectedGrades" [(ngModel)]="assignmentSetup.selectedGrades"
-        optionLabel="name" optionValue="gradeId" (ngModelChange)="assignmentSetupUpdate(setupForm)" placeholder="Select Grade"
-        [showClear]="true" (ngModelChange)="getGroups()" class="w-100"></p-multiselect>
+      <p-multiselect id="grade" required [options]="grades" name="selectedGrades"
+        [(ngModel)]="assignmentSetup.selectedGrades" (ngModelChange)="getGroups()" optionLabel="name"
+        optionValue="gradeId" placeholder="Select Grade" [showClear]="true" class="w-100"></p-multiselect>
 
       @if (groups.length) {
       <div class="label mt-2">Pick {{selectedTarget.name}}</div>
-      <p-multiselect id="homerooms" required [options]="groups" name="selectedGroups" [(ngModel)]="assignmentSetup.selectedGroups"
-        optionLabel="name" placeholder="Select students" [showClear]="true" (ngModelChange)="assignmentSetupUpdate(setupForm)"
+      <p-multiselect id="homerooms" required [options]="groups" name="selectedGroups"
+        [(ngModel)]="assignmentSetup.selectedGroups" optionLabel="name" optionValue="groupId"
+        placeholder="Select students" [showClear]="true" (ngModelChange)="assignmentSetupUpdate(setupForm)"
         class="w-100"></p-multiselect>
       }
     </div>
@@ -95,7 +99,7 @@
 
     <div class="form-group">
       <div class="label">Assignment Title</div>
-      <input pInputText type="text" class="w-100" name="title" [(ngModel)]="assignmentSetup.title"
+      <input pInputText type="text" class="w-100" name="title" [(ngModel)]="assignmentSetup.title" [maxlength]="60"
         placeholder="Enter assignment title" required (ngModelChange)="assignmentSetupUpdate(setupForm)" />
     </div>
 
@@ -103,14 +107,16 @@
       <div style="flex: 1">
         <div class="label">Start Date</div>
         <p-calendar dateFormat="dd/mm/yy" placeholder="Select start date" name="startDate"
-          [(ngModel)]="assignmentSetup.startDate" required styleClass="w-100" (ngModelChange)="assignmentSetupUpdate(setupForm)"
-          [showIcon]="true"></p-calendar>
+          [(ngModel)]="assignmentSetup.startDate" required styleClass="w-100"
+          (ngModelChange)="assignmentSetupUpdate(setupForm)" [showIcon]="true"></p-calendar>
       </div>
       <div style="flex: 1">
         <div class="label">Due Date</div>
-        <p-calendar dateFormat="dd/mm/yy" placeholder="Select due date" name="dueDate" [minDate]="assignmentSetup.startDate"
-          [(ngModel)]="assignmentSetup.dueDate" required styleClass="w-100" [showIcon]="true"
-          (ngModelChange)="assignmentSetupUpdate(setupForm)"></p-calendar>
+        @if (assignmentSetup.startDate) {
+        <p-calendar dateFormat="dd/mm/yy" placeholder="Select due date" name="dueDate"
+          [minDate]="assignmentSetup.startDate" [(ngModel)]="assignmentSetup.dueDate" required styleClass="w-100"
+          [showIcon]="true" (ngModelChange)="assignmentSetupUpdate(setupForm);"></p-calendar>
+        }
       </div>
     </div>
   </form>

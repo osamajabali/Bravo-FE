@@ -1,33 +1,46 @@
 <div class="assignment-book">
   <div class="title">Assignment Details</div>
 
-<div class="selection-boxes">
-  <div class="selection-box" [class.selected]="selectedOption === true" (click)="selectedOption = true">
-    <p-radioButton [(ngModel)]="selectedOption" [value]="true" (ngModelChange)="updateValue()"></p-radioButton>
-    <span>Select the book</span>
-  </div>
-  <div class="selection-box" [class.selected]="selectedOption === false" (click)="selectedOption = false">
-    <p-radioButton [(ngModel)]="selectedOption" [value]="false" (ngModelChange)="updateValue()"></p-radioButton>
-    <div>
-      <span>Send based on the student level</span>
+  <div class="selection-boxes">
+    <div class="selection-box" [class.selected]="selectedOption == false"
+      (click)="selectedOption = false ; checkValue()">
+      <p-radioButton name="selectedOption1" [(ngModel)]="selectedOption" [value]="false"
+        (ngModelChange)="checkValue()"></p-radioButton>
+      <div>
+        <span>Selection based on each students level</span>
+        <div class="sub-title">
+          Each student will recieve a random story from their current reading level
+        </div>
+      </div>
+    </div>
+
+    <div class="selection-box" [class.selected]="selectedOption == true"
+      (click)="selectedOption = true ; checkValue()">
+      <p-radioButton name="selectedOption" [(ngModel)]="selectedOption" [value]="true"
+        (ngModelChange)="checkValue()"></p-radioButton>
+      <div>
+      <span>Unified Selection for all students</span>
+      <div class="sub-title">
+        All students will recieve the same story
+      </div>
+      </div>
     </div>
   </div>
-</div>
 
 
-  <div class="form-group">
+  <div class="form-group" *ngIf="selectedOption">
     <div class="label">Selection Type</div>
-    <p-select [options]="selectionTypes" [(ngModel)]="selectedType" (ngModelChange)="updateValue()" optionLabel="name" placeholder="Teacher Selection"
-      class="w-100"></p-select>
+    <p-select [options]="selectionTypes" [(ngModel)]="selectedType" (ngModelChange)="updateValue()" optionLabel="name"
+      placeholder="Teacher Selection" class="w-100"></p-select>
   </div>
 
   <div class="form-group" *ngIf="selectedOption">
     <div class="label">Select Level</div>
-    <p-select [options]="subLevels" [(ngModel)]="assignmentStories.readingSubLevelId" (ngModelChange)="updateValue() ; onRemoveBook()"
-      optionLabel="name" optionValue="readingSubLevelId"
+    <p-select [options]="subLevels" [(ngModel)]="assignmentStories.readingSubLevelId"
+      (ngModelChange)="updateValue() ; onRemoveBook()" optionLabel="name" optionValue="readingSubLevelId"
       placeholder="Select Level" class="w-100"></p-select>
   </div>
-
+  @if (selectedOption && selectedType.id != 3) {
   @if(assignmentStories.readingSubLevelId){
   @if (!selectedBook) {
 
@@ -36,7 +49,7 @@
       <img src="icon-books.svg" alt="books" />
     </div>
     <div>
-      <div class="main-title">Select Assignment Book</div>
+      <div class="main-title">Select Assignment</div>
       <div class="sub-title">You can only pick one</div>
     </div>
     <div>
@@ -47,7 +60,7 @@
   </div>
   } @else {
   <div class="selected-book">
-    <div class="title">Selected Book</div>
+    <div class="title">Select a Story</div>
     <div class="book-card">
       <div class="book-cover">
         <img [src]="selectedBook.coverImageUrl" [alt]="selectedBook.title" />
@@ -76,6 +89,7 @@
   </div>
   }
   }
+  }
 </div>
 
 <p-drawer [(visible)]="showBookDrawer" [position]="'right'" [style]="{ width: '75%' }" [modal]="true"
@@ -91,7 +105,7 @@
       <div class="search-box">
         <span class="p-input-icon-left">
           <img src="icon-search.svg" alt="search" />
-          <input type="text" pInputText [(ngModel)]="readingFilter.searchValue" placeholder="Search books..." />
+          <input type="text" pInputText name="searchValue" [(ngModel)]="readingFilter.searchValue" (ngModelChange)="searchStories()" placeholder="Search books..." />
         </span>
       </div>
     </div>
@@ -108,7 +122,7 @@
             <span class="value">{{ book.title }}</span>
           </div>
           <div class="info-item">
-            <span class="label">Pages</span>
+            <span class="label">Pages Count</span>
             <span class="value">{{ book.pagesCount }} pages</span>
           </div>
           <div class="info-item">
@@ -125,7 +139,7 @@
             <span>View Book</span>
             <img src="icon-view-book-sml.svg" alt="view" />
           </button>
-          <button pButton label="Select Book" class="p-button-primary" (click)="onBookSelect(book)"></button>
+          <button pButton label="Select Story" class="p-button-primary" (click)="onBookSelect(book)"></button>
         </div>
       </div>
       }

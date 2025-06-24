@@ -42,12 +42,22 @@ export class AssignmentTypeSelectorComponent implements OnInit, OnDestroy {
     this.addingAssignmentsService.getAssignmenttypes().subscribe(res => {
       if (res.success) {
         this.assignmentTypes = res.result;
-        this.selectAssignmentType(this.assignmentTypes[0])
+        if (localStorage.getItem('selectedAssignmentType')) {
+          this.selectedAssignmentType = JSON.parse(localStorage.getItem('selectedAssignmentType'))
+          this.selectedAssignmentTypeChange.emit(this.selectedAssignmentType);
+        }
       }
     });
   }
 
+  changeSelection(assignmentType: AssignmentTypes) {
+    this.selectedAssignmentType = assignmentType;
+    this.selectedAssignmentTypeChange.emit(assignmentType);
+  }
+
   selectAssignmentType(assignmentType: AssignmentTypes) {
+    let lastSelected: AssignmentTypes = JSON.parse(localStorage.getItem('selectedAssignmentType'))
+    if (lastSelected.assignmentTypeId == assignmentType.assignmentTypeId) return;
     localStorage.removeItem('assignmentSetup');
     localStorage.removeItem('AssignmentDomainsAndSkills');
     localStorage.removeItem('SkillsSelectedOptions');

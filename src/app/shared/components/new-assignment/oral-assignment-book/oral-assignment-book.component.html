@@ -1,23 +1,31 @@
 <div class="assignment-book">
   <div class="title">Assignment Book</div>
 
-<div class="selection-boxes">
-  <div class="selection-box" [class.selected]="selectedOption === true" (click)="selectedOption = true">
-    <p-radioButton [(ngModel)]="selectedOption" [value]="true" (ngModelChange)="updateValue()"></p-radioButton>
-    <span>System Correction</span>
-  </div>
-  <div class="selection-box" [class.selected]="selectedOption === false" (click)="selectedOption = false">
-    <p-radioButton [(ngModel)]="selectedOption" [value]="false" (ngModelChange)="updateValue()"></p-radioButton>
-    <div>
-      <span>Teacher Correction</span>
+  <div class="selection-boxes">
+    <div class="selection-box" [class.selected]="selectedOption === true" (click)="selectedOption = true">
+      <p-radioButton [(ngModel)]="selectedOption" [value]="true" (ngModelChange)="updateValue()"></p-radioButton>
+      <div>
+        <span>System Corrected</span>
+        <div class="sub-title">
+          The Created assignment will be corrected by Microsoft Correction Tool directly when submited by students
+        </div>
+      </div>
+    </div>
+    <div class="selection-box" [class.selected]="selectedOption === false" (click)="selectedOption = false">
+      <p-radioButton [(ngModel)]="selectedOption" [value]="false" (ngModelChange)="updateValue()"></p-radioButton>
+      <div>
+        <span>Teacher Corrected</span>
+        <div class="sub-title">
+          The created assignment must be corrected manually by the teacher after the Due Date
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
   <div class="form-group">
     <div class="label">Select Level</div>
-    <p-select [options]="subLevels" [(ngModel)]="assignmentStories.readingSubLevelId" (ngModelChange)="updateValue() ; onRemoveBook()"
-      optionLabel="name" optionValue="readingSubLevelId"
+    <p-select [options]="subLevels" [(ngModel)]="assignmentStories.readingSubLevelId"
+      (ngModelChange)="updateValue() ; onRemoveBook()" optionLabel="name" optionValue="readingSubLevelId"
       placeholder="Select Level" class="w-100"></p-select>
   </div>
 
@@ -84,7 +92,8 @@
       <div class="search-box">
         <span class="p-input-icon-left">
           <img src="icon-search.svg" alt="search" />
-          <input type="text" pInputText [(ngModel)]="readingFilter.searchValue" placeholder="Search books..." />
+          <input type="text" pInputTex name="searchValue" [(ngModel)]="readingFilter.searchValue"
+            (ngModelChange)="searchStories()" placeholder="Search books..." />
         </span>
       </div>
     </div>
@@ -101,7 +110,7 @@
             <span class="value">{{ book.title }}</span>
           </div>
           <div class="info-item">
-            <span class="label">Pages</span>
+            <span class="label">Pages Count</span>
             <span class="value">{{ book.pagesCount }} pages</span>
           </div>
           <div class="info-item">
@@ -113,12 +122,11 @@
           </div>
         </div>
         <div class="book-actions">
-          <button pButton label="" class="p-button-outlined" (click)="onViewBook(book)"
-            [class]="{ invisible: book.wordsCount < 200 }">
+          <button pButton label="" class="p-button-outlined" (click)="onViewBook(book)">
             <span>View Book</span>
             <img src="icon-view-book-sml.svg" alt="view" />
           </button>
-          <button pButton label="Select Book" class="p-button-primary" (click)="onBookSelect(book)"></button>
+          <button pButton label="Select Story" class="p-button-primary" (click)="onBookSelect(book)"></button>
         </div>
       </div>
       }

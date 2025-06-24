@@ -29,11 +29,11 @@
       }
       <div class="item">
         <div class="header">Start Date</div>
-        <div class="value">{{assignmentSetup.startDate}}</div>
+        <div class="value">{{assignmentSetup.startDate | date : 'dd-MM-yyy' }}</div>
       </div>
       <div class="item">
         <div class="header">Due Date</div>
-        <div class="value">{{assignmentSetup.dueDate}}</div>
+        <div class="value">{{assignmentSetup.dueDate | date : 'dd-MM-yyy'}}</div>
       </div>
     </div>
   </div>

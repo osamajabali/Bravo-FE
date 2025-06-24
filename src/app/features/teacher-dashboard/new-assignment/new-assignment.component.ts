@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { CustomStepsComponent } from '../../../shared/components/custom-steps/custom-steps.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -82,8 +82,9 @@ export interface Question {
   styleUrl: './new-assignment.component.scss',
 })
 export class NewAssignmentComponent implements OnInit {
+  @ViewChild('assignmentTypeSelector') assignmentTypeSelector: AssignmentTypeSelectorComponent;
 
-  isSetupValid: boolean = false;
+  isSetupValid: boolean = true;
   activeStep: number = 0;
   selectedAssignmentType: AssignmentTypes | null = null;
   isReviewPage: boolean = false;
@@ -159,6 +160,9 @@ export class NewAssignmentComponent implements OnInit {
   previewAssignment() { }
 
   next() {
+    if(this.activeStep == 0){
+      this.assignmentTypeSelector.selectAssignmentType(this.selectedAssignmentType);
+    }
     if (this.activeStep === Number(this.items[this.items.length - 1].id)) {
       this.isReviewPage = true;
     }
