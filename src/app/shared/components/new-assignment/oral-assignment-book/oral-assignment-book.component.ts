@@ -112,7 +112,7 @@ export class OralAssignmentBookComponent implements OnInit {
       assignmentStories: this.assignmentStories,
       assignmentTypeName: this.assignmentStories.readingSubLevelId ? this.subLevels.find(x => x.readingSubLevelId == this.assignmentStories.readingSubLevelId).name : '',
       bookSelectionCreteria: null,
-      correctionType : this.selectedOption ? 1 : 0
+      correctionType: this.selectedOption ? 1 : 0
     }
     if (this.assignmentBook.assignmentStories && this.assignmentBook.book) {
       this.isSetupValid.emit(false);
@@ -140,6 +140,7 @@ export class OralAssignmentBookComponent implements OnInit {
   onBookSelect(book: Story) {
     this.selectedBook = book;
     this.showBookDrawer = false;
+    this.assignmentStories.pageNumber = 1;
     this.selectedBook.assignmentTypeName = this.subLevels.find(x => x.readingSubLevelId == this.assignmentStories.readingSubLevelId).name;
 
     this.updateValue()
@@ -147,12 +148,26 @@ export class OralAssignmentBookComponent implements OnInit {
 
   onRemoveBook() {
     this.selectedBook = null;
+    this.assignmentStories.pageNumber = 1;
   }
 
   onViewBook(book: Story) {
     this.onCloseDrawer();
     this.previewBookTitle = book.title;
     this.showPreviewPopup = true;
+  }
+
+  searchStories() {
+    if (!this.readingFilter.searchValue) return;
+    let assignmentSetup: AssignmentTypes = JSON.parse(localStorage.getItem('selectedAssignmentType'));
+    this.assignmentStories.assignmentTypeId = assignmentSetup.assignmentTypeId;
+    this.assignmentStories.searchValue = this.readingFilter.searchValue ? this.readingFilter.searchValue : '';
+    this.addingAssignmentService.getAssignmentStories(this.assignmentStories).subscribe(res => {
+      if (res.success) {
+        this.books = res.result;
+        this.showBookDrawer = true;
+      }
+    })
   }
 
   nextPage($event: PaginatorState) {

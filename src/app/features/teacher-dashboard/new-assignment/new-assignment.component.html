@@ -4,7 +4,7 @@
   }
 
   @if (activeStep === 0) {
-  <app-assignment-type-selector [(callApi)]="callApi" [(selectedAssignmentType)]="selectedAssignmentType" (selectedAssignmentTypeChange)="isSetupValid = false" />
+  <app-assignment-type-selector #assignmentTypeSelector [(callApi)]="callApi" [(selectedAssignmentType)]="selectedAssignmentType" (selectedAssignmentTypeChange)="isSetupValid = false" />
   }
 
   @if (activeStep === 1) {

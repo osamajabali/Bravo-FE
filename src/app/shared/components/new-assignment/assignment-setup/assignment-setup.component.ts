@@ -57,7 +57,7 @@ export class AssignmentSetupComponent implements OnInit {
         this.selectedTarget = this.targets.find(x => x.name == 'Grades');
         this.assignmentSetup.target = this.selectedTarget;
         if (this.targets.length) {
-          this.getLookups()
+          this.getLookups();
         }
       }
     });
@@ -76,8 +76,17 @@ export class AssignmentSetupComponent implements OnInit {
           retrievedData.startDate = new Date(retrievedData.startDate);
           retrievedData.dueDate = new Date(retrievedData.dueDate);
           this.assignmentSetup = retrievedData;
-          this.getGroups();
-          this.getSections();
+          if (this.assignmentSetup.selectedGrades && (this.assignmentSetup.target.assignmentRecipientTypeId == this.targetEnum.Sections || this.assignmentSetup.target.assignmentRecipientTypeId == this.targetEnum.Students)) {
+            this.getSections()
+          }
+
+          if (this.assignmentSetup.selectedGroups && this.assignmentSetup.target.assignmentRecipientTypeId == this.targetEnum.Groups) {
+            this.getGroups()
+          }
+
+          if (this.assignmentSetup.selectedStudents && this.assignmentSetup.target.assignmentRecipientTypeId == this.targetEnum.Students) {
+            this.getStudents()
+          }
           this.isSetupValid.emit(false);
         } else {
           this.targets.find(x => x.name == 'Grades').selected = true;
@@ -87,26 +96,41 @@ export class AssignmentSetupComponent implements OnInit {
   }
 
   toggleSelected(target: AssignmentRecipientTypes): void {
-    this.assignmentSetup.selectedGroups = [];
+    if (target.selected) return;
+
     this.assignmentSetup.selectedSections = [];
     this.assignmentSetup.selectedStudents = [];
+    this.assignmentSetup.selectedGroups = [];
     this.assignmentSetup.selectedGradesNames = [];
-    this.isSetupValid.emit(true)
     this.sections = [];
-    if (target.selected) return;
-    if(this.assignmentSetup.selectedGrades && (target.assignmentRecipientTypeId == this.targetEnum.Sections || target.assignmentRecipientTypeId == this.targetEnum.Students )){
-      this.getSections()
-    }
 
-    if(this.assignmentSetup.selectedGrades && target.assignmentRecipientTypeId == this.targetEnum.Groups){
-      this.getGroups()
+    let retrievedData: AssignmentSetup = JSON.parse(localStorage.getItem('assignmentSetup'));
+
+    if (target.assignmentRecipientTypeId == this.targetEnum.Sections) {
+      this.assignmentSetup.selectedSections = retrievedData.selectedSections.length ? retrievedData.selectedSections : [];
+      this.isSetupValid.emit(this.assignmentSetup.selectedSections.length == 0);
+      this.getSections();
     }
     
+    if (target.assignmentRecipientTypeId == this.targetEnum.Groups) {
+      this.assignmentSetup.selectedGroups = retrievedData.selectedGroups.length ? retrievedData.selectedGroups : [];
+      this.isSetupValid.emit(this.assignmentSetup.selectedGroups.length == 0);
+      this.getGroups();
+    }
+    
+    if (target.assignmentRecipientTypeId == this.targetEnum.Students) {
+      this.assignmentSetup.selectedSections = retrievedData.selectedSections.length ? retrievedData.selectedSections : [];
+      this.assignmentSetup.selectedStudents = retrievedData.selectedStudents.length ? retrievedData.selectedStudents : [];
+      this.isSetupValid.emit(this.assignmentSetup.selectedStudents.length == 0);
+      this.getStudents();
+      this.getSections();
+    }
+
     this.targets.forEach(t => t.selected = false);
     this.selectedTarget = target;
     this.assignmentSetup.target = this.selectedTarget;
     target.selected = true;
-    
+
   }
 
   getSections = () => {
@@ -114,15 +138,30 @@ export class AssignmentSetupComponent implements OnInit {
     this.addingAssignmentService.getAssignmentSections(this.headerService.selectedSubjectId, this.assignmentSetup.selectedGrades).subscribe(res => {
       if (res.success) {
         this.sections = res.result;
+
+        if (this.assignmentSetup.selectedSections) {
+          // Remove section IDs from selectedSections where section name is null
+          this.assignmentSetup.selectedSections = this.assignmentSetup.selectedSections.filter(id => {
+            const section = this.sections.find(sec => sec.sectionId === id);
+            return section && section.name !== null;
+          });
+        }
       }
-    })
+    });
   }
+
 
   getGroups = () => {
     this.groups = [];
     this.addingAssignmentService.getAssignmentGroups(this.headerService.selectedSubjectId, this.assignmentSetup.selectedGrades).subscribe(res => {
       if (res.success) {
         this.groups = res.result;
+        if (this.assignmentSetup.selectedGroups) {
+          this.assignmentSetup.selectedGroups = this.assignmentSetup.selectedGroups.filter(id => {
+            const group = this.groups.find(g => g.groupId === id);
+            return group && group.name !== null
+          })
+        }
       }
     })
   }
@@ -132,11 +171,25 @@ export class AssignmentSetupComponent implements OnInit {
     this.addingAssignmentService.getAssignmentStudents(this.assignmentSetup.selectedSections).subscribe(res => {
       if (res.success) {
         this.students = res.result;
+
+        if (this.assignmentSetup.selectedStudents) {
+          this.assignmentSetup.selectedStudents = this.assignmentSetup.selectedStudents.filter(id => {
+            const student = this.students.find(s => s.studentId === id);
+            return student && student.fullName !== null;
+          });
+        }
       }
-    })
+    });
   }
 
+
   assignmentSetupUpdate = (setupForm: NgForm) => {
+    if (this.assignmentSetup.title.length > 60) {
+      this.assignmentSetup.title = this.assignmentSetup.title.substring(60)
+    }
+    if (this.assignmentSetup.startDate > this.assignmentSetup.dueDate) {
+      this.assignmentSetup.dueDate = this.assignmentSetup.startDate;
+    }
     if (this.assignmentSetup.selectedGrades) {
       this.assignmentSetup.selectedGradesNames = this.grades.filter(x => this.assignmentSetup.selectedGrades.includes(x.gradeId)).map(x => x.name);
     } else {

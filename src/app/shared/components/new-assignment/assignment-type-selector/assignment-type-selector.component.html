@@ -4,7 +4,7 @@
     <div
     class="assignment-type-item"
     [class.selected]="selectedAssignmentType?.name === assignmentType.name"
-    (click)="selectAssignmentType(assignmentType)"
+    (click)="changeSelection(assignmentType)"
   >
     <div class="assignment-type-item-icon">
       <img [src]="assignmentType.iconUrl" alt="" />
