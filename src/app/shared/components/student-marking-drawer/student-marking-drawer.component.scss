@@ -143,9 +143,23 @@
           }
         }
 
-        .chart-title {
-          font-size: var(--font-size-xs);
-        }
+                 .chart-title {
+           font-size: var(--font-size-xs);
+         }
+
+         .chart-content {
+           position: relative;
+           width: 60px;
+           height: 60px;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+
+           .metric-chart {
+             width: 100%;
+             height: 100%;
+           }
+         }
 
         &.yellow {
           background-color: var(--secondery-secondery-100);

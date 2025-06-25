@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 import { FormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { DoughnutChartDirective } from '../../functions/directives/doughnut-chart.directive';
 
 interface CriteriaRow {
   label: string;
@@ -21,6 +22,7 @@ interface CriteriaRow {
     DrawerModule,
     FormsModule,
     InputNumberModule,
+    DoughnutChartDirective,
   ],
   templateUrl: './student-marking-drawer.component.html',
   styleUrl: './student-marking-drawer.component.scss',
@@ -105,24 +107,44 @@ export class StudentMarkingDrawerComponent {
     },
   ];
 
-  legends = [
-    {
-      name: 'Pronunciation Error',
-      backgroundColor: '#FB49A5',
-    },
-    {
-      name: 'Removed Word',
-      backgroundColor: '#5D4ABA',
-    },
-    {
-      name: 'Added Word',
-      backgroundColor: '#2784DE',
-    },
-    {
-      name: 'Repeated Word',
-      backgroundColor: '#007294',
-    },
-  ];
+     legends = [
+     {
+       name: 'Pronunciation Error',
+       backgroundColor: '#FB49A5',
+     },
+     {
+       name: 'Removed Word',
+       backgroundColor: '#5D4ABA',
+     },
+     {
+       name: 'Added Word',
+       backgroundColor: '#2784DE',
+     },
+     {
+       name: 'Repeated Word',
+       backgroundColor: '#007294',
+     },
+   ];
+
+   // Chart data for each metric
+   chartData = {
+     pronunciation: {
+       data: [60], // Single percentage value
+       color: '#a56e2a' // Yellow theme
+     },
+     accuracy: {
+       data: [30], // Single percentage value
+       color: '#b01212' // Red theme
+     },
+     fluency: {
+       data: [70], // Single percentage value
+       color: '#3B9255' // Green theme
+     },
+     completion: {
+       data: [40], // Single percentage value
+       color: '#b01212' // Red theme
+     }
+   };
 
   onHide() {
     this.visible = false;

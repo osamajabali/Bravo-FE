@@ -44,9 +44,14 @@ export class DoughnutChartDirective implements OnChanges {
   @Input() data: number[] = [];
   @Input() labels: string[] = [];
   @Input() color: string = '#54C8E8'; // ✅ Uses the same color as `AllSkillsComponent`
+  @Input() trackColor: string = '#E0E0E0';
   @Input() isSkills: boolean = true; // ✅ Determines if it's a skill or stat chart
+  @Input() showCenterText: boolean = true; // ✅ Controls whether to show center percentage text
+  @Input() trackBorderWidth: number = 0; // ✅ Border width for the track (empty) portion
+  @Input() trackBorderColor: string = '#CCCCCC'; // ✅ Border color for the track (empty) portion
   @Input() activeCount: number = 0;
   @Input() inactiveCount: number = 0;
+  @Input() cutout: string = '75%';
 
   private chart: Chart | undefined;
 
@@ -63,7 +68,7 @@ export class DoughnutChartDirective implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (
       isPlatformBrowser(this.platformId) &&
-      (changes['data'] || changes['labels'] || changes['color'] || changes['activeCount'] || changes['inactiveCount'])
+      (changes['data'] || changes['labels'] || changes['color'] || changes['activeCount'] || changes['inactiveCount'] || changes['showCenterText'] || changes['trackBorderWidth'] || changes['trackBorderColor'])
     ) {
       this.renderChart();
     }
@@ -86,7 +91,9 @@ export class DoughnutChartDirective implements OnChanges {
       const inactiveLabel = translations['INACTIVE_SKILLS'];
 
       let chartData: number[];
-      const backgroundColor = ['#E0E0E0', this.color]; // Inactive on top (lighter color first)
+      const backgroundColor = [this.trackColor, this.color]; // Inactive on top (lighter color first)
+      const borderColor = [this.trackBorderColor, this.color]; // Border colors
+      const borderWidth = [this.trackBorderWidth, 0]; // Border widths - only for track
 
       if (this.data.length === 1) {
         const percentage = this.data[0];
@@ -104,7 +111,7 @@ export class DoughnutChartDirective implements OnChanges {
       const chartOptions: ChartOptions<'doughnut'> = {
         responsive: true,
         maintainAspectRatio: false,
-        cutout: '75%',
+        cutout: this.cutout,
         plugins: {
           legend: {
             display: this.isSkills,
@@ -145,12 +152,13 @@ export class DoughnutChartDirective implements OnChanges {
             {
               data: chartData,
               backgroundColor: backgroundColor,
-              borderWidth: 0,
+              borderColor: borderColor,
+              borderWidth: borderWidth,
             },
           ],
         },
         options: chartOptions,
-        plugins: !this.isSkills ? [CenterTextPlugin] : [],
+        plugins: !this.isSkills && this.showCenterText ? [CenterTextPlugin] : [],
       });
     });
   }

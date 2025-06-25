@@ -91,7 +91,20 @@
             </div>
             <div class="chart-title">Pronunciation</div>
           </div>
-          <div class="chart-content"></div>
+          <div class="chart-content">
+            <canvas
+              class="metric-chart"
+              appDoughnutChart
+              [data]="chartData.pronunciation.data"
+              [color]="chartData.pronunciation.color"
+              [isSkills]="false"
+              [showCenterText]="false"
+              [trackColor]="'#FFFFFF'"
+              [cutout]="'60%'"
+              [trackBorderWidth]="1"
+              [trackBorderColor]="'#efb008'"
+            ></canvas>
+          </div>
         </div>
         <div class="chart-box red">
           <div class="box">
@@ -100,7 +113,18 @@
             </div>
             <div class="chart-title">Accuracy</div>
           </div>
-          <div class="chart-content"></div>
+          <div class="chart-content">
+            <canvas
+              class="metric-chart"
+              appDoughnutChart
+              [data]="chartData.accuracy.data"
+              [color]="chartData.accuracy.color"
+              [isSkills]="false"
+              [showCenterText]="false"
+              [trackColor]="'#f7f7f7'"
+              [cutout]="'60%'"
+            ></canvas>
+          </div>
         </div>
         <div class="chart-box green">
           <div class="box">
@@ -109,7 +133,18 @@
             </div>
             <div class="chart-title">Fluency</div>
           </div>
-          <div class="chart-content"></div>
+          <div class="chart-content">
+            <canvas
+              class="metric-chart"
+              appDoughnutChart
+              [data]="chartData.fluency.data"
+              [color]="chartData.fluency.color"
+              [isSkills]="false"
+              [showCenterText]="false"
+              [trackColor]="'#f7f7f7'"
+              [cutout]="'60%'"
+            ></canvas>
+          </div>
         </div>
         <div class="chart-box red">
           <div class="box">
@@ -118,7 +153,18 @@
             </div>
             <div class="chart-title">Completion</div>
           </div>
-          <div class="chart-content"></div>
+          <div class="chart-content">
+            <canvas
+              class="metric-chart"
+              appDoughnutChart
+              [data]="chartData.completion.data"
+              [color]="chartData.completion.color"
+              [isSkills]="false"
+              [showCenterText]="false"
+              [trackColor]="'#f7f7f7'"
+              [cutout]="'60%'"
+            ></canvas>
+          </div>
         </div>
       </div>
     </div>
