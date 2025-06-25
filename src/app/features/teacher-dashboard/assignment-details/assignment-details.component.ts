@@ -12,6 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AssignmentsService } from '../../../core/services/assignment/assignments.service';
 import { AssignmentDetails, StudentAssignmentDetailsResponse, StudentsAssignmentDetails, SubmissionStatus } from '../../../core/models/assignment/assignment-details.model';
 import { PaginatorState } from 'primeng/paginator';
+import { StudentMarkingDrawerComponent } from '../../../shared/components/student-marking-drawer/student-marking-drawer.component';
 
 interface StudentSubmission {
   id: number;
@@ -37,6 +38,7 @@ interface StudentSubmission {
     MenuModule,
     DialogModule,
     TranslateModule,
+    StudentMarkingDrawerComponent,
   ],
   templateUrl: './assignment-details.component.html',
   styleUrl: './assignment-details.component.scss',
@@ -55,6 +57,8 @@ export class AssignmentDetailsComponent implements OnInit {
   submissionStatuses: SubmissionStatus[] = [];
   studentAssignmentDetails: StudentAssignmentDetailsResponse = new StudentAssignmentDetailsResponse();
   first: number = 0;
+  showMarkingDrawer: boolean = false;
+  selectedStudentName: string = '';
 
   ngOnInit(): void {
     if (this.sharedService.getPageState('studentsSubmissions')) {
@@ -162,7 +166,16 @@ export class AssignmentDetailsComponent implements OnInit {
   }
 
   correct(submissionId: number): void {
-    // Implement correct logic
+    console.log(submissionId);
+    // Find student name based on submissionId - you can implement this logic based on your data structure
+    const student = this.studentAssignmentDetails.studentsDetails.find(s => s.submissionStatus.id === submissionId);
+    this.selectedStudentName = student ? student.studentName : '';
+    this.showMarkingDrawer = true;
+  }
+
+  onMarkingSubmit(criteriaData: any[]): void {
+    console.log('Marking submitted:', criteriaData);
+    // Implement your marking submission logic here
   }
 
   toggleActive(): void {

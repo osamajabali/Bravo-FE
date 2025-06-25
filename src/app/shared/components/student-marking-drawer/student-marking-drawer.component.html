@@ -1,0 +1,187 @@
+<p-drawer
+  [(visible)]="visible"
+  position="right"
+  [style]="{ width: '95%' }"
+  styleClass="student-marking-drawer"
+  (onHide)="onHide()"
+  [showCloseIcon]="true"
+  [baseZIndex]="1000"
+  [dismissible]="false"
+  [closable]="false"
+  [closeOnEscape]="false"
+>
+  <ng-template pTemplate="header">
+    <div class="p-drawer-title">Student Marking</div>
+    <img
+      src="icon-close-black.svg"
+      alt="close"
+      class="pointer"
+      (click)="onCancel()"
+    />
+  </ng-template>
+  <!-- Content -->
+  <div class="drawer-content">
+    <!-- Upper Section -->
+    <div class="upper-section">
+      <div class="info-box">
+        <div class="box-icon">
+          <img src="icon-question.svg" alt="Question" />
+        </div>
+        <div>
+          <div class="box-title">Question</div>
+          <div class="box-content">
+            <p>
+              What is your favorite animal and why? Please record your answer!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <div class="box-icon">
+          <img src="icon-student-answer.svg" alt="Student Answer" />
+        </div>
+        <div>
+          <div class="box-title">Student Answer</div>
+          <div class="box-content">
+            <p>
+              My favorite animal is a puppy because they are so fluffy and like
+              to play! I love when they wag their tails and bark. They make me
+              happy!
+            </p>
+            <!-- <app-media-player
+              [mediaFile]="mediaFile"
+              [displayDate]="todayDate"
+              (mediaFileChange)="onMediaFileChange($event)"
+            ></app-media-player> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="system-correction-summary">
+      <div class="info-container">
+        <div class="title">Text as read by the student</div>
+        <div class="week-days">
+          <div
+            class="day-container"
+            *ngFor="let day of weekDays"
+            [style.backgroundColor]="day.backgroundColor"
+          >
+            <div class="day">
+              {{ day.name }}
+            </div>
+          </div>
+        </div>
+        <div class="legends">
+          <div class="legend-container" *ngFor="let legend of legends">
+            <div
+              class="legend-indicator"
+              [style.backgroundColor]="legend.backgroundColor"
+            ></div>
+            <div class="legend-name">{{ legend.name }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="charts-boxes">
+        <div class="chart-box yellow">
+          <div class="box">
+            <div class="percentage">
+              <div class="percentage-number">60%</div>
+            </div>
+            <div class="chart-title">Pronunciation</div>
+          </div>
+          <div class="chart-content"></div>
+        </div>
+        <div class="chart-box red">
+          <div class="box">
+            <div class="percentage">
+              <div class="percentage-number">30%</div>
+            </div>
+            <div class="chart-title">Accuracy</div>
+          </div>
+          <div class="chart-content"></div>
+        </div>
+        <div class="chart-box green">
+          <div class="box">
+            <div class="percentage">
+              <div class="percentage-number">70%</div>
+            </div>
+            <div class="chart-title">Fluency</div>
+          </div>
+          <div class="chart-content"></div>
+        </div>
+        <div class="chart-box red">
+          <div class="box">
+            <div class="percentage">
+              <div class="percentage-number">40%</div>
+            </div>
+            <div class="chart-title">Completion</div>
+          </div>
+          <div class="chart-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lower Section - Marking Grid -->
+    <div class="lower-section">
+      <div class="marking-grid">
+        <!-- Grid Header -->
+        <div class="grid-header">
+          <div class="label-header"></div>
+          <div class="criteria-header" colspan="5">Criteria Description</div>
+          <div class="column-header">Mark</div>
+        </div>
+
+        <!-- Grid Rows -->
+        <div class="grid-row" *ngFor="let row of criteriaData; let i = index">
+          <div class="label-cell">{{ row.label }}</div>
+          <div class="criteria-cell" *ngFor="let criteria of row.criteria">
+            {{ criteria }}
+          </div>
+          <div class="mark-cell">
+            <div
+              *ngIf="!row.isEditing && row.mark === null"
+              class="add-mark-button"
+              (click)="onMarkClick(row)"
+            >
+              Add
+            </div>
+            <p-inputNumber
+              *ngIf="row.isEditing || row.mark !== null"
+              [(ngModel)]="row.mark"
+              [min]="0"
+              [max]="100"
+              [showButtons]="false"
+              class="mark-input"
+              [class.has-value]="row.mark !== null && row.mark > 0"
+              (onBlur)="onMarkBlur(row)"
+              (ngModelChange)="onMarkChange(row, $event)"
+            >
+            </p-inputNumber>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="drawer-footer">
+    <div class="footer-buttons">
+      <button
+        pButton
+        type="button"
+        label="Cancel"
+        class="p-button-secondary cancel-button"
+        (click)="onCancel()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Submit"
+        class="p-button-primary submit-button"
+        (click)="onSubmit()"
+      ></button>
+    </div>
+  </div>
+</p-drawer>

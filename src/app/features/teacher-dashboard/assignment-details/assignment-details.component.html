@@ -9,19 +9,29 @@
               <img [src]="submission.iconUrl" width="17px" alt="warning" />
             </div>
             <div class="info">
-              <div class="number">{{submission.value}}</div>
-              <div class="label">{{submission.text}}</div>
+              <div class="number">{{ submission.value }}</div>
+              <div class="label">{{ submission.text }}</div>
             </div>
           </div>
         </div>
         }
       </div>
       <div class="buttons">
-        <button pButton label="" class="p-button-outlined show-button" (click)="viewResources()">
+        <button
+          pButton
+          label=""
+          class="p-button-outlined show-button"
+          (click)="viewResources()"
+        >
           <span>View Resources</span>
           <img src="icon-eye.svg" alt="view resources" />
         </button>
-        <button pButton label="" class="p-button-outlined show-button" (click)="exportBtn.toggle($event)">
+        <button
+          pButton
+          label=""
+          class="p-button-outlined show-button"
+          (click)="exportBtn.toggle($event)"
+        >
           <span>Export as</span>
           <img src="arrow-green-down.svg" alt="export" />
         </button>
@@ -38,38 +48,68 @@
       <div class="details-row">
         <div class="left-section">
           <div class="info-item">
-            <div class="value grade">{{ assignmentDetails.assignmentTitle }}</div>
+            <div class="value grade">
+              {{ assignmentDetails.assignmentTitle }}
+            </div>
             <div class="value type">{{ assignmentDetails.assignmentType }}</div>
           </div>
           <div class="custom-radio-container">
-            <div class="custom-radio" [class.active]="true" (click)="toggleActive()">
+            <div
+              class="custom-radio"
+              [class.active]="true"
+              (click)="toggleActive()"
+            >
               <div class="radio-content" [class.reverse]="!true">
                 <span class="status-text">{{
-                  (true ? "ACTIVE" : "INACTIVE")
-                  | translate
-                  }}</span>
-                <img [src]="
-                    true
-                      ? 'icon-radio-checked.svg'
-                      : 'icon-radio-unchecked.svg'
-                  " alt="check" />
+                  (true ? "ACTIVE" : "INACTIVE") | translate
+                }}</span>
+                <img
+                  [src]="
+                    true ? 'icon-radio-checked.svg' : 'icon-radio-unchecked.svg'
+                  "
+                  alt="check"
+                />
               </div>
             </div>
           </div>
         </div>
         <div class="right-section">
-          <button pButton type="button" label="" class="p-button-secondary" (click)="onResend()">
+          <button
+            pButton
+            type="button"
+            label=""
+            class="p-button-secondary"
+            (click)="onResend()"
+          >
             <img src="icon-eye.svg" alt="view all questions" />
             View All Questions
           </button>
-          <button pButton type="button" label="" class="p-button-secondary" (click)="onReminder()">
+          <button
+            pButton
+            type="button"
+            label=""
+            class="p-button-secondary"
+            (click)="onReminder()"
+          >
             <img src="icon-reminder.svg" alt="Reminder" />
             Send Reminder
           </button>
-          <button pButton type="button" label="" class="p-button-secondary" (click)="onEdit()">
+          <button
+            pButton
+            type="button"
+            label=""
+            class="p-button-secondary"
+            (click)="onEdit()"
+          >
             <img src="icon-pencil.svg" alt="Edit" />
           </button>
-          <button pButton type="button" label="" class="p-button-danger" (click)="onDelete()">
+          <button
+            pButton
+            type="button"
+            label=""
+            class="p-button-danger"
+            (click)="onDelete()"
+          >
             <img src="icon-red-trash.svg" alt="Delete" />
           </button>
         </div>
@@ -78,14 +118,13 @@
       <!-- Second Row -->
       <div class="details-row">
         <div class="info-grid">
-          @if (assignmentDetails.detailsSections.length) {
-          @for (item of assignmentDetails.detailsSections; track $index) {
+          @if (assignmentDetails.detailsSections?.length) { @for (item of
+          assignmentDetails.detailsSections; track $index) {
           <div class="info-item">
-            <span class="title">{{item.title}}</span>
+            <span class="title">{{ item.title }}</span>
             <span class="value">{{ item.value }}</span>
           </div>
-          }
-          }
+          } }
         </div>
       </div>
 
@@ -96,14 +135,19 @@
           <div class="value">{{ assignmentDetails.overAllAvgScore }}</div>
         </div>
         <div class="summary-boxes">
-
-          @if (assignmentDetails.scoresDetails.length) {
-          @for (item of assignmentDetails.scoresDetails; track $index) {
-          @if (item.isHighlighted) {
+          @if (assignmentDetails.scoresDetails.length) { @for (item of
+          assignmentDetails.scoresDetails; track $index) { @if
+          (item.isHighlighted) {
           <div class="box">
-            <div class="box-content" [style.border]="'1px solid ' + item.color"
-              style="border-radius: var(--radius-xs) 0 0 var(--radius-xs);">
-              <div class="bold-area" [style.background-color]="item.color"></div>
+            <div
+              class="box-content"
+              [style.border]="'1px solid ' + item.color"
+              style="border-radius: var(--radius-xs) 0 0 var(--radius-xs)"
+            >
+              <div
+                class="bold-area"
+                [style.background-color]="item.color"
+              ></div>
               <div class="info">
                 <div class="label">Weak</div>
                 <div class="number">3</div>
@@ -114,14 +158,12 @@
           <div class="box not-delivered">
             <div class="box-content">
               <div class="info">
-                <div class="label">{{item.title}}</div>
-                <div class="number">{{item.value}}</div>
+                <div class="label">{{ item.title }}</div>
+                <div class="number">{{ item.value }}</div>
               </div>
             </div>
           </div>
-          }
-          }
-          }
+          } } }
         </div>
       </div>
     </div>
@@ -134,49 +176,69 @@
         <div class="header-item">
           <div class="header-content">
             <span>Student Name</span>
-            <img [src]="
+            <img
+              [src]="
                 sortColumn === 'studentName'
                   ? sortDirection === 'asc'
                     ? 'icon-sort-asc.svg'
                     : 'icon-sort.svg'
                   : 'icon-sort.svg'
-              " alt="Sort" (click)="onSort('studentName')" class="sort-icon" />
+              "
+              alt="Sort"
+              (click)="onSort('studentName')"
+              class="sort-icon"
+            />
           </div>
         </div>
         <div class="header-item">
           <div class="header-content">
             <span>Submission Status</span>
-            <img [src]="
+            <img
+              [src]="
                 sortColumn === 'status'
                   ? sortDirection === 'asc'
                     ? 'icon-sort-asc.svg'
                     : 'icon-sort.svg'
                   : 'icon-sort.svg'
-              " alt="Sort" (click)="onSort('status')" class="sort-icon" />
+              "
+              alt="Sort"
+              (click)="onSort('status')"
+              class="sort-icon"
+            />
           </div>
         </div>
         <div class="header-item">
           <div class="header-content">
             <span>Score</span>
-            <img [src]="
+            <img
+              [src]="
                 sortColumn === 'score'
                   ? sortDirection === 'asc'
                     ? 'icon-sort-asc.svg'
                     : 'icon-sort.svg'
                   : 'icon-sort.svg'
-              " alt="Sort" (click)="onSort('score')" class="sort-icon" />
+              "
+              alt="Sort"
+              (click)="onSort('score')"
+              class="sort-icon"
+            />
           </div>
         </div>
         <div class="header-item">
           <div class="header-content">
             <span>Time Spent</span>
-            <img [src]="
+            <img
+              [src]="
                 sortColumn === 'timeSpent'
                   ? sortDirection === 'asc'
                     ? 'icon-sort-asc.svg'
                     : 'icon-sort.svg'
                   : 'icon-sort.svg'
-              " alt="Sort" (click)="onSort('timeSpent')" class="sort-icon" />
+              "
+              alt="Sort"
+              (click)="onSort('timeSpent')"
+              class="sort-icon"
+            />
           </div>
         </div>
         <div class="header-item">Reflection</div>
@@ -185,8 +247,8 @@
 
       <!-- Submissions List -->
       <div class="submissions-list">
-        @if (studentAssignmentDetails) {
-        @for (item of studentAssignmentDetails.studentsDetails; track $index) {
+        @if (studentAssignmentDetails) { @for (item of
+        studentAssignmentDetails.studentsDetails; track $index) {
         <div class="submission-row">
           <div class="item student-name">
             <span class="initials">{{ getInitials(item.studentName) }}</span>
@@ -195,8 +257,10 @@
             <img [src]="item.warningIconUrl" width="21px" alt="warning" />
             }
           </div>
-          <div class="item status"       
-          [style.background-color]="item.submissionStatus.color">
+          <div
+            class="item status"
+            [style.background-color]="item.submissionStatus.color"
+          >
             {{ item.submissionStatus.title }}
           </div>
           <div class="item score">
@@ -218,18 +282,33 @@
             <img src="icon-red-attachment.svg" alt="Attachment" />
           </div>
           <div class="item actions d-flex gap-2">
-            <button pButton type="button" label="Correct" class="p-button-primary" (click)="correct(item.id)"></button>
-            <button pButton type="button" label="View Submission" class="p-button-secondary view-submission"
-              (click)="viewSubmission(item.submissionStatus.id , item.studentId)"></button>
+            <button
+              pButton
+              type="button"
+              label="Correct"
+              class="p-button-primary"
+              (click)="correct(item.studentId)"
+            ></button>
+            <button
+              pButton
+              type="button"
+              label="View Submission"
+              class="p-button-secondary view-submission"
+              (click)="viewSubmission(item.submissionStatus.id, item.studentId)"
+            ></button>
           </div>
         </div>
-        }
-        }
+        } }
       </div>
 
       <!-- Pagination -->
-      <app-pagination [rows]="studentAssignmentDetails.pageSize" [totalRecords]="studentAssignmentDetails.totalRecords"
-        [first]="first" itemLabel="Assignments" (pageChange)="nextPage($event)"></app-pagination>
+      <app-pagination
+        [rows]="studentAssignmentDetails.pageSize"
+        [totalRecords]="studentAssignmentDetails.totalRecords"
+        [first]="first"
+        itemLabel="Assignments"
+        (pageChange)="nextPage($event)"
+      ></app-pagination>
     </div>
   </div>
 </div>
@@ -237,11 +316,17 @@
 <p-menu #exportBtn [popup]="true">
   <ng-template #start>
     <div class="export-menu-content">
-      <div class="export-item" (click)="exportAs('pdf'); exportBtn.toggle($event)">
+      <div
+        class="export-item"
+        (click)="exportAs('pdf'); exportBtn.toggle($event)"
+      >
         <span class="label">PDF</span>
         <img src="icon-download.svg" alt="download" />
       </div>
-      <div class="export-item" (click)="exportAs('xlsx'); exportBtn.toggle($event)">
+      <div
+        class="export-item"
+        (click)="exportAs('xlsx'); exportBtn.toggle($event)"
+      >
         <span class="label">XLSX</span>
         <img src="icon-download.svg" alt="download" />
       </div>
@@ -249,9 +334,19 @@
   </ng-template>
 </p-menu>
 
-<p-dialog [dismissableMask]="true" [(visible)]="showDeleteConfirmation" [modal]="false" [draggable]="false"
-  [resizable]="false" [style]="{ width: '450px' }" styleClass="delete-confirmation-dialog" [closeOnEscape]="true"
-  [dismissableMask]="true" [showHeader]="true" [closable]="true">
+<p-dialog
+  [dismissableMask]="true"
+  [(visible)]="showDeleteConfirmation"
+  [modal]="false"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '450px' }"
+  styleClass="delete-confirmation-dialog"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+  [showHeader]="true"
+  [closable]="true"
+>
   <!-- <div class="board-header">
     <button class="close-button" (click)="cancelDelete()">
       <img src="icon-exit.svg" alt="close" />
@@ -262,10 +357,27 @@
       Are you sure you want to delete the assignment?
     </div>
     <div class="delete-actions">
-      <button pButton type="button" label="Cancel" class="p-button-secondary cancel-button"
-        (click)="cancelDelete()"></button>
-      <button pButton type="button" label="Delete" class="p-button-primary delete-button"
-        (click)="confirmDelete()"></button>
+      <button
+        pButton
+        type="button"
+        label="Cancel"
+        class="p-button-secondary cancel-button"
+        (click)="cancelDelete()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Delete"
+        class="p-button-primary delete-button"
+        (click)="confirmDelete()"
+      ></button>
     </div>
   </div>
 </p-dialog>
+
+<!-- Student Marking Drawer -->
+<app-student-marking-drawer
+  [(visible)]="showMarkingDrawer"
+  [studentName]="selectedStudentName"
+  (submitMarking)="onMarkingSubmit($event)">
+</app-student-marking-drawer>
