@@ -9,67 +9,58 @@
               <img [src]="submission.iconUrl" width="17px" alt="warning" />
             </div>
             <div class="info">
-              <div class="number">{{submission.value}}</div>
-              <div class="label">{{submission.text}}</div>
+              <div class="number">{{ submission.value }}</div>
+              <div class="label">{{ submission.text }}</div>
             </div>
           </div>
         </div>
         }
       </div>
-    </div>
-  </div>
-
-  <!-- Skills Sections -->
-  <div class="skills-container">
-    @for (skill of studentSubmission.skills; track skill.skillId) {
-    <div class="skill-section">
-      <div class="skill-header" (click)="toggleSkill(skill.skillId)">
-        <div class="skill-header-left">
-          <i class="pi" [ngClass]="skill.expanded ? 'pi-chevron-down' : 'pi-chevron-right'"></i>
-          <span class="skill-name">{{ skill.name }}</span>
-        </div>
-        <div class="skill-header-right">
-          @for (flag of skill.flags; track $index) {
-            <div class="skill-stat">
-            <img [src]="flag.iconUrl" alt="Corrected" />
-            {{flag.title}}: <span class="fw-bold">{{ flag.value }}</span>
-          </div>
-          }
-        </div>
-      </div>
-
-      @if (skill.expanded) {
-      <div class="skill-content">
-        <div class="questions-header">
-          <div class="question-header-item question">Question</div>
-          <div class="question-header-item difficulty">Difficulty</div>
-          <div class="question-header-item answer">Student Answer</div>
-        </div>
-
-        @for (question of questions; track $index) {
-        <div
-          class="question-row">
-          <div class="question-item question">{{ question.text }}</div>
-          <div class="question-item difficulty">
-            <span
-              class="difficulty-badge"
-              [style.background-color]="question.color"
-            >
-              <img [src]="question.answerBtnIconUrl" [alt]="question.difficulty.text" />
-              {{ question.difficulty.text }}
-            </span>
-          </div>
-          <div class="question-item answer">
-            <span class="answer-badge pointer" [style.background-color]="question.answerBtnColor" [style.border]="'1px solid ' + question.color">
-              {{question.answerBtnText}}
-              <img [src]="question.answerBtnIconUrl" alt="correct" />
-            </span>
-          </div>
-        </div>
-        }
+      @if (submissionType !== SubmissionType.MULTIPLE_QUESTIONS &&
+      submissionType !== SubmissionType.BOOK_READING) {
+      <div class="action-buttons">
+        <button
+          pButton
+          type="button"
+          label="Add Feedback"
+          class="p-button-secondary feedback-button"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Correct"
+          class="p-button-primary correct-button"
+          (click)="correctSubmission()"
+        ></button>
       </div>
       }
     </div>
-    }
   </div>
+  @if (submissionType === SubmissionType.MULTIPLE_QUESTIONS) {
+  <!-- Multiple Questions Component -->
+  <app-multiple-questions
+    [skills]="studentSubmission.skills"
+    [submissionId]="submissionId"
+    [studentId]="studentId"
+  ></app-multiple-questions>
+  } @if (submissionType === SubmissionType.BOOK_READING) {
+  <app-book-reading
+    [skills]="studentSubmission.skills"
+    [submissionId]="submissionId"
+    [studentId]="studentId"
+  ></app-book-reading>
+  } @if (submissionType === SubmissionType.BOOK_PAGE_SUMMARY_RECORDING) {
+  <app-book-page-summary-recording></app-book-page-summary-recording>
+  } @if (submissionType === SubmissionType.BOOK_LISTENING) {
+  <app-book-listening></app-book-listening>
+  } @if (submissionType === SubmissionType.QUESTION_ANSWER) {
+  <app-question-answer></app-question-answer>
+  }
 </div>
+
+<!-- Student Marking Drawer -->
+<app-student-marking-drawer
+  [(visible)]="showMarkingDrawer"
+  [studentName]="'John Doe'"
+>
+</app-student-marking-drawer>

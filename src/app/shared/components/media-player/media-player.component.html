@@ -1,43 +1,42 @@
-<div class="audio-player">
-  <div class="file-header">
-    <div class="file-name">
-      {{ mediaFile.fileName }}
+<div class="audio-player-container">
+  <div class="audio-player">
+    <div class="file-header">
+      <div class="file-name">
+        {{ mediaFile.fileName }}
+      </div>
+      <div class="file-date">{{ displayDate }}</div>
     </div>
-    <div class="file-date">{{ displayDate }}</div>
-  </div>
-  <div class="player-controls">
-    <img
-      [src]="
-        mediaFile.isPlaying
-          ? 'icon-pause-sml.svg'
-          : 'icon-play-sml.svg'
-      "
-      alt="play/pause"
-      class="play-pause-btn"
-      (click)="
-        mediaFile.isPlaying
-          ? pauseAudio()
-          : playAudio()
-      "
-    />
-    <div class="time-info">
-      <span class="current-time">{{
-        mediaFile.currentTime || "0:00"
-      }}</span>
-      <div class="progress-bar-container">
-        <div class="progress-bar">
-          <div
-            class="progress-fill"
-            [style.width.%]="mediaFile.progress || 0"
-          ></div>
-          <div
-            class="progress-thumb"
-            [style.left.%]="mediaFile.progress || 0"
-          >
-            <img src="icon-playhead.svg" alt="playhead" class="playhead-icon" />
+    <div class="player-controls">
+      <img
+        [src]="mediaFile.isPlaying ? 'icon-pause-sml.svg' : 'icon-play-sml.svg'"
+        alt="play/pause"
+        class="play-pause-btn"
+        (click)="mediaFile.isPlaying ? pauseAudio() : playAudio()"
+      />
+      <div class="time-info">
+        <span class="current-time">{{ mediaFile.currentTime || "0:00" }}</span>
+        <div class="progress-bar-container">
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              [style.width.%]="mediaFile.progress || 0"
+            ></div>
+            <div
+              class="progress-thumb"
+              [style.left.%]="mediaFile.progress || 0"
+            >
+              <img
+                src="icon-playhead.svg"
+                alt="playhead"
+                class="playhead-icon"
+              />
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div> 
+  @if (showReviewPage) {
+    <img src="icon-review-page.svg" alt="review page" (click)="goToReviewPage()" />
+  }
+</div>

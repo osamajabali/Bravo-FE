@@ -1,0 +1,49 @@
+<div class="book-reading">
+  <div class="book-card">
+    <div class="book-cover">
+      <img [src]="selectedBook.coverImageUrl" [alt]="selectedBook.title" />
+    </div>
+    <div class="book-details">
+      <div class="title">{{ selectedBook.title }}</div>
+      <p class="sub-level">
+        Sub Level: <b>{{ selectedBook.assignmentTypeName }}</b>
+      </p>
+      <p class="author">
+        Author Name: <b>{{ selectedBook.authorName }}</b>
+      </p>
+      <p class="student-level">
+        Main level: <b>{{ selectedBook.mainLevelName }}</b>
+      </p>
+    </div>
+    <div class="book-actions">
+      <button
+        pButton
+        label=""
+        class="p-button-outlined"
+        (click)="onAudioClick()"
+      >
+        <img src="icon-audio.svg" alt="view" />
+      </button>
+      <button
+        pButton
+        label=""
+        class="p-button-outlined"
+        (click)="showPreviewPopup = true"
+      >
+        <img src="icon-eye.svg" alt="view" />
+      </button>
+    </div>
+  </div>
+
+  @if (skills.length > 0) {
+  <app-multiple-questions
+    [skills]="skills"
+    [submissionId]="submissionId"
+    [studentId]="studentId"
+  />
+  }
+</div>
+
+@if (showPreviewPopup) {
+<app-html-dialog [(ngModel)]="showPreviewPopup" />
+}

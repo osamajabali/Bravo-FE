@@ -1,0 +1,66 @@
+<div class="question-answer">
+  <div class="question" [class.audio-question]="answerType === 'audio'">
+    <div class="info-box">
+      <div class="box-icon">
+        <img src="icon-question.svg" alt="Question" />
+      </div>
+      <div>
+        <div class="box-title">Question</div>
+        <div class="box-content">
+          <p>
+            What is your favorite animal and why? Please record your answer!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (answerType === 'text') {
+  <div class="answer">
+    <div class="info-box">
+      <div class="box-icon">
+        <img src="icon-student-answer.svg" alt="Question" />
+      </div>
+      <div>
+        <div class="box-title">Student Answer</div>
+        <div class="box-content">
+          <p>I like dogs because they are loyal and friendly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  } @if (answerType === 'audio') {
+  <div class="media-player">
+    <app-media-player
+      [mediaFile]="mediaFile"
+      [displayDate]="todayDate"
+      [showReviewPage]="false"
+    ></app-media-player>
+  </div>
+  } @if (answerType === 'image') {
+  <div class="answer">
+    <div class="info-box">
+      <div class="box-icon">
+        <img src="icon-student-answer.svg" alt="Question" />
+      </div>
+      <div class="answer-content">
+        <div class="box-title">Student Answer</div>
+        <div class="box-content">
+          <div class="image">
+            <img src="assets/images/sample-answer.png" alt="book view" />
+          </div>
+        </div>
+        <div class="slides-arrows">
+          <div class="arrow-container left">
+            <img src="arrow-right-dark.svg" alt="arrow left" />
+          </div>
+          <div class="page-number">1/12</div>
+          <div class="arrow-container right">
+            <img src="arrow-right-dark.svg" alt="arrow right" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>

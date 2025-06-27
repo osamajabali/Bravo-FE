@@ -1,0 +1,62 @@
+<!-- Skills Sections -->
+<div class="skills-container">
+  @for (skill of skills; track skill.skillId) {
+  <div class="skill-section">
+    <div class="skill-header" (click)="toggleSkill(skill.skillId)">
+      <div class="skill-header-left">
+        <i
+          class="pi"
+          [ngClass]="skill.expanded ? 'pi-chevron-down' : 'pi-chevron-right'"
+        ></i>
+        <span class="skill-name">{{ skill.name }}</span>
+      </div>
+      <div class="skill-header-right">
+        @for (flag of skill.flags; track $index) {
+        <div class="skill-stat">
+          <img [src]="flag.iconUrl" alt="Corrected" />
+          {{ flag.title }}: <span class="fw-bold">{{ flag.value }}</span>
+        </div>
+        }
+      </div>
+    </div>
+
+    @if (skill.expanded) {
+    <div class="skill-content">
+      <div class="questions-header">
+        <div class="question-header-item question">Question</div>
+        <div class="question-header-item difficulty">Difficulty</div>
+        <div class="question-header-item answer">Student Answer</div>
+      </div>
+
+      @for (question of questions; track $index) {
+      <div class="question-row">
+        <div class="question-item question">{{ question.text }}</div>
+        <div class="question-item difficulty">
+          <span
+            class="difficulty-badge"
+            [style.background-color]="question.color"
+          >
+            <img
+              [src]="question.answerBtnIconUrl"
+              [alt]="question.difficulty.text"
+            />
+            {{ question.difficulty.text }}
+          </span>
+        </div>
+        <div class="question-item answer">
+          <span
+            class="answer-badge pointer"
+            [style.background-color]="question.answerBtnColor"
+            [style.border]="'1px solid ' + question.color"
+          >
+            {{ question.answerBtnText }}
+            <img [src]="question.answerBtnIconUrl" alt="correct" />
+          </span>
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+  }
+</div> 

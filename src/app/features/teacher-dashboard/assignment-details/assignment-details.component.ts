@@ -14,18 +14,6 @@ import { AssignmentDetails, StudentAssignmentDetailsResponse, StudentsAssignment
 import { PaginatorState } from 'primeng/paginator';
 import { StudentMarkingDrawerComponent } from '../../../shared/components/student-marking-drawer/student-marking-drawer.component';
 
-interface StudentSubmission {
-  id: number;
-  studentName: string;
-  initials: string;
-  status: 'Active' | 'Pending';
-  correctAnswers: number;
-  wrongAnswers: number;
-  score: number;
-  timeSpent: string;
-  selected?: boolean;
-}
-
 @Component({
   selector: 'app-assignment-details',
   standalone: true,

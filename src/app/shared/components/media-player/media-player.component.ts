@@ -16,12 +16,14 @@ export interface MediaFile {
   selector: 'app-media-player',
   imports: [CommonModule],
   templateUrl: './media-player.component.html',
-  styleUrl: './media-player.component.scss'
+  styleUrl: './media-player.component.scss',
 })
 export class MediaPlayerComponent {
   @Input() mediaFile!: MediaFile;
   @Input() displayDate: string = '';
+  @Input() showReviewPage: boolean = false;
   @Output() mediaFileChange = new EventEmitter<MediaFile>();
+  @Output() onReviewPageClick = new EventEmitter<void>();
 
   private currentAudio: HTMLAudioElement | null = null;
 
@@ -46,8 +48,12 @@ export class MediaPlayerComponent {
 
     audio.addEventListener('timeupdate', () => {
       this.mediaFile.currentTime = this.formatTime(audio.currentTime);
-      if (this.mediaFile.durationSeconds && this.mediaFile.durationSeconds > 0) {
-        this.mediaFile.progress = (audio.currentTime / this.mediaFile.durationSeconds) * 100;
+      if (
+        this.mediaFile.durationSeconds &&
+        this.mediaFile.durationSeconds > 0
+      ) {
+        this.mediaFile.progress =
+          (audio.currentTime / this.mediaFile.durationSeconds) * 100;
       }
       this.mediaFileChange.emit(this.mediaFile);
     });
@@ -68,14 +74,17 @@ export class MediaPlayerComponent {
     });
 
     // Play the audio
-    audio.play().then(() => {
-      this.mediaFile.isPlaying = true;
-      this.currentAudio = audio;
-      this.mediaFileChange.emit(this.mediaFile);
-    }).catch(err => {
-      console.error('Failed to play audio:', err);
-      URL.revokeObjectURL(audioUrl);
-    });
+    audio
+      .play()
+      .then(() => {
+        this.mediaFile.isPlaying = true;
+        this.currentAudio = audio;
+        this.mediaFileChange.emit(this.mediaFile);
+      })
+      .catch((err) => {
+        console.error('Failed to play audio:', err);
+        URL.revokeObjectURL(audioUrl);
+      });
   }
 
   pauseAudio() {
@@ -84,6 +93,10 @@ export class MediaPlayerComponent {
       this.mediaFile.isPlaying = false;
       this.mediaFileChange.emit(this.mediaFile);
     }
+  }
+
+  goToReviewPage() {
+    this.onReviewPageClick.emit();
   }
 
   private stopCurrentAudio() {
@@ -103,4 +116,4 @@ export class MediaPlayerComponent {
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   }
-} 
+}

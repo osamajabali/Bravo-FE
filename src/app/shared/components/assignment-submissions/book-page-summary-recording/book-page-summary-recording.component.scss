@@ -1,0 +1,179 @@
+.book-page-summary-recording {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-xl);
+  padding: var(--padding-m);
+
+  .question {
+    .info-box {
+      padding: var(--padding-xl);
+      border: 1px solid var(--primary-primary-200);
+      border-radius: var(--radius-m);
+      background-color: var(--primary-primary-50);
+      overflow: hidden;
+      display: flex;
+      gap: var(--padding-m);
+
+      .box-title {
+        padding-bottom: var(--padding-xxs);
+        color: var(--primary-primary-900);
+        font-size: var(--font-size-m);
+        font-weight: var(--font-weight-bold);
+      }
+
+      .box-content {
+        p {
+          margin: 0;
+          color: var(--primary-primary-900);
+          font-size: var(--font-size-s);
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      color: var(--primary-primary-900);
+      font-size: var(--font-size-m);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: var(--padding-xs);
+
+      .icon {
+        padding: var(--padding-xs);
+      }
+
+      .active {
+        background-color: var(--primary-primary-100);
+        border-radius: var(--radius-s);
+      }
+    }
+  }
+
+  .information {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .played-count {
+      color: var(--primary-primary-900);
+      font-size: var(--font-size-s);
+    }
+
+    .p-button-primary {
+      padding: var(--padding-s) var(--padding-m) !important;
+      gap: var(--padding-m) !important;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-m);
+  }
+
+  .book-view-container {
+    background-color: var(--neutral-grey-25);
+    padding: var(--padding-m);
+    border-radius: var(--radius-xs);
+
+    .book-view-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--padding-m);
+      align-items: center;
+      width: 50%;
+      height: 100%;
+      margin: 0 auto;
+    }
+
+    .media-player {
+      width: 100%;
+      background: var(--neutral-white);
+    }
+
+    .book-page-image {
+      width: 100%;
+      object-fit: contain;
+      max-height: 500px;
+    }
+  }
+
+  .slides-arrows {
+    display: flex;
+    align-items: center;
+    gap: var(--padding-m);
+    justify-content: center;
+
+    .page-number {
+      color: var(--primary-primary-900);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .arrow-container {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--neutral-white);
+      border-radius: var(--radius-s);
+      border: 1px solid var(--neutral-grey-200);
+
+      &.left {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
+// Review Popup Styles
+::ng-deep {
+  .review-popup {
+    .p-dialog-header {
+      padding-bottom: 0;
+    }
+
+    .dialog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      .title {
+        color: var(--primary-primary-900);
+        font-size: var(--font-size-);
+        font-weight: var(--font-weight-bold);
+      }
+    }
+
+    .p-dialog {
+      width: 600px;
+      max-width: 90vw;
+    }
+
+    .p-dialog-content {
+      padding: var(--padding-s) var(--padding-xl);
+    }
+
+    .review-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .preview-image {
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}

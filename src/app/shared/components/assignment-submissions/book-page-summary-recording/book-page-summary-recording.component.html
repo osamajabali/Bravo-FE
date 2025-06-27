@@ -1,0 +1,114 @@
+<div class="book-page-summary-recording">
+  <div class="question">
+    <div class="info-box">
+      <div class="box-icon">
+        <img src="icon-question.svg" alt="Question" />
+      </div>
+      <div>
+        <div class="box-title">Question</div>
+        <div class="box-content">
+          <p>
+            What is your favorite animal and why? Please record your answer!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header">
+    <div class="title">
+      Student Answer <span *ngIf="viewType === 'grid'">(12)</span>
+    </div>
+    <div class="action-buttons">
+      <img
+        src="icon-list-view.svg"
+        alt="list view"
+        class="icon pointer"
+        [class.active]="viewType === 'list'"
+        (click)="viewType = 'list'"
+      />
+      <img
+        src="icon-book-view.svg"
+        alt="grid view"
+        class="icon pointer"
+        [class.active]="viewType === 'grid'"
+        (click)="viewType = 'grid'"
+      />
+    </div>
+  </div>
+  @if (viewType === 'list') {
+  <div class="information">
+    <button pButton type="button" label="" class="p-button-primary">
+      <img src="icon-play-small.svg" alt="play" />
+      <span>Play All</span>
+    </button>
+    <div class="played-count">0 / 10 played</div>
+  </div>
+  <div class="content">
+    <div class="media-player">
+      <app-media-player
+        [mediaFile]="mediaFile"
+        [displayDate]="todayDate"
+        [showReviewPage]="true"
+        (onReviewPageClick)="goToReviewPage()"
+      ></app-media-player>
+    </div>
+  </div>
+  } @if (viewType === 'grid') {
+  <div class="book-view-container">
+    <div class="book-view-content">
+      <div class="media-player">
+        <app-media-player
+          [mediaFile]="mediaFile"
+          [displayDate]="todayDate"
+          [showReviewPage]="false"
+        ></app-media-player>
+      </div>
+      <img
+        src="assets/images/book-image.svg"
+        alt="book view"
+        class="book-page-image"
+      />
+    </div>
+  </div>
+  <div class="slides-arrows">
+    <div class="arrow-container left">
+      <img src="arrow-right-dark.svg" alt="arrow left" />
+    </div>
+    <div class="page-number">1/12</div>
+    <div class="arrow-container right">
+      <img src="arrow-right-dark.svg" alt="arrow right" />
+    </div>
+  </div>
+  }
+</div>
+
+<!-- Review Popup -->
+<p-dialog
+  [(visible)]="showReviewPopup"
+  [modal]="true"
+  [closable]="false"
+  [draggable]="false"
+  [resizable]="false"
+  class="review-popup"
+  (onHide)="closeReviewPopup()"
+>
+  <ng-template pTemplate="header">
+    <div class="dialog-header">
+      <div class="title">Page 1 Preview</div>
+      <button
+        pButton
+        class="p-button-text close-btn"
+        (click)="closeReviewPopup()"
+      >
+        <img src="icon-close-black.svg" alt="Close" />
+      </button>
+    </div>
+  </ng-template>
+  <div class="review-content">
+    <img
+      src="/assets/images/book-image.svg"
+      alt="Page 1 Preview"
+      class="preview-image"
+    />
+  </div>
+</p-dialog>

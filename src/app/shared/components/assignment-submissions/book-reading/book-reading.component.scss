@@ -1,0 +1,61 @@
+.book-reading {
+  .book-card {
+    display: flex;
+    margin: 0 var(--padding-m) var(--padding-xl);
+    background-color: var(--neutral-white);
+    border: 1px solid var(--neutral-grey-200);
+    border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    .book-cover {
+      width: 140px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .book-details {
+      width: calc(100% - 140px);
+      padding: var(--padding-m);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      .title {
+        font-size: var(--font-size-s);
+        color: var(--primary-primary-900);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--padding-xs);
+        text-align: start;
+      }
+
+      p {
+        font-size: var(--font-size-xs);
+        color: var(--neutral-grey-600);
+        margin-bottom: var(--padding-xxs);
+      }
+    }
+    .book-actions {
+      display: flex;
+      gap: var(--padding-m);
+      margin-top: var(--padding-s);
+      align-self: flex-start;
+      padding-inline-end: var(--padding-m);
+
+      .p-button-outlined {
+        display: flex;
+        align-items: center;
+        gap: var(--padding-xs);
+        padding: var(--padding-xs) !important;
+
+        img {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+}
