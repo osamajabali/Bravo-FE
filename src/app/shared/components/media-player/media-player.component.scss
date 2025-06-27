@@ -4,7 +4,7 @@
   width: 100%;
   border: 1px solid var(--neutral-grey-200);
   border-radius: var(--radius-s);
-  
+
   .audio-player {
     padding: var(--padding-l) var(--padding-xl);
     display: flex;
@@ -107,5 +107,18 @@
         }
       }
     }
+  }
+}
+
+.recording-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--padding-s);
+  padding: 0 var(--padding-s);
+
+  img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
   }
 }

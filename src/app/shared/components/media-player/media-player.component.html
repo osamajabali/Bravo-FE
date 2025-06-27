@@ -1,11 +1,13 @@
 <div class="audio-player-container">
   <div class="audio-player">
+    @if (showFileHeader) {
     <div class="file-header">
       <div class="file-name">
         {{ mediaFile.fileName }}
       </div>
       <div class="file-date">{{ displayDate }}</div>
     </div>
+    }
     <div class="player-controls">
       <img
         [src]="mediaFile.isPlaying ? 'icon-pause-sml.svg' : 'icon-play-sml.svg'"
@@ -37,6 +39,19 @@
     </div>
   </div>
   @if (showReviewPage) {
-    <img src="icon-review-page.svg" alt="review page" (click)="goToReviewPage()" />
+  <img
+    src="icon-review-page.svg"
+    alt="review page"
+    (click)="goToReviewPage()"
+  />
+  } @if (showRecordingControls) {
+  <div class="recording-controls">
+    <img src="icon-reject-recording.svg" alt="reject" (click)="reRecording()" />
+    <img
+      src="icon-reload-square.svg"
+      alt="re-record"
+      (click)="reRecording()"
+    />
+  </div>
   }
 </div>

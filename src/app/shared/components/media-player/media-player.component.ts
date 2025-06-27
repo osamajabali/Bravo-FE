@@ -22,8 +22,12 @@ export class MediaPlayerComponent {
   @Input() mediaFile!: MediaFile;
   @Input() displayDate: string = '';
   @Input() showReviewPage: boolean = false;
+  @Input() showFileHeader: boolean = true;
+  @Input() showRecordingControls: boolean = false;
   @Output() mediaFileChange = new EventEmitter<MediaFile>();
   @Output() onReviewPageClick = new EventEmitter<void>();
+  @Output() onReRecordingClick = new EventEmitter<void>();
+  @Output() onAcceptRecordingClick = new EventEmitter<void>();
 
   private currentAudio: HTMLAudioElement | null = null;
 
@@ -40,21 +44,63 @@ export class MediaPlayerComponent {
 
     // Set up event listeners
     audio.addEventListener('loadedmetadata', () => {
-      this.mediaFile.duration = this.formatTime(audio.duration);
-      this.mediaFile.durationSeconds = audio.duration;
+      // Handle case where duration is Infinity (common with recorded audio)
+      if (isFinite(audio.duration) && audio.duration > 0) {
+        this.mediaFile.duration = this.formatTime(audio.duration);
+        this.mediaFile.durationSeconds = audio.duration;
+      } else {
+        // For recorded audio without proper metadata, we'll set duration during playback
+        this.mediaFile.duration = '0:00';
+        this.mediaFile.durationSeconds = 0;
+      }
       this.mediaFile.progress = 0;
       this.mediaFileChange.emit(this.mediaFile);
     });
 
+    // Additional event to catch duration when it becomes available
+    audio.addEventListener('canplaythrough', () => {
+      if (
+        isFinite(audio.duration) &&
+        audio.duration > 0 &&
+        (!this.mediaFile.durationSeconds ||
+          this.mediaFile.durationSeconds === 0)
+      ) {
+        this.mediaFile.duration = this.formatTime(audio.duration);
+        this.mediaFile.durationSeconds = audio.duration;
+        this.mediaFileChange.emit(this.mediaFile);
+      }
+    });
+
     audio.addEventListener('timeupdate', () => {
       this.mediaFile.currentTime = this.formatTime(audio.currentTime);
+
+      // Update duration if it wasn't available during loadedmetadata
+      if (
+        (!this.mediaFile.durationSeconds ||
+          this.mediaFile.durationSeconds === 0) &&
+        isFinite(audio.duration) &&
+        audio.duration > 0
+      ) {
+        this.mediaFile.duration = this.formatTime(audio.duration);
+        this.mediaFile.durationSeconds = audio.duration;
+      }
+
+      // Calculate progress
       if (
         this.mediaFile.durationSeconds &&
         this.mediaFile.durationSeconds > 0
       ) {
         this.mediaFile.progress =
           (audio.currentTime / this.mediaFile.durationSeconds) * 100;
+      } else {
+        // If we still don't have duration, try to get it from the audio element
+        if (isFinite(audio.duration) && audio.duration > 0) {
+          this.mediaFile.durationSeconds = audio.duration;
+          this.mediaFile.duration = this.formatTime(audio.duration);
+          this.mediaFile.progress = (audio.currentTime / audio.duration) * 100;
+        }
       }
+
       this.mediaFileChange.emit(this.mediaFile);
     });
 
@@ -69,7 +115,6 @@ export class MediaPlayerComponent {
     audio.addEventListener('error', () => {
       this.mediaFile.isPlaying = false;
       URL.revokeObjectURL(audioUrl);
-      console.error('Error playing audio file');
       this.mediaFileChange.emit(this.mediaFile);
     });
 
@@ -82,7 +127,6 @@ export class MediaPlayerComponent {
         this.mediaFileChange.emit(this.mediaFile);
       })
       .catch((err) => {
-        console.error('Failed to play audio:', err);
         URL.revokeObjectURL(audioUrl);
       });
   }
@@ -97,6 +141,14 @@ export class MediaPlayerComponent {
 
   goToReviewPage() {
     this.onReviewPageClick.emit();
+  }
+
+  reRecording() {
+    this.onReRecordingClick.emit();
+  }
+
+  acceptRecording() {
+    this.onAcceptRecordingClick.emit();
   }
 
   private stopCurrentAudio() {
