@@ -1,8 +1,8 @@
 export interface Skill {
-expanded: boolean;
+  expanded: boolean;
   skillId: number;
   name: string;
-  flags : Flag[];
+  flags: Flag[];
 }
 
 export class Flag {
@@ -17,6 +17,7 @@ export interface SubmissionCard {
   text: string;
   color: string;
   backgroundColor: string;
+  isHighlighted: boolean;
   iconUrl?: string;
 }
 

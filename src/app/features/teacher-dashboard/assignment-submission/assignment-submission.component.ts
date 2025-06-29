@@ -14,14 +14,18 @@ import { BookPageSummaryRecordingComponent } from '../../../shared/components/as
 import { StudentMarkingDrawerComponent } from '../../../shared/components/student-marking-drawer/student-marking-drawer.component';
 import { BookListeningComponent } from '../../../shared/components/assignment-submissions/book-listening/book-listening.component';
 import { QuestionAnswerComponent } from '../../../shared/components/assignment-submissions/question-answer/question-answer.component';
-import { MediaPlayerComponent, MediaFile } from '../../../shared/components/media-player/media-player.component';
+import { MediaPlayerComponent } from '../../../shared/components/media-player/media-player.component';
+import { SubmissionReadingDetails } from '../../../core/models/assignment-submission/reading-submission-details';
+import { OralReadingComponent } from "../../../shared/components/assignment-submissions/oral-reading/oral-reading.component";
+import { OralSubmissionDetails } from '../../../core/models/assignment-submission/oral-submission-details';
 
 enum SubmissionType {
-  MULTIPLE_QUESTIONS = 'multiple-questions',
-  BOOK_READING = 'book-reading',
-  BOOK_PAGE_SUMMARY_RECORDING = 'book-page-summary-recording',
-  BOOK_LISTENING = 'book-listening',
-  QUESTION_ANSWER = 'question-answer'
+  SkillAssignment = 1,
+  ReadingComprehension = 2,
+  OralReading = 3,
+  Listening = 4,
+  Writing = 5,
+  Speaking = 6
 }
 
 interface Question {
@@ -48,12 +52,15 @@ interface Question {
     QuestionAnswerComponent,
     DialogModule,
     MediaPlayerComponent,
-  ],
+    OralReadingComponent
+],
   templateUrl: './assignment-submission.component.html',
   styleUrl: './assignment-submission.component.scss',
 })
 export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
-  @ViewChild(MultipleQuestionsComponent)
+
+  @ViewChild('multipleQuestions') multipleQuestionComponent: MultipleQuestionsComponent;
+  @ViewChild('oralReading') OralReadingComponent: OralReadingComponent;
   multipleQuestionsComponent!: MultipleQuestionsComponent;
 
   showMarkingDrawer = false;
@@ -69,7 +76,7 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
   recordingInterval: any;
   mediaRecorder: MediaRecorder | null = null;
   audioChunks: Blob[] = [];
-  recordedAudioFile: MediaFile | null = null;
+  recordedAudioFile: any | null = null;
   audioVisualizationData: number[] = [];
   audioContext: AudioContext | null = null;
   analyser: AnalyserNode | null = null;
@@ -90,18 +97,48 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
   questions: SubmissionQuestion[] = [];
   studentId: number;
   submissionId: number;
-  submissionType: SubmissionType = SubmissionType.BOOK_PAGE_SUMMARY_RECORDING;
+  submissionType: SubmissionType = SubmissionType.SkillAssignment;
+  submissionTypeValues = SubmissionType;
+  readingSubmissionDetails: SubmissionReadingDetails = new SubmissionReadingDetails();
+  oralSubmissionDetails: OralSubmissionDetails = new OralSubmissionDetails();
 
   ngOnInit(): void {
     this.sharedService.pushTitle('ASSIGNMENT SUBMISSION');
-    if (
-      localStorage.getItem('submissionId') &&
-      localStorage.getItem('studentId')
+    if (localStorage.getItem('submissionId') && localStorage.getItem('studentId')
     ) {
       this.submissionId = parseInt(localStorage.getItem('submissionId'));
       this.studentId = parseInt(localStorage.getItem('studentId'));
-      this.getSubmissions();
     }
+    if (localStorage.getItem('assignmentSubmissionType')) {
+      this.submissionType = parseInt(localStorage.getItem('assignmentSubmissionType'));
+    }
+    this.getSubmissions()
+  }
+
+  getSubmissionsByType() {
+    if (this.submissionType == this.submissionTypeValues.ReadingComprehension) {
+      this.getReadingSubmissionDetails();
+    } else if (this.submissionType == this.submissionTypeValues.OralReading) {
+      this.getOralReadingSubmissionDetails();
+    }
+  }
+
+  getOralReadingSubmissionDetails() {
+    this.submissionService.getOralReadingSubmissionDetails(this.submissionId, this.studentId).subscribe(res => {
+      if (res.success) {
+        this.oralSubmissionDetails = res.result;
+        this.studentSubmission.submissionCards = this.oralSubmissionDetails.submissionSummary;
+      }
+    })
+  }
+
+  getReadingSubmissionDetails() {
+    this.submissionService.getReadingSubmissionDetails(this.submissionId, this.studentId).subscribe(res => {
+      if (res.success) {
+        this.readingSubmissionDetails = res.result;
+        this.studentSubmission.submissionCards = this.readingSubmissionDetails.submissionSummary;
+      }
+    })
   }
 
   getSubmissions() {
@@ -110,8 +147,9 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         if (res.success) {
           this.studentSubmission = res.result;
+          this.getSubmissionsByType()
           // Trigger the first skill to be expanded and load its questions
-          if (this.studentSubmission.skills.length > 0) {
+          if (this.studentSubmission.skills) {
             // Use setTimeout to ensure the child component is initialized
             setTimeout(() => {
               this.multipleQuestionsComponent?.toggleSkill(
@@ -121,6 +159,10 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
           }
         }
       });
+  }
+
+  setCards() {
+    throw new Error('Method not implemented.');
   }
 
   hasWrongAnswer(question: Question): boolean {
@@ -145,29 +187,29 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
     try {
       // Request microphone permission
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      
+
       // Initialize audio context for visualization
       this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       this.analyser = this.audioContext.createAnalyser();
       const source = this.audioContext.createMediaStreamSource(stream);
       source.connect(this.analyser);
-      
+
       this.analyser.fftSize = 256;
       const bufferLength = this.analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
-      
+
       // Start recording
       this.mediaRecorder = new MediaRecorder(stream);
       this.audioChunks = [];
-      
+
       this.mediaRecorder.ondataavailable = (event) => {
         this.audioChunks.push(event.data);
       };
-      
+
       this.mediaRecorder.onstop = () => {
         const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
         const audioFile = new File([audioBlob], `recording-${Date.now()}.webm`, { type: 'audio/webm' });
-        
+
         this.recordedAudioFile = {
           file: audioFile,
           fileName: audioFile.name,
@@ -177,14 +219,14 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
           progress: 0
           // Let MediaPlayer determine duration and durationSeconds from the actual audio file
         };
-        
+
         // Stop all tracks to release microphone
         stream.getTracks().forEach(track => track.stop());
-        
+
         // Trigger change detection to update the UI
         this.cdr.detectChanges();
       };
-      
+
       // Start recording with timeslice to ensure data is available
       this.mediaRecorder.start(1000); // Collect data every second
       this.isRecording = true;
@@ -192,7 +234,7 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
       this.voiceActivityHistory = [];
       this.currentSecondActivity = 0;
       this.lastSecond = 0;
-      
+
       // Start recording timer
       this.recordingInterval = setInterval(() => {
         this.recordingTime++;
@@ -200,10 +242,10 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
         this.voiceActivityHistory.push(this.currentSecondActivity);
         this.currentSecondActivity = 0;
       }, 1000);
-      
+
       // Start audio visualization
       this.visualizeAudio(dataArray);
-      
+
     } catch (error) {
       alert('Unable to access microphone. Please check your permissions.');
     }
@@ -213,19 +255,19 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
     if (this.mediaRecorder && this.isRecording) {
       this.mediaRecorder.stop();
       this.isRecording = false;
-      
+
       // Clear recording timer
       if (this.recordingInterval) {
         clearInterval(this.recordingInterval);
         this.recordingInterval = null;
       }
-      
+
       // Stop audio visualization
       if (this.animationId) {
         cancelAnimationFrame(this.animationId);
         this.animationId = null;
       }
-      
+
       // Close audio context
       if (this.audioContext) {
         this.audioContext.close();
@@ -234,12 +276,12 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
     }
   }
 
-  acceptRecording() {    
-          // Create the audio file immediately instead of waiting for onstop
-      if (this.audioChunks.length > 0) {
-        const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
-        const audioFile = new File([audioBlob], `recording-${Date.now()}.webm`, { type: 'audio/webm' });
-      
+  acceptRecording() {
+    // Create the audio file immediately instead of waiting for onstop
+    if (this.audioChunks.length > 0) {
+      const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+      const audioFile = new File([audioBlob], `recording-${Date.now()}.webm`, { type: 'audio/webm' });
+
       this.recordedAudioFile = {
         file: audioFile,
         fileName: audioFile.name,
@@ -249,11 +291,11 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
         progress: 0
         // Let MediaPlayer determine duration and durationSeconds from the actual audio file
       };
-      
+
     }
-    
+
     this.stopRecording();
-    
+
     // Use NgZone to ensure Angular detects the changes
     this.ngZone.run(() => {
       this.cdr.detectChanges();
@@ -275,16 +317,16 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
 
   private visualizeAudio(dataArray: Uint8Array) {
     if (!this.analyser || !this.isRecording) return;
-    
+
     this.analyser.getByteFrequencyData(dataArray);
-    
+
     // Calculate current voice activity level with better voice detection
     const average = dataArray.reduce((sum, value) => sum + value, 0) / dataArray.length;
-    
+
     // Use a more sensitive threshold for voice detection
     const voiceThreshold = 20; // Minimum level to consider as voice
     const isVoiceDetected = average > voiceThreshold;
-    
+
     // Calculate normalized activity level
     let normalizedActivity;
     if (isVoiceDetected) {
@@ -294,21 +336,21 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
       // Keep bars consistently low when silent (no random movement)
       normalizedActivity = 15;
     }
-    
+
     // Update current second's activity (take the maximum activity in this second)
     this.currentSecondActivity = Math.max(this.currentSecondActivity, normalizedActivity);
-    
+
     // Create visualization data showing voice activity history per second
     this.audioVisualizationData = [
       ...this.voiceActivityHistory, // Past seconds
       this.currentSecondActivity || 15 // Current second
     ];
-    
+
     // Limit to show last 20 seconds max
     if (this.audioVisualizationData.length > 20) {
       this.audioVisualizationData = this.audioVisualizationData.slice(-20);
     }
-    
+
     this.animationId = requestAnimationFrame(() => this.visualizeAudio(dataArray));
   }
 
@@ -326,7 +368,7 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
-  onMediaFileChange(updatedMediaFile: MediaFile) {
+  onMediaFileChange(updatedMediaFile: any) {
     if (this.recordedAudioFile) {
       this.recordedAudioFile = { ...this.recordedAudioFile, ...updatedMediaFile };
       console.log('Media file updated:', {

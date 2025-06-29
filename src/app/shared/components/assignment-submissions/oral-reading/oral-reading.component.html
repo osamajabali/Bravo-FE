@@ -1,31 +1,36 @@
 <div class="book-listening">
+  @if (oralSubmissionDetails().storyDetails) {
   <div class="book-card">
     <div class="book-cover">
-      <img [src]="selectedBook.coverImageUrl" [alt]="selectedBook.title" />
+      <img [src]="oralSubmissionDetails().storyDetails.coverUrl"
+        [alt]="oralSubmissionDetails().storyDetails.title" />
     </div>
     <div class="book-details">
-      <div class="title">{{ selectedBook.title }}</div>
+      <div class="title">{{ oralSubmissionDetails().storyDetails.title }}</div>
       <p class="sub-level">
-        Sub Level: <b>{{ selectedBook.assignmentTypeName }}</b>
+        Sub Level: <b>{{ oralSubmissionDetails().storyDetails.subLevelName
+          }}</b>
       </p>
       <p class="author">
-        Author Name: <b>{{ selectedBook.authorName }}</b>
+        Author Name: <b>{{ oralSubmissionDetails().storyDetails.authorName
+          }}</b>
       </p>
       <p class="student-level">
-        Main level: <b>{{ selectedBook.mainLevelName }}</b>
+        Main level: <b>{{ oralSubmissionDetails().storyDetails.mainLevelName
+          }}</b>
       </p>
     </div>
     <div class="book-actions">
       <button
         pButton
-        label=""
+        label
         class="p-button-outlined"
-        (click)="showPreviewBookPopup = true"
-      >
+        (click)="showPreviewBookPopup = true">
         <img src="icon-eye.svg" alt="view" />
       </button>
     </div>
   </div>
+  }
   <div class="header">
     <div class="title">
       Student Answer <span *ngIf="viewType === 'grid'">(12)</span>
@@ -36,15 +41,13 @@
         alt="list view"
         class="icon pointer"
         [class.active]="viewType === 'list'"
-        (click)="viewType = 'list'"
-      />
+        (click)="viewType = 'list'" />
       <img
         src="icon-book-view.svg"
         alt="grid view"
         class="icon pointer"
         [class.active]="viewType === 'grid'"
-        (click)="viewType = 'grid'"
-      />
+        (click)="viewType = 'grid'" />
     </div>
   </div>
   @if (viewType === 'list') {
@@ -52,10 +55,9 @@
     <button
       pButton
       type="button"
-      label=""
+      label
       class="p-button-primary"
-      (click)="playAll()"
-    >
+      (click)="playAll()">
       <img *ngIf="!isPlaying" src="icon-play-small.svg" alt="play" />
       <img *ngIf="isPlaying" src="icon-pause-sml.svg" alt="pause" />
       <span *ngIf="!isPlaying">Play All</span>
@@ -64,24 +66,25 @@
     <div class="played-count">3 of 10 played</div>
   </div>
   <div class="content">
+    @for (item of oralSubmissionDetails().pages; track $index) {
     <div class="media-player">
       <app-media-player
-        (onReviewPageClick)="goToReviewPage()"
-      ></app-media-player>
+        [page]="item"
+        (onReviewPageClick)="goToReviewPage($event)"></app-media-player>
     </div>
+    }
   </div>
   } @if (viewType === 'grid') {
   <div class="book-view-container">
     <div class="book-view-content">
       <div class="media-player">
         <app-media-player
-        ></app-media-player>
+          [showReviewPage]="true"></app-media-player>
       </div>
       <img
         src="assets/images/book-image.svg"
         alt="book view"
-        class="book-page-image"
-      />
+        class="book-page-image" />
     </div>
   </div>
   <div class="slides-arrows">
@@ -104,26 +107,20 @@
   [draggable]="false"
   [resizable]="false"
   class="review-popup"
-  (onHide)="closeReviewPopup()"
->
+  (onHide)="closeReviewPopup()">
   <ng-template pTemplate="header">
     <div class="dialog-header">
       <div class="title">Page 1 Preview</div>
       <button
         pButton
         class="p-button-text close-btn"
-        (click)="closeReviewPopup()"
-      >
+        (click)="closeReviewPopup()">
         <img src="icon-close-black.svg" alt="Close" />
       </button>
     </div>
   </ng-template>
   <div class="review-content">
-    <img
-      src="/assets/images/book-image.svg"
-      alt="Page 1 Preview"
-      class="preview-image"
-    />
+    <div [innerHTML]="storyPage.pageHtmlContent"></div>
   </div>
 </p-dialog>
 

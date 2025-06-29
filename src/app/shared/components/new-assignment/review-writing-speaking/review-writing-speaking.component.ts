@@ -1,7 +1,7 @@
 import { Component, computed, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PanelModule } from 'primeng/panel';
-import { MediaPlayerComponent, MediaFile } from '../../media-player/media-player.component';
+import { MediaPlayerComponent } from '../../media-player/media-player.component';
 
 interface Question {
   id: number;
@@ -83,7 +83,7 @@ export class ReviewWritingSpeakingComponent {
     });
   }
 
-  getMediaFileData(question: Question): MediaFile | null {
+  getMediaFileData(question: Question): any | null {
     if (!question.uploadedVoiceFile) return null;
     
     return {
@@ -98,7 +98,7 @@ export class ReviewWritingSpeakingComponent {
     };
   }
 
-  onMediaFileChange(question: Question, updatedMediaFile: MediaFile) {
+  onMediaFileChange(question: Question, updatedMediaFile: any) {
     question.isAudioPlaying = updatedMediaFile.isPlaying;
     question.audioDuration = updatedMediaFile.duration;
     question.currentAudioTime = updatedMediaFile.currentTime;

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { MediaFile, MediaPlayerComponent } from '../../media-player/media-player.component';
+import { MediaPlayerComponent } from '../../media-player/media-player.component';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -19,7 +19,7 @@ export class BookPageSummaryRecordingComponent {
     month: 'long',
     day: 'numeric',
   });
-  mediaFile: MediaFile = {
+  mediaFile: any = {
     file: new File([], 'test.mp3'),
     fileName: 'test.mp3',
     fileSize: '100KB',

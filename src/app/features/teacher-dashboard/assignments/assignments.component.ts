@@ -61,7 +61,7 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
   datePipe = inject(DatePipe);
   selectedTab: string = 'live';
   searchTerm = '';
-  showAdvancedSearch : boolean= false;
+  showAdvancedSearch: boolean = false;
   sortColumn: string = '';
   sortDirection: 'asc' | 'desc' | '' = '';
 
@@ -142,12 +142,12 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
     });
   }
 
-    nextPage($event: PaginatorState) {
-      this.assignmentPayload.pageNumber = $event.page;
-      this.sharedService.savePageState('studentsSubmissions', $event.page);
-      this.first = $event.first;
-      this.getAssignments();
-    }
+  nextPage($event: PaginatorState) {
+    this.assignmentPayload.pageNumber = $event.page;
+    this.sharedService.savePageState('studentsSubmissions', $event.page);
+    this.first = $event.first;
+    this.getAssignments();
+  }
 
   onTabClick(tab: string) {
     this.selectedTab = tab;
@@ -157,7 +157,8 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/features/assignments/new']);
   }
 
-  viewAssignment(id: number) {
+  viewAssignment(id: number, type : number) {
+    localStorage.setItem('assignmentSubmissionType', type.toString());
     localStorage.setItem('assignmentId', id.toString());
     sessionStorage.removeItem('studentsSubmissions')
     this.router.navigate(['/features/assignmentsDetails']);
@@ -165,7 +166,7 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
 
   onAdvancedSearch() {
     this.showAdvancedSearch = !this.showAdvancedSearch;
-    if(this.showAdvancedSearch){
+    if (this.showAdvancedSearch) {
       this.getAssignmentsFilter();
     }
   }

@@ -1,46 +1,50 @@
 <div class="book-reading">
+  @if (readingSubmissionDetails.storyDetails) {
   <div class="book-card">
     <div class="book-cover">
-      <img [src]="selectedBook.coverImageUrl" [alt]="selectedBook.title" />
+      <img [src]="readingSubmissionDetails.storyDetails.coverUrl"
+        [alt]="readingSubmissionDetails.storyDetails.title" />
     </div>
     <div class="book-details">
-      <div class="title">{{ selectedBook.title }}</div>
+      <div class="title">{{ readingSubmissionDetails.storyDetails.title }}</div>
       <p class="sub-level">
-        Sub Level: <b>{{ selectedBook.assignmentTypeName }}</b>
+        Sub Level: <b>{{ readingSubmissionDetails.storyDetails.subLevelName
+          }}</b>
       </p>
       <p class="author">
-        Author Name: <b>{{ selectedBook.authorName }}</b>
+        Author Name: <b>{{ readingSubmissionDetails.storyDetails.authorName
+          }}</b>
       </p>
       <p class="student-level">
-        Main level: <b>{{ selectedBook.mainLevelName }}</b>
+        Main level: <b>{{ readingSubmissionDetails.storyDetails.mainLevelName
+          }}</b>
       </p>
     </div>
     <div class="book-actions">
-      <button
+      <a
         pButton
-        label=""
-        class="p-button-outlined"
-        (click)="onAudioClick()"
-      >
+        [href]="readingSubmissionDetails.storyDetails.audioUrl"
+        target="_blank"
+        label
+        class="p-button-outlined">
         <img src="icon-audio.svg" alt="view" />
-      </button>
+      </a>
       <button
         pButton
-        label=""
+        label
         class="p-button-outlined"
-        (click)="showPreviewPopup = true"
-      >
+        (click)="showPreviewPopup = true">
         <img src="icon-eye.svg" alt="view" />
       </button>
     </div>
   </div>
+  }
 
-  @if (skills.length > 0) {
+  @if (skills) {
   <app-multiple-questions
     [skills]="skills"
     [submissionId]="submissionId"
-    [studentId]="studentId"
-  />
+    [studentId]="studentId" />
   }
 </div>
 

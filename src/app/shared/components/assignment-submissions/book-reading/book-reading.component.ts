@@ -1,9 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { HtmlDialogComponent } from '../../html-dialog/html-dialog.component';
 import { MultipleQuestionsComponent } from '../multiple-questions/multiple-questions.component';
+import { SubmissionService } from '../../../../core/services/assignment/submission.service';
+import { StudentSubmission } from '../../../../core/models/assignment/student-submission.model';
+import { SubmissionReadingDetails } from '../../../../core/models/assignment-submission/reading-submission-details';
 
 @Component({
   selector: 'app-book-reading',
@@ -12,19 +15,19 @@ import { MultipleQuestionsComponent } from '../multiple-questions/multiple-quest
   templateUrl: './book-reading.component.html',
   styleUrl: './book-reading.component.scss',
 })
-export class BookReadingComponent {
+export class BookReadingComponent implements OnInit {
+
+  submissionService = inject(SubmissionService);
   showPreviewPopup: boolean = false;
   @Input() skills: any[] = [];
   @Input() submissionId: number = 0;
+  @Input() readingSubmissionDetails: SubmissionReadingDetails = new SubmissionReadingDetails();
   @Input() studentId: number = 0;
 
-  selectedBook = {
-    coverImageUrl: 'assets/images/book-image.svg',
-    title: 'Book Title',
-    assignmentTypeName: 'Assignment Type Name',
-    authorName: 'Author Name',
-    mainLevelName: 'Main Level Name',
-  };
+  
+
+  ngOnInit(): void {
+  }
 
   onAudioClick() {
     console.log('Audio clicked');

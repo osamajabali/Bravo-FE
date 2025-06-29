@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HtmlDialogComponent } from '../../html-dialog/html-dialog.component';
 import { ButtonModule } from 'primeng/button';
-import { MediaFile, MediaPlayerComponent } from '../../media-player/media-player.component';
+import { MediaPlayerComponent } from '../../media-player/media-player.component';
 import { DialogModule } from 'primeng/dialog';
 
 @Component({
@@ -24,7 +24,7 @@ export class BookListeningComponent {
     month: 'long',
     day: 'numeric',
   });
-  mediaFile: MediaFile = {
+  mediaFile: any = {
     file: new File([], 'test.mp3'),
     fileName: 'test.mp3',
     fileSize: '100KB',

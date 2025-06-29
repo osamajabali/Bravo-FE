@@ -128,8 +128,8 @@ export class AssignmentDetailsComponent implements OnInit {
   }
 
   viewSubmission(submissionId: number , studentId : number): void {
-    localStorage.setItem('studentId' , studentId.toString())
-    localStorage.setItem('submissionId' , submissionId.toString())
+    localStorage.setItem('studentId' , studentId.toString());
+    localStorage.setItem('submissionId' , submissionId.toString());
     this.router.navigate([
       '/features/assignments/assignment-submission'
     ]);

@@ -62,6 +62,7 @@ export class StudentAssignmentDetailsRespone {
   wrongScore: number;
   hasWarning: boolean;
   submissionStatus: StudentSubmissionStatus;
+  assignmentTypeId : number;
   color: string;
   title: string;
   timeSpent: string;

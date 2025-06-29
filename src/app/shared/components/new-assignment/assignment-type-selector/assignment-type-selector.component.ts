@@ -57,7 +57,7 @@ export class AssignmentTypeSelectorComponent implements OnInit, OnDestroy {
 
   selectAssignmentType(assignmentType: AssignmentTypes) {
     let lastSelected: AssignmentTypes = JSON.parse(localStorage.getItem('selectedAssignmentType'))
-    if (lastSelected.assignmentTypeId == assignmentType.assignmentTypeId) return;
+    // if (lastSelected.assignmentTypeId == assignmentType.assignmentTypeId) return;
     localStorage.removeItem('assignmentSetup');
     localStorage.removeItem('AssignmentDomainsAndSkills');
     localStorage.removeItem('SkillsSelectedOptions');

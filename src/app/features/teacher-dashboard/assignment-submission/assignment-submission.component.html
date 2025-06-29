@@ -16,54 +16,55 @@
         </div>
         }
       </div>
-      @if (submissionType !== SubmissionType.MULTIPLE_QUESTIONS &&
-      submissionType !== SubmissionType.BOOK_READING) {
+      @if (submissionType !== SubmissionType.SkillAssignment &&
+      submissionType !== SubmissionType.ReadingComprehension) {
       <div class="action-buttons">
         <button
           pButton
           type="button"
           label="Add Feedback"
           class="p-button-secondary feedback-button"
-          (click)="showFeedbackPopup = true"
-        ></button>
+          (click)="showFeedbackPopup = true"></button>
         <button
           pButton
           type="button"
           label="Correct"
           class="p-button-primary correct-button"
-          (click)="correctSubmission()"
-        ></button>
+          (click)="correctSubmission()"></button>
       </div>
       }
     </div>
   </div>
-  @if (submissionType === SubmissionType.MULTIPLE_QUESTIONS) {
+  @if (submissionType === SubmissionType.SkillAssignment) {
   <!-- Multiple Questions Component -->
-  <app-multiple-questions
+  <app-multiple-questions #multipleQuestions
     [skills]="studentSubmission.skills"
     [submissionId]="submissionId"
-    [studentId]="studentId"
-  ></app-multiple-questions>
-  } @if (submissionType === SubmissionType.BOOK_READING) {
-  <app-book-reading
+    [studentId]="studentId"></app-multiple-questions>
+  } 
+  @if (submissionType === SubmissionType.ReadingComprehension) {
+  <app-book-reading #bookReading
     [skills]="studentSubmission.skills"
-    [submissionId]="submissionId"
-    [studentId]="studentId"
-  ></app-book-reading>
-  } @if (submissionType === SubmissionType.BOOK_PAGE_SUMMARY_RECORDING) {
+    [readingSubmissionDetails]="readingSubmissionDetails"></app-book-reading>
+  } 
+  @if (submissionType === SubmissionType.Speaking) {
   <app-book-page-summary-recording></app-book-page-summary-recording>
-  } @if (submissionType === SubmissionType.BOOK_LISTENING) {
+  } 
+  @if (submissionType === SubmissionType.Listening) {
   <app-book-listening></app-book-listening>
-  } @if (submissionType === SubmissionType.QUESTION_ANSWER) {
+  }
+  @if (submissionType === SubmissionType.Writing) {
   <app-question-answer></app-question-answer>
+  }
+  @if (submissionType === SubmissionType.OralReading) {
+  <app-oral-reading [oralSubmissionDetails]="oralSubmissionDetails" />
   }
 </div>
 
 <!-- Student Marking Drawer -->
 <app-student-marking-drawer
   [(visible)]="showMarkingDrawer"
-  [studentName]="'John Doe'"
->
+  [studentName]="'John Doe'">
 </app-student-marking-drawer>
 
 <!-- Feedback Popup -->
@@ -74,16 +75,14 @@
   [draggable]="false"
   [resizable]="false"
   class="feedback-popup"
-  (onHide)="closeFeedbackPopup()"
->
+  (onHide)="closeFeedbackPopup()">
   <ng-template pTemplate="header">
     <div class="dialog-header">
       <div class="title">Feedback</div>
       <button
         pButton
         class="p-button-text close-btn"
-        (click)="closeFeedbackPopup()"
-      >
+        (click)="closeFeedbackPopup()">
         <img src="icon-close-black.svg" alt="Close" />
       </button>
     </div>
@@ -97,14 +96,12 @@
           id="feedback"
           pTextarea
           rows="3"
-          placeholder="Type your feedback here..."
-        ></textarea>
+          placeholder="Type your feedback here..."></textarea>
         <img
           src="icon-mic-black.svg"
           alt="record"
           class="record-icon"
-          (click)="startRecording()"
-        />
+          (click)="startRecording()" />
       </div>
       }
 
@@ -114,36 +111,32 @@
         <div class="recording-visualization">
           <div class="audio-bars">
             @for (bar of audioVisualizationData; track $index) {
-                          <div
-                class="audio-bar"
-                [style.height.%]="bar"
-               [title]="
+            <div
+              class="audio-bar"
+              [style.height.%]="bar"
+              [title]="
                  'Second ' +
                  ($index + 1) +
                  ': ' +
                  (bar > 30 ? 'Speaking' : 'Silent')
-               "
-              ></div>
+               "></div>
             }
           </div>
         </div>
         <div class="recording-controls">
           <div class="timeline-info">
-            <span class="timeline-current"
-              >{{ formatTime(recordingTime) }}s</span
-            >
+            <span class="timeline-current">{{ formatTime(recordingTime)
+              }}s</span>
           </div>
           <div class="recording-actions">
             <img
               src="icon-reject-recording.svg"
               alt="reject"
-              (click)="rejectRecording()"
-            />
+              (click)="rejectRecording()" />
             <img
               src="icon-accept-recording.svg"
               alt="accept"
-              (click)="acceptRecording()"
-            />
+              (click)="acceptRecording()" />
           </div>
         </div>
       </div>
@@ -153,13 +146,7 @@
       @if (recordedAudioFile && !isRecording) {
       <div class="recorded-audio">
         <app-media-player
-          [mediaFile]="recordedAudioFile"
-          [displayDate]="todayDate"
-          [showReviewPage]="false"
-          [showFileHeader]="false"
-          [showRecordingControls]="true"
-          (mediaFileChange)="onMediaFileChange($event)"
-        ></app-media-player>
+          (mediaFileChange)="onMediaFileChange($event)"></app-media-player>
       </div>
       }
     </div>
@@ -170,14 +157,12 @@
       type="button"
       label="Cancel"
       class="p-button-secondary cancel-button"
-      (click)="closeFeedbackPopup()"
-    ></button>
+      (click)="closeFeedbackPopup()"></button>
     <button
       pButton
       type="button"
       label="Submit"
       class="p-button-primary submit-button"
-      (click)="closeFeedbackPopup()"
-    ></button>
+      (click)="closeFeedbackPopup()"></button>
   </div>
 </p-dialog>

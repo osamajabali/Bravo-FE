@@ -1,171 +1,85 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-export interface MediaFile {
-  file: File;
-  fileName: string;
-  fileSize: string;
-  isPlaying?: boolean;
-  duration?: string;
-  currentTime?: string;
-  progress?: number;
-  durationSeconds?: number;
-}
+import { Component, OnInit, Input, OnChanges, SimpleChanges, input, output } from '@angular/core';
+import { OralSubmissionDetails, Page } from '../../../core/models/assignment-submission/oral-submission-details';
 
 @Component({
   selector: 'app-media-player',
   imports: [CommonModule],
   templateUrl: './media-player.component.html',
-  styleUrl: './media-player.component.scss',
+  styleUrls: ['./media-player.component.scss']
 })
-export class MediaPlayerComponent {
-  @Input() mediaFile!: MediaFile;
-  @Input() displayDate: string = '';
-  @Input() showReviewPage: boolean = false;
-  @Input() showFileHeader: boolean = true;
-  @Input() showRecordingControls: boolean = false;
-  @Output() mediaFileChange = new EventEmitter<MediaFile>();
-  @Output() onReviewPageClick = new EventEmitter<void>();
-  @Output() onReRecordingClick = new EventEmitter<void>();
-  @Output() onAcceptRecordingClick = new EventEmitter<void>();
+export class MediaPlayerComponent implements OnInit, OnChanges {
 
-  private currentAudio: HTMLAudioElement | null = null;
+  mediaFile = {
+    isPlaying: false,
+    currentTime: '',
+    progress: 0,
+    fileName: 'Full Audio Book', // You can dynamically set this as well
+    fileDate: '2025-06-29'
+  };
+
+  showFileHeader = true;
+  page = input<Page>(new Page);
+  showReviewPage = input<boolean>(true);
+  onReviewPageClick = output<number>();
+  showRecordingControls = false;
+  displayDate = new Date().toLocaleDateString();
+
+  private audio: HTMLAudioElement;
+
+  constructor() {
+
+  }
+
+  ngOnInit(): void {
+    this.audio = new Audio(this.page().recordUrl);
+    this.audio.addEventListener('timeupdate', this.updateProgress.bind(this));
+    if (this.page().recordUrl) {
+      this.audio.src = this.page().recordUrl; // Set the source URL on initialization
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Whenever the input property changes (i.e., new audioUrl), update the audio source
+    if (changes['audioUrl'] && this.page().recordUrl) {
+      this.audio.src = this.page().recordUrl;
+    }
+  }
 
   playAudio() {
-    if (!this.mediaFile.file) return;
-
-    // Stop any currently playing audio
-    this.stopCurrentAudio();
-
-    // Create new audio element
-    const audio = new Audio();
-    const audioUrl = URL.createObjectURL(this.mediaFile.file);
-    audio.src = audioUrl;
-
-    // Set up event listeners
-    audio.addEventListener('loadedmetadata', () => {
-      // Handle case where duration is Infinity (common with recorded audio)
-      if (isFinite(audio.duration) && audio.duration > 0) {
-        this.mediaFile.duration = this.formatTime(audio.duration);
-        this.mediaFile.durationSeconds = audio.duration;
-      } else {
-        // For recorded audio without proper metadata, we'll set duration during playback
-        this.mediaFile.duration = '0:00';
-        this.mediaFile.durationSeconds = 0;
-      }
-      this.mediaFile.progress = 0;
-      this.mediaFileChange.emit(this.mediaFile);
-    });
-
-    // Additional event to catch duration when it becomes available
-    audio.addEventListener('canplaythrough', () => {
-      if (
-        isFinite(audio.duration) &&
-        audio.duration > 0 &&
-        (!this.mediaFile.durationSeconds ||
-          this.mediaFile.durationSeconds === 0)
-      ) {
-        this.mediaFile.duration = this.formatTime(audio.duration);
-        this.mediaFile.durationSeconds = audio.duration;
-        this.mediaFileChange.emit(this.mediaFile);
-      }
-    });
-
-    audio.addEventListener('timeupdate', () => {
-      this.mediaFile.currentTime = this.formatTime(audio.currentTime);
-
-      // Update duration if it wasn't available during loadedmetadata
-      if (
-        (!this.mediaFile.durationSeconds ||
-          this.mediaFile.durationSeconds === 0) &&
-        isFinite(audio.duration) &&
-        audio.duration > 0
-      ) {
-        this.mediaFile.duration = this.formatTime(audio.duration);
-        this.mediaFile.durationSeconds = audio.duration;
-      }
-
-      // Calculate progress
-      if (
-        this.mediaFile.durationSeconds &&
-        this.mediaFile.durationSeconds > 0
-      ) {
-        this.mediaFile.progress =
-          (audio.currentTime / this.mediaFile.durationSeconds) * 100;
-      } else {
-        // If we still don't have duration, try to get it from the audio element
-        if (isFinite(audio.duration) && audio.duration > 0) {
-          this.mediaFile.durationSeconds = audio.duration;
-          this.mediaFile.duration = this.formatTime(audio.duration);
-          this.mediaFile.progress = (audio.currentTime / audio.duration) * 100;
-        }
-      }
-
-      this.mediaFileChange.emit(this.mediaFile);
-    });
-
-    audio.addEventListener('ended', () => {
-      this.mediaFile.isPlaying = false;
-      this.mediaFile.currentTime = '0:00';
-      URL.revokeObjectURL(audioUrl);
-      this.currentAudio = null;
-      this.mediaFileChange.emit(this.mediaFile);
-    });
-
-    audio.addEventListener('error', () => {
-      this.mediaFile.isPlaying = false;
-      URL.revokeObjectURL(audioUrl);
-      this.mediaFileChange.emit(this.mediaFile);
-    });
-
-    // Play the audio
-    audio
-      .play()
-      .then(() => {
-        this.mediaFile.isPlaying = true;
-        this.currentAudio = audio;
-        this.mediaFileChange.emit(this.mediaFile);
-      })
-      .catch((err) => {
-        URL.revokeObjectURL(audioUrl);
-      });
+    this.audio.play();
+    this.mediaFile.isPlaying = true;
   }
 
   pauseAudio() {
-    if (this.currentAudio) {
-      this.currentAudio.pause();
-      this.mediaFile.isPlaying = false;
-      this.mediaFileChange.emit(this.mediaFile);
-    }
+    this.audio.pause();
+    this.mediaFile.isPlaying = false;
   }
 
-  goToReviewPage() {
-    this.onReviewPageClick.emit();
+  updateProgress() {
+    const progress = (this.audio.currentTime / this.audio.duration) * 100;
+    this.mediaFile.currentTime = this.formatTime(this.audio.currentTime);
+    this.mediaFile.progress = progress;
+  }
+
+  formatTime(time: number): string {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+  }
+
+  goToReviewPage(pageId : number) {debugger
+    this.onReviewPageClick.emit(pageId);
   }
 
   reRecording() {
-    this.onReRecordingClick.emit();
+    console.log('Re-recording...');
   }
 
-  acceptRecording() {
-    this.onAcceptRecordingClick.emit();
-  }
-
-  private stopCurrentAudio() {
-    if (this.currentAudio) {
-      this.currentAudio.pause();
-      this.currentAudio.currentTime = 0;
-      this.mediaFile.isPlaying = false;
-      this.mediaFile.currentTime = '0:00';
-      this.currentAudio = null;
-      this.mediaFileChange.emit(this.mediaFile);
-    }
-  }
-
-  private formatTime(seconds: number): string {
-    if (isNaN(seconds)) return '0:00';
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  stopAudio() {
+    this.audio.pause();
+    this.audio.currentTime = 0;
+    this.mediaFile.isPlaying = false;
+    this.mediaFile.progress = 0;
   }
 }

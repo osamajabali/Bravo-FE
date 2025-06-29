@@ -160,8 +160,6 @@
                 </div>
                 <app-media-player
                   *ngIf="getMediaFileData(question)"
-                  [mediaFile]="getMediaFileData(question)!"
-                  [displayDate]="todayDate"
                   (mediaFileChange)="onMediaFileChange(question, $event)"
                 ></app-media-player>
               </div>

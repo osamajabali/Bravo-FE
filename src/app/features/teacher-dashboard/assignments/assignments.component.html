@@ -225,7 +225,7 @@
         <div class="item submissions">{{ assignment.submission }}</div>
         <div class="item actions d-flex">
           <button pButton type="button" label="View Details" class="p-button-primary"
-            (click)="viewAssignment(assignment.assignmentId)"></button>
+            (click)="viewAssignment(assignment.assignmentId,assignment.assignmentTypeId)"></button>
           <img src="icon-more-vertical.svg" alt="more" class="pointer more-actions"
             (click)="showActionMenu($event, assignment)" />
         </div>

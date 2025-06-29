@@ -46,10 +46,6 @@
   <div class="content">
     <div class="media-player">
       <app-media-player
-        [mediaFile]="mediaFile"
-        [displayDate]="todayDate"
-        [showReviewPage]="true"
-        (onReviewPageClick)="goToReviewPage()"
       ></app-media-player>
     </div>
   </div>
@@ -58,9 +54,6 @@
     <div class="book-view-content">
       <div class="media-player">
         <app-media-player
-          [mediaFile]="mediaFile"
-          [displayDate]="todayDate"
-          [showReviewPage]="false"
         ></app-media-player>
       </div>
       <img
