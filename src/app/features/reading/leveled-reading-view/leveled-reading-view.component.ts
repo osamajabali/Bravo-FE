@@ -64,14 +64,10 @@ export class LeveledReadingViewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
-      if (res) {
-        this.route.paramMap.subscribe((params) => {
-          this.getMainLevels();
-          this.getReadings();
-        });
-      }
-    });
+    if (localStorage.getItem('selectedItems')) {
+      this.getMainLevels();
+      this.getReadings();
+    }
   }
 
   ngOnDestroy(): void {
@@ -80,9 +76,9 @@ export class LeveledReadingViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  getStudents(subLevelId : number) {
+  getStudents(subLevelId: number) {
     this.showUserDrower = true;
-    this.subLevelStudent.courseSectionId = this.headerService.selectedSectionId;
+    this.subLevelStudent.courseSectionId = this.sharedService.getSelectedItems().selectedSectionId;
     this.subLevelStudent.readingSubLevelId = subLevelId;
     this.readingService.getSubLevelStudents(this.subLevelStudent).subscribe(res => {
       if (res.success) {
@@ -127,7 +123,7 @@ export class LeveledReadingViewComponent implements OnInit, OnDestroy {
 
   viewBooks(book: LevelReadingResponse) {
     this.sharedService.pushTitle(book.name);
-    this.sharedService.saveId('readingSublevelId' , book.readingSubLevelId)
+    this.sharedService.saveId('readingSublevelId', book.readingSubLevelId)
     this.router.navigate(['/features/leveled-reading/books-grid']);
   }
 

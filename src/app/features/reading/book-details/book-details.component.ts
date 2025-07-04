@@ -38,14 +38,14 @@ export class BookDetail {
     BookQuestionsComponent,
     FormsModule,
     HtmlDialogComponent
-],
+  ],
   templateUrl: './book-details.component.html',
   styleUrls: ['./book-details.component.scss']
 })
 export class BookDetailsComponent implements OnInit, OnDestroy {
   private refreshSubscription!: Subscription; // Mark subscription as private to avoid accidental changes
   activeTab: string = 'book-details';
-  showReader : boolean = false;
+  showReader: boolean = false;
   activeIndex = 0;
 
   book: BookDetail = {
@@ -69,30 +69,39 @@ export class BookDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private headerService: HeaderService,
     private leveldReadingService: LeveldReadingService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+    this.storySummarry.storyId = this.sharedService.getId('bookId');
+    if (localStorage.getItem('selectedItems')) {
+      this.getStoryDetails();
+      this.getQuestions();
+    }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if (((res == 'trigger') && check) || res == 'refresh') {
+        
+      }
+    });
     this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
       if (res) {
         this.route.paramMap.subscribe((params) => {
-          this.storySummarry.storyId = this.sharedService.getId('bookId');
-          this.storySummarry.courseSectionId = this.headerService.selectedSectionId;
-          this.getStoryDetails();
-          this.getQuestions();
         });
       }
     });
   }
-
+  
   getQuestions() {
+    this.storySummarry.courseSectionId = this.sharedService.getSelectedItems().selectedSectionId;
     this.leveldReadingService.getQuestions(this.storySummarry).subscribe((res) => {
       if (res.success) {
         this.questions = res.result;
       }
     });
   }
-
+  
   getStoryDetails() {
+    this.storySummarry.courseSectionId = this.sharedService.getSelectedItems().selectedSectionId;
     this.leveldReadingService.getStoryDetails(this.storySummarry).subscribe((res) => {
       if (res.success) {
         this.storyDetails = res.result;

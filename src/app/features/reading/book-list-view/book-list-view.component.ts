@@ -36,7 +36,7 @@ export class BookListViewComponent implements OnInit, OnDestroy {
   showAdvancedSearch = false;
 
   // Basic filters
-  mainLevels: MainLevels[] = [{ mainLevelId: 0, subLevelId : 0, name: 'All levels', order: 0 }];
+  mainLevels: MainLevels[] = [{ mainLevelId: 0, subLevelId: 0, name: 'All levels', order: 0 }];
   subLevels: MainLevels[] = [];
   detailedFilter: DetailedFilter = new DetailedFilter();
 
@@ -51,23 +51,18 @@ export class BookListViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     private sharedService: SharedService,
     private readingService: LeveldReadingService,
-    private spinnerService : SpinnerService
-  ) {}
+    private spinnerService: SpinnerService
+  ) { }
 
   ngOnInit(): void {
-    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
-      if (res) {
-        this.route.paramMap.subscribe((params) => {
-          this.getMainLevels();
-          this.onMainLevelChange(0);
-          this.getFilters();
-          this.getStories();
-        });
-      }
-    });
+    if (localStorage.getItem('selectedItems')) {
+      this.getMainLevels();
+      this.onMainLevelChange(0);
+      this.getFilters();
+      this.getStories();
+    }
   }
 
   ngOnDestroy(): void {
@@ -110,26 +105,26 @@ export class BookListViewComponent implements OnInit, OnDestroy {
   }
 
 
-  onMainLevelChange(mainLevelId : number) {
-    this.readingFilter = new ReadingFilter() ;
+  onMainLevelChange(mainLevelId: number) {
+    this.readingFilter = new ReadingFilter();
     this.readingFilter.readingMainLevelId = mainLevelId;
     this.sharedService.savePageState('BookListComponent', 1);
     this.readingService.getSubLevels(this.readingFilter.readingMainLevelId).subscribe((res) => {
       if (res.success) {
         this.getStories();
-        this.subLevels =  res.result;
+        this.subLevels = res.result;
       }
     });
   }
 
-    viewBook(book: Story) {
-      this.sharedService.pushTitle(book.title);
-      this.sharedService.saveId('bookId' , book.storyId)
-      this.router.navigate(['/features/book-details']);
-    }
+  viewBook(book: Story) {
+    this.sharedService.pushTitle(book.title);
+    this.sharedService.saveId('bookId', book.storyId)
+    this.router.navigate(['/features/book-details']);
+  }
 
-  onSubLevelChange(mainLevelId : number , subLevelId : number) {
-    this.readingFilter = new ReadingFilter() ;
+  onSubLevelChange(mainLevelId: number, subLevelId: number) {
+    this.readingFilter = new ReadingFilter();
     this.readingFilter.readingMainLevelId = mainLevelId;
     this.readingFilter.readingSubLevelId = subLevelId;
     this.sharedService.savePageState('BookListComponent', 1);
