@@ -27,7 +27,7 @@ export enum ResourceTypeEnum {
     Students = 6
   }
 
-  export enum AssygnmentAddTypesEnum{
+  export enum AssignmentAddTypesEnum{
     Skills = 1,
     ReadingComprehension = 2,
     OralReading = 3,

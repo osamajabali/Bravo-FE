@@ -52,21 +52,24 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
   ) { }
 
   ngOnInit(): void {
-    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
-      if (res) {
-        this.route.paramMap.subscribe((params) => {
-          this.lessonId = this.sharedService.getId('lessonId');  // Ensuring non-null 'id'
-          this.sections = this.headerService.sectionsArray;
-          this.getCurriculums();
-          this.getStatistics();
-        });
+    this.lessonId = this.sharedService.getId('lessonId');  // Ensuring non-null 'id'
+    this.sections = this.headerService.sectionsArray;
+    if (localStorage.getItem('selectedItems')) {
+      this.getCurriculums();
+      this.getStatistics();
+    }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if (((res == 'trigger') && check) || res == 'refresh') {
+        this.getCurriculums();
+        this.getStatistics();
       }
     });
   }
 
   getStatistics() {
     let model: Statistics = {
-      courseSectionId: this.headerService.selectedSectionId,
+      courseSectionId: this.sharedService.getSelectedItems().selectedSectionId,
       type: StatisticsEnum.Lesson,
       id: this.curriculumsPayload.lessonId
     }
@@ -79,7 +82,7 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
 
   onSearchChange($event: string) {
     this.curriculumsPayload.searchValue = $event;
-    this.sharedService.savePageState('LessonsCurriculumsComponent' , 1)
+    this.sharedService.savePageState('LessonsCurriculumsComponent', 1)
     this.getCurriculums()
   }
 
@@ -96,7 +99,7 @@ export class LessonsCurriculumsComponent implements OnInit, OnDestroy {  // Impl
       this.first = (pageNumber - 1) * this.curriculumsPayload.pageSize;
     }
     this.curriculumsPayload.lessonId = this.lessonId;
-    this.curriculumsPayload.courseSectionId = this.headerService.selectedSectionId;
+    this.curriculumsPayload.courseSectionId = this.sharedService.getSelectedItems().selectedSectionId;
     this.learningOutcomesService
       .lessonsCurriculums(this.curriculumsPayload)
       .subscribe((res) => {

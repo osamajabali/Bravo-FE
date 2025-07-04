@@ -20,6 +20,7 @@ export class AssignmentDetails {
   detailsSections: DetailSection[] = [];
   overAllAvgScore: string;
   scoresDetails: ScoreDetail[] = [];
+  assignmentTile: string;
 }
 
 export class SubmissionStatus {
@@ -31,7 +32,7 @@ export class SubmissionStatus {
 }
 
 export class StudentsAssignmentDetails extends PaginationFilter {
-    assignmentId : number;
+  assignmentId: number;
 }
 
 
@@ -62,7 +63,7 @@ export class StudentAssignmentDetailsRespone {
   wrongScore: number;
   hasWarning: boolean;
   submissionStatus: StudentSubmissionStatus;
-  assignmentTypeId : number;
+  assignmentTypeId: number;
   color: string;
   title: string;
   timeSpent: string;
@@ -70,6 +71,6 @@ export class StudentAssignmentDetailsRespone {
   warningIconUrl: string | null;
 }
 
-export class StudentAssignmentDetailsResponse extends PaginationFilter{
-    studentsDetails : StudentAssignmentDetailsRespone[];
+export class StudentAssignmentDetailsResponse extends PaginationFilter {
+  studentsDetails: StudentAssignmentDetailsRespone[];
 }

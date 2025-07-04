@@ -43,7 +43,7 @@ import { SkillsStatisticsService } from '../../../core/services/skills/skills-st
     LessonCardsComponent,
     PaginationComponent,
     SkillSummaryComponent
-],
+  ],
   templateUrl: './skill-level-one.component.html',
   styleUrl: './skill-level-one.component.scss',
 })
@@ -83,13 +83,16 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
 
   ngOnInit(): void {
     this.sharedService.nextRoute = this.nextRoute;
-    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
-      if (res) {
-        this.sections = this.headerService.sectionsArray;
-        this.route.paramMap.subscribe((params) => {
-          this.getSkills();
-          this.getStatistics();
-        });
+    this.sections = this.headerService.sectionsArray;
+    if (localStorage.getItem('selectedItems')) {
+      this.getSkills();
+      this.getStatistics();
+    }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if (((res == 'trigger') && check) || res == 'refresh') {
+        this.getSkills();
+        this.getStatistics();
       }
     });
   }
@@ -102,7 +105,7 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
 
   getSkills() {
     this.spinnerService.show();
-    this.domainId =this.sharedService.getId('skillDomainId');
+    this.domainId = this.sharedService.getId('skillDomainId');
     this.curriculumsPayload.domainId = this.domainId;
 
     if (this.sharedService.getPageState('SkillLevelOneComponent')) {
@@ -118,7 +121,7 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
       }
     });
   }
-  
+
   getStatistics() {
     let model: Statistics = {
       courseSectionId: this.headerService.selectedSectionId,
@@ -134,14 +137,14 @@ export class SkillLevelOneComponent implements OnInit, OnDestroy {  // Implement
 
   onSearchChange($event: string) {
     this.curriculumsPayload.searchValue = $event;
-    this.sharedService.savePageState('SkillLevelOneComponent' , 1)
+    this.sharedService.savePageState('SkillLevelOneComponent', 1)
     this.getSkills()
   }
 
   clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
     const domainId = (card as SkillCurriculum).id;
     this.sharedService.pushTitle((card as SkillCurriculum).domainName);
-    this.sharedService.saveId('SkillLevelOneDomainId' , domainId);
+    this.sharedService.saveId('SkillLevelOneDomainId', domainId);
     sessionStorage.removeItem('SkillLevelTwoComponent');
     this.router.navigate([this.sharedService.nextRoute]);
   }

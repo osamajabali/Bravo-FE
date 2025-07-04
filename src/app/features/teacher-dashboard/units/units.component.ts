@@ -21,7 +21,7 @@ import { SkeletonComponent } from "../../../shared/components/skeleton/skeleton.
 
 @Component({
   selector: 'app-units',
-  standalone : true,
+  standalone: true,
   imports: [
     CommonModule,
     UnitCardsComponent,
@@ -29,7 +29,7 @@ import { SkeletonComponent } from "../../../shared/components/skeleton/skeleton.
     SkillSummaryComponent,
     PaginationComponent,
     SkeletonComponent
-],
+  ],
   templateUrl: './units.component.html',
   styleUrls: ['./units.component.scss'], // Corrected styleUrl to styleUrls (plural)
 })
@@ -47,34 +47,32 @@ export class UnitsComponent implements OnInit, OnDestroy {
     public sharedService: SharedService,
     private route: ActivatedRoute,
     private router: Router,
-    private statisticsService : SkillsStatisticsService
-  ) {}
+    private statisticsService: SkillsStatisticsService
+  ) { }
 
   ngOnInit(): void {
-    // Subscribing to the refresh event
-    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
-      if (res) {
-        this.route.paramMap.subscribe((params) => {
-          this.semesterId = this.sharedService.getId('semesterId'); // Using '!' to assert non-null value
-          this.getUnits();
-          this.getStatistics()
-        });
+    this.semesterId = this.sharedService.getId('semesterId'); // Using '!' to assert non-null value
+    if (localStorage.getItem('selectedItems')) {
+      this.getUnits();
+      this.getStatistics()
+    }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if (((res == 'trigger') && check) || res == 'refresh') {
+        this.getUnits();
+        this.getStatistics()
       }
     });
-    // If section ID is available, fetch units immediately
-    if (this.headerService.selectedSectionId) {
-      this.getUnits();
-    }
   }
 
-  getStatistics(){
-    let model : Statistics ={
-      courseSectionId: this.headerService.selectedSectionId,
+  getStatistics() {
+    let model: Statistics = {
+      courseSectionId: this.sharedService.getSelectedItems().selectedSectionId,
       type: StatisticsEnum.Semester,
       id: this.semesterId
     }
-    this.statisticsService.getStatistics(model).subscribe(res=>{
-      if(res.success){
+    this.statisticsService.getStatistics(model).subscribe(res => {
+      if (res.success) {
         this.statistics = res.result
       }
     })
@@ -83,17 +81,17 @@ export class UnitsComponent implements OnInit, OnDestroy {
 
   onSearchChange($event: string) {
     this.unitPayload.searchValue = $event;
-    this.sharedService.savePageState('UnitsComponent' , 1)
+    this.sharedService.savePageState('UnitsComponent', 1)
     this.getUnits();
-    }
+  }
 
   getUnits() {
-    if(this.sharedService.getPageState('UnitsComponent')){
-      let  pageNumber = this.sharedService.getPageState('UnitsComponent');
+    if (this.sharedService.getPageState('UnitsComponent')) {
+      let pageNumber = this.sharedService.getPageState('UnitsComponent');
       this.unitPayload.pageNumber = pageNumber;
       this.first = (pageNumber - 1) * this.unitsPagination.pageSize;
     }
-    this.unitPayload.courseSectionId = this.headerService.selectedSectionId;
+    this.unitPayload.courseSectionId = this.sharedService.getSelectedItems().selectedSectionId;
     this.unitPayload.semesterId = this.semesterId;
 
     this.learningOutcomesService.getUnits(this.unitPayload).subscribe((res) => {
@@ -105,14 +103,14 @@ export class UnitsComponent implements OnInit, OnDestroy {
 
   nextPage($event: PaginatorState) {
     this.unitPayload.pageNumber = $event.page;
-    this.sharedService.savePageState('UnitsComponent' , $event.page)
+    this.sharedService.savePageState('UnitsComponent', $event.page)
     this.first = $event.first;
     this.getUnits();
   }
 
-  cardClick(card : any) {
+  cardClick(card: any) {
     this.sharedService.pushTitle((card as Unit).unitName);
-    this.sharedService.saveId('unitId' , (card as Unit).unitId)
+    this.sharedService.saveId('unitId', (card as Unit).unitId)
     sessionStorage.removeItem('LessonsComponent');
     this.router.navigate(['/features/semesters/lessons']);
   }

@@ -18,7 +18,7 @@ import { OralAssignmentBookComponent } from '../../../shared/components/new-assi
 import { WritingSpeakingAssignmentComponent } from '../../../shared/components/new-assignment/writing-speaking-assignment/writing-speaking-assignment.component';
 import { ReviewWritingSpeakingComponent } from '../../../shared/components/new-assignment/review-writing-speaking/review-writing-speaking.component';
 import { AssignmentTypes } from '../../../core/models/assignment/assignment-types.model';
-import { AssygnmentAddTypesEnum } from '../../../core/models/shared-models/enums';
+import { AssignmentAddTypesEnum } from '../../../core/models/shared-models/enums';
 import { AddingAssignmentService } from '../../../core/services/assignment/adding-assignment.service';
 import { AssignmentPayload } from '../../../core/models/assignment/assignment-payload';
 import { AssignmentSetup } from '../../../core/models/assignment/assignment-setup.model';
@@ -89,7 +89,7 @@ export class NewAssignmentComponent implements OnInit {
   selectedAssignmentType: AssignmentTypes | null = null;
   isReviewPage: boolean = false;
   showSuccessDialog: boolean = false;
-  assygnmentAddTypesEnum = AssygnmentAddTypesEnum;
+  AssignmentAddTypesEnum = AssignmentAddTypesEnum;
   addingAssignmentService = inject(AddingAssignmentService);
   loginService = inject(LoginService);
   headerService = inject(HeaderService);
@@ -181,7 +181,7 @@ export class NewAssignmentComponent implements OnInit {
     this.updateStepsCompletion();
   }
 
-  submit() {debugger
+  submit() {
     this.assignmentSetup = JSON.parse(localStorage.getItem('assignmentSetup'));
     if (localStorage.getItem('AssignmentDomainsAndSkills')) {
       this.assignmentDomain = JSON.parse(localStorage.getItem('AssignmentDomainsAndSkills'));
@@ -194,13 +194,13 @@ export class NewAssignmentComponent implements OnInit {
     }
 
     this.roles = JSON.parse(localStorage.getItem('loginRoles'))
-    if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.Skills) {
+    if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.Skills) {
       this.addAssigmentSkill();
-    } else if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.ReadingComprehension) {
+    } else if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.ReadingComprehension) {
       this.addAssignmentReading();
-    } else if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.OralReading) {
+    } else if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.OralReading) {
       this.addAssignmentReading();
-    }else if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.Listening) {
+    }else if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.Listening) {
       this.addAssignmentReading();
     }
   }
@@ -259,7 +259,7 @@ export class NewAssignmentComponent implements OnInit {
       title: this.assignmentSetup.title,
       correctionType: this.assignmentBook.correctionType
     }
-    if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.ReadingComprehension) {
+    if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.ReadingComprehension) {
       this.addingAssignmentService.addAssignmentReading(this.assignmentReading).subscribe(res => {
         if (res.success) {
           this.showSuccessDialog = true;
@@ -268,7 +268,7 @@ export class NewAssignmentComponent implements OnInit {
         }
       })
     }
-    if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.OralReading) {
+    if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.OralReading) {
       this.addingAssignmentService.addAssignmentOralReading(this.assignmentReading).subscribe(res => {
         if (res.success) {
           this.showSuccessDialog = true;
@@ -278,7 +278,7 @@ export class NewAssignmentComponent implements OnInit {
       })
     }
 
-    if (this.selectedAssignmentType.assignmentTypeId == this.assygnmentAddTypesEnum.Listening) {
+    if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.Listening) {
       this.addingAssignmentService.addAssignmentListeningReading(this.assignmentReading).subscribe(res => {
         if (res.success) {
           this.showSuccessDialog = true;

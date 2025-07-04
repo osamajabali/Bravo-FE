@@ -40,42 +40,44 @@ export class LessonsComponent implements OnInit, OnDestroy {
     private router: Router,
     private sharedService: SharedService,
     private headerService: HeaderService,
-    private statisticsService : SkillsStatisticsService
+    private statisticsService: SkillsStatisticsService
   ) { }
 
   ngOnInit(): void {
-    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
-      if (res) {
-        this.route.paramMap.subscribe((params) => {
-          
-          this.lessonPayload.unitId = this.sharedService.getId('unitId');
-          this.sections = this.headerService.sectionsArray;
-          this.getLessons();
-          this.getStatistics();
-        });
+    this.lessonPayload.unitId = this.sharedService.getId('unitId');
+    this.sections = this.headerService.sectionsArray;
+    if (localStorage.getItem('selectedItems')) {
+      this.getLessons();
+      this.getStatistics();
+    }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if (((res == 'trigger') && check) || res == 'refresh') {
+        this.getLessons();
+        this.getStatistics();
       }
     });
   }
 
-    getStatistics(){
-      let model : Statistics ={
-        courseSectionId: this.headerService.selectedSectionId,
-        type: StatisticsEnum.Unit,
-        id: this.lessonPayload.unitId
-      }
-      this.statisticsService.getStatistics(model).subscribe(res=>{
-        if(res.success){
-          this.statistics = res.result
-        }
-      })
+  getStatistics() {
+    let model: Statistics = {
+      courseSectionId: this.sharedService.getSelectedItems().selectedSectionId,
+      type: StatisticsEnum.Unit,
+      id: this.lessonPayload.unitId
     }
-  
+    this.statisticsService.getStatistics(model).subscribe(res => {
+      if (res.success) {
+        this.statistics = res.result
+      }
+    })
+  }
+
 
   onSearchChange($event: string) {
     this.lessonPayload.searchValue = $event;
-    this.sharedService.savePageState('LessonsComponent' , 1)
+    this.sharedService.savePageState('LessonsComponent', 1)
     this.getLessons()
-    }
+  }
 
   ngOnDestroy(): void { // Unsubscribe in ngOnDestroy
     if (this.refreshSubscription) {
@@ -84,13 +86,13 @@ export class LessonsComponent implements OnInit, OnDestroy {
   }
 
   getLessons() {
-    if(this.sharedService.getPageState('LessonsComponent')){
-      let  pageNumber = this.sharedService.getPageState('LessonsComponent');
+    if (this.sharedService.getPageState('LessonsComponent')) {
+      let pageNumber = this.sharedService.getPageState('LessonsComponent');
       this.lessonPayload.pageNumber = pageNumber;
       this.first = (pageNumber - 1) * this.lessonPayload.pageSize;
     }
     this.lessonPayload.pageSize = this.sharedService.pagination.pageSize;
-    this.lessonPayload.courseSectionId = this.headerService.selectedSectionId;
+    this.lessonPayload.courseSectionId = this.sharedService.getSelectedItems().selectedSectionId;
     this.learningOutcomesService
       .getUnitsLessons(this.lessonPayload)
       .subscribe((res) => {
@@ -100,18 +102,18 @@ export class LessonsComponent implements OnInit, OnDestroy {
       });
   }
 
-  clickedCard(card: Lessons|LessonsCurriculums|SkillCurriculum) {
-    this.sharedService.pushTitle((card as Lessons).name); 
-    this.sharedService.saveId('lessonId' , (card as Lessons).lessonId );
+  clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
+    this.sharedService.pushTitle((card as Lessons).name);
+    this.sharedService.saveId('lessonId', (card as Lessons).lessonId);
     sessionStorage.removeItem('LessonsCurriculumsComponent');
     this.router.navigate(['/features/semesters/lessons-curriculums']);
-    } 
-    
-    // Implement OnDestroy
+  }
+
+  // Implement OnDestroy
 
   nextPage($event: PaginatorState) {
     this.lessonPayload.pageNumber = $event.page;
-    this.sharedService.savePageState('LessonsComponent' , $event.page)
+    this.sharedService.savePageState('LessonsComponent', $event.page)
     this.first = $event.first;
     this.getLessons();
   }

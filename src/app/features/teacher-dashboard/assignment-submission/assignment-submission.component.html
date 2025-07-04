@@ -16,8 +16,8 @@
         </div>
         }
       </div>
-      @if (submissionType !== SubmissionType.SkillAssignment &&
-      submissionType !== SubmissionType.ReadingComprehension) {
+      @if (submissionType != submissionTypeValues.Skills &&
+      submissionType != submissionTypeValues.ReadingComprehension) {
       <div class="action-buttons">
         <button
           pButton
@@ -35,29 +35,28 @@
       }
     </div>
   </div>
-  @if (submissionType === SubmissionType.SkillAssignment) {
+  @if (submissionType === submissionTypeValues.Skills) {
   <!-- Multiple Questions Component -->
   <app-multiple-questions #multipleQuestions
     [skills]="studentSubmission.skills"
     [submissionId]="submissionId"
     [studentId]="studentId"></app-multiple-questions>
-  } 
-  @if (submissionType === SubmissionType.ReadingComprehension) {
+  }
+  @if (submissionType === submissionTypeValues.ReadingComprehension) {
   <app-book-reading #bookReading
-    [skills]="studentSubmission.skills"
     [readingSubmissionDetails]="readingSubmissionDetails"></app-book-reading>
-  } 
-  @if (submissionType === SubmissionType.Speaking) {
+  }
+  @if (submissionType === submissionTypeValues.Speaking) {
   <app-book-page-summary-recording></app-book-page-summary-recording>
-  } 
-  @if (submissionType === SubmissionType.Listening) {
+  }
+  @if (submissionType === submissionTypeValues.Listening) {
   <app-book-listening></app-book-listening>
   }
-  @if (submissionType === SubmissionType.Writing) {
+  @if (submissionType === submissionTypeValues.Writing) {
   <app-question-answer></app-question-answer>
   }
-  @if (submissionType === SubmissionType.OralReading) {
-  <app-oral-reading [oralSubmissionDetails]="oralSubmissionDetails" />
+  @if (submissionType === submissionTypeValues.OralReading) {
+  <app-oral-reading [oralSubmissionDetails]="oralSubmissionDetails()"  />
   }
 </div>
 

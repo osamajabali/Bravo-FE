@@ -93,7 +93,7 @@ export class AssignmentBookComponent implements OnInit {
   assignmentBook: AssignmentReadingPayload = new AssignmentReadingPayload()
 
   ngOnInit(): void {
-    debugger
+    
     this.getSublevelReading();
 
   }

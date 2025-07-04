@@ -11,40 +11,40 @@
   <app-assignment-setup (isSetupValid)="checkValidity($event)" />
   }
 
-  @if (activeStep === 2 && selectedAssignmentType.assignmentTypeId == assygnmentAddTypesEnum.Skills) {
+  @if (activeStep === 2 && selectedAssignmentType.assignmentTypeId == AssignmentAddTypesEnum.Skills) {
   <app-assignment-domains-and-skills (isSetupValid)="checkValidity($event)" />
   }
 
-  @if (activeStep === 2 && selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.ReadingComprehension) {
+  @if (activeStep === 2 && selectedAssignmentType?.assignmentTypeId == AssignmentAddTypesEnum.ReadingComprehension) {
   <app-assignment-book (isSetupValid)="checkValidity($event)" />
   }
 
-  @if (activeStep === 2 && selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.OralReading) {
+  @if (activeStep === 2 && selectedAssignmentType?.assignmentTypeId == AssignmentAddTypesEnum.OralReading) {
   <app-oral-assignment-book (isSetupValid)="checkValidity($event)" />
   }
 
-  @if (activeStep === 2 && selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.Listening) {
+  @if (activeStep === 2 && selectedAssignmentType?.assignmentTypeId == AssignmentAddTypesEnum.Listening) {
   <app-listening-assignment-book (isSetupValid)="checkValidity($event)" />
   }
 
-  @if(activeStep === 2 && (selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.Speaking ||
-  selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.Writing)) {
+  @if(activeStep === 2 && (selectedAssignmentType?.assignmentTypeId == AssignmentAddTypesEnum.Speaking ||
+  selectedAssignmentType?.assignmentTypeId == AssignmentAddTypesEnum.Writing)) {
   <app-writing-speaking-assignment [type]="selectedAssignmentType?.name" [questions]="writingSpeakingQuestions"
     (questionsChange)="onQuestionsChange($event)" />
   }
 
-  @if(selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.Skills && isReviewPage) {
+  @if(selectedAssignmentType?.assignmentTypeId == AssignmentAddTypesEnum.Skills && isReviewPage) {
   <app-skills-review (activeStep)="changeActiveStep($event)" />
   }
 
-  @if((selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.ReadingComprehension ||
-  selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.OralReading ||
-  selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.Listening) && isReviewPage) {
+  @if((selectedAssignmentType?.assignmentTypeId == AssignmentAddTypesEnum.ReadingComprehension ||
+  selectedAssignmentType?.assignmentTypeId == AssignmentAddTypesEnum.OralReading ||
+  selectedAssignmentType?.assignmentTypeId == AssignmentAddTypesEnum.Listening) && isReviewPage) {
   <app-assignment-book-review (stepChange)="handleStepChange($event)"></app-assignment-book-review>
   }
 
-  @if((selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.Speaking ||
-  selectedAssignmentType?.assignmentTypeId == assygnmentAddTypesEnum.Writing) && isReviewPage) {
+  @if((selectedAssignmentType?.assignmentTypeId == AssignmentAddTypesEnum.Speaking ||
+  selectedAssignmentType?.assignmentTypeId == AssignmentAddTypesEnum.Writing) && isReviewPage) {
   <app-review-writing-speaking (stepChange)="handleStepChange($event)" [type]="selectedAssignmentType?.name"
     [questions]="writingSpeakingQuestions"></app-review-writing-speaking>
   }

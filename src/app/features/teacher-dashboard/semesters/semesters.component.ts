@@ -30,9 +30,16 @@ export class SemestersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sharedService.removeArray();
-    this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
+    if (localStorage.getItem('selectedItems')) {
       this.getStats();
       this.getClasses();
+    }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if ((res == 'trigger' && check) || res == 'refresh') {
+        this.getStats();
+        this.getClasses();
+      }
     });
   }
 
@@ -45,11 +52,11 @@ export class SemestersComponent implements OnInit, OnDestroy {
 
   getClasses() {
 
-    this.statsService.getSemesters(this.headerService.selectedSectionId).subscribe((res) => {
+    this.statsService.getSemesters(this.sharedService.getSelectedItems().selectedSectionId).subscribe((res) => {
       if (res) {
-        if(res.result == null){
+        if (res.result == null) {
           this.skills = [];
-        }else{
+        } else {
           this.skills = res.result;
         }
       }
@@ -71,7 +78,7 @@ export class SemestersComponent implements OnInit, OnDestroy {
   goToSingleSkill(semester: Skills | Semester) {
     let selectedSemester = semester as Semester;
     this.sharedService.pushTitle(selectedSemester.name)
-    this.sharedService.saveId('semesterId' , selectedSemester.semesterId);
+    this.sharedService.saveId('semesterId', selectedSemester.semesterId);
     sessionStorage.removeItem('UnitsComponent');
     this.router.navigate(['/features/semesters/units']);
   }

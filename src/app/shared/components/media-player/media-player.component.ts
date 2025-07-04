@@ -41,7 +41,7 @@ export class MediaPlayerComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     // Whenever the input property changes (i.e., new audioUrl), update the audio source
-    if (changes['audioUrl'] && this.page().recordUrl) {
+    if (changes['fullAnswersAudio'] && this.page().recordUrl) {
       this.audio.src = this.page().recordUrl;
     }
   }

@@ -43,7 +43,7 @@ import { SkillsStatisticsService } from '../../../core/services/skills/skills-st
     LessonCardsComponent,
     PaginationComponent,
     SkillSummaryComponent
-],
+  ],
   templateUrl: './skill-level-two.component.html',
   styleUrl: './skill-level-two.component.scss',
 })
@@ -83,23 +83,26 @@ export class SkillLevelTwoComponent {
 
   ngOnInit(): void {
     this.sharedService.nextRoute = this.nextRoute;
-    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
-      if (res) {
-        this.first = 0;
-        this.curriculumsPayload =new DomainRequest();
-        this.skillCurriculum = new SkillCurriculumPagination();
-        this.sections = this.headerService.sectionsArray
-        this.route.paramMap.subscribe((params) => {
-          this.getSkills();
-          this.getStatistics();
-        });
+    this.first = 0;
+    this.curriculumsPayload = new DomainRequest();
+    this.skillCurriculum = new SkillCurriculumPagination();
+    this.sections = this.headerService.sectionsArray;
+    if (localStorage.getItem('selectedItems')) {
+      this.getSkills();
+      this.getStatistics();
+    }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if (((res == 'trigger') && check) || res == 'refresh') {
+        this.getSkills();
+        this.getStatistics();
       }
     });
   }
 
   onSearchChange($event: string) {
     this.curriculumsPayload.searchValue = $event;
-    this.sharedService.savePageState('SkillLevelTwoComponent' , 1)
+    this.sharedService.savePageState('SkillLevelTwoComponent', 1)
     this.getSkills()
   }
 
@@ -126,7 +129,7 @@ export class SkillLevelTwoComponent {
     this.spinnerService.show();
     this.domainId = this.sharedService.getId('SkillLevelOneDomainId');
     this.curriculumsPayload.domainId = this.domainId;
-    
+
     if (this.sharedService.getPageState(`SkillLevelTwoComponent ${this.domainId}`)) {
       let pageNumber = this.sharedService.getPageState(`SkillLevelTwoComponent ${this.domainId}`);
       this.curriculumsPayload.pageNumber = pageNumber;
@@ -141,14 +144,14 @@ export class SkillLevelTwoComponent {
     });
   }
 
-    clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
-      this.domainId = (card as SkillCurriculum).id;
-      this.sharedService.pushTitle((card as SkillCurriculum).domainName);
-      this.sharedService.saveId('SkillLevelTwoDomainId' , this.domainId);
-      sessionStorage.removeItem('SkillLevelThreeComponent');
-      this.router.navigate(['/features/skills/skills-level-three']);
-    }
-    
+  clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
+    this.domainId = (card as SkillCurriculum).id;
+    this.sharedService.pushTitle((card as SkillCurriculum).domainName);
+    this.sharedService.saveId('SkillLevelTwoDomainId', this.domainId);
+    sessionStorage.removeItem('SkillLevelThreeComponent');
+    this.router.navigate(['/features/skills/skills-level-three']);
+  }
+
 
   nextPage($event: PaginatorState) {
     this.curriculumsPayload.pageNumber = $event.page;

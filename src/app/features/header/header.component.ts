@@ -75,28 +75,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private spinnerService: SpinnerService) { }
 
   ngOnInit(): void {
-    this.setupUserMenu();
-    this.getClasses();
-    this.getUserName()
-
-    this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
-      this.checkTitleAvailability();
-      this.title = this.sharedService.getTitle()
-    });
-
-    // Listen to route changes and refresh classes
+    
     this.subscriptions.add(
       this.router.events.pipe(
         filter(event => event instanceof NavigationEnd)
       ).subscribe(() => {
-        this.getClasses();
-        this.sectionExpanded = true;
-        this.GradesExpanded = false;
-        this.SubjectExpanded = false;
-        this.filterContent.hide();  // Close the popover
+        this.checkTitleAvailability();
+        this.title = this.sharedService.getTitle()
       })
     );
-
+    
+    this.setupUserMenu();
+    this.getUserName()
+    this.checkTitleAvailability();
+    this.title = this.sharedService.getTitle()
+    this.getClasses();
+    this.sectionExpanded = true;
+    this.GradesExpanded = false;
+    this.SubjectExpanded = false;
   }
 
   checkTitleAvailability() {
@@ -179,7 +175,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
         this.displayFilter = `${this.getSelectedName(this.classesData.grades)}, ${this.getSelectedName(this.classesData.courseSections)} , ${this.getSelectedName(this.classesData.subjects)} `;
 
-        this.sharedService.triggerRefresh(res);
+        let selectedItems = {
+          selectedGradeId: this.selectedGradeId,
+          selectedSubjectId: this.selectedSubjectId,
+          selectedSectionId: this.selectedSectionId,
+        }
+        localStorage.setItem('selectedItems', JSON.stringify(selectedItems))
+        this.sharedService.triggerRefresh('trigger');
       })
     );
   }
@@ -218,14 +220,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private updateClasses(): void {
-    
+
     const model: Classes = {
       gradeId: this.headerService.selectedGradeId ?? 0,
       roleId: parseInt(localStorage.getItem('roleId') || '0', 10),
       subjectId: this.headerService.selectedSubjectId ?? 0,
       courseSectionId: this.headerService.selectedSectionId ?? 0
     };
-    
+
     this.headerService.getClasses(model).subscribe(res => {
       if (res.success) {
         this.classesData = res.result;
@@ -281,7 +283,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.router.navigate(['/features/skills']);
     }
     $event.stopPropagation();
-    this.sharedService.triggerRefresh('trigger');
+    let selectedItems = {
+      selectedGradeId: this.selectedGradeId,
+      selectedSubjectId: this.selectedSubjectId,
+      selectedSectionId: this.selectedSectionId,
+    }
+    localStorage.setItem('selectedItems', JSON.stringify(selectedItems))
+    this.sharedService.triggerRefresh('refresh');
   }
 
   // Method to clear all selections

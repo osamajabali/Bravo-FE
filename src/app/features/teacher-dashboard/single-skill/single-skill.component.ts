@@ -63,22 +63,25 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // Subscribe to both paramMap and refresh$
-    this.refreshSubscription = combineLatest([
-      this.route.paramMap,
-      this.sharedService.refresh$,
-    ]).subscribe(([params]) => {
-      this.domainId = this.sharedService.getId('domainId');
-      this.curriculumId = this.sharedService.getId('curriculumId');
-      this.sections = this.headerService.sectionsArray;
+    this.domainId = this.sharedService.getId('domainId');
+    this.curriculumId = this.sharedService.getId('curriculumId');
+    this.sections = this.headerService.sectionsArray;
+    if (localStorage.getItem('selectedItems')) {
       this.getSkills();
       this.getStatistics();
+    }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if (((res == 'trigger') && check) || res == 'refresh') {
+        this.getSkills();
+        this.getStatistics();
+      }
     });
   }
 
   getStatistics() {
     let model: Statistics = {
-      courseSectionId: this.headerService.selectedSectionId,
+      courseSectionId: this.sharedService.getSelectedItems().selectedSectionId,
       type: StatisticsEnum.Curriculum,
       id: this.domainId ? this.domainId : this.curriculumId
     }
@@ -91,7 +94,7 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
 
   onSearchChange($event: string) {
     this.skillsPayload.searchValue = $event;
-    this.sharedService.savePageState('SingleSkillComponent' , 1)
+    this.sharedService.savePageState('SingleSkillComponent', 1)
     this.getSkills()
   }
 
@@ -108,7 +111,7 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
       this.skillsPayload.pageNumber = pageNumber;
       this.first = (pageNumber - 1) * this.skillsPayload.pageSize;
     }
-    this.skillsPayload.courseSectionId = this.headerService.selectedSectionId;
+    this.skillsPayload.courseSectionId = this.sharedService.getSelectedItems().selectedSectionId;
     this.skillsPayload.curriculumLearningOutcomeId = this.curriculumId ? this.curriculumId : 0
     this.skillsPayload.domainId = this.domainId ? this.curriculumId : 0
 

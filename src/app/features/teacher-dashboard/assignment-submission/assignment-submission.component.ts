@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy, ViewChild, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ViewChild, ChangeDetectorRef, NgZone, signal } from '@angular/core';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
@@ -18,25 +18,7 @@ import { MediaPlayerComponent } from '../../../shared/components/media-player/me
 import { SubmissionReadingDetails } from '../../../core/models/assignment-submission/reading-submission-details';
 import { OralReadingComponent } from "../../../shared/components/assignment-submissions/oral-reading/oral-reading.component";
 import { OralSubmissionDetails } from '../../../core/models/assignment-submission/oral-submission-details';
-
-enum SubmissionType {
-  SkillAssignment = 1,
-  ReadingComprehension = 2,
-  OralReading = 3,
-  Listening = 4,
-  Writing = 5,
-  Speaking = 6
-}
-
-interface Question {
-  id: number;
-  text: string;
-  difficulty: 'Beginner' | 'Medium' | 'Advanced';
-  studentAnswers: {
-    correct: number;
-    wrong: number;
-  };
-}
+import { AssignmentAddTypesEnum } from '../../../core/models/shared-models/enums';
 
 @Component({
   selector: 'app-assignment-submission',
@@ -83,10 +65,6 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
   animationId: number | null = null;
   voiceActivityHistory: number[] = []; // Store voice activity per second
   currentSecondActivity = 0; // Current second's voice activity
-  lastSecond = 0;
-
-  // Make enum accessible in template
-  SubmissionType = SubmissionType;
 
   sharedService = inject(SharedService);
   submissionService = inject(SubmissionService);
@@ -97,10 +75,10 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
   questions: SubmissionQuestion[] = [];
   studentId: number;
   submissionId: number;
-  submissionType: SubmissionType = SubmissionType.SkillAssignment;
-  submissionTypeValues = SubmissionType;
+  submissionType: AssignmentAddTypesEnum = AssignmentAddTypesEnum.Skills;
+  submissionTypeValues = AssignmentAddTypesEnum;
   readingSubmissionDetails: SubmissionReadingDetails = new SubmissionReadingDetails();
-  oralSubmissionDetails: OralSubmissionDetails = new OralSubmissionDetails();
+  oralSubmissionDetails = signal<OralSubmissionDetails>(new OralSubmissionDetails());
 
   ngOnInit(): void {
     this.sharedService.pushTitle('ASSIGNMENT SUBMISSION');
@@ -126,8 +104,8 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
   getOralReadingSubmissionDetails() {
     this.submissionService.getOralReadingSubmissionDetails(this.submissionId, this.studentId).subscribe(res => {
       if (res.success) {
-        this.oralSubmissionDetails = res.result;
-        this.studentSubmission.submissionCards = this.oralSubmissionDetails.submissionSummary;
+        this.oralSubmissionDetails.set(res.result);
+        this.studentSubmission.submissionCards = this.oralSubmissionDetails().submissionSummary;
       }
     })
   }
@@ -159,20 +137,6 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
           }
         }
       });
-  }
-
-  setCards() {
-    throw new Error('Method not implemented.');
-  }
-
-  hasWrongAnswer(question: Question): boolean {
-    return question.studentAnswers.wrong > 0;
-  }
-
-  hasOnlyCorrectAnswers(question: Question): boolean {
-    return (
-      question.studentAnswers.correct > 0 && question.studentAnswers.wrong === 0
-    );
   }
 
   correctSubmission() {
@@ -233,7 +197,6 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
       this.recordingTime = 0;
       this.voiceActivityHistory = [];
       this.currentSecondActivity = 0;
-      this.lastSecond = 0;
 
       // Start recording timer
       this.recordingInterval = setInterval(() => {
@@ -242,9 +205,6 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
         this.voiceActivityHistory.push(this.currentSecondActivity);
         this.currentSecondActivity = 0;
       }, 1000);
-
-      // Start audio visualization
-      this.visualizeAudio(dataArray);
 
     } catch (error) {
       alert('Unable to access microphone. Please check your permissions.');
@@ -315,44 +275,6 @@ export class AssignmentSubmissionComponent implements OnInit, OnDestroy {
     this.currentSecondActivity = 0;
   }
 
-  private visualizeAudio(dataArray: Uint8Array) {
-    if (!this.analyser || !this.isRecording) return;
-
-    this.analyser.getByteFrequencyData(dataArray);
-
-    // Calculate current voice activity level with better voice detection
-    const average = dataArray.reduce((sum, value) => sum + value, 0) / dataArray.length;
-
-    // Use a more sensitive threshold for voice detection
-    const voiceThreshold = 20; // Minimum level to consider as voice
-    const isVoiceDetected = average > voiceThreshold;
-
-    // Calculate normalized activity level
-    let normalizedActivity;
-    if (isVoiceDetected) {
-      // Scale voice activity from 30% to 90% when speaking
-      normalizedActivity = Math.min(90, Math.max(30, (average / 255) * 90 + 30));
-    } else {
-      // Keep bars consistently low when silent (no random movement)
-      normalizedActivity = 15;
-    }
-
-    // Update current second's activity (take the maximum activity in this second)
-    this.currentSecondActivity = Math.max(this.currentSecondActivity, normalizedActivity);
-
-    // Create visualization data showing voice activity history per second
-    this.audioVisualizationData = [
-      ...this.voiceActivityHistory, // Past seconds
-      this.currentSecondActivity || 15 // Current second
-    ];
-
-    // Limit to show last 20 seconds max
-    if (this.audioVisualizationData.length > 20) {
-      this.audioVisualizationData = this.audioVisualizationData.slice(-20);
-    }
-
-    this.animationId = requestAnimationFrame(() => this.visualizeAudio(dataArray));
-  }
 
   formatTime(seconds: number): string {
     const minutes = Math.floor(seconds / 60);

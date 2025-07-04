@@ -2,6 +2,7 @@ import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SubmissionService } from '../../../../core/services/assignment/submission.service';
 import { SubmissionQuestion, Skill } from '../../../../core/models/assignment/student-submission.model';
+import { QuestionsSubmissions } from '../../../../core/models/assignment-submission/reading-submission-details';
 
 @Component({
   selector: 'app-multiple-questions',
@@ -23,14 +24,6 @@ export class MultipleQuestionsComponent {
       if (res.success) {
         this.questions = res.result;
       }
-    });
-
-    this.skills.forEach(skill => {
-      if (skill.skillId === skillId) {
-        skill.expanded = !skill.expanded; // toggle clicked skill
-      } else {
-        skill.expanded = false; // close others
-      }
-    });
+    })
   }
 } 

@@ -13,6 +13,7 @@ import { AssignmentsService } from '../../../core/services/assignment/assignment
 import { AssignmentDetails, StudentAssignmentDetailsResponse, StudentsAssignmentDetails, SubmissionStatus } from '../../../core/models/assignment/assignment-details.model';
 import { PaginatorState } from 'primeng/paginator';
 import { StudentMarkingDrawerComponent } from '../../../shared/components/student-marking-drawer/student-marking-drawer.component';
+import { AssignmentAddTypesEnum } from '../../../core/models/shared-models/enums';
 
 @Component({
   selector: 'app-assignment-details',
@@ -47,6 +48,8 @@ export class AssignmentDetailsComponent implements OnInit {
   first: number = 0;
   showMarkingDrawer: boolean = false;
   selectedStudentName: string = '';
+  submissionType: AssignmentAddTypesEnum = AssignmentAddTypesEnum.Skills;
+  submissionTypeValues = AssignmentAddTypesEnum;
 
   ngOnInit(): void {
     if (this.sharedService.getPageState('studentsSubmissions')) {
@@ -56,6 +59,9 @@ export class AssignmentDetailsComponent implements OnInit {
     }
     this.sharedService.pushTitle('ASSIGNMENT DETAILS');
     this.assignmentId = parseInt(localStorage.getItem('assignmentId'));
+    if(localStorage.getItem('assignmentSubmissionType')){
+      this.submissionType = parseInt(localStorage.getItem('assignmentSubmissionType'))
+    }
     if (this.assignmentId) {
       this.getAssignmentDetails()
     }

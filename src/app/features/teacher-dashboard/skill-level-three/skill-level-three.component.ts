@@ -43,7 +43,7 @@ import { SkillsStatisticsService } from '../../../core/services/skills/skills-st
     LessonCardsComponent,
     PaginationComponent,
     SkillSummaryComponent
-],
+  ],
   templateUrl: './skill-level-three.component.html',
   styleUrl: './skill-level-three.component.scss',
 })
@@ -83,39 +83,42 @@ export class SkillLevelThreeComponent {
 
   ngOnInit(): void {
     this.sharedService.nextRoute = this.nextRoute;
-    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
-      if (res) {
-        this.first = 0;
-        this.curriculumsPayload =new DomainRequest();
-        this.skillCurriculum = new SkillCurriculumPagination();
-        this.sections = this.headerService.sectionsArray
-        this.route.paramMap.subscribe((params) => {
-          this.getSkills();
-          this.getStatistics()
-        });
+    this.first = 0;
+    this.curriculumsPayload = new DomainRequest();
+    this.skillCurriculum = new SkillCurriculumPagination();
+    this.sections = this.headerService.sectionsArray;
+    if (localStorage.getItem('selectedItems')) {
+      this.getSkills();
+      this.getStatistics();
+    }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if (((res == 'trigger') && check) || res == 'refresh') {
+        this.getSkills();
+        this.getStatistics();
       }
     });
   }
 
-    getStatistics() {
-      let model: Statistics = {
-        courseSectionId: this.headerService.selectedSectionId,
-        type: StatisticsEnum.Domain,
-        id: this.curriculumsPayload.domainId
+  getStatistics() {
+    let model: Statistics = {
+      courseSectionId: this.sharedService.getSelectedItems().selectedSectionId,
+      type: StatisticsEnum.Domain,
+      id: this.curriculumsPayload.domainId
+    }
+    this.statisticsService.getStatistics(model).subscribe(res => {
+      if (res.success) {
+        this.statistics = res.result
       }
-      this.statisticsService.getStatistics(model).subscribe(res => {
-        if (res.success) {
-          this.statistics = res.result
-        }
-      })
-    }
-  
-    onSearchChange($event: string) {
-      this.curriculumsPayload.searchValue = $event;
-      this.sharedService.savePageState('SkillLevelThreeComponent' , 1)
-      this.getSkills()
-    }
-  
+    })
+  }
+
+  onSearchChange($event: string) {
+    this.curriculumsPayload.searchValue = $event;
+    this.sharedService.savePageState('SkillLevelThreeComponent', 1)
+    this.getSkills()
+  }
+
 
   ngOnDestroy(): void {  // Unsubscribe in ngOnDestroy
     if (this.refreshSubscription) {
@@ -127,13 +130,13 @@ export class SkillLevelThreeComponent {
     this.spinnerService.show();
     this.domainId = this.sharedService.getId('SkillLevelTwoDomainId');
     this.curriculumsPayload.domainId = this.domainId;
-    
+
     if (this.sharedService.getPageState(`SkillLevelThreeComponent ${this.domainId}`)) {
       let pageNumber = this.sharedService.getPageState(`SkillLevelThreeComponent ${this.domainId}`);
       this.curriculumsPayload.pageNumber = pageNumber;
       this.first = (pageNumber - 1) * this.curriculumsPayload.pageSize;
     }
-    this.curriculumsPayload.courseSectionId = this.headerService.selectedSectionId;
+    this.curriculumsPayload.courseSectionId = this.sharedService.getSelectedItems().selectedSectionId;
     this.statsService.getDomainSkills(this.curriculumsPayload).subscribe(res => {
       if (res.success) {
         this.skillCurriculum = res.result;
@@ -142,13 +145,13 @@ export class SkillLevelThreeComponent {
     });
   }
 
-    clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
-      this.domainId = (card as SkillCurriculum).id;
-      this.sharedService.pushTitle((card as SkillCurriculum).domainName);
-      this.sharedService.saveId('SkillLevelThreeDomainId' , this.domainId)
-      this.router.navigate([this.sharedService.nextRoute]);
-    }
-    
+  clickedCard(card: Lessons | LessonsCurriculums | SkillCurriculum) {
+    this.domainId = (card as SkillCurriculum).id;
+    this.sharedService.pushTitle((card as SkillCurriculum).domainName);
+    this.sharedService.saveId('SkillLevelThreeDomainId', this.domainId)
+    this.router.navigate([this.sharedService.nextRoute]);
+  }
+
 
   nextPage($event: PaginatorState) {
     this.curriculumsPayload.pageNumber = $event.page;

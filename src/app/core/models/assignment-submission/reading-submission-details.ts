@@ -1,4 +1,4 @@
-import { SubmissionCard } from "../assignment/student-submission.model";
+import { Flag, SubmissionCard } from "../assignment/student-submission.model";
 
 export interface StoryDetails {
   storyId: number;
@@ -38,4 +38,12 @@ export class SubmissionReadingDetails {
   storyDetails: StoryDetails;
   questionSummary: QuestionSummary[];
   questions: Question[];
+}
+
+export class QuestionsSubmissions {
+  flags: Flag[];
+  questions: { questionId: number, text: string, color: string }[];
+  skillId: number;
+  skillName: string;
+  expanded : boolean;
 }

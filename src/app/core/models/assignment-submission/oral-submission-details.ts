@@ -19,6 +19,7 @@ export class Page {
 }
 
 export class OralSubmissionDetails {
+  fullAnswersAudio: string;
   submissionSummary: SubmissionCard[];
   storyDetails: StoryDetails;
   studentAnswers: number;

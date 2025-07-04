@@ -90,8 +90,14 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
+    if (localStorage.getItem('selectedItems')) {
       this.getAssignmentsFilter();
+    }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if (((res == 'trigger') && check) || res == 'refresh') {
+        this.getAssignmentsFilter();
+      }
     });
   }
 
@@ -104,7 +110,7 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
   getAssignmentsFilter() {
     forkJoin([
       this.assignmentService.getAssignmentFilters(),
-      this.assignmentService.getAssignmentTypes(this.headerService.selectedSubjectId),
+      this.assignmentService.getAssignmentTypes(this.sharedService.getSelectedItems().selectedSubjectId),
       this.assignmentService.getAssignmentSectionFilters(this.subjectGrade)
     ]).subscribe(
       ([filterRes, typeRes, sectionRes]) => {
@@ -157,7 +163,7 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/features/assignments/new']);
   }
 
-  viewAssignment(id: number, type : number) {
+  viewAssignment(id: number, type: number) {
     localStorage.setItem('assignmentSubmissionType', type.toString());
     localStorage.setItem('assignmentId', id.toString());
     sessionStorage.removeItem('studentsSubmissions')

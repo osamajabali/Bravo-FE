@@ -20,7 +20,7 @@ export class OralReadingComponent implements OnInit {
   showPreviewPopup: boolean = false;
   isPlaying: boolean = false;
   showPreviewBookPopup: boolean = false;
-  oralSubmissionDetails= input<OralSubmissionDetails>(new OralSubmissionDetails);
+  oralSubmissionDetails = input<OralSubmissionDetails>(new OralSubmissionDetails);
   viewType: 'list' | 'grid' = 'list';
   showReviewPopup: boolean = false;
   todayDate = new Date().toLocaleDateString('en-US', {
@@ -34,16 +34,15 @@ export class OralReadingComponent implements OnInit {
     fileSize: '100KB',
   };
   storyPage: StoryPage = new StoryPage();
+  private audio: HTMLAudioElement;
 
   ngOnInit(): void {
-    if(this.oralSubmissionDetails().storyDetails){
-      localStorage.setItem('audioUrl' , this.oralSubmissionDetails().storyDetails.audioUrl)
-    }
+    
   }
 
-  goToReviewPage(pageId : number) {debugger
-    this.submissionService.getStoryPage(pageId).subscribe(res=>{
-      if(res){
+  goToReviewPage(pageId: number) {
+    this.submissionService.getStoryPage(pageId).subscribe(res => {
+      if (res) {
         this.storyPage = res.result;
         this.showReviewPopup = true;
       }
@@ -56,5 +55,15 @@ export class OralReadingComponent implements OnInit {
 
   playAll() {
     this.isPlaying = !this.isPlaying;
+    if (!this.isPlaying) {
+      this.audio.pause();
+      return
+    }
+    debugger
+    this.audio = new Audio(this.oralSubmissionDetails().fullAnswersAudio);
+    if (this.oralSubmissionDetails().fullAnswersAudio) {
+      this.audio.src = this.oralSubmissionDetails().fullAnswersAudio; // Set the source URL on initialization
+    }
+    this.audio.play();
   }
 }

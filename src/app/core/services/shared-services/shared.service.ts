@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { PaginationFilter } from '../../models/shared-models/pagination.model';
 import { TranslateService } from '@ngx-translate/core';
+import { ClassesData } from '../../models/header-models/header.model';
+import { SelectedItems } from '../../models/header-models/selected-items.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class SharedService {
   nextRoute: string = '/features/skills/skills-level-three';
   pagination: PaginationFilter = new PaginationFilter();
-  private refreshSubject = new Subject<any>(); // Changed from void to any
+  private refreshSubject = new Subject<string>(); // Changed from void to any
   private apiResponseSubject = new BehaviorSubject<any>(null);
   translateService = inject(TranslateService)
   apiResponse$ = this.apiResponseSubject.asObservable();
@@ -17,7 +19,7 @@ export class SharedService {
 
   constructor() { }
 
-  triggerRefresh(data: any) { // Accept data as a parameter
+  triggerRefresh(data: string) { // Accept data as a parameter
     this.refreshSubject.next(data); // Emit data with the refresh event
   }
 
@@ -74,4 +76,8 @@ export class SharedService {
     const page = sessionStorage.getItem(idName);
     return page ? parseInt(page) : 0; // Return 1 if no page state exists
   }
+
+    getSelectedItems = (): SelectedItems | null => {
+      return localStorage.getItem('selectedItems') ? JSON.parse(localStorage.getItem('selectedItems')) as unknown as SelectedItems : null;
+    }
 }

@@ -3,7 +3,7 @@ import { HttpService } from '../shared-services/http.service';
 import { Observable } from 'rxjs';
 import { Result } from '../../models/shared-models/result';
 import { StudentSubmission, SubmissionQuestion } from '../../models/assignment/student-submission.model';
-import { SubmissionReadingDetails } from '../../models/assignment-submission/reading-submission-details';
+import { QuestionsSubmissions, SubmissionReadingDetails } from '../../models/assignment-submission/reading-submission-details';
 import { OralSubmissionDetails } from '../../models/assignment-submission/oral-submission-details';
 import { StoryPage } from '../../models/assignment-submission/story-page';
 
@@ -31,6 +31,10 @@ export class SubmissionService {
 
   getOralReadingSubmissionDetails = (submissionId: number, studentId: number): Observable<Result<OralSubmissionDetails>> => {
     return this.apiHlpr.post<Result<OralSubmissionDetails>>(`${this.controller}/oral-reading/student-submission-details`, { assignmentId: submissionId, studentId: studentId });
+  }
+
+  getQuestionsSubmissionDetails = (submissionId: number): Observable<Result<QuestionsSubmissions>> => {
+    return this.apiHlpr.post<Result<QuestionsSubmissions>>(`${this.controller}/reading-comprehension/student-submission-questions`, { assignmentId: submissionId });
   }
 
   getStoryPage = (storyPageId: number): Observable<Result<StoryPage>> => {

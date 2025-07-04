@@ -31,9 +31,18 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sharedService.removeArray();
-    this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
+    if (localStorage.getItem('selectedItems')) {
       this.getStats();
       this.getClasses();
+    }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if (((res == 'trigger') && check) || res == 'refresh') {
+        this.getStats();
+        this.getClasses();
+      }
+    });
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(() => {
     });
   }
 
@@ -45,8 +54,8 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   getClasses() {
     let model: StatsRequest = {
-      courseSectionId: this.headerService.selectedSectionId,
-      subjectId: this.headerService.selectedSubjectId,
+      courseSectionId: this.sharedService.getSelectedItems().selectedSectionId,
+      subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
     };
 
     this.statsService.getMainSkills(model).subscribe((res) => {
@@ -58,8 +67,8 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   getStats() {
     let model: StatsRequest = {
-      courseSectionId: this.headerService.selectedSectionId,
-      subjectId: this.headerService.selectedSubjectId,
+      courseSectionId: this.sharedService.getSelectedItems().selectedSectionId,
+      subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
     };
     this.statsService.getStats(model).subscribe((res) => {
       if (res.success) {
@@ -70,7 +79,7 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   goToSingleSkill(domain: Skills | Semester) {
     this.sharedService.pushTitle((domain as Skills).name);
-    this.sharedService.saveId('skillDomainId' ,  (domain as Skills).domainId);
+    this.sharedService.saveId('skillDomainId', (domain as Skills).domainId);
     sessionStorage.removeItem('SkillLevelOneComponent');
     this.router.navigate(['/features/skills/skills-level-one']);
   }
