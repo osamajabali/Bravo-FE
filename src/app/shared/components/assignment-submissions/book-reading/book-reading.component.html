@@ -42,6 +42,7 @@
 
   @if (skills) {
   <app-multiple-questions
+    [skilldata]="skills()"
     [submissionId]="submissionId"
     [studentId]="studentId" />
   }

@@ -6,6 +6,7 @@ import { StudentSubmission, SubmissionQuestion } from '../../models/assignment/s
 import { QuestionsSubmissions, SubmissionReadingDetails } from '../../models/assignment-submission/reading-submission-details';
 import { OralSubmissionDetails } from '../../models/assignment-submission/oral-submission-details';
 import { StoryPage } from '../../models/assignment-submission/story-page';
+import { SkillData } from '../../models/assignment-submission/assignment-submission-1uestion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +34,8 @@ export class SubmissionService {
     return this.apiHlpr.post<Result<OralSubmissionDetails>>(`${this.controller}/oral-reading/student-submission-details`, { assignmentId: submissionId, studentId: studentId });
   }
 
-  getQuestionsSubmissionDetails = (submissionId: number): Observable<Result<QuestionsSubmissions>> => {
-    return this.apiHlpr.post<Result<QuestionsSubmissions>>(`${this.controller}/reading-comprehension/student-submission-questions`, { assignmentId: submissionId });
+  getQuestionsSubmissionDetails = (submissionId: number): Observable<Result<SkillData>> => {
+    return this.apiHlpr.post<Result<SkillData>>(`${this.controller}/reading-comprehension/student-submission-questions`, { assignmentId: submissionId });
   }
 
   getStoryPage = (storyPageId: number): Observable<Result<StoryPage>> => {

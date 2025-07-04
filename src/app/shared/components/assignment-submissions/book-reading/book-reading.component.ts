@@ -7,6 +7,7 @@ import { MultipleQuestionsComponent } from '../multiple-questions/multiple-quest
 import { SubmissionService } from '../../../../core/services/assignment/submission.service';
 import { StudentSubmission } from '../../../../core/models/assignment/student-submission.model';
 import { QuestionsSubmissions, SubmissionReadingDetails } from '../../../../core/models/assignment-submission/reading-submission-details';
+import { SkillData } from '../../../../core/models/assignment-submission/assignment-submission-1uestion.model';
 
 @Component({
   selector: 'app-book-reading',
@@ -22,7 +23,7 @@ export class BookReadingComponent implements OnInit {
   @Input() submissionId: number = 0;
   @Input() readingSubmissionDetails: SubmissionReadingDetails = new SubmissionReadingDetails();
   @Input() studentId: number = 0;
-  skills = signal<QuestionsSubmissions>(new QuestionsSubmissions);
+  skills = signal<SkillData>(new SkillData);
 
   
 

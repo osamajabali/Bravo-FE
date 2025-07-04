@@ -22,20 +22,20 @@ export class AssignmentTypeSelectorComponent implements OnInit, OnDestroy {
   addingAssignmentsService = inject(AddingAssignmentService);
   sharedService = inject(SharedService);
   route = inject(ActivatedRoute);
-
+  private refreshSubscription!: Subscription; // Mark subscription as private to avoid accidental changes
   assignmentTypes: AssignmentTypes[] = [];
   isFirst: boolean = false;
 
   ngOnInit(): void {
-    if (this.callApi) {
+    if (localStorage.getItem('selectedItems')) {
       this.getAssignmentsTypes();
-    } else {
-      this.sharedService.refresh$.subscribe((data) => {
-        if (data) {
-          this.getAssignmentsTypes();
-        }
-      })
     }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if (((res == 'trigger') && check) || res == 'refresh') {
+        this.getAssignmentsTypes();
+      }
+    });
   }
 
   getAssignmentsTypes() {
