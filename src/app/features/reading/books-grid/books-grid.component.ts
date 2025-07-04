@@ -48,26 +48,22 @@ export class BooksGridComponent implements OnInit, OnDestroy {
   rows: number = 10;
   totalRecords: number = 0;
   private refreshSubscription!: Subscription; // Mark subscription as private to avoid accidental changes
-  subLevelReadingFilter : SubLevelReading = new SubLevelReading();
+  subLevelReadingFilter: SubLevelReading = new SubLevelReading();
   subLevelReadingResponse: SublevelReadingResponse = new SublevelReadingResponse();
 
   constructor(
-    private router : Router,
-    private route : ActivatedRoute,
-    private sharedService : SharedService,
-    private readingService : LeveldReadingService,
-    private spinnerService : SpinnerService
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute,
+    private sharedService: SharedService,
+    private readingService: LeveldReadingService,
+    private spinnerService: SpinnerService
+  ) { }
 
   ngOnInit(): void {
-    this.refreshSubscription = this.sharedService.refresh$.subscribe((res) => {
-      if (res) {
-        this.route.paramMap.subscribe((params) => {
-          this.subLevelReadingFilter.readingSubLevelId = this.sharedService.getId('readingSublevelId');
-          this.getBooks();
-        });
-      }
-    });
+    if (localStorage.getItem('selectedItems')) {
+      this.subLevelReadingFilter.readingSubLevelId = this.sharedService.getId('readingSublevelId');
+      this.getBooks();
+    }
   }
 
   ngOnDestroy(): void {
@@ -83,9 +79,9 @@ export class BooksGridComponent implements OnInit, OnDestroy {
       this.subLevelReadingFilter.pageNumber = pageNumber;
       this.first = (pageNumber - 1) * this.subLevelReadingFilter.pageSize;
     }
-    
+
     this.readingService.getSubLevelReading(this.subLevelReadingFilter).subscribe(res => {
-      if(res.success){
+      if (res.success) {
         this.spinnerService.hide();
         this.subLevelReadingResponse = res.result;
       }
@@ -101,7 +97,7 @@ export class BooksGridComponent implements OnInit, OnDestroy {
 
   viewBook(book: SublevelReading): void {
     this.sharedService.pushTitle(book.title + '- Book Details');
-    this.sharedService.saveId('bookId' , book.storyId)
+    this.sharedService.saveId('bookId', book.storyId)
     this.router.navigate(['/features/book-details']);
   }
 
