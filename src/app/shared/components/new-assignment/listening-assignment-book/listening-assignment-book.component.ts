@@ -13,6 +13,7 @@ import { AssignmentTypes } from '../../../../core/models/assignment/assignment-t
 import { AddingAssignmentService } from '../../../../core/services/assignment/adding-assignment.service';
 import { PaginationComponent } from "../../pagination/pagination.component";
 import { SelectionType } from '../assignment-book/assignment-book.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-listening-assignment-book',
@@ -26,7 +27,8 @@ import { SelectionType } from '../assignment-book/assignment-book.component';
     DropdownModule,
     DrawerModule,
     BookPreviewPopupComponent,
-    PaginationComponent
+    PaginationComponent,
+    TranslateModule
 ],
   templateUrl: './listening-assignment-book.component.html',
   styleUrl: './listening-assignment-book.component.scss',

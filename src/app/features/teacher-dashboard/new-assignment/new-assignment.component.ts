@@ -193,7 +193,7 @@ export class NewAssignmentComponent implements OnInit {
       this.selectedOptions = JSON.parse(localStorage.getItem('SkillsSelectedOptions'));
     }
 
-    this.roles = JSON.parse(localStorage.getItem('loginRoles'))
+    this.roles = JSON.parse(localStorage.getItem('loginRoles')) as Role[];
     if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.Skills) {
       this.addAssigmentSkill();
     } else if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.ReadingComprehension) {
@@ -222,7 +222,7 @@ export class NewAssignmentComponent implements OnInit {
       selectedSections: this.assignmentSetup.selectedSections,
       selectedStudents: this.assignmentSetup.selectedStudents,
       startDate: this.assignmentSetup.startDate,
-      subjectId: this.headerService.selectedSubjectId,
+      subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
       title: this.assignmentSetup.title,
       totalSelectedQuestions: this.getDomainsTotal()
     };
@@ -255,7 +255,7 @@ export class NewAssignmentComponent implements OnInit {
       selectedSections: this.assignmentSetup.selectedSections,
       selectedStudents: this.assignmentSetup.selectedStudents,
       startDate: this.assignmentSetup.startDate,
-      subjectId: this.headerService.selectedSubjectId,
+      subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
       title: this.assignmentSetup.title,
       correctionType: this.assignmentBook.correctionType
     }

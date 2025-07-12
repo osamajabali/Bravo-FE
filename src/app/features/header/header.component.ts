@@ -153,7 +153,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const model: Classes = {
       gradeId: this.headerService.selectedGradeId ?? 0,
       roleId: parseInt(localStorage.getItem('roleId') || '0'),
-      subjectId: this.headerService.selectedSubjectId ?? 0,
+      subjectId: this.sharedService.getSelectedItems().selectedSubjectId ?? 0,
       courseSectionId: this.headerService.selectedSectionId ?? 0
     };
 
@@ -166,7 +166,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.headerService.selectedGradeId = this.selectedGradeId;
 
         this.selectedSubjectId = this.findSelectedId(this.classesData.subjects, 'subjectId');
-        this.headerService.selectedSubjectId = this.selectedSubjectId;
+        this.sharedService.getSelectedItems().selectedSubjectId = this.selectedSubjectId;
 
         this.selectedSectionId = this.findSelectedId(this.classesData.courseSections, 'courseSectionId');
         this.headerService.selectedSectionId = this.selectedSectionId;
@@ -202,7 +202,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     //     this.headerService.selectedGradeId = this.selectedGradeId;
 
     //     this.selectedSubjectId = this.findSelectedId(this.classesData.subjects, 'subjectId');
-    //     this.headerService.selectedSubjectId = this.selectedSubjectId;
+    //     this.sharedService.getSelectedItems().selectedSubjectId = this.selectedSubjectId;
 
     //     this.selectedSectionId = this.findSelectedId(this.classesData.courseSections, 'courseSectionId');
     //     this.headerService.selectedSectionId = this.selectedSectionId;
@@ -224,7 +224,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const model: Classes = {
       gradeId: this.headerService.selectedGradeId ?? 0,
       roleId: parseInt(localStorage.getItem('roleId') || '0', 10),
-      subjectId: this.headerService.selectedSubjectId ?? 0,
+      subjectId: this.sharedService.getSelectedItems().selectedSubjectId ?? 0,
       courseSectionId: this.headerService.selectedSectionId ?? 0
     };
 
@@ -238,7 +238,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   selectedItem(id: number, classesEnum: ClassesEnum) {
     if (this.classesEnum.subject === classesEnum) {
-      this.headerService.selectedSubjectId = id;
+      this.sharedService.getSelectedItems().selectedSubjectId = id;
       this.headerService.selectedGradeId = 0;
       this.selectedSubjectId = id;
       this.classesData.grades = [];

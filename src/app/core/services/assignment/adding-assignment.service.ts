@@ -7,6 +7,7 @@ import { AssignmentsDomain, AssignmentsDomainSkills, SkillsDomainResponse } from
 import { AssignmentStories, StoryPaginationResponse } from '../../models/assignment/assignment-stories.model';
 import { AssignmentPayload } from '../../models/assignment/assignment-payload';
 import { AssignmentReading } from '../../models/assignment/assignment-reading.model';
+import { SchoolRoleSubject } from '../../models/assignment/assignment-setup.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,20 +28,20 @@ export class AddingAssignmentService {
     return this.apiHlpr.post<Result<AssignmentRecipientTypes[]>>(`${this.controller}/assignment-recipient-types-add`, null);
   }
 
-  getAssignmentGrades = (subjectId: number): Observable<Result<{ gradeId: number; name: string; }[]>> => {
-    return this.apiHlpr.post<Result<{ gradeId: number; name: string; }[]>>(`${this.controller}/add-assignment-grades`, { subjectId: subjectId });
+  getAssignmentGrades = (assignmentGrades: SchoolRoleSubject): Observable<Result<{ gradeId: number; name: string; }[]>> => {
+    return this.apiHlpr.post<Result<{ gradeId: number; name: string; }[]>>(`${this.controller}/add-assignment-grades`, assignmentGrades);
   }
 
-  getAssignmentSections = (subjectId: number, gradeIds: number[]): Observable<Result<{ sectionId: number; name: string; }[]>> => {
-    return this.apiHlpr.post<Result<{ sectionId: number; name: string; }[]>>(`${this.controller}/add-assignment-sections`, { subjectId: subjectId, gradeIds: gradeIds });
+  getAssignmentSections = (SchoolRoleSubject : SchoolRoleSubject): Observable<Result<{ courseSectionId: number; name: string; }[]>> => {
+    return this.apiHlpr.post<Result<{ courseSectionId: number; name: string; }[]>>(`${this.controller}/add-assignment-sections`, SchoolRoleSubject);
   }
 
-  getAssignmentGroups = (subjectId: number, gradeIds: number[]): Observable<Result<{ groupId: number; name: string; }[]>> => {
-    return this.apiHlpr.post<Result<{ groupId: number; name: string; }[]>>(`${this.controller}/add-assignment-groups`, { subjectId: subjectId, gradeIds: gradeIds });
+  getAssignmentGroups = (assignmentGrades : SchoolRoleSubject): Observable<Result<{ groupId: number; name: string; }[]>> => {
+    return this.apiHlpr.post<Result<{ groupId: number; name: string; }[]>>(`${this.controller}/add-assignment-groups`, assignmentGrades);
   }
 
   getAssignmentStudents = (sectionIds: number[]): Observable<Result<{ studentId: number; fullName: string; }[]>> => {
-    return this.apiHlpr.post<Result<{ studentId: number; fullName: string; }[]>>(`${this.controller}/add-assignment-students`, { sectionIds: sectionIds });
+    return this.apiHlpr.post<Result<{ studentId: number; fullName: string; }[]>>(`${this.controller}/add-assignment-students`, { courseSectionIds: sectionIds });
   }
 
   getAssignmentDomains = (assignmentsDomain : AssignmentsDomain): Observable<Result<{ domainId: number; name: string; }[]>> => {

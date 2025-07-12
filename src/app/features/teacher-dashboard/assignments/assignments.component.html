@@ -2,77 +2,50 @@
   <div class="header">
     <div class="d-flex justify-content-between align-items-center">
       <div class="search-container">
-        <span
-          dir="ltr"
-          class="p-input-icon-left d-flex align-items-center position-relative"
-        >
+        <span dir="ltr" class="p-input-icon-left d-flex align-items-center position-relative">
           <input
             type="text"
             pInputText
-            placeholder="Search"
+            placeholder="{{'SEARCH' | translate}}"
             class="search-input"
             (change)="_onSearchChange($event)"
             [value]="searchTerm"
           />
-          <img
-            src="icon-search.svg"
-            alt="search"
-            class="position-absolute end-0 pe-3"
-          />
+          <img src="icon-search.svg" alt="search" class="position-absolute end-0 pe-3" />
         </span>
-        <button #filterBtn pButton type="button" class="p-button-text filter-button"
-          (click)="filterContent.toggle($event)">
+        <button #filterBtn pButton type="button" class="p-button-text filter-button" (click)="filterContent.toggle($event)">
           <img src="icon-filter.svg" alt="filter" />
         </button>
-        <button pButton type="button" label="Advanced Search" class="p-button-primary advanced-search-button"
-          (click)="onAdvancedSearch()"></button>
+        <button pButton type="button" label="{{'ADVANCED_SEARCH' | translate}}" class="p-button-primary advanced-search-button" (click)="onAdvancedSearch()"></button>
       </div>
       <div class="buttons">
         <button pButton label="" class="p-button-outlined show-button" (click)="newAssignment()">
-          <span>New Assignment</span>
+          <span>{{'NEW_ASSIGNMENT' | translate}}</span>
           <img src="icon-plus-sml.svg" alt="plus" />
         </button>
       </div>
     </div>
 
-    @if (showAdvancedSearch) {
-      <div class="content px-0">
-      @if (selectedTab === 'live') {
-        <div class="advanced-search">
+    <div class="content px-0" *ngIf="showAdvancedSearch">
+      <div class="advanced-search" *ngIf="selectedTab === 'live'">
         <div class="advanced-filters">
-          <p-select [options]="sectionFilter.subjects" [(ngModel)]="assignmentPayload.subjectId" placeholder="Subjects"
-            [showClear]="false" optionLabel="name" optionValue="subjectId"></p-select>
-          <p-multiselect [options]="sectionFilter.grades" [(ngModel)]="assignmentPayload.gradeIds" placeholder="Grade"
-            [showClear]="false" optionLabel="name" optionValue="gradeId"></p-multiselect>
-          <p-multiselect [options]="sectionFilter.sections" [(ngModel)]="assignmentPayload.courseSectionIds"
-            placeholder="Homerooms" [showClear]="false" optionLabel="name"
-            optionValue="courseSectionId"></p-multiselect>
-          <p-datePicker [(ngModel)]="startDate" placeholder="Start Date" [showClear]="false"
-            dateFormat="yy-mm-dd"></p-datePicker>
-          <p-datePicker [(ngModel)]="endDate" placeholder="End Date" [showClear]="false"
-            dateFormat="yy-mm-dd"></p-datePicker>
-          <p-datePicker [(ngModel)]="creationDate" placeholder="Creation Date" [showClear]="false"
-            dateFormat="yy-mm-dd"></p-datePicker>
-          <p-multiselect [options]="assignmentTypes" [(ngModel)]="assignmentPayload.assignmentTypeIds"
-            placeholder="Assignment Type" [showClear]="false" optionLabel="name"
-            optionValue="assignmentTypeId"></p-multiselect>
-          <p-multiselect [options]="assignmentFilter.filterStatus" [(ngModel)]="assignmentPayload.assignmentStatuses"
-            placeholder="Assignment Status" [showClear]="false" optionLabel="name" optionValue="id"></p-multiselect>
-          <p-select [options]="assignmentFilter.filterSortBy" [(ngModel)]="assignmentPayload.sortBy"
-            placeholder="Sort By" [showClear]="false" optionLabel="name" optionValue="id"></p-select>
-          <p-select [options]="assignmentFilter.filterOrders" [(ngModel)]="assignmentPayload.order" placeholder="Order"
-            [showClear]="false" optionLabel="name" optionValue="id"></p-select>
-          <p-select [options]="assignmentFilter.recipientTypes" [(ngModel)]="assignmentPayload.recipientId"
-            placeholder="Recipient" [showClear]="false" optionLabel="name" optionValue="recipientId"></p-select>
+          <p-select [options]="sectionFilter.subjects" [(ngModel)]="assignmentPayload.subjectId" placeholder="{{'SUBJECTS' | translate}}" [showClear]="false" optionLabel="name" optionValue="subjectId"></p-select>
+          <p-multiselect [options]="sectionFilter.grades" [(ngModel)]="assignmentPayload.gradeIds" placeholder="{{'GRADE' | translate}}" [showClear]="false" optionLabel="name" optionValue="gradeId"></p-multiselect>
+          <p-multiselect [options]="sectionFilter.sections" [(ngModel)]="assignmentPayload.courseSectionIds" placeholder="{{'HOMEROOMS' | translate}}" [showClear]="false" optionLabel="name" optionValue="courseSectionId"></p-multiselect>
+          <p-datePicker [(ngModel)]="startDate" placeholder="{{'START_DATE' | translate}}" [showClear]="false" dateFormat="yy-mm-dd"></p-datePicker>
+          <p-datePicker [(ngModel)]="endDate" placeholder="{{'END_DATE' | translate}}" [showClear]="false" dateFormat="yy-mm-dd"></p-datePicker>
+          <p-datePicker [(ngModel)]="creationDate" placeholder="{{'CREATION_DATE' | translate}}" [showClear]="false" dateFormat="yy-mm-dd"></p-datePicker>
+          <p-multiselect [options]="assignmentTypes" [(ngModel)]="assignmentPayload.assignmentTypeIds" placeholder="{{'ASSIGNMENT_TYPE' | translate}}" [showClear]="false" optionLabel="name" optionValue="assignmentTypeId"></p-multiselect>
+          <p-multiselect [options]="assignmentFilter.filterStatus" [(ngModel)]="assignmentPayload.assignmentStatuses" placeholder="{{'ASSIGNMENT_STATUS' | translate}}" [showClear]="false" optionLabel="name" optionValue="id"></p-multiselect>
+          <p-select [options]="assignmentFilter.filterSortBy" [(ngModel)]="assignmentPayload.sortBy" placeholder="{{'SORT_BY' | translate}}" [showClear]="false" optionLabel="name" optionValue="id"></p-select>
+          <p-select [options]="assignmentFilter.filterOrders" [(ngModel)]="assignmentPayload.order" placeholder="{{'ORDER' | translate}}" [showClear]="false" optionLabel="name" optionValue="id"></p-select>
+          <p-select [options]="assignmentFilter.recipientTypes" [(ngModel)]="assignmentPayload.recipientId" placeholder="{{'RECIPIENT' | translate}}" [showClear]="false" optionLabel="name" optionValue="recipientId"></p-select>
         </div>
         <div class="advanced-search-actions">
           <div class="clear-button" (click)="onResetAdvancedSearch()">
-            <span>Clear Filters</span>
+            <span>{{'CLEAR_FILTERS' | translate}}</span>
           </div>
-          <button
-            pButton
-            label="Search"
-            [disabled]="
+          <button pButton label="{{'SEARCH_BUTTON' | translate}}" [disabled]="
               !assignmentPayload.subjectId &&
               !assignmentPayload.gradeIds.length &&
               !assignmentPayload.courseSectionIds.length &&
@@ -84,128 +57,59 @@
               !startDate &&
               !endDate &&
               !creationDate
-            "
-            class="p-button-primary"
-            (click)="getAssignments()"
-          ></button>
+            " class="p-button-primary" (click)="getAssignments()"></button>
         </div>
       </div>
-      }
     </div>
-    }
 
     <div class="tabs">
-      <div class="tab" [class.selected]="selectedTab === 'live'" (click)="onTabClick('live')">
-        Live
-      </div>
-      <div class="tab" [class.selected]="selectedTab === 'closed'" (click)="onTabClick('closed')">
-        Closed
-      </div>
+      <div class="tab" [class.selected]="selectedTab === 'live'" (click)="onTabClick('live')">{{'LIVE' | translate}}</div>
+      <div class="tab" [class.selected]="selectedTab === 'closed'" (click)="onTabClick('closed')">{{'CLOSED' | translate}}</div>
     </div>
   </div>
+
   <div class="content">
-    <!-- Grid Headers -->
     <div class="grid-header">
       <div class="header-item title">
-        <span>Title</span>
-        <img src="icon-sort.svg" alt="sort" (click)="onSort('title')" [src]="
-            sortColumn === 'title'
-              ? sortDirection === 'asc'
-                ? 'icon-sort-asc.svg'
-                : 'icon-sort.svg'
-              : 'icon-sort.svg'
-          " />
+        <span>{{'TITLE' | translate}}</span>
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('title')" [src]="sortColumn === 'title' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
       <div class="header-item status">
-        <span>Status</span>
-        <img
-          src="icon-sort.svg"
-          alt="sort"
-          (click)="onSort('status')"
-          [src]="
-            sortColumn === 'status'
-              ? sortDirection === 'asc'
-                ? 'icon-sort-asc.svg'
-                : 'icon-sort.svg'
-              : 'icon-sort.svg'
-          "
-        />
+        <span>{{'STATUS' | translate}}</span>
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('status')" [src]="sortColumn === 'status' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
       <div class="header-item avg-score">
-        <span>AVG.Score</span>
-        <img src="icon-sort.svg" alt="sort" (click)="onSort('avgScore')" [src]="
-            sortColumn === 'avgScore'
-              ? sortDirection === 'asc'
-                ? 'icon-sort-asc.svg'
-                : 'icon-sort.svg'
-              : 'icon-sort.svg'
-          " />
+        <span>{{'AVG_SCORE' | translate}}</span>
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('avgScore')" [src]="sortColumn === 'avgScore' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
       <div class="header-item target">
-        <span>Target</span>
-        <img src="icon-sort.svg" alt="sort" (click)="onSort('target')" [src]="
-            sortColumn === 'target'
-              ? sortDirection === 'asc'
-                ? 'icon-sort-asc.svg'
-                : 'icon-sort.svg'
-              : 'icon-sort.svg'
-          " />
+        <span>{{'TARGET' | translate}}</span>
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('target')" [src]="sortColumn === 'target' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
       <div class="header-item assigned-by">
-        <span>Assigned By</span>
-        <img src="icon-sort.svg" alt="sort" (click)="onSort('assignedBy')" [src]="
-            sortColumn === 'assignedBy'
-              ? sortDirection === 'asc'
-                ? 'icon-sort-asc.svg'
-                : 'icon-sort.svg'
-              : 'icon-sort.svg'
-          " />
+        <span>{{'ASSIGNED_BY' | translate}}</span>
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('assignedBy')" [src]="sortColumn === 'assignedBy' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
       <div class="header-item post-date">
-        <span>Post Date</span>
-        <img src="icon-sort.svg" alt="sort" (click)="onSort('postDate')" [src]="
-            sortColumn === 'postDate'
-              ? sortDirection === 'asc'
-                ? 'icon-sort-asc.svg'
-                : 'icon-sort.svg'
-              : 'icon-sort.svg'
-          " />
+        <span>{{'POST_DATE' | translate}}</span>
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('postDate')" [src]="sortColumn === 'postDate' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
       <div class="header-item due-date">
-        <span>Due On</span>
-        <img src="icon-sort.svg" alt="sort" (click)="onSort('dueDate')" [src]="
-            sortColumn === 'dueDate'
-              ? sortDirection === 'asc'
-                ? 'icon-sort-asc.svg'
-                : 'icon-sort.svg'
-              : 'icon-sort.svg'
-          " />
+        <span>{{'DUE_ON' | translate}}</span>
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('dueDate')" [src]="sortColumn === 'dueDate' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
       <div class="header-item submissions">
-        <span>Submissions</span>
-        <img src="icon-sort.svg" alt="sort" (click)="onSort('submissions')" [src]="
-            sortColumn === 'submissions'
-              ? sortDirection === 'asc'
-                ? 'icon-sort-asc.svg'
-                : 'icon-sort.svg'
-              : 'icon-sort.svg'
-          " />
+        <span>{{'SUBMISSIONS' | translate}}</span>
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('submissions')" [src]="sortColumn === 'submissions' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
       <div class="header-item submissions">
-        <span>actions</span>
-        <img src="icon-sort.svg" alt="sort" (click)="onSort('submissions')" [src]="
-            sortColumn === 'submissions'
-              ? sortDirection === 'asc'
-                ? 'icon-sort-asc.svg'
-                : 'icon-sort.svg'
-              : 'icon-sort.svg'
-          " />
+        <span>{{'ACTIONS' | translate}}</span>
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('submissions')" [src]="sortColumn === 'submissions' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
     </div>
-    <!-- Assignment List -->
+
     <div class="assignments-list">
-      @for (assignment of assignments.assignments; track $index) {
-      <div class="assignment-row" [class.active]="'live' === 'live'">
+      <div class="assignment-row" [class.active]="selectedTab === 'live'" *ngFor="let assignment of assignments.assignments">
         <div class="item title">{{ assignment.title }}</div>
         <div class="item status">
           <span>
@@ -220,117 +124,93 @@
           {{ assignment.startDate }}
         </div>
         <div class="item due-date">
-          {{ assignment.endDate}}
+          {{ assignment.endDate }}
         </div>
         <div class="item submissions">{{ assignment.submission }}</div>
         <div class="item actions d-flex">
-          <button pButton type="button" label="View Details" class="p-button-primary"
-            (click)="viewAssignment(assignment.assignmentId,assignment.assignmentTypeId)"></button>
-          <img src="icon-more-vertical.svg" alt="more" class="pointer more-actions"
-            (click)="showActionMenu($event, assignment)" />
+          <button pButton type="button" label="{{'VIEW_DETAILS' | translate}}" class="p-button-primary" (click)="viewAssignment(assignment.assignmentId, assignment.assignmentTypeId)"></button>
+          <img src="icon-more-vertical.svg" alt="more" class="pointer more-actions" (click)="showActionMenu($event, assignment)" />
         </div>
       </div>
-      }
     </div>
 
-    <!-- Pagination -->
-    <app-pagination [rows]="assignments.pageSize" [totalRecords]="assignments.totalRecords" [first]="first"
-      itemLabel="Assignments" (pageChange)="nextPage($event)"></app-pagination>
+    <app-pagination [rows]="assignments.pageSize" [totalRecords]="assignments.totalRecords" [first]="first" itemLabel="{{'ASSIGNMENTS' | translate}}" (pageChange)="nextPage($event)"></app-pagination>
   </div>
 </div>
 
 <p-popover #filterContent>
   <div class="filter-overlay-content">
-    <!-- Header with title and close button -->
     <div class="filter-overlay-header">
-      <h3 class="filter-overlay-title">Filter Sub Skills</h3>
+      <h3 class="filter-overlay-title">{{'FILTER_SUB_SKILLS' | translate}}</h3>
       <button class="filter-overlay-close" (click)="filterContent.toggle($event)">
         <i class="pi pi-times"></i>
       </button>
     </div>
 
-    <!-- Divider -->
     <div class="filter-divider"></div>
 
-    <!-- Filter sections -->
     <div class="filter-sections">
-      @for (section of filterSections; track section.title) {
-      <div class="filter-section">
+      <div class="filter-section" *ngFor="let section of filterSections">
         <div class="filter-section-header" (click)="toggleFilterSection(section)">
           <span class="filter-section-title">{{ section.title }}</span>
           <i class="pi" [class.pi-chevron-up]="section.expanded" [class.pi-chevron-down]="!section.expanded"></i>
         </div>
 
-        @if (section.expanded) {
-        <div class="filter-section-content">
-          @for (option of section.options; track option.value) {
-          <div class="filter-option">
+        <div *ngIf="section.expanded" class="filter-section-content">
+          <div class="filter-option" *ngFor="let option of section.options">
             <div class="custom-checkbox">
-              <input type="checkbox" [id]="option.value" [name]="section.title" [value]="option.value"
-                [checked]="section.selectedOptions.includes(option.value)"
-                (change)="toggleCheckbox(section, option.value)" class="visually-hidden" />
+              <input type="checkbox" [id]="option.value" [name]="section.title" [value]="option.value" [checked]="section.selectedOptions.includes(option.value)" (change)="toggleCheckbox(section, option.value)" class="visually-hidden" />
               <label [for]="option.value" class="checkbox-label">
                 <span class="checkbox-icon">
-                  @if (section.selectedOptions.includes(option.value)) {
-                  <img src="icon-checkbox-checked.svg" alt="Checked" class="checkbox-checked" />
-                  } @else {
-                  <img src="icon-checkbox-unchecked.svg" alt="Unchecked" class="checkbox-unchecked" />
-                  }
+                  <img *ngIf="section.selectedOptions.includes(option.value)" src="icon-checkbox-checked.svg" alt="Checked" class="checkbox-checked" />
+                  <img *ngIf="!section.selectedOptions.includes(option.value)" src="icon-checkbox-unchecked.svg" alt="Unchecked" class="checkbox-unchecked" />
                 </span>
                 <span class="filter-option-label">{{ option.label }}</span>
               </label>
             </div>
           </div>
-          }
         </div>
-        }
 
-        <!-- Divider after each section -->
         <div class="filter-divider"></div>
       </div>
-      }
     </div>
 
-    <!-- Filter actions -->
     <div class="filter-actions">
-      <button type="button" class="filter-btn filter-btn-clear">
-        Clear All
-      </button>
-      <button type="button" class="filter-btn filter-btn-apply">Apply</button>
+      <button type="button" class="filter-btn filter-btn-clear">{{'CLEAR_ALL' | translate}}</button>
+      <button type="button" class="filter-btn filter-btn-apply">{{'APPLY' | translate}}</button>
     </div>
   </div>
 </p-popover>
 
-<!-- Replace p-menu at the end of the file -->
 <p-menu #actionMenu [popup]="true" styleClass="action-menu">
   <ng-template pTemplate="start">
     <div class="menu-item" (click)="resendAssignment()">
       <img src="icon-resend.svg" alt="resend" class="menu-icon" />
-      <span class="menu-text">Resend</span>
+      <span class="menu-text">{{'RESEND' | translate}}</span>
     </div>
     <div class="menu-separator"></div>
 
     <div class="menu-item" (click)="deactivateAssignment()">
       <img src="icon-deactivate.svg" alt="deactivate" class="menu-icon" />
-      <span class="menu-text">Deactivate</span>
+      <span class="menu-text">{{'DEACTIVATE' | translate}}</span>
     </div>
     <div class="menu-separator"></div>
 
     <div class="menu-item" (click)="editAssignment()">
       <img src="icon-pencil-edit.svg" alt="edit" class="menu-icon" />
-      <span class="menu-text">Edit</span>
+      <span class="menu-text">{{'EDIT' | translate}}</span>
     </div>
     <div class="menu-separator"></div>
 
     <div class="menu-item" (click)="viewQuestions()">
       <img src="icon-view-questions.svg" alt="view questions" class="menu-icon" />
-      <span class="menu-text">View Questions</span>
+      <span class="menu-text">{{'VIEW_QUESTIONS' | translate}}</span>
     </div>
     <div class="menu-separator"></div>
 
     <div class="menu-item" (click)="exportAssignment()">
       <img src="icon-file-export.svg" alt="export" class="menu-icon" />
-      <span class="menu-text">Export</span>
+      <span class="menu-text">{{'EXPORT' | translate}}</span>
     </div>
   </ng-template>
 </p-menu>

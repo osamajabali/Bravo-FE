@@ -1,16 +1,16 @@
 <div class="filters">
-  <div class="search-box">
+  <div class="search-box" dir="ltr">
     <span class="p-input-icon-left">
       <img src="icon-search.svg" alt="search" />
-      <input type="text" pInputText [(ngModel)]="readingFilter.searchValue" placeholder="Search books..." (ngModelChange)="getStories()" />
+      <input type="text" pInputText [(ngModel)]="readingFilter.searchValue" placeholder="{{'SEARCH' | translate}}" (ngModelChange)="getStories()" />
     </span>
   </div>
   <div class="level-filters">
-    <p-dropdown [options]="mainLevels" [(ngModel)]="readingFilter.readingMainLevelId" placeholder="Select Main Level"
+    <p-dropdown [options]="mainLevels" [(ngModel)]="readingFilter.readingMainLevelId" placeholder="{{'SELECT_MAIN_LEVEL' | translate}}"
       optionLabel="name" optionValue="mainLevelId" [showClear]="false" (ngModelChange)="onMainLevelChange($event)"
       styleClass="main-level-dropdown">
     </p-dropdown>
-    <p-dropdown [options]="subLevels" [(ngModel)]="readingFilter.readingSubLevelId" placeholder="Select Sub Level" [showClear]="false"
+    <p-dropdown [options]="subLevels" [(ngModel)]="readingFilter.readingSubLevelId" placeholder="{{'SELECT_SUB_LEVEL' | translate}}" [showClear]="false"
       optionLabel="name" optionValue="subLevelId" (ngModelChange)="onSubLevelChange(readingFilter.readingMainLevelId , $event)" styleClass="sub-level-dropdown">
     </p-dropdown>
     <div class="filter-container" (click)="toggleAdvancedSearch()">
@@ -21,30 +21,38 @@
 <div class="advanced-search" *ngIf="showAdvancedSearch">
   <div class="advanced-filters">
     <p-dropdown [options]="detailedFilter.learningOutcomes" [(ngModel)]="readingFilter.learningOutcomeId" optionLabel="name" optionValue="learningOutcomeId"
-    placeholder="Skills" [showClear]="false"></p-dropdown>
+    [placeholder]="'SKILLS' | translate" [showClear]="false"></p-dropdown>
+    
     <p-dropdown [options]="detailedFilter.grades" [(ngModel)]="readingFilter.gradeId" optionLabel="name" optionValue="gradeId"
-    placeholder="Grade" [showClear]="false"></p-dropdown>
+    [placeholder]="'GRADE' | translate" [showClear]="false"></p-dropdown>
+    
     <p-dropdown [options]="detailedFilter.genres" [(ngModel)]="readingFilter.genreId" optionLabel="name" optionValue="genreId"
-      placeholder="Comprehension Skills" [showClear]="false"></p-dropdown>
-    <p-dropdown [options]="detailedFilter.subjects" [(ngModel)]="readingFilter.subjectId" optionLabel="name" optionValue="subjectId" placeholder="Subject"
-      [showClear]="false"></p-dropdown>
-    <p-dropdown [options]="detailedFilter.learningHubs" [(ngModel)]="readingFilter.learningHubId" optionLabel="name" optionValue="learningHubId" placeholder="Hub" [showClear]="false"></p-dropdown>
-    <p-dropdown [options]="[]" placeholder="IB Hub" [showClear]="false"></p-dropdown>
+      [placeholder]="'COMPREHENSION_SKILLS' | translate" [showClear]="false"></p-dropdown>
+    
+    <p-dropdown [options]="detailedFilter.subjects" [(ngModel)]="readingFilter.subjectId" optionLabel="name" optionValue="subjectId" 
+    [placeholder]="'SUBJECT' | translate" [showClear]="false"></p-dropdown>
+    
+    <p-dropdown [options]="detailedFilter.learningHubs" [(ngModel)]="readingFilter.learningHubId" optionLabel="name" optionValue="learningHubId" 
+    [placeholder]="'HUB' | translate" [showClear]="false"></p-dropdown>
+    
+    <p-dropdown [options]="[]" [placeholder]="'IB_HUB' | translate" [showClear]="false"></p-dropdown>
+    
     <p-dropdown [options]="detailedFilter.ibLearnerProfiles" [(ngModel)]="readingFilter.ibLearnerProfileId" optionLabel="name" optionValue="ibLearnerProfileId"
-    placeholder="IB Learner Profile"
-      [showClear]="false"></p-dropdown>
-    <p-dropdown [options]="[]" placeholder="Literary Type"
-      [showClear]="false"></p-dropdown>
+    [placeholder]="'IB_LEARNER_PROFILE' | translate" [showClear]="false"></p-dropdown>
+    
+    <p-dropdown [options]="[]" [placeholder]="'LITERARY_TYPE' | translate" [showClear]="false"></p-dropdown>
+    
     <p-dropdown [options]="detailedFilter.authors" [(ngModel)]="readingFilter.authorId" optionLabel="name" optionValue="authorId"
-    placeholder="Author Name"
-      [showClear]="false"></p-dropdown>
-    <p-dropdown [options]="detailedFilter.publishers" [(ngModel)]="readingFilter.publisherId" optionLabel="name" optionValue="publisherId" placeholder="Publisher"
-      [showClear]="false"></p-dropdown>
-    <p-dropdown [options]="detailedFilter.illustrators" [(ngModel)]="readingFilter.illustratorId" placeholder="Illustrator" optionLabel="name" optionValue="illustratorId"
-      [showClear]="false"></p-dropdown>
+    [placeholder]="'AUTHOR' | translate" [showClear]="false"></p-dropdown>
+    
+    <p-dropdown [options]="detailedFilter.publishers" [(ngModel)]="readingFilter.publisherId" optionLabel="name" optionValue="publisherId" 
+    [placeholder]="'PUBLISHER' | translate" [showClear]="false"></p-dropdown>
+    
+    <p-dropdown [options]="detailedFilter.illustrators" [(ngModel)]="readingFilter.illustratorId" [placeholder]="'ILLUSTRATOR' | translate" 
+    optionLabel="name" optionValue="illustratorId" [showClear]="false"></p-dropdown>
+    
     <p-dropdown [options]="detailedFilter.ageGroups" [(ngModel)]="readingFilter.ageGroupId" optionLabel="name" optionValue="ageGroupId"
-    placeholder="Age Group"
-      [showClear]="false"></p-dropdown>
+    [placeholder]="'AGE_GROUP' | translate" [showClear]="false"></p-dropdown>
   </div>
   <div class="advanced-search-actions">
     <button pButton label="Cancel" class="p-button-outlined" (click)="onCancelAdvancedSearch()"></button>
@@ -52,8 +60,9 @@
   </div>
 </div>
 
+
 @if(books.stories){
-<div class="books-number">{{ books.totalRecords }} Books</div>
+<div class="books-number">{{ books.totalRecords }} {{'BOOKS' | translate}}</div>
 <div class="books-grid">
   @for (book of books.stories; track book.title) {
   <div class="book-card">
@@ -62,14 +71,14 @@
     </div>
     <div class="book-details">
       <h3 class="title">{{ book.title }}</h3>
-      <p class="sub-level">Sub Level: {{ book.levelName }}</p>
-      <p class="author">Author: {{ book.authorName }}</p>
-      <button pButton class="p-button-primary" (click)="viewBook(book)">View Book</button>
+      <p class="sub-level">{{'SUB_LEVEL' | translate}}: {{ book.levelName }}</p>
+      <p class="author">{{'AUTHOR' | translate}}: {{ book.authorName }}</p>
+      <button pButton class="p-button-primary" (click)="viewBook(book)">{{'VIEW_BOOK' | translate}}</button>
     </div>
   </div>
   }
 </div>
 
-<app-pagination [first]="first" [rows]="books.pageSize" [totalRecords]="books.totalRecords" itemLabel="books"
+<app-pagination [first]="first" [rows]="books.pageSize" [totalRecords]="books.totalRecords" itemLabel="{{'BOOKS' | translate}}"
   (pageChange)="nextPage($event)"></app-pagination>
 }

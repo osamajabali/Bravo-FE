@@ -1,18 +1,22 @@
 import { PaginationFilter } from "../shared-models/pagination.model";
 
 export class AssignmentsDomain {
+  schoolId: number;
+  roleId: number;
   subjectId: number;
   selectedGrades: number[];
-  selectedSections: number[];
+  selectedCourseSections: number[];
   selectedGroups: number[];
   selectedStudents: number[];
 }
 
 export class AssignmentsDomainSkills {
+  schoolId: number;
+  roleId: number;
   subjectId: number;
   domainId: number;
   selectedGrades: number[];
-  selectedSections: number[];
+  selectedCourseSections: number[];
   selectedGroups: number[];
   selectedStudents: number[];
 }

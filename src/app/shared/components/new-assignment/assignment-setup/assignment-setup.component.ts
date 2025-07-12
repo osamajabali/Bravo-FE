@@ -9,9 +9,10 @@ import { AddingAssignmentService } from '../../../../core/services/assignment/ad
 import { AssignmentRecipientTypes } from '../../../../core/models/assignment/assignment-types.model';
 import { HeaderService } from '../../../../core/services/header-services/header.service';
 import { TargetEnum } from '../../../../core/models/shared-models/enums';
-import { AssignmentSetup } from '../../../../core/models/assignment/assignment-setup.model';
+import { AssignmentSetup, SchoolRoleSubject } from '../../../../core/models/assignment/assignment-setup.model';
 import { SharedService } from '../../../../core/services/shared-services/shared.service';
 import { Subscription } from 'rxjs';
+import { Role } from '../../../../core/models/login-models/logged-in-user';
 
 @Component({
   selector: 'app-assignment-setup',
@@ -37,7 +38,7 @@ export class AssignmentSetupComponent implements OnInit {
   targets: AssignmentRecipientTypes[] = [];
   selectedTarget: AssignmentRecipientTypes = new AssignmentRecipientTypes();
   grades: { gradeId: number; name: string; }[] = [];
-  sections: { sectionId: number; name: string; }[] = [];
+  sections: { courseSectionId: number; name: string; }[] = [];
   groups: { groupId: number; name: string; }[] = [];
   students: { studentId: number; fullName: string; }[] = [];
   targetEnum = TargetEnum;
@@ -64,7 +65,14 @@ export class AssignmentSetupComponent implements OnInit {
   }
 
   getLookups() {
-    this.addingAssignmentService.getAssignmentGrades(this.headerService.selectedSubjectId).subscribe(res => {
+    let roles = JSON.parse(localStorage.getItem('loginRoles')) as Role[];
+    let assignmentGrades: SchoolRoleSubject = {
+      roleId: roles[0].roleId,
+      schoolId: roles[0].schools[0].schoolId,
+      subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
+      gradeIds: []
+    }
+    this.addingAssignmentService.getAssignmentGrades(assignmentGrades).subscribe(res => {
       if (res.success) {
         this.grades = res.result;
 
@@ -107,20 +115,20 @@ export class AssignmentSetupComponent implements OnInit {
     let retrievedData: AssignmentSetup = JSON.parse(localStorage.getItem('assignmentSetup'));
 
     if (target.assignmentRecipientTypeId == this.targetEnum.Sections) {
-      this.assignmentSetup.selectedSections = retrievedData.selectedSections.length ? retrievedData.selectedSections : [];
+      this.assignmentSetup.selectedSections = retrievedData ? retrievedData.selectedSections : [];
       this.isSetupValid.emit(this.assignmentSetup.selectedSections.length == 0);
       this.getSections();
     }
-    
+
     if (target.assignmentRecipientTypeId == this.targetEnum.Groups) {
-      this.assignmentSetup.selectedGroups = retrievedData.selectedGroups.length ? retrievedData.selectedGroups : [];
+      this.assignmentSetup.selectedGroups = retrievedData ? retrievedData.selectedGroups : [];
       this.isSetupValid.emit(this.assignmentSetup.selectedGroups.length == 0);
       this.getGroups();
     }
-    
+
     if (target.assignmentRecipientTypeId == this.targetEnum.Students) {
-      this.assignmentSetup.selectedSections = retrievedData.selectedSections.length ? retrievedData.selectedSections : [];
-      this.assignmentSetup.selectedStudents = retrievedData.selectedStudents.length ? retrievedData.selectedStudents : [];
+      this.assignmentSetup.selectedSections = retrievedData ? retrievedData.selectedSections : [];
+      this.assignmentSetup.selectedStudents = retrievedData ? retrievedData.selectedStudents : [];
       this.isSetupValid.emit(this.assignmentSetup.selectedStudents.length == 0);
       this.getStudents();
       this.getSections();
@@ -135,14 +143,22 @@ export class AssignmentSetupComponent implements OnInit {
 
   getSections = () => {
     this.sections = [];
-    this.addingAssignmentService.getAssignmentSections(this.headerService.selectedSubjectId, this.assignmentSetup.selectedGrades).subscribe(res => {
+    if(this.assignmentSetup.selectedGrades.length == 0) return;
+    let roles = JSON.parse(localStorage.getItem('loginRoles')) as Role[];
+    let assignmentGrades: SchoolRoleSubject = {
+      roleId: roles[0].roleId,
+      schoolId: roles[0].schools[0].schoolId,
+      subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
+      gradeIds: this.assignmentSetup.selectedGrades
+    }
+    this.addingAssignmentService.getAssignmentSections(assignmentGrades).subscribe(res => {
       if (res.success) {
         this.sections = res.result;
 
         if (this.assignmentSetup.selectedSections) {
           // Remove section IDs from selectedSections where section name is null
           this.assignmentSetup.selectedSections = this.assignmentSetup.selectedSections.filter(id => {
-            const section = this.sections.find(sec => sec.sectionId === id);
+            const section = this.sections.find(sec => sec.courseSectionId === id);
             return section && section.name !== null;
           });
         }
@@ -153,7 +169,15 @@ export class AssignmentSetupComponent implements OnInit {
 
   getGroups = () => {
     this.groups = [];
-    this.addingAssignmentService.getAssignmentGroups(this.headerService.selectedSubjectId, this.assignmentSetup.selectedGrades).subscribe(res => {
+    if(this.assignmentSetup.selectedGrades.length == 0) return;
+    let roles = JSON.parse(localStorage.getItem('loginRoles')) as Role[];
+    let assignmentGrades: SchoolRoleSubject = {
+      roleId: roles[0].roleId,
+      schoolId: roles[0].schools[0].schoolId,
+      subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
+      gradeIds: this.assignmentSetup.selectedGrades
+    }
+    this.addingAssignmentService.getAssignmentGroups(assignmentGrades).subscribe(res => {
       if (res.success) {
         this.groups = res.result;
         if (this.assignmentSetup.selectedGroups) {
@@ -168,6 +192,7 @@ export class AssignmentSetupComponent implements OnInit {
 
   getStudents = () => {
     this.students = [];
+    if(this.assignmentSetup.selectedSections.length == 0) return;
     this.addingAssignmentService.getAssignmentStudents(this.assignmentSetup.selectedSections).subscribe(res => {
       if (res.success) {
         this.students = res.result;

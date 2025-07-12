@@ -8,11 +8,12 @@ import { SubmissionService } from '../../../../core/services/assignment/submissi
 import { StudentSubmission } from '../../../../core/models/assignment/student-submission.model';
 import { QuestionsSubmissions, SubmissionReadingDetails } from '../../../../core/models/assignment-submission/reading-submission-details';
 import { SkillData } from '../../../../core/models/assignment-submission/assignment-submission-1uestion.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-book-reading',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonModule, HtmlDialogComponent, MultipleQuestionsComponent],
+  imports: [CommonModule, FormsModule, ButtonModule, HtmlDialogComponent, MultipleQuestionsComponent, TranslateModule],
   templateUrl: './book-reading.component.html',
   styleUrl: './book-reading.component.scss',
 })

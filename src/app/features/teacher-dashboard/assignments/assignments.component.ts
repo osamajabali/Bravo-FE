@@ -21,6 +21,7 @@ import { Grade, Section, SectionFilter, Subject, SubjectGrade } from '../../../c
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePipe } from '@angular/common';
 import { PaginatorState } from 'primeng/paginator';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface FilterSection {
   title: string;
@@ -48,7 +49,8 @@ interface FilterOption {
     DatePickerModule,
     FormsModule,
     MenuModule,
-    MultiSelectModule
+    MultiSelectModule,
+    TranslateModule
   ],
   providers: [DatePipe],
   templateUrl: './assignments.component.html',

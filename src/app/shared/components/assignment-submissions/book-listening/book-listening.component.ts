@@ -5,10 +5,11 @@ import { HtmlDialogComponent } from '../../html-dialog/html-dialog.component';
 import { ButtonModule } from 'primeng/button';
 import { MediaPlayerComponent } from '../../media-player/media-player.component';
 import { DialogModule } from 'primeng/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-book-listening',
-  imports: [FormsModule, CommonModule, HtmlDialogComponent, ButtonModule, MediaPlayerComponent, DialogModule],
+  imports: [FormsModule, CommonModule, HtmlDialogComponent, ButtonModule, MediaPlayerComponent, DialogModule,TranslateModule],
   templateUrl: './book-listening.component.html',
   styleUrl: './book-listening.component.scss',
 })
@@ -33,7 +34,7 @@ export class BookListeningComponent {
     coverImageUrl: 'assets/images/book-image.svg',
     title: 'Book Title',
     assignmentTypeName: 'Assignment Type Name',
-    authorName: 'Author Name',
+    authorName: 'AUTHOR',
     mainLevelName: 'Main Level Name',
   };
 

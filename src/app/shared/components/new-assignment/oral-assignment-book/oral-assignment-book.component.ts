@@ -14,6 +14,7 @@ import { AddingAssignmentService } from '../../../../core/services/assignment/ad
 import { PaginatorState } from 'primeng/paginator';
 import { PaginationComponent } from "../../pagination/pagination.component";
 import { SelectionType } from '../assignment-book/assignment-book.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-oral-assignment-book',
@@ -28,7 +29,8 @@ import { SelectionType } from '../assignment-book/assignment-book.component';
     DropdownModule,
     DrawerModule,
     BookPreviewPopupComponent,
-    PaginationComponent
+    PaginationComponent,
+    TranslateModule
   ],
   templateUrl: './oral-assignment-book.component.html',
   styleUrl: './oral-assignment-book.component.scss',

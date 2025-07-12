@@ -19,6 +19,7 @@ import { PaginationComponent } from "../../pagination/pagination.component";
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { TranslateModule } from '@ngx-translate/core';
 import { CheckboxModule } from 'primeng/checkbox';
+import { Role } from '../../../../core/models/login-models/logged-in-user';
 
 interface Skill {
   name: string;
@@ -110,19 +111,16 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
     const retrievedData = localStorage.getItem('assignmentSetup');
     if (retrievedData) {
       this.assignmentData = JSON.parse(retrievedData);
-      // this.assignmentDomain ={
-      //   selectedGrades : this.assignmentData.selectedGrades,
-      //   selectedGroups : this.assignmentData.selectedGroups,
-      //   selectedSections : this.assignmentData.selectedSections,
-      //   selectedStudents : this.assignmentData.selectedStudents,
-      //   subjectId : this.headerService.selectedSubjectId
-      // }
+      let roles = JSON.parse(localStorage.getItem('loginRoles')) as Role[];
+
       this.assignmentDomain = {
         selectedGrades: [],
         selectedGroups: [945],
-        selectedSections: [],
+        selectedCourseSections: [],
         selectedStudents: [],
-        subjectId: 1
+        subjectId: 1,
+        roleId: roles[0].roleId,
+        schoolId: roles[0].schools[0].schoolId
       }
     }
 
@@ -158,26 +156,26 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
         first: 0,
         learningOutcomes: []
       });
-    }else{
-          // Get all existing domainIds
-    const existingDomainIds = this.domains.map(domain => domain.domainId);
+    } else {
+      // Get all existing domainIds
+      const existingDomainIds = this.domains.map(domain => domain.domainId);
 
-    // Filter out the domainId from skillDomains that matches the previous domain IDs
-    const newSkillDomains = this.domains[0].skillDomains.filter(skillDomain =>
-      !existingDomainIds.includes(skillDomain.domainId)
-    );
-    // Add the new domain with the filtered skillDomains
-    this.domains.push({
-      domainId: 0,
-      searchText: '',
-      skills: [],
-      isCollapsed: false,
-      skillDomains: newSkillDomains,
-      totalQuestions: 0,
-      updatedSkills: [],
-      first: 0,
-      learningOutcomes: []
-    });
+      // Filter out the domainId from skillDomains that matches the previous domain IDs
+      const newSkillDomains = this.domains[0].skillDomains.filter(skillDomain =>
+        !existingDomainIds.includes(skillDomain.domainId)
+      );
+      // Add the new domain with the filtered skillDomains
+      this.domains.push({
+        domainId: 0,
+        searchText: '',
+        skills: [],
+        isCollapsed: false,
+        skillDomains: newSkillDomains,
+        totalQuestions: 0,
+        updatedSkills: [],
+        first: 0,
+        learningOutcomes: []
+      });
     }
   }
 
@@ -202,15 +200,29 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
   onDomainSelect(domainId: number, domain: Domain) {
     this.domains.find(x => x.domainId == domain.domainId).domainId = domainId;
     console.log(this.domains);
+    let roles = JSON.parse(localStorage.getItem('loginRoles')) as Role[];
 
     this.assignmentsDomainSkills = {
       domainId: domainId,
       selectedGrades: this.assignmentData.selectedGrades,
       selectedGroups: this.assignmentData.selectedGroups,
-      selectedSections: this.assignmentData.selectedSections,
+      selectedCourseSections: this.assignmentData.selectedSections,
       selectedStudents: this.assignmentData.selectedStudents,
-      subjectId: this.headerService.selectedSubjectId,
+      subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
+      roleId: roles[0].roleId,
+      schoolId: roles[0].schools[0].schoolId
     }
+
+    // this.assignmentsDomainSkills = {
+    //   domainId: 3,
+    //   selectedGrades: [],
+    //   selectedGroups: [],
+    //   selectedCourseSections: [570],
+    //   selectedStudents: [],
+    //   subjectId: 1,
+    //   roleId: 1,
+    //   schoolId: 13
+    // }
 
     this.addingAssignmentService.getAssignmentDomainsSkills(this.assignmentsDomainSkills).subscribe(res => {
       if (res.success) {

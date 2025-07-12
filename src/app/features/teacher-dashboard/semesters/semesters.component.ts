@@ -66,7 +66,7 @@ export class SemestersComponent implements OnInit, OnDestroy {
   getStats() {
     let model: StatsRequest = {
       courseSectionId: this.headerService.selectedSectionId,
-      subjectId: this.headerService.selectedSubjectId,
+      subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
     };
     this.statsService.getStats(model).subscribe((res) => {
       if (res.success) {

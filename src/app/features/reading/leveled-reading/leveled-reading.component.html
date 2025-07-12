@@ -7,7 +7,7 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        Book List
+        {{'BOOK_LIST' | translate}}
       </a>
       <a
         class="tab"
@@ -15,7 +15,7 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        Leveled Reading
+        {{'LEVELED_READING' | translate}}
       </a>
     </div>
     
@@ -26,7 +26,7 @@
         class="p-button-outlined show-button"
         (click)="showStudentLevel()"
       >
-        <span>Show Student Level</span>
+        <span>{{'SHOW_STUDENT_LEVEL' | translate}}</span>
       </button>
       <button
         pButton
@@ -34,7 +34,7 @@
         class="p-button-outlined show-button"
         (click)="showCriteria()"
       >
-        <span>Show Criteria</span>
+        <span>{{'SHOW_CRETERIA' | translate}}</span>
       </button>
     </div>
   </div>

@@ -14,6 +14,7 @@ import { PaginatorState } from 'primeng/paginator';
 import { PaginationComponent } from "../../pagination/pagination.component";
 import { AssignmentSetup } from '../../../../core/models/assignment/assignment-setup.model';
 import { AssignmentTypes } from '../../../../core/models/assignment/assignment-types.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 export interface SelectionType {
   id: number;
@@ -49,7 +50,8 @@ interface Book {
     DropdownModule,
     DrawerModule,
     BookPreviewPopupComponent,
-    PaginationComponent
+    PaginationComponent,
+    TranslateModule
   ],
   templateUrl: './assignment-book.component.html',
   styleUrl: './assignment-book.component.scss',

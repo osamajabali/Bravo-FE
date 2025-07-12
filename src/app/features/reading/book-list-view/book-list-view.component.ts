@@ -15,6 +15,7 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
 import { LeveldReadingService } from '../../../core/services/teacher-dashboard-services/leveld-reading.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-book-list-view',
@@ -25,7 +26,8 @@ import { SpinnerService } from '../../../core/services/shared-services/spinner.s
     DropdownModule,
     InputTextModule,
     FormsModule,
-    PaginationComponent
+    PaginationComponent,
+    TranslateModule
   ],
   templateUrl: './book-list-view.component.html',
   styleUrls: ['./book-list-view.component.scss']

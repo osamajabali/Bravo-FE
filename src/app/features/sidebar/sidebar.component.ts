@@ -64,7 +64,7 @@ export class SidebarComponent {
       icon: 'students'
     },
     {
-      label: 'LEVELED_READING',
+      label: 'LEVELED_READING_SIDE',
       route: '/features/leveled-reading',
       icon: 'leveled-reading'
     },

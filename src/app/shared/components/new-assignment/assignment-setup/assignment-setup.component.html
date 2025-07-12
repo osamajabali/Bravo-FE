@@ -58,7 +58,7 @@
       @if (sections.length) {
       <div class="label mt-2">Pick Homerooms </div>
       <p-multiselect id="homerooms" required [options]="sections" name="selectedSections"
-        [(ngModel)]="assignmentSetup.selectedSections" optionLabel="name" optionValue="sectionId"
+        [(ngModel)]="assignmentSetup.selectedSections" optionLabel="name" optionValue="courseSectionId"
         (ngModelChange)="getStudents();" placeholder="Select homerooms" [showClear]="true"
         class="w-100"></p-multiselect>
       }

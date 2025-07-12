@@ -8,10 +8,11 @@ import { MediaPlayerComponent } from '../../media-player/media-player.component'
 import { OralSubmissionDetails } from '../../../../core/models/assignment-submission/oral-submission-details';
 import { SubmissionService } from '../../../../core/services/assignment/submission.service';
 import { StoryPage } from '../../../../core/models/assignment-submission/story-page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-oral-reading',
-  imports: [FormsModule, CommonModule, HtmlDialogComponent, ButtonModule, MediaPlayerComponent, DialogModule],
+  imports: [FormsModule, CommonModule, HtmlDialogComponent, ButtonModule, MediaPlayerComponent, DialogModule, TranslateModule],
   templateUrl: './oral-reading.component.html',
   styleUrl: './oral-reading.component.scss'
 })

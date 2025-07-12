@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { AssignmentReadingPayload, Story } from '../../../../core/models/assignment/assignment-stories.model';
 import { AssignmentSetup } from '../../../../core/models/assignment/assignment-setup.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Skill {
   name: string;
@@ -26,7 +27,8 @@ interface Domain {
     CommonModule,
     FormsModule,
     PanelModule,
-    ButtonModule
+    ButtonModule,
+    TranslateModule
   ],
   templateUrl: './assignment-book-review.component.html',
   styleUrl: './assignment-book-review.component.scss',

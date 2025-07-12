@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-leveled-reading',
@@ -11,7 +12,8 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
     CommonModule,
     ButtonModule,
     RouterOutlet,
-    RouterModule
+    RouterModule,
+    TranslateModule
   ],
   templateUrl: './leveled-reading.component.html',
   styleUrl: './leveled-reading.component.scss',

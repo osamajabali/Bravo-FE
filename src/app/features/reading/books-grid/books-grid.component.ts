@@ -12,6 +12,7 @@ import { LeveledBookSummaryComponent } from '../../../shared/components/leveled-
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { SkillSummaryData } from '../../../shared/components/skill-summary/skill-summary.component';
 import { SpinnerService } from '../../../core/services/shared-services/spinner.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Book {
   id: number;
@@ -31,6 +32,7 @@ interface Book {
     ButtonModule,
     PaginationComponent,
     LeveledBookSummaryComponent,
+    TranslateModule
   ],
   templateUrl: './books-grid.component.html',
   styleUrl: './books-grid.component.scss',
