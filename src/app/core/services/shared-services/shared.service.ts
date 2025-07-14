@@ -78,6 +78,6 @@ export class SharedService {
   }
 
     getSelectedItems = (): SelectedItems | null => {
-      return localStorage.getItem('selectedItems') ? JSON.parse(localStorage.getItem('selectedItems')) as unknown as SelectedItems : null;
+      return localStorage.getItem('selectedItems') ? JSON.parse(localStorage.getItem('selectedItems')) as unknown as SelectedItems : new SelectedItems;
     }
 }

@@ -35,7 +35,7 @@ export class StatsComponent implements OnInit, OnDestroy {
       this.getStats();
       this.getClasses();
     }
-    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == 0;
     this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
       if (((res == 'trigger') && check) || res == 'refresh') {
         this.getStats();

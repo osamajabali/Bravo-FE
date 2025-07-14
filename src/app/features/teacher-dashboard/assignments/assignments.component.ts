@@ -95,7 +95,7 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
     if (localStorage.getItem('selectedItems')) {
       this.getAssignmentsFilter();
     }
-    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == 0;
     this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
       if (((res == 'trigger') && check) || res == 'refresh') {
         this.getAssignmentsFilter();

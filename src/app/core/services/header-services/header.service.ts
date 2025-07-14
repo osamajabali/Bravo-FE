@@ -9,9 +9,9 @@ import { HttpService } from '../shared-services/http.service';
 })
 export class HeaderService {
 
-  selectedSubjectId : number;
-  selectedGradeId : number;
-  selectedSectionId : number;
+  selectedSubjectId : number = 0;
+  selectedGradeId : number = 0;
+  selectedSectionId : number = 0;
   sectionsArray: Section[] = [];
 
   constructor(private apiHlpr : HttpService) { }

@@ -34,8 +34,8 @@ export class SemestersComponent implements OnInit, OnDestroy {
       this.getStats();
       this.getClasses();
     }
-    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
-    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+    let check = this.sharedService.getSelectedItems().selectedGradeId == 0;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {debugger
       if ((res == 'trigger' && check) || res == 'refresh') {
         this.getStats();
         this.getClasses();

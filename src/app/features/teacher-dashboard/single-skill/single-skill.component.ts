@@ -70,7 +70,7 @@ export class SingleSkillComponent implements OnInit, OnDestroy {
       this.getSkills();
       this.getStatistics();
     }
-    let check = this.sharedService.getSelectedItems()?.selectedGradeId == null;
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == 0;
     this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
       if (((res == 'trigger') && check) || res == 'refresh') {
         this.getSkills();
