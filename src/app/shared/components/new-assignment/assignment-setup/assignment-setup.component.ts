@@ -209,8 +209,8 @@ export class AssignmentSetupComponent implements OnInit {
 
 
   assignmentSetupUpdate = (setupForm: NgForm) => {
-    if (this.assignmentSetup.title.length > 60) {
-      this.assignmentSetup.title = this.assignmentSetup.title.substring(60)
+    if (this.assignmentSetup.title && this.assignmentSetup.title.length > 60) {
+      this.assignmentSetup.title = this.assignmentSetup.title.substring(0, 60);
     }
     if (this.assignmentSetup.startDate > this.assignmentSetup.dueDate) {
       this.assignmentSetup.dueDate = this.assignmentSetup.startDate;

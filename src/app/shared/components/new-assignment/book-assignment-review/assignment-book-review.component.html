@@ -48,7 +48,7 @@
     </div>
     <div class="separator"></div>
     <div class="lower-section">
-      <div class="selected-book">
+      <div class="selected-book" *ngIf="selectedBook">
         <div class="book-card">
           <div class="book-cover">
             <img [src]="selectedBook.coverImageUrl" [alt]="selectedBook.title" />

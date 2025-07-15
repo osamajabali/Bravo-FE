@@ -7,6 +7,7 @@ import { QuestionsSubmissions, SubmissionReadingDetails } from '../../models/ass
 import { OralSubmissionDetails } from '../../models/assignment-submission/oral-submission-details';
 import { StoryPage } from '../../models/assignment-submission/story-page';
 import { SkillData } from '../../models/assignment-submission/assignment-submission-1uestion.model';
+import { SkillAssignmentSubmit } from '../../models/assignment/skill-assignment-submit.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,9 @@ export class SubmissionService {
 
   getStoryPage = (storyPageId: number): Observable<Result<StoryPage>> => {
     return this.apiHlpr.post<Result<StoryPage>>(`${this.controller}/story-page`, { storyPageId: storyPageId });
+  }
+
+  addAssignment = (assignment: SkillAssignmentSubmit): Observable<Result<StoryPage>> => {
+    return this.apiHlpr.post<Result<StoryPage>>(`${this.controller}/add-skill-assignment`, assignment);
   }
 }

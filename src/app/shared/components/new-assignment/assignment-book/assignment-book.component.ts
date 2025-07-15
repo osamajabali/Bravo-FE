@@ -70,8 +70,8 @@ export class AssignmentBookComponent implements OnInit {
 
   selectionTypes: SelectionType[] = [
     { id: 0, name: 'select' },
-    { id: 1, name: 'Teacher Selection' },
-    { id: 3, name: 'Random Selection' },
+    { id: 2, name: 'Book selected by the teacher' },
+    { id: 3, name: 'Book selected by the system' },
   ];
 
   levels: LevelType[] = [
@@ -97,6 +97,7 @@ export class AssignmentBookComponent implements OnInit {
   ngOnInit(): void {
     
     this.getSublevelReading();
+    this.checkValue();
 
   }
 
@@ -165,7 +166,7 @@ export class AssignmentBookComponent implements OnInit {
       selectedType: this.selectedType,
       assignmentStories: this.assignmentStories,
       assignmentTypeName: this.assignmentStories.readingSubLevelId ? this.subLevels.find(x => x.readingSubLevelId == this.assignmentStories.readingSubLevelId).name : '',
-      bookSelectionCreteria: this.selectedOption ? 1 : 0,
+      bookSelectionCreteria: this.selectedOption ? this.selectedType.id : 1,
       correctionType: null
     }
 

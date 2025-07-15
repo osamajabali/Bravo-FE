@@ -1,8 +1,5 @@
-import { SkillsDomain } from "./assignment-domain.model";
-
-export class AssignmentPayload {
+export class SkillAssignmentSubmit {
   schoolId: number;
-  roleId: number;
   subjectId: number;
   assignmentTypeId: number;
   recipientTypeId: string;
@@ -16,11 +13,18 @@ export class AssignmentPayload {
   isShowCorrectAnswer: boolean;
   isSameQuestionsForAllStudents: boolean;
   totalSelectedQuestions: number;
-  selectedDomains: Domain[];
+  selectedDomains: SkillAssignmentDomain[];
 }
 
-export class Domain {
+export class SkillAssignmentDomain {
   domainId: number;
-  skills: SkillsDomain[];
+  skills: SkillAssignmentSkill[];
 }
 
+export class SkillAssignmentSkill {
+  skillId: number;
+  totalBeginnerQuestions: number;
+  totalMediumQuestions: number;
+  totalAdvanceQuestions: number;
+  customSelectedQuestions: number[];
+} 

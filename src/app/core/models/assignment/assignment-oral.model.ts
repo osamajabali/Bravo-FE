@@ -1,4 +1,4 @@
-export class AssignmentReading {
+export class OralAssignmentPayload {
   schoolId: number;
   roleId: number;
   subjectId: number;
@@ -11,7 +11,8 @@ export class AssignmentReading {
   title: string;
   startDate: Date;
   dueDate: Date;
-  bookSelectionCriteria: number;
+  correctionType: number;
   selectedReadingSubLevelId: number;
   selectedBookId: number;
+  selectedPagesId: number[];
 }

@@ -40,7 +40,7 @@
       (ngModelChange)="updateValue() ; onRemoveBook()" optionLabel="name" optionValue="readingSubLevelId"
       placeholder="Select Level" class="w-100"></p-select>
   </div>
-  @if (selectedOption && selectedType.id != 3) {
+  @if (selectedOption && selectedType && selectedType.id != 3) {
   @if(assignmentStories.readingSubLevelId){
   @if (!selectedBook) {
 
