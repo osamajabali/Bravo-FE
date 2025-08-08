@@ -122,7 +122,7 @@
         }
 
         .filter-option-label {
-          margin-left: 12px;
+          margin-inline-start: 12px;
           cursor: pointer;
           color: var(--primary-primary-800);
           font-size: 14px;
@@ -316,7 +316,7 @@
     justify-content: center;
     width: 24px;
     height: 24px;
-    margin-right: 12px;
+    margin-inline-end: 12px;
 
     img {
       width: 100%;

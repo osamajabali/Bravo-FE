@@ -61,7 +61,7 @@
 
   .p-button-icon {
     color: var(--primary-primary-500);
-    margin-right: 0.5rem;
+    margin-inline-end: 0.5rem;
   }
 }
 
@@ -179,7 +179,7 @@
 
       .p-menu-item-icon {
         color: var(--primary-primary-500) !important;
-        margin-right: 0.75rem;
+        margin-inline-end: 0.75rem;
       }
 
       .p-menuitem-text {
@@ -319,7 +319,7 @@
       }
 
       .filter-option-label {
-        margin-left: 12px;
+        margin-inline-start: 12px;
         cursor: pointer;
         color: var(--primary-primary-800);
         font-size: var(--font-size-xxs);
