@@ -100,6 +100,11 @@ a {
   -ms-overflow-style: none;
 }
 
-.p-menu {
-  left: 900px !important;
+/* In your styles.scss */
+[dir='ltr'] .p-menu {
+  left: 1050px !important;
+}
+
+[dir='rtl'] .p-menu {
+  left: 11px !important;
 }

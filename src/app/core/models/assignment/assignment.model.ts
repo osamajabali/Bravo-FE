@@ -23,6 +23,7 @@ export class AssignmentsPayload {
   pageNumber: number = 1;
   pageSize: number = 10;
   searchValue: string = '';
+  schoolId: number = 0;
 }
 
 export class Assignment {
@@ -34,7 +35,7 @@ export class Assignment {
   target: string;
   startDate: Date;
   endDate: Date;
-  assignedBy: string;
+  correctedBy: string;
   status: string;
 assignmentTypeId: number;
 }

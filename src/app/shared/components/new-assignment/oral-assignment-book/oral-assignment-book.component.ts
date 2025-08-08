@@ -114,7 +114,7 @@ export class OralAssignmentBookComponent implements OnInit {
       assignmentStories: this.assignmentStories,
       assignmentTypeName: this.assignmentStories.readingSubLevelId ? this.subLevels.find(x => x.readingSubLevelId == this.assignmentStories.readingSubLevelId).name : '',
       bookSelectionCreteria: null,
-      correctionType: this.selectedOption ? 1 : 0
+      correctionType: this.selectedOption ? 1 : 2
     }
     if (this.assignmentBook.assignmentStories && this.assignmentBook.book) {
       this.isSetupValid.emit(false);

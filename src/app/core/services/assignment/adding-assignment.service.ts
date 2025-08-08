@@ -9,6 +9,7 @@ import { AssignmentPayload } from '../../models/assignment/assignment-payload';
 import { AssignmentReading } from '../../models/assignment/assignment-reading.model';
 import { SchoolRoleSubject } from '../../models/assignment/assignment-setup.model';
 import { OralAssignmentPayload } from '../../models/assignment/assignment-oral.model';
+import { AssignmentListening } from '../../models/assignment/assignment-listening.model';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +74,7 @@ export class AddingAssignmentService {
     return this.apiHlpr.post<Result<{isSuccess : boolean}>>(`${this.controller}/add-oral-reading-assignment`, assignmentOralReading);
   }
 
-  addAssignmentListeningReading = (assignmentOralReading : AssignmentReading): Observable<Result<{isSuccess : boolean}>> => {
+  addAssignmentListeningReading = (assignmentOralReading : AssignmentListening): Observable<Result<{isSuccess : boolean}>> => {
     return this.apiHlpr.post<Result<{isSuccess : boolean}>>(`${this.controller}/add-listening-assignment`, assignmentOralReading);
   }
 

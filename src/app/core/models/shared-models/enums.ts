@@ -24,7 +24,7 @@ export enum ResourceTypeEnum {
     Grades=1,
     Sections = 2,
     Groups = 3,
-    Students = 6
+    Students = 4
   }
 
   export enum AssignmentAddTypesEnum{

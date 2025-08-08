@@ -28,6 +28,7 @@ import { Role } from '../../../core/models/login-models/logged-in-user';
 import { AssignmentReading } from '../../../core/models/assignment/assignment-reading.model';
 import { AssignmentReadingPayload } from '../../../core/models/assignment/assignment-stories.model';
 import { OralAssignmentPayload } from '../../../core/models/assignment/assignment-oral.model';
+import { AssignmentListening } from '../../../core/models/assignment/assignment-listening.model';
 
 export interface StepItem {
   id: string;
@@ -98,6 +99,7 @@ export class NewAssignmentComponent implements OnInit {
   assignmentSetup: AssignmentSetup = new AssignmentSetup();
   assignmentDomain: Domain[] = [];
   assignmentReading: AssignmentReading = new AssignmentReading();
+  assignmentListening: AssignmentListening = new AssignmentListening();
   OralAssignmentPayload: OralAssignmentPayload = new OralAssignmentPayload();
   writingSpeakingQuestions: Question[] = [
     {
@@ -201,9 +203,9 @@ export class NewAssignmentComponent implements OnInit {
     } else if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.ReadingComprehension) {
       this.addAssignmentReading();
     } else if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.OralReading) {
-      this.addAssignmentReading();
+      this.addAssignmentOralReading();
     }else if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.Listening) {
-      this.addAssignmentReading();
+      this.addAssignmentListening();
     }
   }
 
@@ -221,7 +223,7 @@ export class NewAssignmentComponent implements OnInit {
       })),
       selectedGrades: this.assignmentSetup.selectedGrades,
       selectedGroups: this.assignmentSetup.selectedGroups,
-      selectedSections: this.assignmentSetup.selectedSections,
+      selectedCourseSections: this.assignmentSetup.selectedSections,
       selectedStudents: this.assignmentSetup.selectedStudents,
       startDate: this.assignmentSetup.startDate,
       subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
@@ -255,7 +257,7 @@ export class NewAssignmentComponent implements OnInit {
       selectedGrades: this.assignmentSetup.selectedGrades,
       selectedGroups: this.assignmentSetup.selectedGroups,
       selectedReadingSubLevelId: this.assignmentBook.assignmentStories.readingSubLevelId,
-      selectedSections: this.assignmentSetup.selectedSections,
+      selectedCourseSections: this.assignmentSetup.selectedSections,
       selectedStudents: this.assignmentSetup.selectedStudents,
       startDate: this.assignmentSetup.startDate,
       subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
@@ -267,16 +269,32 @@ export class NewAssignmentComponent implements OnInit {
         if (res.success) {
           this.showSuccessDialog = true;
           this.isReviewPage = false;
-          this.activeStep = 0;
         }
       })
     }
+  }
 
+  addAssignmentListening() {
+    this.assignmentListening = {
+      assignmentTypeId: this.selectedAssignmentType.assignmentTypeId,
+      dueDate: this.assignmentSetup.dueDate,
+      recipientTypeId: this.assignmentSetup.target.assignmentRecipientTypeId.toString(),
+      schoolId: this.roles[0].schools[0].schoolId,
+      selectedBookId: this.assignmentBook.book ? this.assignmentBook.book.storyId : 0,
+      selectedGrades: this.assignmentSetup.selectedGrades,
+      selectedGroups: this.assignmentSetup.selectedGroups,
+      selectedReadingSubLevelId: this.assignmentBook.assignmentStories.readingSubLevelId,
+      selectedCourseSections: this.assignmentSetup.selectedSections,
+      selectedStudents: this.assignmentSetup.selectedStudents,
+      startDate: this.assignmentSetup.startDate,
+      subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
+      title: this.assignmentSetup.title,
+      roleId: this.roles[0].roleId
+    }
     if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.Listening) {
-      this.addingAssignmentService.addAssignmentListeningReading(this.assignmentReading).subscribe(res => {
+      this.addingAssignmentService.addAssignmentListeningReading(this.assignmentListening).subscribe(res => {
         if (res.success) {
           this.showSuccessDialog = true;
-          this.activeStep = 0;
         }
       })
     }
@@ -292,13 +310,13 @@ export class NewAssignmentComponent implements OnInit {
       selectedGrades: this.assignmentSetup.selectedGrades,
       selectedGroups: this.assignmentSetup.selectedGroups,
       selectedReadingSubLevelId: this.assignmentBook.assignmentStories.readingSubLevelId,
-      selectedSections: this.assignmentSetup.selectedSections,
+      selectedCourseSections: this.assignmentSetup.selectedSections,
       selectedStudents: this.assignmentSetup.selectedStudents,
       startDate: this.assignmentSetup.startDate,
       subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
       title: this.assignmentSetup.title,
       roleId: this.roles[0].roleId,
-      correctionType : 0,
+      correctionType : this.assignmentBook.correctionType,
       selectedPagesId :[0]
     }
     if (this.selectedAssignmentType.assignmentTypeId == this.AssignmentAddTypesEnum.OralReading) {

@@ -39,7 +39,7 @@
       <div class="label mt-2">Pick {{selectedTarget.name}}</div>
       <p-multiselect id="homerooms" [options]="sections" required name="selectedSections"
         [(ngModel)]="assignmentSetup.selectedSections" (ngModelChange)="assignmentSetupUpdate(setupForm)"
-        optionLabel="name" optionValue="sectionId" placeholder="Select homerooms" [showClear]="true"
+        optionLabel="name" optionValue="courseSectionId" placeholder="Select homerooms" [showClear]="true"
         class="w-100"></p-multiselect>
       }
     </div>

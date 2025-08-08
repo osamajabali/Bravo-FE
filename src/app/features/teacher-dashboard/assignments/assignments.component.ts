@@ -94,6 +94,7 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (localStorage.getItem('selectedItems')) {
       this.getAssignmentsFilter();
+      this.assignmentPayload.isDateActive = true;
     }
     let check = this.sharedService.getSelectedItems()?.selectedGradeId == 0;
     this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
@@ -138,10 +139,24 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
     );
   }
 
+  getAssignmentSectionFilters() {
+    // Fix: getAssignmentSectionFilters expects a SubjectGrade, not just gradeIds
+    const subjectGrade = {
+      subjectIds: [this.assignmentPayload.subjectId],
+      gradeIds: this.assignmentPayload.gradeIds
+    };
+    this.assignmentService.getAssignmentSectionFilters(subjectGrade).subscribe(res => {
+      if (res.success) {
+        this.sectionFilter = res.result;
+      }
+    });
+  }
+
   getAssignments() {
     this.assignmentPayload.startDate = this.datePipe.transform(this.startDate, 'yyyy-MM-dd');
     this.assignmentPayload.endDate = this.datePipe.transform(this.endDate, 'yyyy-MM-dd');
     this.assignmentPayload.creationDate = this.datePipe.transform(this.creationDate, 'yyyy-MM-dd');
+    this.assignmentPayload.schoolId = JSON.parse(localStorage.getItem('loginRoles'))[0].schools[0].schoolId;
 
     this.assignmentService.getAssignments(this.assignmentPayload).subscribe(res => {
       if (res.success) {
@@ -159,6 +174,12 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
 
   onTabClick(tab: string) {
     this.selectedTab = tab;
+    if (tab == 'live') {
+      this.assignmentPayload.isDateActive = true;
+    } else {
+      this.assignmentPayload.isDateActive = false;
+    }
+    this.getAssignments();
   }
 
   newAssignment() {
@@ -186,6 +207,8 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
   _onSearchChange(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     this.searchTerm = inputElement.value;
+    this.assignmentPayload.searchValue = this.searchTerm;
+    this.getAssignments();
   }
 
   toggleFilterSection(section: FilterSection): void {

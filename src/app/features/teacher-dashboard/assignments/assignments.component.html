@@ -29,9 +29,9 @@
     <div class="content px-0" *ngIf="showAdvancedSearch">
       <div class="advanced-search" *ngIf="selectedTab === 'live'">
         <div class="advanced-filters">
-          <p-select [options]="sectionFilter.subjects" [(ngModel)]="assignmentPayload.subjectId" placeholder="{{'SUBJECTS' | translate}}" [showClear]="false" optionLabel="name" optionValue="subjectId"></p-select>
-          <p-multiselect [options]="sectionFilter.grades" [(ngModel)]="assignmentPayload.gradeIds" placeholder="{{'GRADE' | translate}}" [showClear]="false" optionLabel="name" optionValue="gradeId"></p-multiselect>
-          <p-multiselect [options]="sectionFilter.sections" [(ngModel)]="assignmentPayload.courseSectionIds" placeholder="{{'HOMEROOMS' | translate}}" [showClear]="false" optionLabel="name" optionValue="courseSectionId"></p-multiselect>
+          <p-select [options]="sectionFilter.subjects" [(ngModel)]="assignmentPayload.subjectId" name="subjectId" (ngModelChange)="getAssignmentSectionFilters();assignmentPayload.gradeIds = [];assignmentPayload.courseSectionIds = [];" placeholder="{{'SUBJECTS' | translate}}" [showClear]="false" optionLabel="name" optionValue="subjectId"></p-select>
+          <p-multiselect [options]="sectionFilter.grades" [(ngModel)]="assignmentPayload.gradeIds" name="gradeIds" (ngModelChange)="getAssignmentSectionFilters();assignmentPayload.courseSectionIds = [];" placeholder="{{'GRADE' | translate}}" [showClear]="false" optionLabel="name" optionValue="gradeId"></p-multiselect>
+          <p-multiselect [options]="sectionFilter.sections" [(ngModel)]="assignmentPayload.courseSectionIds" name="courseSectionIds" (ngModelChange)="getAssignmentSectionFilters();" placeholder="{{'HOMEROOMS' | translate}}" [showClear]="false" optionLabel="name" optionValue="courseSectionId"></p-multiselect>
           <p-datePicker [(ngModel)]="startDate" placeholder="{{'START_DATE' | translate}}" [showClear]="false" dateFormat="yy-mm-dd"></p-datePicker>
           <p-datePicker [(ngModel)]="endDate" placeholder="{{'END_DATE' | translate}}" [showClear]="false" dateFormat="yy-mm-dd"></p-datePicker>
           <p-datePicker [(ngModel)]="creationDate" placeholder="{{'CREATION_DATE' | translate}}" [showClear]="false" dateFormat="yy-mm-dd"></p-datePicker>
@@ -87,15 +87,15 @@
         <img src="icon-sort.svg" alt="sort" (click)="onSort('target')" [src]="sortColumn === 'target' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
       <div class="header-item assigned-by">
-        <span>{{'ASSIGNED_BY' | translate}}</span>
+        <span>{{'CORRECTED_BY' | translate}}</span>
         <img src="icon-sort.svg" alt="sort" (click)="onSort('assignedBy')" [src]="sortColumn === 'assignedBy' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
       <div class="header-item post-date">
-        <span>{{'POST_DATE' | translate}}</span>
-        <img src="icon-sort.svg" alt="sort" (click)="onSort('postDate')" [src]="sortColumn === 'postDate' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
+        <span>{{'START_DATE' | translate}}</span>
+        <img src="icon-sort.svg" alt="sort" (click)="onSort('startDate')" [src]="sortColumn === 'startDate' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
       <div class="header-item due-date">
-        <span>{{'DUE_ON' | translate}}</span>
+        <span>{{'END_DATE' | translate}}</span>
         <img src="icon-sort.svg" alt="sort" (click)="onSort('dueDate')" [src]="sortColumn === 'dueDate' ? sortDirection === 'asc' ? 'icon-sort-asc.svg' : 'icon-sort.svg' : 'icon-sort.svg'" />
       </div>
       <div class="header-item submissions">
@@ -119,7 +119,7 @@
         </div>
         <div class="item type">{{ assignment.avgScore }}</div>
         <div class="item target">{{ assignment.target }}</div>
-        <div class="item assigned-by">{{ assignment.assignedBy }}</div>
+        <div class="item assigned-by">{{ assignment.correctedBy }}</div>
         <div class="item post-date">
           {{ assignment.startDate }}
         </div>

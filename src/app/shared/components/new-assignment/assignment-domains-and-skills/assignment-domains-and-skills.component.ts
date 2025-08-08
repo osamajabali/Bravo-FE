@@ -112,16 +112,25 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
     if (retrievedData) {
       this.assignmentData = JSON.parse(retrievedData);
       let roles = JSON.parse(localStorage.getItem('loginRoles')) as Role[];
-
+      debugger
       this.assignmentDomain = {
-        selectedGrades: [],
-        selectedGroups: [945],
-        selectedCourseSections: [],
-        selectedStudents: [],
-        subjectId: 1,
+        selectedGrades: this.assignmentData.selectedGroups || this.assignmentData.selectedSections || this.assignmentData.selectedStudents ? [] : this.assignmentData.selectedGrades,
+        selectedGroups: this.assignmentData.selectedGroups,
+        selectedCourseSections: !this.assignmentData.selectedStudents ? [] : this.assignmentData.selectedSections,
+        selectedStudents: this.assignmentData.selectedStudents,
+        subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
         roleId: roles[0].roleId,
         schoolId: roles[0].schools[0].schoolId
       }
+      // this.assignmentDomain = {
+      //   selectedGrades: [],
+      //   selectedGroups: [945],
+      //   selectedCourseSections: [],
+      //   selectedStudents: [],
+      //   subjectId: 1,
+      //   roleId: roles[0].roleId,
+      //   schoolId: roles[0].schools[0].schoolId
+      // }
     }
 
     if (localStorage.getItem('SkillsSelectedOptions')) {
@@ -204,9 +213,9 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
 
     this.assignmentsDomainSkills = {
       domainId: domainId,
-      selectedGrades: this.assignmentData.selectedGrades,
+      selectedGrades: this.assignmentData.selectedGroups || this.assignmentData.selectedSections || this.assignmentData.selectedStudents ? [] : this.assignmentData.selectedGrades,
       selectedGroups: this.assignmentData.selectedGroups,
-      selectedCourseSections: this.assignmentData.selectedSections,
+      selectedCourseSections: !this.assignmentData.selectedStudents ? [] : this.assignmentData.selectedSections,
       selectedStudents: this.assignmentData.selectedStudents,
       subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
       roleId: roles[0].roleId,

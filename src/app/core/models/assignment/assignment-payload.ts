@@ -7,7 +7,7 @@ export class AssignmentPayload {
   assignmentTypeId: number;
   recipientTypeId: string;
   selectedGrades: number[];
-  selectedSections: number[];
+  selectedCourseSections: number[];
   selectedGroups: number[];
   selectedStudents: number[];
   title: string;
