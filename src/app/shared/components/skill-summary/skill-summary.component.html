@@ -40,28 +40,30 @@
 
     @if (showAssignmentButton) {
     <button pButton label="" class="p-button-outlined assignment-button">
-      <span>New Assignment</span>
+      <span>{{ "NEW_ASSIGNMENT" | translate }}</span>
       <img src="icon-plus.svg" alt="arrow-right" />
     </button>
     }
   </div>
 </div>
 
-<p-popover #filterContent>
+<!-- Filter Overlay -->
+<p-overlayPanel #filterContent styleClass="filter-overlay">
   <div class="filter-overlay-content">
-    <!-- Header with title and close button -->
+    <!-- Header -->
     <div class="filter-overlay-header">
-      <h3 class="filter-overlay-title">Filter Sub Skills</h3>
+      <h3 class="filter-overlay-title">{{ "FILTER_SUB_SKILLS" | translate }}</h3>
       <button class="filter-overlay-close" (click)="filterContent.toggle($event)">
         <i class="pi pi-times"></i>
-      </button>    </div>
+      </button>
+    </div>
 
     <!-- Divider -->
     <div class="filter-divider"></div>
 
-    <!-- Filter sections -->
+    <!-- Filter Sections -->
     <div class="filter-sections">
-      @for (section of filterSections; track section.title) {
+      @for (section of filterSections; track $index) {
       <div class="filter-section">
         <div
           class="filter-section-header"
@@ -70,15 +72,13 @@
           <span class="filter-section-title">{{ section.title }}</span>
           <i
             class="pi"
-            [class.pi-chevron-up]="section.expanded"
             [class.pi-chevron-down]="!section.expanded"
+            [class.pi-chevron-up]="section.expanded"
           ></i>
         </div>
 
-        @if (section.expanded) {
-        <div class="filter-section-content">
-          @for (option of section.options; track option.value) {
-          <div class="filter-option">
+        <div *ngIf="section.expanded" class="filter-section-content">
+          <div class="filter-option" *ngFor="let option of section.options">
             <div class="custom-checkbox">
               <input
                 type="checkbox"
@@ -91,40 +91,35 @@
               />
               <label [for]="option.value" class="checkbox-label">
                 <span class="checkbox-icon">
-                  @if (section.selectedOptions.includes(option.value)) {
                   <img
+                    *ngIf="section.selectedOptions.includes(option.value)"
                     src="icon-checkbox-checked.svg"
                     alt="Checked"
                     class="checkbox-checked"
                   />
-                  } @else {
                   <img
+                    *ngIf="!section.selectedOptions.includes(option.value)"
                     src="icon-checkbox-unchecked.svg"
                     alt="Unchecked"
                     class="checkbox-unchecked"
                   />
-                  }
                 </span>
                 <span class="filter-option-label">{{ option.label }}</span>
               </label>
             </div>
           </div>
-          }
         </div>
-        }
-
-        <!-- Divider after each section -->
-        <div class="filter-divider"></div>
       </div>
       }
     </div>
 
-    <!-- Filter actions -->
+    <!-- Divider -->
+    <div class="filter-divider"></div>
+
+    <!-- Filter Actions -->
     <div class="filter-actions">
-      <button type="button" class="filter-btn filter-btn-clear">
-        Clear All
-      </button>
-      <button type="button" class="filter-btn filter-btn-apply">Apply</button>
+      <button type="button" class="filter-btn filter-btn-clear">{{ "CLEAR_ALL" | translate }}</button>
+      <button type="button" class="filter-btn filter-btn-apply">{{ "APPLY" | translate }}</button>
     </div>
   </div>
-</p-popover>
+</p-overlayPanel>

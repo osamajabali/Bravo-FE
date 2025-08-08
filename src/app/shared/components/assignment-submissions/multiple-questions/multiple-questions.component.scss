@@ -128,7 +128,7 @@
           padding: var(--padding-xs) var(--padding-s);
           border-radius: var(--radius-m);
           font-size: var(--font-size-xxs);
-          margin-right: var(--padding-s);
+          margin-inline-end: var(--padding-s);
 
           &.correct {
             background-color: var(--colors-success-green-10);

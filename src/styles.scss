@@ -1,5 +1,6 @@
 @use "./assets/scss/variables" as vars;
 @use "./assets/scss/font-family";
+@use "./assets/scss/rtl.scss";
 @import "../node_modules/@ng-select/ng-select/themes/default.theme.css";
 
 body {
@@ -98,13 +99,4 @@ a {
 /* For IE/Edge */
 * {
   -ms-overflow-style: none;
-}
-
-/* In your styles.scss */
-[dir='ltr'] .p-menu {
-  left: 1050px !important;
-}
-
-[dir='rtl'] .p-menu {
-  left: 11px !important;
 }

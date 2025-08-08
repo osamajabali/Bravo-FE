@@ -139,6 +139,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.translate.use(this.currentLang);
     localStorage.setItem('language', this.currentLang);
     this.setDirection(this.currentLang)
+    this.setupUserMenu();
   }
 
   setDirection(lang: string) {

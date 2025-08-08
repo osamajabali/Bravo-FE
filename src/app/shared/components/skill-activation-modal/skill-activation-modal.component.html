@@ -9,7 +9,7 @@
 >
   <div class="dialog-content">
     <span class="dialog-message">
-      Please select the sections you want to {{buttonLabel}}
+      {{ "PLEASE_SELECT_SECTIONS_YOU_WANT_TO" | translate }} {{buttonLabel}}
     </span>
     <div class="checkbox-group">
       <div class="checkbox-item">
@@ -19,7 +19,7 @@
           [(ngModel)]="allSelected"
           (ngModelChange)="toggleAll()"
         ></p-checkbox>
-        <label for="all">All</label>
+        <label for="all">{{ "ALL" | translate }}</label>
       </div>
 
 
@@ -45,7 +45,7 @@
     <button
       type="button"
       pButton
-      label="Cancel"
+      [label]="'CANCEL' | translate"
       class="p-button-secondary"
       (click)="close()"
     ></button>

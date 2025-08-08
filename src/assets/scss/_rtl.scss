@@ -1,0 +1,150 @@
+/* RTL Margin Utilities Overrides */
+[dir="rtl"] {
+  /* Margin End (me-*) should become margin-left in RTL */
+  .me-1 {
+    margin-right: 0 !important;
+    margin-left: 0.25rem !important;
+  }
+  .me-2 {
+    margin-right: 0 !important;
+    margin-left: 0.5rem !important;
+  }
+  .me-3 {
+    margin-right: 0 !important;
+    margin-left: 1rem !important;
+  }
+  .me-4 {
+    margin-right: 0 !important;
+    margin-left: 1.5rem !important;
+  }
+  .me-5 {
+    margin-right: 0 !important;
+    margin-left: 3rem !important;
+  }
+
+  /* Margin Start (ms-*) should become margin-right in RTL */
+  .ms-1 {
+    margin-left: 0 !important;
+    margin-right: 0.25rem !important;
+  }
+  .ms-2 {
+    margin-left: 0 !important;
+    margin-right: 0.5rem !important;
+  }
+  .ms-3 {
+    margin-left: 0 !important;
+    margin-right: 1rem !important;
+  }
+  .ms-4 {
+    margin-left: 0 !important;
+    margin-right: 1.5rem !important;
+  }
+  .ms-5 {
+    margin-left: 0 !important;
+    margin-right: 3rem !important;
+  }
+
+  /* Padding End (pe-*) should become padding-left in RTL */
+  .pe-1 {
+    padding-right: 0 !important;
+    padding-left: 0.25rem !important;
+  }
+  .pe-2 {
+    padding-right: 0 !important;
+    padding-left: 0.5rem !important;
+  }
+  .pe-3 {
+    padding-right: 0 !important;
+    padding-left: 1rem !important;
+  }
+  .pe-4 {
+    padding-right: 0 !important;
+    padding-left: 1.5rem !important;
+  }
+  .pe-5 {
+    padding-right: 0 !important;
+    padding-left: 3rem !important;
+  }
+
+  /* Padding Start (ps-*) should become padding-right in RTL */
+  .ps-1 {
+    padding-left: 0 !important;
+    padding-right: 0.25rem !important;
+  }
+  .ps-2 {
+    padding-left: 0 !important;
+    padding-right: 0.5rem !important;
+  }
+  .ps-3 {
+    padding-left: 0 !important;
+    padding-right: 1rem !important;
+  }
+  .ps-4 {
+    padding-left: 0 !important;
+    padding-right: 1.5rem !important;
+  }
+  .ps-5 {
+    padding-left: 0 !important;
+    padding-right: 3rem !important;
+  }
+
+  /* Border End (border-end) should become border-left in RTL */
+  .border-end {
+    border-right: none !important;
+    border-left: 1px solid !important;
+  }
+
+  /* Border Start (border-start) should become border-right in RTL */
+  .border-start {
+    border-left: none !important;
+    border-right: 1px solid !important;
+  }
+
+  /* Text alignment utilities */
+  .text-start {
+    text-align: right !important;
+  }
+  .text-end {
+    text-align: left !important;
+  }
+
+  /* Additional spacing utilities for RTL */
+  .me-auto {
+    margin-right: 0 !important;
+    margin-left: auto !important;
+  }
+  .ms-auto {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+  }
+
+  /* Flex utilities for RTL */
+  .flex-row {
+    flex-direction: row-reverse !important;
+  }
+  .flex-row-reverse {
+    flex-direction: row !important;
+  }
+
+  /* Float utilities for RTL */
+  .float-start {
+    float: right !important;
+  }
+  .float-end {
+    float: left !important;
+  }
+
+  /* Position utilities for RTL */
+  .start-0 {
+    right: 0 !important;
+    left: auto !important;
+  }
+  .end-0 {
+    left: 0 !important;
+    right: auto !important;
+  }
+
+  .search-input {
+    direction: rtl !important;
+  }
+}

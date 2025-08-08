@@ -5,7 +5,7 @@
     <p-panel *ngFor="let question of questions; let i = index" [toggleable]="true" [collapsed]="question.isCollapsed">
       <ng-template pTemplate="header">
         <div class="panel-header">
-          <span class="header-label">Question {{ i + 1 }}</span>
+          <span class="header-label">{{ "QUESTION" | translate }} {{ i + 1 }}</span>
           <div class="header-actions">
             <img src="icon-trash-red-large.svg" alt="" (click)="removeQuestion(question.id)" />
             <img src="arrow-gray-down.svg" alt="" (click)="toggleCollapse(question)"
@@ -16,33 +16,33 @@
 
       <div class="panel-content">
         <div class="form-group">
-          <div class="control-title">Question Text</div>
-          <input pInputText type="text" [(ngModel)]="question.questionText" placeholder="Add Here"
+          <div class="control-title">{{ "QUESTION_TEXT" | translate }}</div>
+          <input pInputText type="text" [(ngModel)]="question.questionText" [placeholder]="'ADD_HERE' | translate"
             class="question-input" (ngModelChange)="onQuestionTextChange()" />
         </div>
 
         <div class="form-group">
-          <div class="control-title">Question Format</div>
+          <div class="control-title">{{ "QUESTION_FORMAT" | translate }}</div>
           <div class="format-options">
             <div class="format-option" [class.selected]="question.questionFormat === 'text'"
               (click)="onQuestionFormatChange(question, 'text')">
               <img src="icon-text.svg" alt="text" />
-              Text
+              {{ "TEXT" | translate }}
             </div>
             <div class="format-option" [class.selected]="question.questionFormat === 'image'"
               (click)="onQuestionFormatChange(question, 'image')">
               <img src="icon-image.svg" alt="image" />
-              Image
+              {{ "IMAGE" | translate }}
             </div>
             <div class="format-option" [class.selected]="question.questionFormat === 'voice'"
               (click)="onQuestionFormatChange(question, 'voice')">
               <img src="icon-voice.svg" alt="voice" />
-              Voice
+              {{ "VOICE" | translate }}
             </div>
             <div class="format-option" [class.selected]="question.questionFormat === 'video'"
               (click)="onQuestionFormatChange(question, 'video')">
               <img src="icon-video-sml.svg" alt="video" />
-              Video
+              {{ "VIDEO" | translate }}
             </div>
           </div>
         </div>
@@ -50,8 +50,8 @@
         <!-- Text Format Content -->
         <div *ngIf="question.questionFormat === 'text'" class="format-content">
           <div class="form-group">
-            <div class="control-title">Description</div>
-            <textarea pInputTextarea [(ngModel)]="question.description" placeholder="Describe your assignment here .."
+            <div class="control-title">{{ "DESCRIPTION" | translate }}</div>
+            <textarea pInputTextarea [(ngModel)]="question.description" [placeholder]="'DESCRIBE_ASSIGNMENT_HERE' | translate"
               rows="4" class="description-textarea" (ngModelChange)="onDescriptionChange()"></textarea>
           </div>
           @if (title() != 'Speaking Assignment Details') {
@@ -61,13 +61,13 @@
               (click)="question.answerType = 'keyboard'">
               <p-radioButton [(ngModel)]="question.answerType" value="keyboard"
                 [inputId]="'keyboard_' + question.id"></p-radioButton>
-              <span>Answer with Keyboard Input</span>
+              <span>{{ "ANSWER_WITH_KEYBOARD_INPUT" | translate }}</span>
             </div>
             <div class="selection-box" [class.selected]="question.answerType === 'system'"
               (click)="question.answerType = 'system'">
               <p-radioButton [(ngModel)]="question.answerType" value="system"
                 [inputId]="'system_' + question.id"></p-radioButton>
-              <span>System Correction</span>
+              <span>{{ "SYSTEM_CORRECTION" | translate }}</span>
             </div>
           </div>
           }
@@ -76,7 +76,7 @@
         <!-- Image Format Content -->
         <div *ngIf="question.questionFormat === 'image'" class="format-content">
           <div class="form-group">
-            <div class="control-title">Upload Image</div>
+            <div class="control-title">{{ "UPLOAD_IMAGE" | translate }}</div>
 
             <!-- Upload button - show when no file or invalid file -->
             <div *ngIf="
@@ -88,7 +88,7 @@
                 <input type="file" accept="image/*" (change)="onFileUpload($event, question)" style="display: none"
                   #imageInput />
                 <img src="icon-upload-sml.svg" alt="upload" />
-                <span (click)="imageInput.click()">Upload</span>
+                <span (click)="imageInput.click()">{{ "UPLOAD" | translate }}</span>
               </button>
             </div>
 
@@ -97,7 +97,7 @@
                 question.imageFileValidation &&
                 !question.imageFileValidation.isValid
               " class="file-error">
-              This file is invalid
+              {{ "FILE_IS_INVALID" | translate }}
             </div>
 
             <!-- Upload notes - show when no valid file -->
@@ -106,9 +106,9 @@
                 (question.imageFileValidation &&
                   !question.imageFileValidation.isValid)
               " class="upload-notes">
-              <div>- Formats allowed: JPG, PNG, JPEG</div>
-              <div>- Max file size: 5MB</div>
-              <div>- Recommended size: At least 800x600 pixels for clarity</div>
+              <div>- {{ "FORMATS_ALLOWED" | translate }}: JPG, PNG, JPEG</div>
+              <div>- {{ "MAX_FILE_SIZE" | translate }}: 5MB</div>
+              <div>- {{ "RECOMMENDED_SIZE" | translate }}: {{ "AT_LEAST_800x600_PIXELS" | translate }} {{ "FOR_CLARITY" | translate }}</div>
             </div>
 
             <!-- Uploaded file display - show when valid file -->
@@ -139,13 +139,13 @@
               (click)="question.answerType = 'keyboard'">
               <p-radioButton [(ngModel)]="question.answerType" value="keyboard"
                 [inputId]="'keyboard_img_' + question.id"></p-radioButton>
-              <span>Answer with Keyboard Input</span>
+              <span>{{ "ANSWER_WITH_KEYBOARD_INPUT" | translate }}</span>
             </div>
             <div class="selection-box" [class.selected]="question.answerType === 'upload'"
               (click)="question.answerType = 'upload'">
               <p-radioButton [(ngModel)]="question.answerType" value="upload"
                 [inputId]="'upload_' + question.id"></p-radioButton>
-              <span>Answer by Uploading an Image</span>
+              <span>{{ "ANSWER_BY_UPLOADING_AN_IMAGE" | translate }}</span>
             </div>
           </div>
           }
@@ -154,7 +154,7 @@
         <!-- Voice Format Content -->
         <div *ngIf="question.questionFormat === 'voice'" class="format-content">
           <div class="form-group">
-            <div class="control-title">Upload Audio</div>
+            <div class="control-title">{{ "UPLOAD_AUDIO" | translate }}</div>
 
             <!-- Upload button - show when no file or invalid file -->
             <div *ngIf="
@@ -166,7 +166,7 @@
                 <input type="file" accept="audio/*" (change)="onFileUpload($event, question)" style="display: none"
                   #audioInput />
                 <img src="icon-upload-sml.svg" alt="upload" />
-                <span (click)="audioInput.click()">Upload</span>
+                <span (click)="audioInput.click()">{{ "UPLOAD" | translate }}</span>
               </button>
             </div>
 
@@ -175,7 +175,7 @@
                 question.voiceFileValidation &&
                 !question.voiceFileValidation.isValid
               " class="file-error">
-              This file is invalid
+              {{ "FILE_IS_INVALID" | translate }}
             </div>
 
             <!-- Upload notes - show when no valid file -->
@@ -184,8 +184,8 @@
                 (question.voiceFileValidation &&
                   !question.voiceFileValidation.isValid)
               " class="upload-notes">
-              <div>- File format should be an MP3</div>
-              <div>- Duration must be less than 5 minutes</div>
+              <div>- {{ "FILE_FORMAT_SHOULD_BE_AN_MP3" | translate }}</div>
+              <div>- {{ "DURATION_MUST_BE_LESS_THAN_5_MINUTES" | translate }}</div>
             </div>
 
             <!-- Uploaded file display - show when valid file -->
@@ -213,13 +213,13 @@
               (click)="question.answerType = 'keyboard'">
               <p-radioButton [(ngModel)]="question.answerType" value="keyboard"
                 [inputId]="'keyboard_voice_' + question.id"></p-radioButton>
-              <span>Answer with Keyboard Input</span>
+              <span>{{ "ANSWER_WITH_KEYBOARD_INPUT" | translate }}</span>
             </div>
             <div class="selection-box" [class.selected]="question.answerType === 'upload'"
               (click)="question.answerType = 'upload'">
               <p-radioButton [(ngModel)]="question.answerType" value="upload"
                 [inputId]="'upload_voice_' + question.id"></p-radioButton>
-              <span>Answer by Uploading an Image</span>
+              <span>{{ "ANSWER_BY_UPLOADING_AN_IMAGE" | translate }}</span>
             </div>
           </div>
           }
@@ -228,8 +228,8 @@
         <!-- Video Format Content -->
         <div *ngIf="question.questionFormat === 'video'" class="format-content">
           <div class="form-group">
-            <div class="control-title">Video URL</div>
-            <input pInputText type="text" [(ngModel)]="question.videoUrl" placeholder="Enter video URL"
+            <div class="control-title">{{ "VIDEO_URL" | translate }}</div>
+            <input pInputText type="text" [(ngModel)]="question.videoUrl" [placeholder]="'ENTER_VIDEO_URL' | translate"
               class="question-input" (ngModelChange)="onVideoUrlChange()" />
           </div>
           @if (title() != 'Speaking Assignment Details') {
@@ -239,13 +239,13 @@
               (click)="question.answerType = 'keyboard'">
               <p-radioButton [(ngModel)]="question.answerType" value="keyboard"
                 [inputId]="'keyboard_video_' + question.id"></p-radioButton>
-              <span>Answer with Keyboard Input</span>
+              <span>{{ "ANSWER_WITH_KEYBOARD_INPUT" | translate }}</span>
             </div>
             <div class="selection-box" [class.selected]="question.answerType === 'system'"
               (click)="question.answerType = 'system'">
               <p-radioButton [(ngModel)]="question.answerType" value="system"
                 [inputId]="'system_video_' + question.id"></p-radioButton>
-              <span>System Correction</span>
+              <span>{{ "SYSTEM_CORRECTION" | translate }}</span>
             </div>
           </div>
           }
@@ -255,7 +255,7 @@
 
     <button pButton label="" class="p-button-outlined add-question-btn" (click)="addQuestion()">
       <img src="icon-add-circle.svg" alt="" />
-      <span>Add another question</span>
+      <span>{{ "ADD_ANOTHER_QUESTION" | translate }}</span>
     </button>
   </div>
 </div>

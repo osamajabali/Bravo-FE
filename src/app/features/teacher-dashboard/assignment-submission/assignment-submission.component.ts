@@ -3,6 +3,7 @@ import { SharedService } from '../../../core/services/shared-services/shared.ser
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 import { SubmissionService } from '../../../core/services/assignment/submission.service';
 import {
   StudentSubmission,
@@ -34,7 +35,8 @@ import { AssignmentAddTypesEnum } from '../../../core/models/shared-models/enums
     QuestionAnswerComponent,
     DialogModule,
     MediaPlayerComponent,
-    OralReadingComponent
+    OralReadingComponent,
+    TranslateModule
 ],
   templateUrl: './assignment-submission.component.html',
   styleUrl: './assignment-submission.component.scss',

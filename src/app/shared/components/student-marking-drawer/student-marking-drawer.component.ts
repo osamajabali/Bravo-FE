@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 import { FormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { TranslateModule } from '@ngx-translate/core';
 import { DoughnutChartDirective } from '../../functions/directives/doughnut-chart.directive';
 
 interface CriteriaRow {
@@ -22,6 +23,7 @@ interface CriteriaRow {
     DrawerModule,
     FormsModule,
     InputNumberModule,
+    TranslateModule,
     DoughnutChartDirective,
   ],
   templateUrl: './student-marking-drawer.component.html',

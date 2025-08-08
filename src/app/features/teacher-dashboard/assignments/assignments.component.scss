@@ -469,7 +469,7 @@
         }
 
         .filter-option-label {
-          margin-left: 12px;
+          margin-inline-start: 12px;
           cursor: pointer;
           color: var(--primary-primary-800);
           font-size: 14px;
@@ -533,7 +533,7 @@
       .menu-icon {
         width: 18px;
         height: 18px;
-        margin-right: var(--padding-m);
+        margin-inline-end: var(--padding-m);
       }
       
       .menu-text {

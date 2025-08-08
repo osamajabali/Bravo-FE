@@ -11,7 +11,7 @@
   [closeOnEscape]="false"
 >
   <ng-template pTemplate="header">
-    <div class="p-drawer-title">Student Marking</div>
+    <div class="p-drawer-title">{{ "STUDENT_MARKING" | translate }}</div>
     <img
       src="icon-close-black.svg"
       alt="close"
@@ -28,10 +28,10 @@
           <img src="icon-question.svg" alt="Question" />
         </div>
         <div>
-          <div class="box-title">Question</div>
+          <div class="box-title">{{ "QUESTION" | translate }}</div>
           <div class="box-content">
             <p>
-              What is your favorite animal and why? Please record your answer!
+              {{ "SAMPLE_QUESTION_TEXT" | translate }}
             </p>
           </div>
         </div>
@@ -42,12 +42,10 @@
           <img src="icon-student-answer.svg" alt="Student Answer" />
         </div>
         <div>
-          <div class="box-title">Student Answer</div>
+          <div class="box-title">{{ "STUDENT_ANSWER" | translate }}</div>
           <div class="box-content">
             <p>
-              My favorite animal is a puppy because they are so fluffy and like
-              to play! I love when they wag their tails and bark. They make me
-              happy!
+              {{ "SAMPLE_STUDENT_ANSWER" | translate }}
             </p>
             <!-- <app-media-player
               [mediaFile]="mediaFile"
@@ -61,7 +59,7 @@
 
     <div class="system-correction-summary">
       <div class="info-container">
-        <div class="title">Text as read by the student</div>
+        <div class="title">{{ "TEXT_AS_READ_BY_STUDENT" | translate }}</div>
         <div class="week-days">
           <div
             class="day-container"
@@ -89,7 +87,7 @@
             <div class="percentage">
               <div class="percentage-number">60%</div>
             </div>
-            <div class="chart-title">Pronunciation</div>
+            <div class="chart-title">{{ "PRONUNCIATION" | translate }}</div>
           </div>
           <div class="chart-content">
             <canvas

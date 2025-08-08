@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Question {
   id: number;
@@ -13,7 +14,7 @@ interface Question {
 
 @Component({
   selector: 'app-book-preview-popup',
-  imports: [CommonModule, FormsModule, ButtonModule, CheckboxModule, DialogModule],
+  imports: [CommonModule, FormsModule, ButtonModule, CheckboxModule, DialogModule, TranslateModule],
   templateUrl: './book-preview-popup.component.html',
   styleUrl: './book-preview-popup.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

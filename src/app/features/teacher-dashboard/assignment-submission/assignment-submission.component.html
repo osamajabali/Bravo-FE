@@ -22,13 +22,13 @@
         <button
           pButton
           type="button"
-          label="Add Feedback"
+          [label]="'ADD_FEEDBACK' | translate"
           class="p-button-secondary feedback-button"
           (click)="showFeedbackPopup = true"></button>
         <button
           pButton
           type="button"
-          label="Correct"
+          [label]="'CORRECT' | translate"
           class="p-button-primary correct-button"
           (click)="correctSubmission()"></button>
       </div>
