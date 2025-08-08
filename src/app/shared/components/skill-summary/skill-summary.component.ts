@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { PopoverModule } from 'primeng/popover';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StatisticsResponse } from '../../../core/models/teacher-dashboard-models/statistics.model';
@@ -27,7 +27,7 @@ export interface SkillSummaryData {
 @Component({
   selector: 'app-skill-summary',
   standalone: true,
-  imports: [PopoverModule, CommonModule, FormsModule, TranslateModule],
+  imports: [OverlayPanelModule, CommonModule, FormsModule, TranslateModule],
   templateUrl: './skill-summary.component.html',
   styleUrls: ['./skill-summary.component.scss'],
 })

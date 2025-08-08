@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Question {
   id: number;
@@ -40,7 +41,8 @@ interface Question {
     ButtonModule,
     InputTextModule,
     TextareaModule,
-    RadioButtonModule
+    RadioButtonModule,
+    TranslateModule
   ],
   templateUrl: './writing-speaking-assignment.component.html',
   styleUrl: './writing-speaking-assignment.component.scss',

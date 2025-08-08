@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { TranslateModule } from '@ngx-translate/core';
 import { MediaPlayerComponent } from '../../media-player/media-player.component';
 
 @Component({
   selector: 'app-question-answer',
-  imports: [CommonModule, ButtonModule, FormsModule, MediaPlayerComponent],
+  imports: [CommonModule, ButtonModule, FormsModule, TranslateModule, MediaPlayerComponent],
   templateUrl: './question-answer.component.html',
   styleUrl: './question-answer.component.scss',
 })

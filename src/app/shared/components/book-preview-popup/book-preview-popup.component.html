@@ -16,7 +16,7 @@
         <div class="filter-options">
           <div class="filter-box-container">
             <div class="filter-box">
-              <span>Total Words Count</span>
+              <span>{{ "TOTAL_WORDS_COUNT" | translate }}</span>
             </div>
             <div class="out-of">
               <span class="bold">134</span>
@@ -59,10 +59,10 @@
                     [binary]="true"
                     (ngModelChange)="toggleQuestionSelection(page, $event)"
                   ></p-checkbox>
-                  <label>Select Page</label>
+                  <label>{{ "SELECT_PAGE" | translate }}</label>
                 </div>
                 <div class="words-count">
-                  <span>Words Count</span>
+                  <span>{{ "WORDS_COUNT" | translate }}</span>
                 </div>
                 <div class="count-badge">134</div>
               </div>
@@ -94,7 +94,7 @@
       <div class="footer-buttons">
         <button
           pButton
-          label="Cancel"
+          [label]="'CANCEL' | translate"
           class="p-button-outlined cancel-btn"
           (click)="onCancel()"
         ></button>

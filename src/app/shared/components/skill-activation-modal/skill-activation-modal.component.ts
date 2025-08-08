@@ -3,6 +3,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { Section } from '../../../core/models/header-models/header.model';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
 import { HeaderService } from '../../../core/services/header-services/header.service';
@@ -17,7 +18,7 @@ interface SelectedGrades {
 @Component({
   selector: 'app-skill-activation-modal',
   standalone: true,
-  imports: [DialogModule, ButtonModule, CheckboxModule, FormsModule],
+  imports: [DialogModule, ButtonModule, CheckboxModule, FormsModule, TranslateModule],
   templateUrl: './skill-activation-modal.component.html',
   styleUrl: './skill-activation-modal.component.scss'
 })

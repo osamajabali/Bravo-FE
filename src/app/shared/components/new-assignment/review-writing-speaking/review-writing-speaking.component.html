@@ -73,13 +73,13 @@
           <div class="panel-content">
             <div class="question-details">
               <div class="detail-row">
-                <span class="label">Question Text</span>
+                <span class="label">{{ "QUESTION_TEXT" | translate }}</span>
                 <span class="value">{{
-                  question.questionText || "Not specified"
+                  question.questionText || ("NOT_SPECIFIED" | translate)
                 }}</span>
               </div>
               <div class="detail-row">
-                <span class="label">Answer Type</span>
+                <span class="label">{{ "ANSWER_TYPE" | translate }}</span>
                 <span class="value">{{
                   getAnswerTypeLabel(question.answerType)
                 }}</span>
@@ -92,7 +92,7 @@
                 "
                 class="detail-row"
               >
-                <span class="label">Description</span>
+                <span class="label">{{ "DESCRIPTION" | translate }}</span>
                 <span class="value">{{ question.description }}</span>
               </div>
 
@@ -102,7 +102,7 @@
                 class="video-url-display"
               >
                 <div class="detail-row">
-                  <span class="label">Media Type</span>
+                  <span class="label">{{ "MEDIA_TYPE" | translate }}</span>
                 </div>
                 <div class="url-container">
                   <span class="url-text">{{ question.videoUrl }}</span>
@@ -125,7 +125,7 @@
                 class="uploaded-file-display"
               >
                 <div class="detail-row">
-                  <span class="label">Media Type</span>
+                  <span class="label">{{ "MEDIA_TYPE" | translate }}</span>
                 </div>
                 <div class="uploaded-file">
                   <div class="file-preview">
@@ -156,7 +156,7 @@
                 class="uploaded-file-display"
               >
                 <div class="detail-row">
-                  <span class="label">Media Type</span>
+                  <span class="label">{{ "MEDIA_TYPE" | translate }}</span>
                 </div>
                 <app-media-player
                   *ngIf="getMediaFileData(question)"

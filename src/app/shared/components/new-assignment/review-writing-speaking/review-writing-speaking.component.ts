@@ -1,6 +1,7 @@
 import { Component, computed, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PanelModule } from 'primeng/panel';
+import { TranslateModule } from '@ngx-translate/core';
 import { MediaPlayerComponent } from '../../media-player/media-player.component';
 
 interface Question {
@@ -34,7 +35,7 @@ interface Question {
 
 @Component({
   selector: 'app-review-writing-speaking',
-  imports: [CommonModule, PanelModule, MediaPlayerComponent],
+  imports: [CommonModule, PanelModule, TranslateModule, MediaPlayerComponent],
   templateUrl: './review-writing-speaking.component.html',
   styleUrl: './review-writing-speaking.component.scss'
 })
