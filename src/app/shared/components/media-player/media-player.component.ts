@@ -68,7 +68,7 @@ export class MediaPlayerComponent implements OnInit, OnChanges {
     return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
   }
 
-  goToReviewPage(pageId : number) {debugger
+  goToReviewPage(pageId : number) {
     this.onReviewPageClick.emit(pageId);
   }
 

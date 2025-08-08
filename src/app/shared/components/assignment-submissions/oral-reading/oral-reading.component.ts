@@ -60,7 +60,6 @@ export class OralReadingComponent implements OnInit {
       this.audio.pause();
       return
     }
-    debugger
     this.audio = new Audio(this.oralSubmissionDetails().fullAnswersAudio);
     if (this.oralSubmissionDetails().fullAnswersAudio) {
       this.audio.src = this.oralSubmissionDetails().fullAnswersAudio; // Set the source URL on initialization
