@@ -179,6 +179,13 @@ export const Main_Layout_Routes: Routes = [
             '../teacher-dashboard/students/students.component'
           ).then((m) => m.StudentsComponent),
       },
+      {
+        path: 'students/groups/:id',
+        loadComponent: () =>
+          import('../teacher-dashboard/group-details/group-details.component').then(
+            (m) => m.GroupDetailsComponent
+          ),
+      },
     ],
   },
 ];

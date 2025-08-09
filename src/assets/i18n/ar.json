@@ -149,6 +149,10 @@
     "SEND_CERTIFICATE": "إرسال الشهادة",
     "CREATE_REPORT": "إنشاء تقرير",
     "CREATE_GROUP": "إنشاء مجموعة",
+    "EDIT_GROUP": "تعديل المجموعة",
+    "CONFIRM_DELETE_GROUP": "حذف المجموعة",
+    "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THE_GROUP": "هل أنت متأكد أنك تريد حذف المجموعة؟",
+    "YES_DELETE": "نعم، حذف",
     "HOMEROOM": "الفصل",
     "GROUPS": "المجموعات",
     "STUDENT_NAME": "اسم الطالب",
@@ -157,5 +161,7 @@
     "PROGRESSED_SKILLS": "المهارات المتقدمة",
     "LAST_LOGIN": "آخر تسجيل دخول",
     "GROUP_NAME": "اسم المجموعة",
-    "NUMBER_OF_STUDENTS": "عدد الطلاب"
+    "NUMBER_OF_STUDENTS": "عدد الطلاب",
+    "READING_LEVEL": "مستوى القراءة",
+    "EDIT_GROUP": "تعديل المجموعة"
 }

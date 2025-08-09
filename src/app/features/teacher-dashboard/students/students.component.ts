@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { CheckboxModule } from 'primeng/checkbox';
+import { Router, RouterModule } from '@angular/router';
+import { DialogModule } from 'primeng/dialog';
 
 interface Student {
   id: number;
@@ -34,18 +36,21 @@ interface Group {
     DatePickerModule,
     FormsModule,
     TranslateModule,
-    CheckboxModule
+    CheckboxModule,
+    RouterModule,
+    DialogModule
   ],
   templateUrl: './students.component.html',
   styleUrl: './students.component.scss'
 })
 export class StudentsComponent implements OnInit {
+  private router = inject(Router);
   selectedTab: string = 'homeroom';
   startDate: Date | null = null;
   endDate: Date | null = null;
   sortColumn: string = '';
   sortDirection: 'asc' | 'desc' | '' = '';
-  
+  showDeleteDialog: boolean = false;
   // Selection states
   allStudentsSelected: boolean = false;
   allGroupsSelected: boolean = false;
@@ -218,5 +223,22 @@ export class StudentsComponent implements OnInit {
 
   hasSelectedRows(): boolean {
     return this.students.some(student => student.selected) || this.groups.some(group => group.selected);
+  }
+
+  goToGroupDetails(groupId: number): void {
+    this.router.navigate(['/features/students/groups', groupId]);
+  }
+
+  onDeleteGroupClick(): void {
+    this.showDeleteDialog = true;
+  }
+
+  onConfirmDelete(): void {
+    this.showDeleteDialog = false;
+    console.log('Group deleted');
+  }
+
+  onCancelDelete(): void {
+    this.showDeleteDialog = false;
   }
 }

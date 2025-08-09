@@ -1,70 +1,17 @@
-.students {
+.group-details {
   margin: 0 -15px;
 
   .header {
-    padding: var(--padding-2xl) var(--padding-2xl) 0;
+    padding: var(--padding-5xl) var(--padding-2xl) var(--padding-2xl);
     margin-bottom: var(--padding-l);
     border-bottom: 1px solid var(--neutral-grey-200);
     background-color: var(--neutral-grey-50);
 
-    .filter-by-date {
-      font-size: var(--font-size-xxs);
+    .header-title {
       color: var(--primary-primary-900);
       font-weight: var(--font-weight-bold);
-      margin-bottom: var(--padding-xs);
-    }
-
-    .tabs {
-      display: flex;
-      gap: var(--padding-m);
-
-      .tab {
-        padding: var(--padding-xl) var(--padding-xs) var(--padding-xs);
-        text-align: center;
-        color: var(--neutral-grey-500);
-        font-size: var(--font-size-s);
-        cursor: pointer;
-
-        &.selected {
-          color: var(--primary-primary-900);
-          font-weight: var(--font-weight-bold);
-          border-bottom: 2px solid var(--primary-primary-900);
-        }
-      }
-    }
-
-    .filters-container {
-      display: flex;
-      align-items: center;
-      gap: var(--padding-m);
-
-      .filter-button {
-        font-size: var(--font-size-xxs) !important;
-      }
-
-      ::ng-deep {
-        .p-datepicker {
-          width: 120px !important;
-          .p-inputtext {
-            font-size: var(--font-size-xs);
-            border: 1px solid var(--primary-primary-900);
-            border-radius: var(--radius-s);
-            background: transparent !important;
-            padding: 6px 25px 6px 10px !important;
-
-            &:focus {
-              border-color: var(--primary-primary-500);
-              box-shadow: 0 0 0 2px rgba(84, 200, 232, 0.2);
-            }
-
-            &::placeholder {
-              color: var(--primary-primary-900);
-              font-size: var(--font-size-xxs);
-              font-weight: var(--font-weight-bold);
-            }
-          }
-        }
-      }
+      font-size: 18px;
+      margin: 0;
     }
 
     .buttons {
@@ -102,6 +49,7 @@
       gap: var(--padding-m);
       padding: var(--padding-s);
       border-radius: var(--radius-m);
+      grid-template-columns: 60px 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
 
       .header-item {
         color: var(--neutral-grey-500);
@@ -115,27 +63,17 @@
         }
       }
 
-      &:has(.student-name) {
-        grid-template-columns: 60px 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
-      }
-
-      &:has(.group-name) {
-        grid-template-columns: 60px 3fr 2fr 1fr;
-      }
-
       .checkbox-column {
         justify-content: center;
       }
     }
 
-    .students-list,
-    .groups-list {
+    .students-list {
       display: flex;
       flex-direction: column;
       gap: var(--padding-m);
 
-      .student-row,
-      .group-row {
+      .student-row {
         display: grid;
         gap: var(--padding-m);
         padding: var(--padding-s) var(--padding-xs);
@@ -144,6 +82,7 @@
         transition: all 0.2s ease-in-out;
         background-color: var(--neutral-white);
         border: 1px solid var(--neutral-grey-200);
+        grid-template-columns: 60px 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
 
         &:hover {
           transform: translateY(-2px);
@@ -194,74 +133,13 @@
               }
             }
           }
-
-          &.group-name {
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-          }
         }
       }
-
-      .student-row {
-        grid-template-columns: 60px 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
-      }
-
-      .group-row {
-        grid-template-columns: 60px 3fr 2fr 1fr;
-      }
     }
   }
 }
 
-::ng-deep {
-  .p-checkbox {
-    .p-checkbox-box {
-      border: 1px solid var(--primary-primary-400);
-      border-radius: var(--radius-s);
-
-      &.p-highlight {
-        background-color: var(--primary-primary-500);
-        border-color: var(--primary-primary-500);
-      }
-
-      &:not(.p-disabled):hover {
-        border-color: var(--primary-primary-500);
-      }
-
-      &:not(.p-disabled).p-focus {
-        box-shadow: 0 0 0 2px var(--primary-primary-100);
-      }
-    }
-  }
-
-  .p-button {
-    &.p-button-primary {
-      background-color: var(--primary-primary-500);
-      border-color: var(--primary-primary-500);
-      font-size: var(--font-size-s) !important;
-
-      &:hover {
-        background-color: var(--primary-primary-600);
-        border-color: var(--primary-primary-600);
-      }
-    }
-
-    &.p-button-outlined {
-      border-color: var(--primary-primary-900);
-      color: var(--primary-primary-900);
-      font-size: var(--font-size-s);
-
-      &:hover {
-        background-color: var(--primary-primary-50);
-      }
-    }
-  }
-}
-
-/* Custom Checkbox Styles */
+/* Custom Checkbox Styles (reuse) */
 .custom-checkbox {
   position: relative;
   display: flex;
@@ -300,17 +178,6 @@
       object-fit: contain;
     }
   }
-
-  .filter-option-label {
-    font-size: 14px;
-    color: var(--primary-primary-800);
-  }
-}
-
-.picker-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
 }
 
 .confirm-delete-content {
