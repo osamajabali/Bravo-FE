@@ -382,6 +382,7 @@
               src="icon-edit-square-sml.svg"
               alt="edit"
               class="action-icon"
+              (click)="onEditGroup(group)"
             />
             <img
               src="icon-arrow-right-square.svg"
@@ -443,7 +444,7 @@
   <ng-template pTemplate="header">
     <div class="drawer-header">
       <div class="title">
-        {{ "ADD_NEW_GROUP" | translate : { default: "Add New Group" } }}
+        {{ (isEditGroupMode ? 'EDIT_GROUP' : 'ADD_NEW_GROUP') | translate }}
       </div>
       <img
         src="icon-green-close-large.svg"
@@ -521,7 +522,7 @@
         class="p-button-primary"
         (click)="onConfirmCreateGroup()"
       >
-        {{ "CREATE" | translate : { default: "Create" } }}
+        {{ (isEditGroupMode ? 'SAVE' : 'CREATE') | translate }}
       </button>
     </div>
   </div>

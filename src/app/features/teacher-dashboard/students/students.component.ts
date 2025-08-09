@@ -61,6 +61,9 @@ export class StudentsComponent implements OnInit {
   // Add Students drawer state
   showAddStudentsDrawer: boolean = false;
   private addStudentsSelectedIds: Set<number> = new Set<number>();
+  // Edit Group state
+  isEditGroupMode: boolean = false;
+  editingGroupId: number | null = null;
   // Selection states
   allStudentsSelected: boolean = false;
   allGroupsSelected: boolean = false;
@@ -224,6 +227,9 @@ export class StudentsComponent implements OnInit {
   }
 
   onCreateGroup(): void {
+    this.isEditGroupMode = false;
+    this.editingGroupId = null;
+    this.newGroupTitle = '';
     this.selectedStudentsForGroup = this.students.filter(s => s.selected);
     this.showCreateGroupDrawer = true;
   }
@@ -258,14 +264,27 @@ export class StudentsComponent implements OnInit {
     this.showCreateGroupDrawer = false;
     this.newGroupTitle = '';
     this.selectedStudentsForGroup = [];
+    this.isEditGroupMode = false;
+    this.editingGroupId = null;
   }
 
   onConfirmCreateGroup(): void {
-    // Placeholder: implement creation logic
-    console.log('Create group', {
-      title: this.newGroupTitle,
-      students: this.selectedStudentsForGroup.map(s => s.id)
-    });
+    this.onSubmitGroup();
+  }
+
+  onSubmitGroup(): void {
+    if (this.isEditGroupMode) {
+      console.log('Save group', {
+        groupId: this.editingGroupId,
+        title: this.newGroupTitle,
+        students: this.selectedStudentsForGroup.map(s => s.id)
+      });
+    } else {
+      console.log('Create group', {
+        title: this.newGroupTitle,
+        students: this.selectedStudentsForGroup.map(s => s.id)
+      });
+    }
     this.onCancelCreateGroup();
   }
 
@@ -299,5 +318,13 @@ export class StudentsComponent implements OnInit {
   onConfirmAddStudents(): void {
     this.selectedStudentsForGroup = this.students.filter(s => this.addStudentsSelectedIds.has(s.id));
     this.showAddStudentsDrawer = false;
+  }
+
+  onEditGroup(group: Group): void {
+    this.isEditGroupMode = true;
+    this.editingGroupId = group.id;
+    this.newGroupTitle = group.groupName;
+    // In a real app, we'd load the group's students here
+    this.showCreateGroupDrawer = true;
   }
 }
