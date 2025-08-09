@@ -165,6 +165,8 @@
     "ADD_NEW_GROUP": "Add New Group",
     "GROUP_TITLE": "Group Title",
     "SELECTED_STUDENTS": "Selected Students",
+    "SELECT_STUDENTS": "Select Students",
     "ADD_STUDENTS": "Add Students",
-    "CREATE": "Create"
+    "CREATE": "Create",
+    "ADD": "Add"
 }

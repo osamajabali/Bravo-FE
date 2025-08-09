@@ -526,3 +526,61 @@
     </div>
   </div>
 </p-drawer>
+
+<!-- Add Students Drawer -->
+<p-drawer
+  [(visible)]="showAddStudentsDrawer"
+  position="right"
+  [dismissible]="true"
+  [showCloseIcon]="false"
+  [modal]="true"
+  [style]="{ width: '75vw' }"
+>
+  <ng-template pTemplate="header">
+    <div class="drawer-header">
+      <div class="title">
+        {{ 'ADD_STUDENTS' | translate : { default: 'Add Students' } }}
+      </div>
+      <img
+        src="icon-green-close-large.svg"
+        alt="close"
+        class="pointer"
+        (click)="onCancelAddStudents()"
+      />
+    </div>
+  </ng-template>
+
+  <div class="create-group-drawer">
+    <div class="drawer-content">
+      <div class="students-section">
+        <div class="section-title">
+          {{ 'SELECT_STUDENTS' | translate : { default: 'Select Students' } }}
+        </div>
+        <div class="students-rows">
+          <div class="student-row selectable" *ngFor="let student of students">
+            <div class="student-info">
+              <div class="student-avatar">
+                <span>{{ student.initials }}</span>
+              </div>
+              <span class="student-name-text">{{ student.name }}</span>
+            </div>
+            <p-checkbox
+              [binary]="true"
+              [ngModel]="isStudentSelectedForAdd(student.id)"
+              (ngModelChange)="toggleStudentAddSelection(student.id, $event)"
+            ></p-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <button pButton type="button" class="p-button-outlined" (click)="onCancelAddStudents()">
+        {{ 'CANCEL' | translate }}
+      </button>
+      <button pButton type="button" class="p-button-primary" (click)="onConfirmAddStudents()">
+        {{ 'ADD' | translate : { default: 'Add' } }}
+      </button>
+    </div>
+  </div>
+</p-drawer>

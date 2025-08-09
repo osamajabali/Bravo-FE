@@ -58,6 +58,9 @@ export class StudentsComponent implements OnInit {
   showCreateGroupDrawer: boolean = false;
   newGroupTitle: string = '';
   selectedStudentsForGroup: Student[] = [];
+  // Add Students drawer state
+  showAddStudentsDrawer: boolean = false;
+  private addStudentsSelectedIds: Set<number> = new Set<number>();
   // Selection states
   allStudentsSelected: boolean = false;
   allGroupsSelected: boolean = false;
@@ -271,7 +274,30 @@ export class StudentsComponent implements OnInit {
   }
 
   onAddStudentToNewGroup(): void {
-    // Placeholder for adding student flow (e.g., open search/select dialog)
-    console.log('Add student clicked');
+    // Initialize selection with currently chosen students
+    this.addStudentsSelectedIds = new Set(this.selectedStudentsForGroup.map(s => s.id));
+    this.showAddStudentsDrawer = true;
+  }
+
+  // Add Students drawer helpers
+  isStudentSelectedForAdd(studentId: number): boolean {
+    return this.addStudentsSelectedIds.has(studentId);
+  }
+
+  toggleStudentAddSelection(studentId: number, checked: boolean): void {
+    if (checked) {
+      this.addStudentsSelectedIds.add(studentId);
+    } else {
+      this.addStudentsSelectedIds.delete(studentId);
+    }
+  }
+
+  onCancelAddStudents(): void {
+    this.showAddStudentsDrawer = false;
+  }
+
+  onConfirmAddStudents(): void {
+    this.selectedStudentsForGroup = this.students.filter(s => this.addStudentsSelectedIds.has(s.id));
+    this.showAddStudentsDrawer = false;
   }
 }
