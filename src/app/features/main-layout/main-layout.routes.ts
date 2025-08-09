@@ -172,6 +172,13 @@ export const Main_Layout_Routes: Routes = [
             (m) => m.AssignmentSubmissionComponent
           ),
       },
+      {
+        path: 'students',
+        loadComponent: () =>
+          import(
+            '../teacher-dashboard/students/students.component'
+          ).then((m) => m.StudentsComponent),
+      },
     ],
   },
 ];

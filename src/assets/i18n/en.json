@@ -143,5 +143,18 @@
     "WORDS_COUNT": "Words Count",
     "CANCEL": "Cancel",
     "PLEASE_SELECT_SECTIONS_YOU_WANT_TO": "Please select the sections you want to",
-    "ALL": "All"
+    "ALL": "All",
+    "FILTER": "Filter",
+    "SEND_CERTIFICATE": "Send Certificate",
+    "CREATE_REPORT": "Create Report",
+    "CREATE_GROUP": "Create Group",
+    "HOMEROOM": "Homeroom",
+    "GROUPS": "Groups",
+    "STUDENT_NAME": "Student Name",
+    "PRACTICED_QUESTIONS": "Practiced Questions",
+    "READ_STORIES": "Read Stories",
+    "PROGRESSED_SKILLS": "Progressed Skills",
+    "LAST_LOGIN": "Last Login",
+    "GROUP_NAME": "Group Name",
+    "NUMBER_OF_STUDENTS": "Number of Students"
 }

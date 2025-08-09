@@ -144,5 +144,18 @@
     "WORDS_COUNT": "عدد الكلمات",
     "CANCEL": "إلغاء",
     "PLEASE_SELECT_SECTIONS_YOU_WANT_TO": "يرجى اختيار الأقسام التي تريد",
-    "ALL": "الكل"
+    "ALL": "الكل",
+    "FILTER": "تصفية",
+    "SEND_CERTIFICATE": "إرسال الشهادة",
+    "CREATE_REPORT": "إنشاء تقرير",
+    "CREATE_GROUP": "إنشاء مجموعة",
+    "HOMEROOM": "الفصل",
+    "GROUPS": "المجموعات",
+    "STUDENT_NAME": "اسم الطالب",
+    "PRACTICED_QUESTIONS": "الأسئلة المتدرب عليها",
+    "READ_STORIES": "القصص المقروءة",
+    "PROGRESSED_SKILLS": "المهارات المتقدمة",
+    "LAST_LOGIN": "آخر تسجيل دخول",
+    "GROUP_NAME": "اسم المجموعة",
+    "NUMBER_OF_STUDENTS": "عدد الطلاب"
 }
