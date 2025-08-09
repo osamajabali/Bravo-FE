@@ -259,9 +259,17 @@
           <div class="item leveled-reading">{{ student.leveledReading }}</div>
           <div class="item last-login">{{ student.lastLogin }}</div>
           <div class="item actions d-flex gap-2">
-            <img src="icon-edit-square-sml.svg" alt="edit" class="action-icon" />
+            <img
+              src="icon-edit-square-sml.svg"
+              alt="edit"
+              class="action-icon"
+            />
             <img src="icon-bravo-square.svg" alt="bravo" class="action-icon" />
-            <img src="icon-arrow-right-square.svg" alt="details" class="action-icon" />
+            <img
+              src="icon-arrow-right-square.svg"
+              alt="details"
+              class="action-icon"
+            />
           </div>
         </div>
       </div>
@@ -363,10 +371,24 @@
           <div class="item number-of-students">
             {{ group.numberOfStudents }}
           </div>
-           <div class="item actions d-flex gap-2">
-             <img src="icon-red-trash-square.svg" alt="delete" class="action-icon" (click)="onDeleteGroupClick()" />
-             <img src="icon-edit-square-sml.svg" alt="edit" class="action-icon" />
-             <img src="icon-arrow-right-square.svg" alt="details" class="action-icon" (click)="goToGroupDetails(group.id)" />
+          <div class="item actions d-flex gap-2">
+            <img
+              src="icon-red-trash-square.svg"
+              alt="delete"
+              class="action-icon"
+              (click)="onDeleteGroupClick()"
+            />
+            <img
+              src="icon-edit-square-sml.svg"
+              alt="edit"
+              class="action-icon"
+            />
+            <img
+              src="icon-arrow-right-square.svg"
+              alt="details"
+              class="action-icon"
+              (click)="goToGroupDetails(group.id)"
+            />
           </div>
         </div>
       </div>
@@ -408,3 +430,99 @@
     </button>
   </ng-template>
 </p-dialog>
+
+<!-- Create Group Drawer -->
+<p-drawer
+  [(visible)]="showCreateGroupDrawer"
+  position="right"
+  [dismissible]="true"
+  [showCloseIcon]="false"
+  [modal]="true"
+  [style]="{ width: '75vw' }"
+>
+  <ng-template pTemplate="header">
+    <div class="drawer-header">
+      <div class="title">
+        {{ "ADD_NEW_GROUP" | translate : { default: "Add New Group" } }}
+      </div>
+      <img
+        src="icon-green-close-large.svg"
+        alt="close"
+        class="pointer"
+        (click)="onCancelCreateGroup()"
+      />
+    </div>
+  </ng-template>
+
+  <div class="create-group-drawer">
+    <div class="drawer-content">
+      <div class="form-field">
+        <label class="field-label">{{
+          "GROUP_TITLE" | translate : { default: "Group Title" }
+        }}</label>
+        <input
+          pInputText
+          class="w-100"
+          type="text"
+          [(ngModel)]="newGroupTitle"
+          [placeholder]="'ADD_HERE' | translate : { default: 'Add Here' }"
+        />
+      </div>
+
+      <div class="students-section">
+        <div class="section-title">
+          {{
+            "SELECTED_STUDENTS" | translate : { default: "Selected Students" }
+          }}
+        </div>
+        <div class="students-rows">
+          <div
+            class="student-row selectable"
+            *ngFor="let student of selectedStudentsForGroup"
+          >
+            <div class="student-info">
+              <div class="student-avatar">
+                <span>{{ student.initials }}</span>
+              </div>
+              <span class="student-name-text">{{ student.name }}</span>
+            </div>
+            <img
+              class="trash-icon"
+              src="icon-trash-red-large.svg"
+              alt="remove"
+              (click)="onRemoveStudentFromNewGroup(student.id)"
+            />
+          </div>
+        </div>
+
+        <button
+          pButton
+          type="button"
+          class="p-button-outlined add-student-btn"
+          (click)="onAddStudentToNewGroup()"
+        >
+          {{ "ADD_STUDENTS" | translate : { default: "Add students" } }}
+        </button>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <button
+        pButton
+        type="button"
+        class="p-button-outlined"
+        (click)="onCancelCreateGroup()"
+      >
+        {{ "CANCEL" | translate }}
+      </button>
+      <button
+        pButton
+        type="button"
+        class="p-button-primary"
+        (click)="onConfirmCreateGroup()"
+      >
+        {{ "CREATE" | translate : { default: "Create" } }}
+      </button>
+    </div>
+  </div>
+</p-drawer>

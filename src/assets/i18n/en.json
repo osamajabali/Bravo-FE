@@ -157,10 +157,14 @@
     "LAST_LOGIN": "Last Login",
     "GROUP_NAME": "Group Name",
     "NUMBER_OF_STUDENTS": "Number of Students",
-    "EDIT_GROUP": "Edit Group",
     "CONFIRM_DELETE_GROUP": "Delete Group",
     "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THE_GROUP": "Are you sure you want to delete the group?",
     "YES_DELETE": "Yes, Delete",
     "READING_LEVEL": "Reading Level",
-    "EDIT_GROUP": "Edit Group"
+    "EDIT_GROUP": "Edit Group",
+    "ADD_NEW_GROUP": "Add New Group",
+    "GROUP_TITLE": "Group Title",
+    "SELECTED_STUDENTS": "Selected Students",
+    "ADD_STUDENTS": "Add Students",
+    "CREATE": "Create"
 }

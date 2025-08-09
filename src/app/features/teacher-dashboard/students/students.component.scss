@@ -216,6 +216,118 @@
   }
 }
 
+/* Create Group Drawer Styles */
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: var(--padding-l) var(--padding-l) 0;
+
+  .title {
+    margin: 0;
+    color: var(--primary-primary-900);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-l);
+  }
+}
+
+.create-group-drawer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  .drawer-content {
+    padding: var(--padding-l);
+    overflow: auto;
+
+    .form-field {
+      margin-bottom: var(--padding-l);
+      .field-label {
+        display: block;
+        margin-bottom: var(--padding-s);
+        color: var(--neutral-black);
+        font-weight: var(--font-weight-bold);
+      }
+
+      ::ng-deep .p-inputtext.w-100 {
+        width: 100%;
+      }
+    }
+
+    .students-section {
+      .section-title {
+        color: var(--neutral-black);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--padding-s);
+      }
+
+      .students-rows {
+        display: flex;
+        flex-direction: column;
+        gap: var(--padding-s);
+        margin-bottom: var(--padding-m);
+
+        .student-row.selectable {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: var(--padding-s);
+          border: 1px solid var(--neutral-grey-200);
+          border-radius: var(--radius-xs);
+          background-color: var(--neutral-white);
+
+          .student-info {
+            display: flex;
+            align-items: center;
+            gap: var(--padding-s);
+
+            .student-avatar {
+              width: 36px;
+              height: 36px;
+              border-radius: 50%;
+              background-color: var(--primary-primary-500);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: var(--neutral-white);
+              font-size: var(--font-size-xs);
+              font-weight: var(--font-weight-bold);
+              flex-shrink: 0;
+            }
+          }
+
+          .trash-icon {
+            cursor: pointer;
+          }
+        }
+      }
+
+      .add-student-btn {
+        font-size: var(--font-size-xxs) !important;
+        font-weight: var(--font-weight-bold);
+      }
+    }
+  }
+
+  .drawer-footer {
+    padding: var(--padding-l);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--padding-s);
+
+    .p-button-primary, .p-button-outlined {
+      font-size: var(--font-size-l) !important;
+    }
+
+    .p-button-primary {
+      width: 209px !important;
+    }
+  }
+}
+
 ::ng-deep {
   .p-checkbox {
     .p-checkbox-box {
@@ -326,7 +438,8 @@
   justify-content: center;
   gap: var(--padding-m);
 
-  .p-button-primary, .p-button-outlined {
+  .p-button-primary,
+  .p-button-outlined {
     font-size: var(--font-size-l) !important;
   }
 }

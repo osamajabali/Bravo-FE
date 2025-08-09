@@ -7,6 +7,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CheckboxModule } from 'primeng/checkbox';
 import { Router, RouterModule } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
+import { DrawerModule } from 'primeng/drawer';
+import { InputTextModule } from 'primeng/inputtext';
 
 interface Student {
   id: number;
@@ -38,7 +40,9 @@ interface Group {
     TranslateModule,
     CheckboxModule,
     RouterModule,
-    DialogModule
+    DialogModule,
+    DrawerModule,
+    InputTextModule
   ],
   templateUrl: './students.component.html',
   styleUrl: './students.component.scss'
@@ -51,6 +55,9 @@ export class StudentsComponent implements OnInit {
   sortColumn: string = '';
   sortDirection: 'asc' | 'desc' | '' = '';
   showDeleteDialog: boolean = false;
+  showCreateGroupDrawer: boolean = false;
+  newGroupTitle: string = '';
+  selectedStudentsForGroup: Student[] = [];
   // Selection states
   allStudentsSelected: boolean = false;
   allGroupsSelected: boolean = false;
@@ -214,7 +221,8 @@ export class StudentsComponent implements OnInit {
   }
 
   onCreateGroup(): void {
-    console.log('Create Group clicked');
+    this.selectedStudentsForGroup = this.students.filter(s => s.selected);
+    this.showCreateGroupDrawer = true;
   }
 
   onFilter(): void {
@@ -240,5 +248,30 @@ export class StudentsComponent implements OnInit {
 
   onCancelDelete(): void {
     this.showDeleteDialog = false;
+  }
+
+  // Drawer actions
+  onCancelCreateGroup(): void {
+    this.showCreateGroupDrawer = false;
+    this.newGroupTitle = '';
+    this.selectedStudentsForGroup = [];
+  }
+
+  onConfirmCreateGroup(): void {
+    // Placeholder: implement creation logic
+    console.log('Create group', {
+      title: this.newGroupTitle,
+      students: this.selectedStudentsForGroup.map(s => s.id)
+    });
+    this.onCancelCreateGroup();
+  }
+
+  onRemoveStudentFromNewGroup(studentId: number): void {
+    this.selectedStudentsForGroup = this.selectedStudentsForGroup.filter(s => s.id !== studentId);
+  }
+
+  onAddStudentToNewGroup(): void {
+    // Placeholder for adding student flow (e.g., open search/select dialog)
+    console.log('Add student clicked');
   }
 }

@@ -163,5 +163,9 @@
     "GROUP_NAME": "اسم المجموعة",
     "NUMBER_OF_STUDENTS": "عدد الطلاب",
     "READING_LEVEL": "مستوى القراءة",
-    "EDIT_GROUP": "تعديل المجموعة"
+    "ADD_NEW_GROUP": "إضافة مجموعة جديدة",
+    "GROUP_TITLE": "عنوان المجموعة",
+    "SELECTED_STUDENTS": "المتعلمون المختارون",
+    "ADD_STUDENTS": "إضافة متعلمين",
+    "CREATE": "إنشاء"
 }
