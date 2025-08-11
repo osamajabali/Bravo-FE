@@ -1,0 +1,239 @@
+<div class="group-details">
+  <div class="header">
+    <div class="d-flex justify-content-between align-items-center">
+      <h3 class="header-title">4 Students</h3>
+      <div class="buttons">
+        <button
+          pButton
+          type="button"
+          label=""
+          class="p-button-outlined action-button"
+          (click)="onEditGroup()"
+          size="small"
+        >
+          <span>{{ "EDIT_GROUP" | translate }}</span>
+          <img src="icon-pencil.svg" alt="edit" />
+        </button>
+        <img
+          src="icon-red-trash-square.svg"
+          alt="delete"
+          class="action-icon"
+          (click)="onDeleteGroupClick()"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="grid-header">
+      <div class="header-item checkbox-column custom-checkbox">
+        <input
+          type="checkbox"
+          id="allStudentsSelected"
+          name="allStudentsSelected"
+          [(ngModel)]="allStudentsSelected"
+          class="visually-hidden"
+          (change)="toggleAllStudents(allStudentsSelected)"
+        />
+        <label for="allStudentsSelected" class="checkbox-label">
+          <span class="checkbox-icon">
+            <img
+              *ngIf="allStudentsSelected"
+              src="icon-checkbox-checked.svg"
+              alt="Checked"
+              class="checkbox-checked"
+            />
+            <img
+              *ngIf="!allStudentsSelected"
+              src="icon-checkbox-unchecked.svg"
+              alt="Unchecked"
+              class="checkbox-unchecked"
+            />
+          </span>
+        </label>
+      </div>
+      <div class="header-item student-name">
+        <span>{{ "STUDENT_NAME" | translate }}</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('name')"
+          [src]="
+            sortColumn === 'name'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item practiced-questions">
+        <span>{{ "PRACTICED_QUESTIONS" | translate }}</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('practicedQuestions')"
+          [src]="
+            sortColumn === 'practicedQuestions'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item read-stories">
+        <span>{{ "READ_STORIES" | translate }}</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('readStories')"
+          [src]="
+            sortColumn === 'readStories'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item progressed-skills">
+        <span>{{ "PROGRESSED_SKILLS" | translate }}</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('progressedSkills')"
+          [src]="
+            sortColumn === 'progressedSkills'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item leveled-reading">
+        <span>{{ "READING_LEVEL" | translate }}</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('leveledReading')"
+          [src]="
+            sortColumn === 'leveledReading'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item last-login">
+        <span>{{ "LAST_LOGIN" | translate }}</span>
+        <img
+          src="icon-sort.svg"
+          alt="sort"
+          (click)="onSort('lastLogin')"
+          [src]="
+            sortColumn === 'lastLogin'
+              ? sortDirection === 'asc'
+                ? 'icon-sort-asc.svg'
+                : 'icon-sort.svg'
+              : 'icon-sort.svg'
+          "
+        />
+      </div>
+      <div class="header-item actions">
+        <span></span>
+      </div>
+    </div>
+
+    <div class="students-list">
+      <div class="student-row" *ngFor="let student of students">
+        <div class="item checkbox-column custom-checkbox">
+          <input
+            type="checkbox"
+            [id]="student.id"
+            [name]="student.id + 'student'"
+            [(ngModel)]="student.selected"
+            (onChange)="onStudentSelectionChange()"
+            class="visually-hidden"
+          />
+          <label [for]="student.id" class="checkbox-label">
+            <span class="checkbox-icon">
+              <img
+                *ngIf="student.selected"
+                src="icon-checkbox-checked.svg"
+                alt="Checked"
+                class="checkbox-checked"
+              />
+              <img
+                *ngIf="!student.selected"
+                src="icon-checkbox-unchecked.svg"
+                alt="Unchecked"
+                class="checkbox-unchecked"
+              />
+            </span>
+          </label>
+        </div>
+        <div class="item student-name">
+          <div class="student-info">
+            <div class="student-avatar">
+              <span>{{ student.initials }}</span>
+            </div>
+            <span class="student-name-text">{{ student.name }}</span>
+          </div>
+        </div>
+        <div class="item practiced-questions">
+          {{ student.practicedQuestions }}
+        </div>
+        <div class="item read-stories">{{ student.readStories }}</div>
+        <div class="item progressed-skills">{{ student.progressedSkills }}</div>
+        <div class="item leveled-reading">{{ student.leveledReading }}</div>
+        <div class="item last-login">{{ student.lastLogin }}</div>
+        <div class="item actions d-flex gap-2">
+          <img src="icon-bravo-square.svg" alt="bravo" class="action-icon" />
+          <img
+            src="icon-arrow-right-square.svg"
+            alt="details"
+            class="action-icon"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  [(visible)]="showDeleteDialog"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+  [style]="{ width: '500px' }"
+>
+  <div class="delete-icon">
+    <img src="icon-red-trash-xlarge.svg" alt="delete" class="action-icon" />
+  </div>
+  <div class="confirm-delete-content">
+    <p>{{ "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THE_GROUP" | translate }}</p>
+  </div>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      class="p-button-outlined"
+      (click)="onCancelDelete()"
+    >
+      {{ "CANCEL" | translate }}
+    </button>
+    <button
+      pButton
+      type="button"
+      class="p-button-primary"
+      (click)="onConfirmDelete()"
+    >
+      {{ "YES_DELETE" | translate }}
+    </button>
+  </ng-template>
+</p-dialog>

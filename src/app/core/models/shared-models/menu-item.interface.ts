@@ -13,7 +13,7 @@ export enum RouteNames {
   ALL_SKILLS = 'features/skills',
   ASSIGNMENTS = 'assignments',
   EXAMS = 'exams',
-  STUDENTS = 'features/students',
+  STUDENTS = 'students',
   NOTIFICATIONS = 'notifications',
   LEVELED_READING = 'features/leveled-reading',
 } 

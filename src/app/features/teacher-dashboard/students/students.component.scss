@@ -1,0 +1,596 @@
+.students {
+  margin: 0 -15px;
+
+  .header {
+    padding: var(--padding-2xl) var(--padding-2xl) 0;
+    margin-bottom: var(--padding-l);
+    border-bottom: 1px solid var(--neutral-grey-200);
+    background-color: var(--neutral-grey-50);
+
+    .filter-by-date {
+      font-size: var(--font-size-xxs);
+      color: var(--primary-primary-900);
+      font-weight: var(--font-weight-bold);
+      margin-bottom: var(--padding-xs);
+    }
+
+    .tabs {
+      display: flex;
+      gap: var(--padding-m);
+
+      .tab {
+        padding: var(--padding-xl) var(--padding-xs) var(--padding-xs);
+        text-align: center;
+        color: var(--neutral-grey-500);
+        font-size: var(--font-size-s);
+        cursor: pointer;
+
+        &.selected {
+          color: var(--primary-primary-900);
+          font-weight: var(--font-weight-bold);
+          border-bottom: 2px solid var(--primary-primary-900);
+        }
+      }
+    }
+
+    .filters-container {
+      display: flex;
+      align-items: center;
+      gap: var(--padding-m);
+
+      .filter-button {
+        font-size: var(--font-size-xxs) !important;
+      }
+
+      ::ng-deep {
+        .p-datepicker {
+          width: 120px !important;
+          .p-inputtext {
+            font-size: var(--font-size-xs);
+            border: 1px solid var(--primary-primary-900);
+            border-radius: var(--radius-s);
+            background: transparent !important;
+            padding: 6px 25px 6px 10px !important;
+
+            &:focus {
+              border-color: var(--primary-primary-500);
+              box-shadow: 0 0 0 2px rgba(84, 200, 232, 0.2);
+            }
+
+            &::placeholder {
+              color: var(--primary-primary-900);
+              font-size: var(--font-size-xxs);
+              font-weight: var(--font-weight-bold);
+            }
+          }
+        }
+      }
+    }
+
+    .buttons {
+      display: flex;
+      gap: var(--padding-s);
+
+      .action-button {
+        display: flex;
+        align-items: center;
+        gap: var(--padding-s);
+        border-radius: 6px;
+        border: 1px solid var(--primary-primary-900);
+        color: var(--primary-primary-900);
+        font-size: var(--font-size-xxs);
+        font-weight: var(--font-weight-bold);
+
+        &:disabled {
+          border-color: var(--neutral-grey-400) !important;
+          background: var(--neutral-grey-200) !important;
+          color: var(--neutral-grey-400) !important;
+        }
+
+        &:hover {
+          background-color: var(--primary-primary-100);
+        }
+      }
+    }
+  }
+
+  .content {
+    padding: var(--padding-l) var(--padding-2xl);
+
+    .grid-header {
+      display: grid;
+      gap: var(--padding-m);
+      padding: var(--padding-s);
+      border-radius: var(--radius-m);
+
+      .header-item {
+        color: var(--neutral-grey-500);
+        font-size: var(--font-size-xxs);
+        display: flex;
+        align-items: center;
+        gap: var(--padding-s);
+
+        img {
+          cursor: pointer;
+        }
+      }
+
+      &:has(.student-name) {
+        grid-template-columns: 60px 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+      }
+
+      &:has(.group-name) {
+        grid-template-columns: 60px 3fr 2fr 1fr;
+      }
+
+      .checkbox-column {
+        justify-content: center;
+      }
+    }
+
+    .students-list,
+    .groups-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--padding-m);
+
+      .student-row,
+      .group-row {
+        display: grid;
+        gap: var(--padding-m);
+        padding: var(--padding-s) var(--padding-xs);
+        border-radius: var(--radius-m);
+        align-items: center;
+        transition: all 0.2s ease-in-out;
+        background-color: var(--neutral-white);
+        border: 1px solid var(--neutral-grey-200);
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          background-color: var(--neutral-grey-50);
+        }
+
+        .action-icon {
+          cursor: pointer;
+        }
+
+        .item {
+          font-size: var(--font-size-xs);
+          color: var(--primary-primary-900) !important;
+          font-weight: var(--font-weight-bold);
+
+          &.checkbox-column {
+            display: flex;
+            justify-content: center;
+          }
+
+          &.student-name {
+            .student-info {
+              display: flex;
+              align-items: center;
+              gap: var(--padding-s);
+
+              .student-avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background-color: var(--primary-primary-500);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--neutral-white);
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-bold);
+                flex-shrink: 0;
+              }
+
+              .student-name-text {
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+              }
+            }
+          }
+
+          &.group-name {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+          }
+        }
+      }
+
+      .student-row {
+        grid-template-columns: 60px 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+      }
+
+      .group-row {
+        grid-template-columns: 60px 3fr 2fr 1fr;
+      }
+    }
+  }
+}
+
+/* Create Group Drawer Styles */
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: var(--padding-l) var(--padding-l) 0;
+
+  .title {
+    margin: 0;
+    color: var(--primary-primary-900);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-l);
+  }
+}
+
+.create-group-drawer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  .drawer-content {
+    padding: var(--padding-l);
+    overflow: auto;
+
+    .form-field {
+      margin-bottom: var(--padding-l);
+      .field-label {
+        display: block;
+        margin-bottom: var(--padding-s);
+        color: var(--neutral-black);
+        font-weight: var(--font-weight-bold);
+      }
+
+      ::ng-deep .p-inputtext.w-100 {
+        width: 100%;
+      }
+    }
+
+    .students-section {
+      .section-title {
+        color: var(--neutral-black);
+        font-weight: var(--font-weight-bold);
+        margin-bottom: var(--padding-s);
+      }
+
+      .students-rows {
+        display: flex;
+        flex-direction: column;
+        gap: var(--padding-s);
+        margin-bottom: var(--padding-m);
+
+        .student-row.selectable {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: var(--padding-s);
+          border: 1px solid var(--neutral-grey-200);
+          border-radius: var(--radius-xs);
+          background-color: var(--neutral-white);
+
+          .student-info {
+            display: flex;
+            align-items: center;
+            gap: var(--padding-s);
+
+            .student-avatar {
+              width: 36px;
+              height: 36px;
+              border-radius: 50%;
+              background-color: var(--primary-primary-500);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: var(--neutral-white);
+              font-size: var(--font-size-xs);
+              font-weight: var(--font-weight-bold);
+              flex-shrink: 0;
+            }
+          }
+
+          .trash-icon {
+            cursor: pointer;
+          }
+        }
+      }
+
+      .add-student-btn {
+        font-size: var(--font-size-xxs) !important;
+        font-weight: var(--font-weight-bold);
+      }
+    }
+  }
+
+  .drawer-footer {
+    padding: var(--padding-l);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--padding-s);
+
+    .p-button-primary,
+    .p-button-outlined {
+      font-size: var(--font-size-l) !important;
+    }
+
+    .p-button-primary {
+      width: 209px !important;
+    }
+  }
+}
+
+::ng-deep {
+  .p-checkbox {
+    .p-checkbox-box {
+      border: 1px solid var(--primary-primary-400);
+      border-radius: var(--radius-s);
+
+      &.p-highlight {
+        background-color: var(--primary-primary-500);
+        border-color: var(--primary-primary-500);
+      }
+
+      &:not(.p-disabled):hover {
+        border-color: var(--primary-primary-500);
+      }
+
+      &:not(.p-disabled).p-focus {
+        box-shadow: 0 0 0 2px var(--primary-primary-100);
+      }
+    }
+  }
+
+  .p-button {
+    &.p-button-primary {
+      background-color: var(--primary-primary-500);
+      border-color: var(--primary-primary-500);
+      font-size: var(--font-size-s) !important;
+
+      &:hover {
+        background-color: var(--primary-primary-600);
+        border-color: var(--primary-primary-600);
+      }
+    }
+
+    &.p-button-outlined {
+      border-color: var(--primary-primary-900);
+      color: var(--primary-primary-900);
+      font-size: var(--font-size-s);
+
+      &:hover {
+        background-color: var(--primary-primary-50);
+      }
+    }
+  }
+}
+
+/* Custom Checkbox Styles */
+.custom-checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .checkbox-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-inline-end: 12px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .filter-option-label {
+    font-size: 14px;
+    color: var(--primary-primary-800);
+  }
+}
+
+.picker-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.confirm-delete-content {
+  padding: var(--padding-m);
+  text-align: center;
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-primary-900);
+}
+
+:host ::ng-deep .p-dialog-footer {
+  display: flex;
+  justify-content: center;
+  gap: var(--padding-m);
+
+  .p-button-primary,
+  .p-button-outlined {
+    font-size: var(--font-size-l) !important;
+  }
+}
+
+.delete-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--padding-m);
+}
+
+/* Edit Profile Dialog Styles */
+.edit-profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: var(--padding-l) 0;
+  margin-bottom: var(--padding-s);
+
+  .dialog-title {
+    margin: 0;
+    color: var(--primary-primary-900);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-m);
+  }
+
+  .close-icon {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.edit-profile-content {
+  padding: var(--padding-l) 0;
+
+  .tab-content {
+    padding: var(--padding-m) 0;
+  }
+
+  .form-section {
+    margin-bottom: var(--padding-5xl);
+
+    .section-title {
+      color: var(--primary-primary-900);
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-s);
+      margin-bottom: var(--padding-m);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--padding-m);
+      margin-bottom: var(--padding-m);
+
+      .form-field {
+        .field-label {
+          margin-bottom: var(--padding-s);
+          color: var(--primary-primary-900);
+          font-weight: var(--font-weight-bold);
+          font-size: var(--font-size-xs);
+        }
+
+        ::ng-deep .p-inputtext {
+          width: 100%;
+          border: 1px solid var(--neutral-grey-200);
+          border-radius: var(--radius-s);
+          padding: var(--padding-s);
+          font-size: var(--font-size-s);
+
+          &:focus {
+            border-color: var(--primary-primary-500);
+            box-shadow: 0 0 0 2px rgba(84, 200, 232, 0.2);
+          }
+
+          &::placeholder {
+            color: var(--neutral-grey-300);
+          }
+        }
+      }
+    }
+  }
+
+  .empty-tab-message {
+    text-align: center;
+    color: var(--neutral-grey-500);
+    font-style: italic;
+    padding: var(--padding-xl);
+  }
+}
+
+.edit-profile-footer {
+  display: flex;
+  justify-content: flex-end !important;
+  gap: var(--padding-s);
+  padding: var(--padding-l) 0;
+  width: 100%;
+
+  .p-button-primary,
+  .p-button-outlined {
+    font-size: var(--font-size-l) !important;
+    min-width: 100px;
+  }
+  
+  .p-button-primary {
+    min-width: 210px !important;
+    font-weight: var(--font-weight-bold) !important;
+  }
+}
+
+/* Edit Profile Dialog Tabs - Matching Main Page Tabs Design */
+::ng-deep {
+  .p-tabs {
+    .p-tablist {
+      border-bottom: 1px solid var(--neutral-grey-200);
+      margin-bottom: var(--padding-l);
+
+      .p-tab {
+        background: transparent;
+        border: none;
+        color: var(--neutral-grey-500);
+        font-size: var(--font-size-s);
+        font-weight: var(--font-weight-regular);
+        padding: var(--padding-xl) var(--padding-xs) var(--padding-xs);
+        margin-right: var(--padding-m);
+        border-radius: 0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: white;
+        }
+
+        &.p-tab-active {
+          color: var(--primary-primary-900);
+          font-weight: var(--font-weight-bold);
+          border-bottom: 2px solid var(--primary-primary-900);
+        }
+      }
+    }
+
+    .p-tabview-panels {
+      padding: 0;
+    }
+  }
+
+  .user-information .p-password {
+    margin-top: 0 !important;
+    height: 50px !important;
+  }
+}
