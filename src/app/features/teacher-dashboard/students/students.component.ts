@@ -9,6 +9,8 @@ import { Router, RouterModule } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { DrawerModule } from 'primeng/drawer';
 import { InputTextModule } from 'primeng/inputtext';
+import { TabViewModule } from 'primeng/tabview';
+import { PasswordModule } from 'primeng/password';
 
 interface Student {
   id: number;
@@ -42,7 +44,9 @@ interface Group {
     RouterModule,
     DialogModule,
     DrawerModule,
-    InputTextModule
+    InputTextModule,
+    TabViewModule,
+    PasswordModule
   ],
   templateUrl: './students.component.html',
   styleUrl: './students.component.scss'
@@ -67,6 +71,35 @@ export class StudentsComponent implements OnInit {
   // Selection states
   allStudentsSelected: boolean = false;
   allGroupsSelected: boolean = false;
+  
+  // Edit Profile Dialog state
+  showEditProfileDialog: boolean = false;
+  editingStudent: Student | null = null;
+  editProfileForm = {
+    firstNameEn: '',
+    lastNameEn: '',
+    firstNameAr: '',
+    lastNameAr: '',
+    username: '',
+    password: ''
+  };
+  
+  // Parent form model
+  parentForm = {
+    firstNameEn: '',
+    lastNameEn: '',
+    firstNameAr: '',
+    lastNameAr: '',
+    username: '',
+    password: '',
+    email: ''
+  };
+
+  // Modify Reading Level form model
+  modifyReadingLevelForm = {
+    currentLevel: '',
+    newLevel: ''
+  };
   
   // Mock data for students
   students: Student[] = [
@@ -326,5 +359,75 @@ export class StudentsComponent implements OnInit {
     this.newGroupTitle = group.groupName;
     // In a real app, we'd load the group's students here
     this.showCreateGroupDrawer = true;
+  }
+
+  // Edit Profile methods
+  onEditStudentProfile(student: Student): void {
+    this.editingStudent = student;
+    // Populate form with current student data
+    this.editProfileForm = {
+      firstNameEn: student.name.split(' ')[0] || '',
+      lastNameEn: student.name.split(' ').slice(1).join(' ') || '',
+      firstNameAr: '', // In real app, this would come from student data
+      lastNameAr: '', // In real app, this would come from student data
+      username: '', // In real app, this would come from student data
+      password: '' // In real app, this would come from student data
+    };
+    
+    // Initialize parent form (in real app, this would come from API)
+    this.parentForm = {
+      firstNameEn: '',
+      lastNameEn: '',
+      firstNameAr: '',
+      lastNameAr: '',
+      username: '',
+      password: '',
+      email: ''
+    };
+
+    this.modifyReadingLevelForm = {
+      currentLevel: '',
+      newLevel: ''
+    };
+    
+    this.showEditProfileDialog = true;
+  }
+
+  onSaveEditProfile(): void {
+    if (this.editingStudent) {
+      console.log('Saving student profile:', {
+        studentId: this.editingStudent.id,
+        studentForm: this.editProfileForm,
+        parentForm: this.parentForm
+      });
+      // In real app, you would make an API call here
+      this.onCancelEditProfile();
+    }
+  }
+
+  onCancelEditProfile(): void {
+    this.showEditProfileDialog = false;
+    this.editingStudent = null;
+    this.editProfileForm = {
+      firstNameEn: '',
+      lastNameEn: '',
+      firstNameAr: '',
+      lastNameAr: '',
+      username: '',
+      password: ''
+    };
+    this.parentForm = {
+      firstNameEn: '',
+      lastNameEn: '',
+      firstNameAr: '',
+      lastNameAr: '',
+      username: '',
+      password: '',
+      email: ''
+    };
+    this.modifyReadingLevelForm = {
+      currentLevel: '',
+      newLevel: ''
+    };
   }
 }

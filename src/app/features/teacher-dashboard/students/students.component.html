@@ -263,6 +263,7 @@
               src="icon-edit-square-sml.svg"
               alt="edit"
               class="action-icon"
+              (click)="onEditStudentProfile(student)"
             />
             <img src="icon-bravo-square.svg" alt="bravo" class="action-icon" />
             <img
@@ -444,7 +445,7 @@
   <ng-template pTemplate="header">
     <div class="drawer-header">
       <div class="title">
-        {{ (isEditGroupMode ? 'EDIT_GROUP' : 'ADD_NEW_GROUP') | translate }}
+        {{ (isEditGroupMode ? "EDIT_GROUP" : "ADD_NEW_GROUP") | translate }}
       </div>
       <img
         src="icon-green-close-large.svg"
@@ -522,7 +523,7 @@
         class="p-button-primary"
         (click)="onConfirmCreateGroup()"
       >
-        {{ (isEditGroupMode ? 'SAVE' : 'CREATE') | translate }}
+        {{ (isEditGroupMode ? "SAVE" : "CREATE") | translate }}
       </button>
     </div>
   </div>
@@ -540,7 +541,7 @@
   <ng-template pTemplate="header">
     <div class="drawer-header">
       <div class="title">
-        {{ 'ADD_STUDENTS' | translate : { default: 'Add Students' } }}
+        {{ "ADD_STUDENTS" | translate : { default: "Add Students" } }}
       </div>
       <img
         src="icon-green-close-large.svg"
@@ -555,7 +556,7 @@
     <div class="drawer-content">
       <div class="students-section">
         <div class="section-title">
-          {{ 'SELECT_STUDENTS' | translate : { default: 'Select Students' } }}
+          {{ "SELECT_STUDENTS" | translate : { default: "Select Students" } }}
         </div>
         <div class="students-rows">
           <div class="student-row selectable" *ngFor="let student of students">
@@ -576,12 +577,377 @@
     </div>
 
     <div class="drawer-footer">
-      <button pButton type="button" class="p-button-outlined" (click)="onCancelAddStudents()">
-        {{ 'CANCEL' | translate }}
+      <button
+        pButton
+        type="button"
+        class="p-button-outlined"
+        (click)="onCancelAddStudents()"
+      >
+        {{ "CANCEL" | translate }}
       </button>
-      <button pButton type="button" class="p-button-primary" (click)="onConfirmAddStudents()">
-        {{ 'ADD' | translate : { default: 'Add' } }}
+      <button
+        pButton
+        type="button"
+        class="p-button-primary"
+        (click)="onConfirmAddStudents()"
+      >
+        {{ "ADD" | translate : { default: "Add" } }}
       </button>
     </div>
   </div>
 </p-drawer>
+
+<!-- Edit Profile Dialog -->
+<p-dialog
+  [(visible)]="showEditProfileDialog"
+  [modal]="true"
+  [closable]="false"
+  [draggable]="false"
+  [resizable]="false"
+  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+  [style]="{ width: '65vw' }"
+>
+  <ng-template pTemplate="header">
+    <div class="edit-profile-header">
+      <h2 class="dialog-title">
+        {{ "EDIT_PROFILE" | translate : { default: "Edit Profile" } }}
+      </h2>
+      <button
+        pButton
+        class="p-button-text close-btn"
+        (click)="onCancelEditProfile()"
+      >
+        <img src="icon-close-black.svg" alt="Close" />
+      </button>
+    </div>
+  </ng-template>
+
+  <div class="edit-profile-content">
+    <p-tabView>
+      <!-- Student Information Tab -->
+      <p-tabPanel
+        header="{{
+          'STUDENT_INFORMATION' | translate : { default: 'Student Information' }
+        }}"
+      >
+        <div class="tab-content">
+          <!-- Information Section -->
+          <div class="form-section information">
+            <h3 class="section-title">
+              {{ "INFORMATION" | translate : { default: "Information" } }}
+            </h3>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="field-label">{{
+                  "FIRST_NAME_EN" | translate : { default: "First Name (En)" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="editProfileForm.firstNameEn"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                />
+              </div>
+              <div class="form-field">
+                <label class="field-label">{{
+                  "LAST_NAME_EN" | translate : { default: "Last Name (En)" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="editProfileForm.lastNameEn"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="field-label">{{
+                  "FIRST_NAME_AR" | translate : { default: "First Name (Ar)" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="editProfileForm.firstNameAr"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                />
+              </div>
+              <div class="form-field">
+                <label class="field-label">{{
+                  "LAST_NAME_AR" | translate : { default: "Last Name (Ar)" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="editProfileForm.lastNameAr"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- User Information Section -->
+          <div class="form-section user-information">
+            <h3 class="section-title">
+              {{
+                "USER_INFORMATION" | translate : { default: "User Information" }
+              }}
+            </h3>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="field-label">{{
+                  "STUDENT_USERNAME"
+                    | translate : { default: "Student Username" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="editProfileForm.username"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                />
+              </div>
+              <div class="form-field">
+                <label class="field-label">{{
+                  "STUDENT_PASSWORD"
+                    | translate : { default: "Student Password" }
+                }}</label>
+                <p-password
+                  type="password"
+                  class=""
+                  id="password"
+                  name="password"
+                  required
+                  [(ngModel)]="editProfileForm.password"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                  [feedback]="false"
+                  [toggleMask]="true"
+                ></p-password>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <!-- Parent Information Tab -->
+      <p-tabPanel
+        header="{{
+          'PARENT_INFORMATION' | translate : { default: 'Parent Information' }
+        }}"
+      >
+        <div class="tab-content">
+          <!-- Information Section -->
+          <div class="form-section information">
+            <h3 class="section-title">
+              {{ "INFORMATION" | translate : { default: "Information" } }}
+            </h3>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="field-label">{{
+                  "PARENT_FIRST_NAME_EN" | translate : { default: "Parent First Name (En)" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="parentForm.firstNameEn"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                />
+              </div>
+              <div class="form-field">
+                <label class="field-label">{{
+                  "PARENT_LAST_NAME_EN" | translate : { default: "Parent Last Name (En)" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="parentForm.lastNameEn"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="field-label">{{
+                  "PARENT_FIRST_NAME_AR" | translate : { default: "Parent First Name (Ar)" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="parentForm.firstNameAr"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                />
+              </div>
+              <div class="form-field">
+                <label class="field-label">{{
+                  "PARENT_LAST_NAME_AR" | translate : { default: "Parent Last Name (Ar)" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="parentForm.lastNameAr"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="field-label">{{
+                  "PARENT_EMAIL" | translate : { default: "Parent Email" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="parentForm.email"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- User Information Section -->
+          <div class="form-section user-information">
+            <h3 class="section-title">
+              {{
+                "USER_INFORMATION" | translate : { default: "User Information" }
+              }}
+            </h3>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="field-label">{{
+                  "PARENT_USERNAME"
+                    | translate : { default: "Parent Username" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="parentForm.username"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                />
+              </div>
+              <div class="form-field">
+                <label class="field-label">{{
+                  "PARENT_PASSWORD"
+                    | translate : { default: "Parent Password" }
+                }}</label>
+                <p-password
+                  type="password"
+                  class=""
+                  id="parent-password"
+                  name="parent-password"
+                  required
+                  [(ngModel)]="parentForm.password"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write Here' }
+                  "
+                  [feedback]="false"
+                  [toggleMask]="true"
+                ></p-password>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <!-- Modify Reading Level Tab -->
+      <p-tabPanel
+        header="{{
+          'MODIFY_READING_LEVEL'
+            | translate : { default: 'Modify Reading Level' }
+        }}"
+      >
+      <div class="tab-content">
+        <!-- Information Section -->
+        <div class="form-section information">
+          <h3 class="section-title">
+            {{ "CURRENT_LEVEL" | translate : { default: "Current Level" } }}
+          </h3>
+          <div class="form-row">
+            <div class="form-field">
+              <label class="field-label">{{
+                "LEVEL" | translate : { default: "Current Level" }
+              }}</label>
+              <input
+                pInputText
+                type="text"
+                [(ngModel)]="modifyReadingLevelForm.currentLevel"
+                [placeholder]="
+                  'SELECT_LEVEL' | translate : { default: 'Select Level' }
+                "
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- User Information Section -->
+        <div class="form-section user-information">
+          <h3 class="section-title">
+            {{
+              "SELECT_NEW_LEVEL" | translate : { default: "Select New Level" }
+            }}
+          </h3>
+          <div class="form-row">
+            <div class="form-field">
+              <label class="field-label">{{
+                "LEVEL"
+                  | translate : { default: "Level" }
+              }}</label>
+              <input
+                pInputText
+                type="text"
+                [(ngModel)]="modifyReadingLevelForm.newLevel"
+                [placeholder]="
+                  'SELECT_LEVEL' | translate : { default: 'Select Level' }
+                "
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="edit-profile-footer">
+      <button
+        pButton
+        type="button"
+        class="p-button-outlined"
+        (click)="onCancelEditProfile()"
+      >
+        {{ "CANCEL" | translate }}
+      </button>
+      <button
+        pButton
+        type="button"
+        class="p-button-primary"
+        (click)="onSaveEditProfile()"
+      >
+        {{ "SAVE" | translate }}
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>

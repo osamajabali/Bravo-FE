@@ -318,7 +318,8 @@
     justify-content: flex-end;
     gap: var(--padding-s);
 
-    .p-button-primary, .p-button-outlined {
+    .p-button-primary,
+    .p-button-outlined {
       font-size: var(--font-size-l) !important;
     }
 
@@ -449,4 +450,147 @@
   justify-content: center;
   align-items: center;
   padding: var(--padding-m);
+}
+
+/* Edit Profile Dialog Styles */
+.edit-profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: var(--padding-l) 0;
+  margin-bottom: var(--padding-s);
+
+  .dialog-title {
+    margin: 0;
+    color: var(--primary-primary-900);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-m);
+  }
+
+  .close-icon {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.edit-profile-content {
+  padding: var(--padding-l) 0;
+
+  .tab-content {
+    padding: var(--padding-m) 0;
+  }
+
+  .form-section {
+    margin-bottom: var(--padding-5xl);
+
+    .section-title {
+      color: var(--primary-primary-900);
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-s);
+      margin-bottom: var(--padding-m);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--padding-m);
+      margin-bottom: var(--padding-m);
+
+      .form-field {
+        .field-label {
+          margin-bottom: var(--padding-s);
+          color: var(--primary-primary-900);
+          font-weight: var(--font-weight-bold);
+          font-size: var(--font-size-xs);
+        }
+
+        ::ng-deep .p-inputtext {
+          width: 100%;
+          border: 1px solid var(--neutral-grey-200);
+          border-radius: var(--radius-s);
+          padding: var(--padding-s);
+          font-size: var(--font-size-s);
+
+          &:focus {
+            border-color: var(--primary-primary-500);
+            box-shadow: 0 0 0 2px rgba(84, 200, 232, 0.2);
+          }
+
+          &::placeholder {
+            color: var(--neutral-grey-300);
+          }
+        }
+      }
+    }
+  }
+
+  .empty-tab-message {
+    text-align: center;
+    color: var(--neutral-grey-500);
+    font-style: italic;
+    padding: var(--padding-xl);
+  }
+}
+
+.edit-profile-footer {
+  display: flex;
+  justify-content: flex-end !important;
+  gap: var(--padding-s);
+  padding: var(--padding-l) 0;
+  width: 100%;
+
+  .p-button-primary,
+  .p-button-outlined {
+    font-size: var(--font-size-l) !important;
+    min-width: 100px;
+  }
+  
+  .p-button-primary {
+    min-width: 210px !important;
+    font-weight: var(--font-weight-bold) !important;
+  }
+}
+
+/* Edit Profile Dialog Tabs - Matching Main Page Tabs Design */
+::ng-deep {
+  .p-tabs {
+    .p-tablist {
+      border-bottom: 1px solid var(--neutral-grey-200);
+      margin-bottom: var(--padding-l);
+
+      .p-tab {
+        background: transparent;
+        border: none;
+        color: var(--neutral-grey-500);
+        font-size: var(--font-size-s);
+        font-weight: var(--font-weight-regular);
+        padding: var(--padding-xl) var(--padding-xs) var(--padding-xs);
+        margin-right: var(--padding-m);
+        border-radius: 0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: white;
+        }
+
+        &.p-tab-active {
+          color: var(--primary-primary-900);
+          font-weight: var(--font-weight-bold);
+          border-bottom: 2px solid var(--primary-primary-900);
+        }
+      }
+    }
+
+    .p-tabview-panels {
+      padding: 0;
+    }
+  }
+
+  .user-information .p-password {
+    margin-top: 0 !important;
+    height: 50px !important;
+  }
 }
