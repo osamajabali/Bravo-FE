@@ -2,6 +2,7 @@
 @use "./assets/scss/font-family";
 @use "./assets/scss/rtl.scss";
 @import "../node_modules/@ng-select/ng-select/themes/default.theme.css";
+@import "../node_modules/primeicons/primeicons.css";
 
 body {
   font-family: "Space Grotesk", sans-serif !important;

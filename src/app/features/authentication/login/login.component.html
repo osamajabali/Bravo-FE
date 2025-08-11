@@ -20,9 +20,16 @@
           class="login-card"
         >
           <div class="title">Login</div>
+          
+          <!-- Error Message Display -->
+          <div *ngIf="errorMessage" class="alert alert-danger error-message" role="alert">
+            <i class="pi pi-exclamation-triangle me-2"></i>
+            {{ errorMessage | translate }}
+          </div>
+
           <div class="form-group">
             <label for="email" class="form-label my-2 font-bold"
-              >Username</label
+              >Username <span class="required-indicator">*</span></label
             >
             <input
               type="email"
@@ -31,12 +38,19 @@
               name="email"
               required
               [(ngModel)]="user.username"
-              placeholder=""
+              (input)="onInputChange()"
+              (blur)="onInputChange()"
+              placeholder="Enter your username"
+              [class.is-invalid]="errorMessage && (errorMessage.includes('USERNAME') || errorMessage.includes('REQUIRED'))"
             />
+            <div *ngIf="errorMessage && (errorMessage.includes('USERNAME') || errorMessage.includes('REQUIRED'))" 
+                 class="invalid-feedback d-block">
+              {{ errorMessage | translate }}
+            </div>
           </div>
           <div class="d-flex flex-column">
             <label for="password" class="form-label my-2 font-bold"
-              >Password</label
+              >Password <span class="required-indicator">*</span></label
             >
             <p-password
               type="password"
@@ -45,10 +59,18 @@
               name="password"
               required
               [(ngModel)]="user.password"
-              placeholder=""
+              (input)="onInputChange()"
+              (blur)="onInputChange()"
+              placeholder="Enter your password"
               [feedback]="false"
               [toggleMask]="true"
+              [class.is-invalid]="errorMessage && (errorMessage.includes('PASSWORD') || errorMessage.includes('REQUIRED'))"
+              [class.is-valid]="user.password && user.password.length >= 4"
             ></p-password>
+            <div *ngIf="errorMessage && (errorMessage.includes('PASSWORD') || errorMessage.includes('REQUIRED'))" 
+                 class="invalid-feedback d-block">
+              {{ errorMessage | translate }}
+            </div>
           </div>
           <div class="login-options">
             <div class="keep-logged-in">
@@ -93,8 +115,17 @@
               </a>
             </div>
           </div>
-          <button pButton type="submit" class="p-button-primary w-100">
-            <span class="form-label">LOGIN</span>
+          <button 
+            pButton 
+            type="submit" 
+            class="p-button-primary w-100"
+            [disabled]="isLoading"
+          >
+            <span class="form-label" *ngIf="!isLoading">LOGIN</span>
+            <span class="form-label" *ngIf="isLoading">
+              <i class="pi pi-spin pi-spinner me-2"></i>
+              LOGGING IN...
+            </span>
           </button>
         </form>
       </div>

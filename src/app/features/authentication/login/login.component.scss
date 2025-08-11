@@ -54,6 +54,30 @@
       font-size: var(--font-size-s);
       color: var(--neutral-grey-900);
       font-weight: var(--font-weight-bold);
+      
+      .required-indicator {
+        color: #dc3545;
+        font-weight: var(--font-weight-bold);
+        margin-left: 4px;
+      }
+    }
+
+    // Error message styling
+    .error-message {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      padding: 12px 16px;
+      border-radius: var(--radius-s);
+      margin-bottom: 20px;
+      font-size: var(--font-size-s);
+      display: flex;
+      align-items: center;
+      
+      i {
+        color: #dc3545;
+        margin-right: 8px;
+      }
     }
 
     .login-options {
@@ -94,12 +118,39 @@
 
     .p-button-primary {
       margin-top: 20px;
+      
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+      
+      .pi-spinner {
+        animation: spin 1s linear infinite;
+      }
     }
   }
 
   .form-control {
     min-height: 42px;
     border: 1px solid var(--neutral-grey-200) !important;
+    
+    &.is-invalid {
+      border-color: #dc3545 !important;
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+    
+    &.is-valid {
+      border-color: #28a745 !important;
+      box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+  }
+  
+  .invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: var(--font-size-xs);
+    color: #dc3545;
   }
 }
 
@@ -155,9 +206,29 @@
   padding: 0;
   margin-top: 3px;
   height: 42px;
+  
+  &.is-invalid {
+    .p-password-input {
+      border-color: #dc3545 !important;
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+  }
+  
+  &.is-valid {
+    .p-password-input {
+      border-color: #28a745 !important;
+      box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+  }
 }
 
 ::ng-deep .p-password:has(.p-password-toggle-mask-icon) .p-password-input {
   width: 100% !important;
   border: 1px solid var(--neutral-grey-200) !important;
+}
+
+// Loading spinner animation
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

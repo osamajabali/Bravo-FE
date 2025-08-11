@@ -4,14 +4,15 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { LogIn } from '../../../core/models/login-models/login.model';
 import { LoginService } from '../../../core/services/login-services/login.service';
-import { finalize } from 'rxjs';
+import { finalize, catchError, of } from 'rxjs';
 import { HeaderService } from '../../../core/services/header-services/header.service';
 import { PasswordModule } from 'primeng/password';
-
+import { AlertService } from '../../../core/services/shared-services/alert.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule, RouterModule, PasswordModule],
+  imports: [CommonModule, FormsModule, RouterModule, PasswordModule, TranslateModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -19,35 +20,60 @@ export class LoginComponent {
   user: LogIn = new LogIn();
   sessionMessage: string | null = null;
   keepMeLoggedIn: boolean = false;
+  isLoading: boolean = false;
+  errorMessage: string | null = null;
 
   constructor(
     private router: Router,
     private loginService: LoginService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && localStorage) {
       this.sessionMessage = localStorage.getItem('sessionMessage');
       if (this.sessionMessage) {
-        alert(this.sessionMessage);
-        localStorage.removeItem('sessionMessage');
+        this.alertService.info(this.sessionMessage);
         localStorage.removeItem('sessionMessage');
       }
     }
   }
 
+  // Check if form is valid for submission
+  isFormValid(): boolean {
+    return this.user.username && 
+           this.user.username.trim() !== '' && 
+           this.user.username.trim().length >= 2 &&
+           this.user.password && 
+           this.user.password.length >= 4;
+  }
+
   // Submit handler for the form
   onSubmit(loginForm: NgForm): void {
-    if (loginForm.invalid) {
+    // Check form validity first
+    if (!this.isFormValid()) {
+      this.handleFormValidationErrors(loginForm);
       return;
     }
 
+    this.isLoading = true;
+    this.errorMessage = null;
+
     this.loginService
       .login(this.user)
-      .pipe(finalize(() => {}))
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        }),
+        catchError((error) => {
+          this.handleLoginError(error);
+          return of(null);
+        })
+      )
       .subscribe((response) => {
-        if (response) {
+        if (response && response.result && Object.keys(response.result).length > 0) {
+          // Success - user has valid credentials and result contains user data
           this.loginService.setUser(response.result.userToken);
           localStorage.setItem(
             'loginRoles',
@@ -62,9 +88,95 @@ export class LoginComponent {
           this.headerService.selectedSubjectId = 0;
           this.router.navigate(['/features']);
         } else {
-          console.log('WRONG_EMAIL_OR_PASSWORD');
+          // Authentication failed - API returns success: true but empty result
+          // Use the message from the API response if available
+          if (response && response.message) {
+            this.errorMessage = response.message;
+          } else {
+            this.errorMessage = 'ERROR.INVALID_CREDENTIALS';
+          }
+          this.alertService.error('ERROR.INVALID_CREDENTIALS', 'ERROR.AUTHENTICATION_FAILED');
         }
       });
+  }
+
+  private handleFormValidationErrors(loginForm: NgForm): void {
+    // Check for empty username
+    if (!this.user.username || this.user.username.trim() === '') {
+      this.errorMessage = 'ERROR.USERNAME_REQUIRED';
+      this.alertService.error('ERROR.USERNAME_REQUIRED', 'ERROR.VALIDATION_ERROR');
+      return;
+    }
+
+    // Check for empty password
+    if (!this.user.password || this.user.password.trim() === '') {
+      this.errorMessage = 'ERROR.PASSWORD_REQUIRED';
+      this.alertService.error('ERROR.PASSWORD_REQUIRED', 'ERROR.VALIDATION_ERROR');
+      return;
+    }
+
+    // Check if username is too short (optional validation)
+    if (this.user.username.trim().length < 2) {
+      this.errorMessage = 'ERROR.USERNAME_TOO_SHORT';
+      this.alertService.error('ERROR.USERNAME_TOO_SHORT', 'ERROR.VALIDATION_ERROR');
+      return;
+    }
+
+    // Check if password is too short (optional validation)
+    if (this.user.password.length < 4) {
+      this.errorMessage = 'ERROR.PASSWORD_TOO_SHORT';
+      this.alertService.error('ERROR.PASSWORD_TOO_SHORT', 'ERROR.VALIDATION_ERROR');
+      return;
+    }
+
+    // If we reach here, there might be other validation errors
+    this.errorMessage = 'ERROR.PLEASE_CHECK_INPUT';
+    this.alertService.error('ERROR.PLEASE_CHECK_INPUT', 'ERROR.VALIDATION_ERROR');
+  }
+
+  private handleLoginError(error: any): void {
+    console.error('Login error:', error);
+    
+    // Check if it's an API error response with a specific code
+    if (error.error && error.error.code === 8) {
+      // API returned error code 8 - incorrect credentials
+      this.errorMessage = error.error.message || 'ERROR.INVALID_CREDENTIALS';
+      this.alertService.error('ERROR.INVALID_CREDENTIALS', 'ERROR.AUTHENTICATION_FAILED');
+      return;
+    }
+    
+    // Handle HTTP status errors
+    if (error.status === 401) {
+      this.errorMessage = 'ERROR.INVALID_CREDENTIALS';
+      this.alertService.error('ERROR.INVALID_CREDENTIALS', 'ERROR.AUTHENTICATION_FAILED');
+    } else if (error.status === 400) {
+      this.errorMessage = 'ERROR.INVALID_REQUEST';
+      this.alertService.error('ERROR.INVALID_REQUEST', 'ERROR.INVALID_REQUEST_TITLE');
+    } else if (error.status === 500) {
+      this.errorMessage = 'ERROR.SERVER_ERROR';
+      this.alertService.error('ERROR.SERVER_ERROR', 'ERROR.SERVER_ERROR_TITLE');
+    } else if (error.status === 0 || error.status === 404) {
+      this.errorMessage = 'ERROR.CONNECTION_ERROR';
+      this.alertService.error('ERROR.CONNECTION_ERROR', 'ERROR.CONNECTION_ERROR_TITLE');
+    } else if (error.name === 'NetworkError' || error.message?.includes('Network Error')) {
+      this.errorMessage = 'ERROR.CONNECTION_ERROR';
+      this.alertService.error('ERROR.CONNECTION_ERROR', 'ERROR.CONNECTION_ERROR_TITLE');
+    } else {
+      this.errorMessage = 'ERROR.UNEXPECTED_ERROR';
+      this.alertService.error('ERROR.UNEXPECTED_ERROR', 'ERROR.UNEXPECTED_ERROR_TITLE');
+    }
+  }
+
+  // Clear error message when user starts typing
+  onInputChange(): void {
+    if (this.errorMessage) {
+      // Clear validation errors when user starts typing
+      if (this.errorMessage.includes('REQUIRED') || 
+          this.errorMessage.includes('TOO_SHORT') || 
+          this.errorMessage.includes('VALIDATION_ERROR')) {
+        this.errorMessage = null;
+      }
+    }
   }
 
   // Empty function for forget password functionality
