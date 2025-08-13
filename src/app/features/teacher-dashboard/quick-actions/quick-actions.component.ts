@@ -11,11 +11,13 @@ import {
   readingTimeChartData,
   readingPieChartData,
   assignmentsChartData,
+  examsChartData,
   createQuestionsChartConfig, 
   createTimeChartConfig,
   createReadingTimeChartConfig,
   createReadingPieChartConfig,
   createAssignmentsChartConfig,
+  createExamsChartConfig,
   ChartData 
 } from './chart-configs';
 
@@ -126,6 +128,7 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
   readingTimeData: ChartData = readingTimeChartData;
   readingPieData: ChartData = readingPieChartData;
   assignmentsData: ChartData = assignmentsChartData;
+  examsData: ChartData = examsChartData;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
@@ -222,6 +225,20 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.questionsChartInstance = new Chart(ctx, config);
   }
 
+  private createExamsChart(): void {
+    if (this.questionsChartInstance) {
+      this.questionsChartInstance.destroy();
+    }
+    
+    if (!this.questionsChart?.nativeElement) return;
+
+    const ctx = this.questionsChart.nativeElement.getContext('2d');
+    if (!ctx) return;
+
+    const config = createExamsChartConfig(this.examsData);
+    this.questionsChartInstance = new Chart(ctx, config);
+  }
+
   private renderChartsForCurrentTab(): void {
     // Destroy existing charts
     if (this.questionsChartInstance) {
@@ -246,6 +263,10 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
       // Assignments tab
       this.createAssignmentsChart();
       // No second chart for assignments tab
+    } else if (this.selectedTab === '4') {
+      // Exams tab
+      this.createExamsChart();
+      // No second chart for exams tab
     }
     // Add more tabs as needed
   }

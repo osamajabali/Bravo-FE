@@ -144,6 +144,26 @@ export const assignmentsChartData: ChartData = {
   ]
 };
 
+// Exams Tab Charts
+export const examsChartData: ChartData = {
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  datasets: [
+    {
+      label: 'No. of Exams',
+      data: [8, 12, 10, 15, 14, 18, 16, 11, 13, 9, 7, 12],
+      borderColor: '#54c8e8',
+      backgroundColor: '#54c8e8',
+      borderWidth: 4,
+      fill: false,
+      tension: 0.4,
+      pointRadius: 0,
+      pointHoverRadius: 0,
+      pointBackgroundColor: '#54c8e8',
+      pointBorderColor: '#54c8e8'
+    }
+  ]
+};
+
 // Chart configuration factory functions
 export function createQuestionsChartConfig(data: ChartData): ChartConfiguration {
   return {
@@ -613,6 +633,104 @@ export function createAssignmentsChartConfig(data: ChartData): ChartConfiguratio
             },
             label: (context) => {
               return `${context.dataset.label}: ${context.parsed.y} assignments`;
+            }
+          }
+        }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      }
+    }
+  };
+}
+
+export function createExamsChartConfig(data: ChartData): ChartConfiguration {
+  return {
+    type: 'line',
+    data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          grid: {
+            display: false
+          },
+          border: {
+            display: false,
+          },
+          offset: true,
+          ticks: {
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          }
+        },
+        y: {
+          min: 0,
+          ticks: {
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          },
+          grid: {
+            display: false
+          },
+          border: {
+            display: false
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'rectRot',
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#3B8FA7',
+            padding: 30,
+            boxWidth: 12,
+            boxHeight: 12,
+            generateLabels: (chart) => {
+              const datasets = chart.data.datasets;
+              return datasets.map((dataset, i) => ({
+                text: dataset.label,
+                fillStyle: dataset.borderColor as string,
+                strokeStyle: dataset.borderColor as string,
+                lineWidth: 0,
+                pointStyle: 'circle',
+                radius: 6,
+                hidden: !chart.isDatasetVisible(i),
+                datasetIndex: i
+              }));
+            }
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          borderColor: '#54c8e8',
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: true,
+          callbacks: {
+            title: (context) => {
+              return context[0].label;
+            },
+            label: (context) => {
+              return `${context.dataset.label}: ${context.parsed.y} exams`;
             }
           }
         }
