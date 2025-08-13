@@ -139,9 +139,9 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
         label: 'School Avg',
         data: [2.5, 3.2, 2.8, 3.5, 3.0], // Sample data in hours
         borderColor: '#3B8FA7', // primary-700
-        backgroundColor: '#3B8FA7',
+        backgroundColor: '#3B8FA7', // Will be replaced with gradient
         borderWidth: 4,
-        fill: false,
+        fill: true,
         tension: 0.4,
         pointRadius: 0,
         pointHoverRadius: 0,
@@ -150,7 +150,7 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       {
         label: 'Class',
-        data: [1.8, 2.5, 2.2, 2.8, 2.3], // Sample data in hours
+        data: [1.8, 2.5, 2.2, 5.8, 2.3], // Sample data in hours
         borderColor: '#54c8e8', // primary-500
         backgroundColor: '#54c8e8',
         borderWidth: 4,
@@ -261,8 +261,8 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const datasets = chart.data.datasets;
                 return datasets.map((dataset, i) => ({
                   text: dataset.label,
-                  fillStyle: dataset.backgroundColor as string,
-                  strokeStyle: dataset.backgroundColor as string,
+                  fillStyle: dataset.borderColor as string,
+                  strokeStyle: dataset.borderColor as string,
                   lineWidth: 0,
                   pointStyle: 'circle',
                   radius: 6,
@@ -321,18 +321,21 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
+    // Create gradient for School Avg line
+    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    gradient.addColorStop(0, 'rgba(59, 143, 167, 0.2)'); // primary-700 with 30% opacity at top
+    gradient.addColorStop(1, 'rgba(59, 143, 167, 0)');   // primary-700 with 0% opacity at bottom
+
+    // Apply gradient to the School Avg dataset
+    const chartData = { ...this.timeChartData };
+    (chartData.datasets[0] as any).backgroundColor = gradient;
+
     const config: ChartConfiguration = {
       type: 'line',
-      data: this.timeChartData,
+      data: chartData,
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        layout: {
-          padding: {
-            left: 20,
-            right: 20
-          }
-        },
         scales: {
           x: {
             grid: {
@@ -348,7 +351,6 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
                 family: 'Space Grotesk'
               },
               color: '#565656',
-              padding: 5
             }
           },
           y: {
@@ -393,8 +395,8 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const datasets = chart.data.datasets;
                 return datasets.map((dataset, i) => ({
                   text: dataset.label,
-                  fillStyle: dataset.backgroundColor as string,
-                  strokeStyle: dataset.backgroundColor as string,
+                  fillStyle: dataset.borderColor as string,
+                  strokeStyle: dataset.borderColor as string,
                   lineWidth: 0,
                   pointStyle: 'circle',
                   radius: 6,
