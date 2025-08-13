@@ -127,7 +127,13 @@
     </div>
     <div class="charts">
       <div class="chart-box">
-        <div class="title">Number of questions solved</div>
+        <div class="title">
+          @if (selectedTab === '1') {
+            Number of questions solved
+          } @else if (selectedTab === '2') {
+            Student Levels
+          }
+        </div>
         <div class="chart">
           <canvas #questionsChart width="400" height="300"></canvas>
         </div>

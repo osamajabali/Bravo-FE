@@ -8,8 +8,12 @@ import { Chart, registerables } from 'chart.js';
 import { 
   questionsChartData, 
   timeChartData, 
+  readingTimeChartData,
+  readingPieChartData,
   createQuestionsChartConfig, 
   createTimeChartConfig,
+  createReadingTimeChartConfig,
+  createReadingPieChartConfig,
   ChartData 
 } from './chart-configs';
 
@@ -104,6 +108,8 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
   // Chart data imported from chart-configs.ts
   questionsData: ChartData = questionsChartData;
   timeData: ChartData = timeChartData;
+  readingTimeData: ChartData = readingTimeChartData;
+  readingPieData: ChartData = readingPieChartData;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
@@ -116,8 +122,7 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       setTimeout(() => {
-        this.createQuestionsChart();
-        this.createTimeChart();
+        this.renderChartsForCurrentTab();
       }, 100);
     }
   }
@@ -159,8 +164,65 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.timeChartInstance = new Chart(ctx, config);
   }
 
+  private createReadingTimeChart(): void {
+    if (this.timeChartInstance) {
+      this.timeChartInstance.destroy();
+    }
+    
+    if (!this.timeChart?.nativeElement) return;
+
+    const ctx = this.timeChart.nativeElement.getContext('2d');
+    if (!ctx) return;
+
+    const config = createReadingTimeChartConfig(this.readingTimeData);
+    this.timeChartInstance = new Chart(ctx, config);
+  }
+
+  private createReadingPieChart(): void {
+    if (this.questionsChartInstance) {
+      this.questionsChartInstance.destroy();
+    }
+    
+    if (!this.questionsChart?.nativeElement) return;
+
+    const ctx = this.questionsChart.nativeElement.getContext('2d');
+    if (!ctx) return;
+
+    const config = createReadingPieChartConfig(this.readingPieData);
+    this.questionsChartInstance = new Chart(ctx, config);
+  }
+
+  private renderChartsForCurrentTab(): void {
+    // Destroy existing charts
+    if (this.questionsChartInstance) {
+      this.questionsChartInstance.destroy();
+      this.questionsChartInstance = undefined;
+    }
+    if (this.timeChartInstance) {
+      this.timeChartInstance.destroy();
+      this.timeChartInstance = undefined;
+    }
+
+    // Render charts based on selected tab
+    if (this.selectedTab === '1') {
+      // Learning Outcomes tab
+      this.createQuestionsChart();
+      this.createTimeChart();
+    } else if (this.selectedTab === '2') {
+      // Reading Comprehension tab
+      this.createReadingPieChart();
+      this.createReadingTimeChart();
+    }
+    // Add more tabs as needed
+  }
+
   onTabClick(tab: string) {
     this.selectedTab = tab;
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.renderChartsForCurrentTab();
+      }, 100);
+    }
   }
 
   onTimePeriodChange(event: any) {

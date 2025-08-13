@@ -3,8 +3,8 @@ import { ChartConfiguration } from 'chart.js';
 export interface ChartDataset {
   label: string;
   data: number[];
-  borderColor: string;
-  backgroundColor: string | CanvasGradient;
+  borderColor: string | string[];
+  backgroundColor: string | CanvasGradient | string[];
   borderWidth: number;
   fill?: boolean;
   tension?: number;
@@ -23,7 +23,7 @@ export interface ChartData {
   datasets: ChartDataset[];
 }
 
-// Sample data for charts
+// Learning Outcomes Tab Charts
 export const questionsChartData: ChartData = {
   labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'],
   datasets: [
@@ -90,6 +90,39 @@ export const timeChartData: ChartData = {
       pointHoverRadius: 0,
       pointBackgroundColor: '#54c8e8',
       pointBorderColor: '#54c8e8'
+    }
+  ]
+};
+
+// Reading Comprehension Tab Charts
+export const readingTimeChartData: ChartData = {
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  datasets: [
+    {
+      label: 'Class Avg.',
+      data: [15, 22, 18, 35, 28, 45, 38, 52, 41, 33, 29, 37],
+      borderColor: '#54c8e8',
+      backgroundColor: '#54c8e8',
+      borderWidth: 4,
+      fill: false,
+      tension: 0.4,
+      pointRadius: 0,
+      pointHoverRadius: 0,
+      pointBackgroundColor: '#54c8e8',
+      pointBorderColor: '#54c8e8'
+    }
+  ]
+};
+
+export const readingPieChartData: ChartData = {
+  labels: ['Percentage of students above level', 'Percentage of students below level'],
+  datasets: [
+    {
+      label: 'Student Levels',
+      data: [65, 35],
+      backgroundColor: ['#54c8e8', '#3B8FA7'],
+      borderColor: ['#54c8e8', '#3B8FA7'],
+      borderWidth: 2
     }
   ]
 };
@@ -303,6 +336,168 @@ export function createTimeChartConfig(data: ChartData): ChartConfiguration {
       interaction: {
         intersect: false,
         mode: 'index'
+      }
+    }
+  };
+}
+
+export function createReadingTimeChartConfig(data: ChartData): ChartConfiguration {
+  return {
+    type: 'line',
+    data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          grid: {
+            display: false
+          },
+          border: {
+            display: false,
+          },
+          offset: true,
+          ticks: {
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          }
+        },
+        y: {
+          min: 0,
+          max: 100,
+          ticks: {
+            stepSize: 5,
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          },
+          grid: {
+            display: false
+          },
+          border: {
+            display: false
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'rectRot',
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#3B8FA7',
+            padding: 30,
+            boxWidth: 12,
+            boxHeight: 12,
+            generateLabels: (chart) => {
+              const datasets = chart.data.datasets;
+              return datasets.map((dataset, i) => ({
+                text: dataset.label,
+                fillStyle: dataset.borderColor as string,
+                strokeStyle: dataset.borderColor as string,
+                lineWidth: 0,
+                pointStyle: 'circle',
+                radius: 6,
+                hidden: !chart.isDatasetVisible(i),
+                datasetIndex: i
+              }));
+            }
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          borderColor: '#54c8e8',
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: true,
+          callbacks: {
+            title: (context) => {
+              return context[0].label;
+            },
+            label: (context) => {
+              return `${context.dataset.label}: ${context.parsed.y} books`;
+            }
+          }
+        }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      }
+    }
+  };
+}
+
+export function createReadingPieChartConfig(data: ChartData): ChartConfiguration {
+  return {
+    type: 'pie',
+    data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'rectRot',
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#3B8FA7',
+            padding: 30,
+            boxWidth: 12,
+            boxHeight: 12,
+            generateLabels: (chart) => {
+              const datasets = chart.data.datasets;
+              const dataset = datasets[0];
+              return chart.data.labels?.map((label, i) => ({
+                text: label as string,
+                fillStyle: (dataset.backgroundColor as string[])[i],
+                strokeStyle: (dataset.borderColor as string[])[i],
+                lineWidth: 0,
+                pointStyle: 'circle',
+                radius: 6,
+                hidden: false,
+                datasetIndex: 0,
+                index: i
+              })) || [];
+            }
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          borderColor: '#54c8e8',
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: true,
+          callbacks: {
+            title: (context) => {
+              return context[0].label;
+            },
+            label: (context) => {
+              return `${context.label}: ${context.parsed}%`;
+            }
+          }
+        }
       }
     }
   };
