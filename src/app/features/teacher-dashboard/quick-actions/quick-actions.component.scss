@@ -315,6 +315,7 @@
             border-radius: var(--radius-m);
             padding: var(--padding-m);
             flex: 1;
+            min-height: 68px;
 
             .left {
               display: flex;
