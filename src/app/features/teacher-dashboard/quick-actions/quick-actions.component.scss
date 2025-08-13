@@ -198,7 +198,7 @@
         .time-period-dropdown {
           display: flex;
           flex-direction: column;
-          gap: var(--padding-s);
+          gap: var(--padding-xxs);
 
           label {
             font-size: var(--font-size-xxs);
@@ -256,6 +256,19 @@
           font-size: var(--font-size-l);
           font-weight: var(--font-weight-bold);
           color: var(--primary-primary-900);
+        }
+
+        .chart {
+          height: 300px;
+          width: 100%;
+          position: relative;
+          display: block;
+
+          canvas {
+            width: 100% !important;
+            height: 300px !important;
+            display: block;
+          }
         }
       }
     }
