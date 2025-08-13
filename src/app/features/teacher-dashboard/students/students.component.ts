@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -11,18 +11,11 @@ import { DrawerModule } from 'primeng/drawer';
 import { InputTextModule } from 'primeng/inputtext';
 import { TabViewModule } from 'primeng/tabview';
 import { PasswordModule } from 'primeng/password';
-
-interface Student {
-  id: number;
-  name: string;
-  initials: string;
-  practicedQuestions: number;
-  readStories: string;
-  progressedSkills: number;
-  leveledReading: string;
-  lastLogin: string;
-  selected?: boolean;
-}
+import { StudentsService } from '../../../core/services/students/students.service';
+import { HeaderService } from '../../../core/services/header-services/header.service';
+import { SharedService } from '../../../core/services/shared-services/shared.service';
+import { Subscription } from 'rxjs';
+import { Student } from '../../../core/models/students/students.model';
 
 interface Group {
   id: number;
@@ -53,6 +46,9 @@ interface Group {
 })
 export class StudentsComponent implements OnInit {
   private router = inject(Router);
+  public sharedService = inject(SharedService);
+  private studentsService = inject(StudentsService);
+  private refreshSubscription!: Subscription;
   selectedTab: string = 'homeroom';
   startDate: Date | null = null;
   endDate: Date | null = null;
@@ -102,75 +98,7 @@ export class StudentsComponent implements OnInit {
   };
   
   // Mock data for students
-  students: Student[] = [
-    {
-      id: 1,
-      name: 'Ahmed Mohamed Ali',
-      initials: 'AM',
-      practicedQuestions: 245,
-      readStories: '12 books',
-      progressedSkills: 18,
-      leveledReading: 'Level 3A',
-      lastLogin: '2 days ago',
-      selected: false
-    },
-    {
-      id: 2,
-      name: 'Sara Hassan Ibrahim',
-      initials: 'SH',
-      practicedQuestions: 189,
-      readStories: '8 books',
-      progressedSkills: 15,
-      leveledReading: 'Level 2B',
-      lastLogin: '1 day ago',
-      selected: false
-    },
-    {
-      id: 3,
-      name: 'Omar Abdullah Youssef',
-      initials: 'OA',
-      practicedQuestions: 312,
-      readStories: '15 books',
-      progressedSkills: 22,
-      leveledReading: 'Level 4A',
-      lastLogin: '3 hours ago',
-      selected: false
-    },
-    {
-      id: 4,
-      name: 'Fatima Ali Mohamed',
-      initials: 'FA',
-      practicedQuestions: 156,
-      readStories: '6 books',
-      progressedSkills: 12,
-      leveledReading: 'Level 2A',
-      lastLogin: '5 days ago',
-      selected: false
-    },
-    {
-      id: 5,
-      name: 'Khaled Mahmoud Hassan',
-      initials: 'KM',
-      practicedQuestions: 278,
-      readStories: '11 books',
-      progressedSkills: 19,
-      leveledReading: 'Level 3B',
-      lastLogin: '1 day ago',
-      selected: false
-    },
-    {
-      id: 6,
-      name: 'Nour Ibrahim Ahmed',
-      initials: 'NI',
-      practicedQuestions: 201,
-      readStories: '9 books',
-      progressedSkills: 16,
-      leveledReading: 'Level 3A',
-      lastLogin: '4 hours ago',
-      selected: false
-    }
-  ];
-
+  students= signal<Student[]>([]);
   // Mock data for groups
   groups: Group[] = [
     {
@@ -206,7 +134,33 @@ export class StudentsComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    // Component initialization
+    if (localStorage.getItem('selectedItems')) {
+      this.getStudents();
+      this.getGroups();
+    }
+    let check = this.sharedService.getSelectedItems()?.selectedGradeId == 0;
+    this.refreshSubscription = this.sharedService.refresh$.subscribe(res => {
+      if (((res == 'trigger') && check) || res == 'refresh') {
+        this.getGroups();
+        this.getStudents();
+      }
+    });
+  }
+
+  getStudents() {
+    this.studentsService.getStudents(this.sharedService.getSelectedItems()?.selectedSectionId).subscribe((res) => {
+      if(res){
+        this.students.set(res.result);
+      }
+    });
+  }
+
+  getGroups() {
+    this.studentsService.getGroups(this.sharedService.getSelectedItems()?.selectedSectionId).subscribe((res) => {
+      if(res){
+        // this.groups.set(res.result);
+      }
+    });
   }
 
   onTabClick(tab: string): void {
@@ -214,7 +168,6 @@ export class StudentsComponent implements OnInit {
     // Reset selections when switching tabs
     this.allStudentsSelected = false;
     this.allGroupsSelected = false;
-    this.students.forEach(student => student.selected = false);
     this.groups.forEach(group => group.selected = false);
   }
 
@@ -233,11 +186,10 @@ export class StudentsComponent implements OnInit {
   // Student selection methods
   toggleAllStudents(checked: boolean): void {
     this.allStudentsSelected = checked;
-    this.students.forEach(student => (student.selected = checked));
   }
 
   onStudentSelectionChange(): void {
-    this.allStudentsSelected = this.students.length > 0 && this.students.every(s => s.selected);
+    // this.allStudentsSelected = this.students.length > 0 && this.students.every(s => s.selected);
   }
 
   // Group selection methods
@@ -263,7 +215,6 @@ export class StudentsComponent implements OnInit {
     this.isEditGroupMode = false;
     this.editingGroupId = null;
     this.newGroupTitle = '';
-    this.selectedStudentsForGroup = this.students.filter(s => s.selected);
     this.showCreateGroupDrawer = true;
   }
 
@@ -271,8 +222,8 @@ export class StudentsComponent implements OnInit {
     console.log('Filter clicked');
   }
 
-  hasSelectedRows(): boolean {
-    return this.students.some(student => student.selected) || this.groups.some(group => group.selected);
+  hasSelectedRows() {
+    // return this.students.some(student => student.selected) || this.groups.some(group => group.selected);
   }
 
   goToGroupDetails(groupId: number): void {
@@ -310,24 +261,24 @@ export class StudentsComponent implements OnInit {
       console.log('Save group', {
         groupId: this.editingGroupId,
         title: this.newGroupTitle,
-        students: this.selectedStudentsForGroup.map(s => s.id)
+        // students: this.selectedStudentsForGroup.map(s => s.id)
       });
     } else {
       console.log('Create group', {
         title: this.newGroupTitle,
-        students: this.selectedStudentsForGroup.map(s => s.id)
+        // students: this.selectedStudentsForGroup.map(s => s.id)
       });
     }
     this.onCancelCreateGroup();
   }
 
   onRemoveStudentFromNewGroup(studentId: number): void {
-    this.selectedStudentsForGroup = this.selectedStudentsForGroup.filter(s => s.id !== studentId);
+    // this.selectedStudentsForGroup = this.selectedStudentsForGroup.filter(s => s.id !== studentId);
   }
 
   onAddStudentToNewGroup(): void {
     // Initialize selection with currently chosen students
-    this.addStudentsSelectedIds = new Set(this.selectedStudentsForGroup.map(s => s.id));
+    // this.addStudentsSelectedIds = new Set(this.selectedStudentsForGroup.map(s => s.id));
     this.showAddStudentsDrawer = true;
   }
 
@@ -349,7 +300,7 @@ export class StudentsComponent implements OnInit {
   }
 
   onConfirmAddStudents(): void {
-    this.selectedStudentsForGroup = this.students.filter(s => this.addStudentsSelectedIds.has(s.id));
+    // this.selectedStudentsForGroup = this.students.filter(s => this.addStudentsSelectedIds.has(s.id));
     this.showAddStudentsDrawer = false;
   }
 
@@ -366,8 +317,8 @@ export class StudentsComponent implements OnInit {
     this.editingStudent = student;
     // Populate form with current student data
     this.editProfileForm = {
-      firstNameEn: student.name.split(' ')[0] || '',
-      lastNameEn: student.name.split(' ').slice(1).join(' ') || '',
+      firstNameEn: '',
+      lastNameEn:  '',
       firstNameAr: '', // In real app, this would come from student data
       lastNameAr: '', // In real app, this would come from student data
       username: '', // In real app, this would come from student data
@@ -396,7 +347,7 @@ export class StudentsComponent implements OnInit {
   onSaveEditProfile(): void {
     if (this.editingStudent) {
       console.log('Saving student profile:', {
-        studentId: this.editingStudent.id,
+        studentId: 0,
         studentForm: this.editProfileForm,
         parentForm: this.parentForm
       });
@@ -429,5 +380,36 @@ export class StudentsComponent implements OnInit {
       currentLevel: '',
       newLevel: ''
     };
+  }
+
+  // Helper methods for template
+  getInitials(studentName: string): string {
+    if (!studentName) return '';
+    return studentName.split(' ').map(name => name.charAt(0)).join('').toUpperCase();
+  }
+
+  getPracticedQuestions(student: Student): string {
+    // Mock data - replace with actual logic
+    return '15';
+  }
+
+  getReadStories(student: Student): string {
+    // Mock data - replace with actual logic
+    return '8';
+  }
+
+  getProgressedSkills(student: Student): string {
+    // Mock data - replace with actual logic
+    return '12';
+  }
+
+  getLeveledReading(student: Student): string {
+    // Mock data - replace with actual logic
+    return 'Level 3';
+  }
+
+  getLastLogin(student: Student): string {
+    // Mock data - replace with actual logic
+    return '2 days ago';
   }
 }

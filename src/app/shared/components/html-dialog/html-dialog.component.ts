@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef } from '@angular/core';
+import { Component, OnInit, forwardRef, input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { GalleriaModule } from 'primeng/galleria';
@@ -27,7 +27,7 @@ export class HtmlDialogComponent implements OnInit, ControlValueAccessor {
   previousIndex: number = 0;
   storyPages: StoryPages = new StoryPages();
   storyPagesResponse: StoryPageResponseArray = new StoryPageResponseArray();
-
+  storyId = input<number>(0);
   responsiveOptions: any[] = [
     { breakpoint: '1024px', numVisible: 3, numScroll: 3 },
     { breakpoint: '768px', numVisible: 2, numScroll: 2 },
@@ -37,7 +37,7 @@ export class HtmlDialogComponent implements OnInit, ControlValueAccessor {
   constructor(private readingService: LeveldReadingService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
-    this.storyPages.storyId = 337697;
+    this.storyPages.storyId = this.storyId();
     this.readingService.getStoryPages(this.storyPages).subscribe(res => {
       if (res.success) {
         this.storyPagesResponse = res.result;

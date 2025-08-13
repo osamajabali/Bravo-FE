@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="w-50">
-        <form
+        <form AutoFormError
           #loginForm="ngForm"
           (ngSubmit)="onSubmit(loginForm)"
           class="login-card"
@@ -43,10 +43,6 @@
               placeholder="Enter your username"
               [class.is-invalid]="errorMessage && (errorMessage.includes('USERNAME') || errorMessage.includes('REQUIRED'))"
             />
-            <div *ngIf="errorMessage && (errorMessage.includes('USERNAME') || errorMessage.includes('REQUIRED'))" 
-                 class="invalid-feedback d-block">
-              {{ errorMessage | translate }}
-            </div>
           </div>
           <div class="d-flex flex-column">
             <label for="password" class="form-label my-2 font-bold"
@@ -67,10 +63,6 @@
               [class.is-invalid]="errorMessage && (errorMessage.includes('PASSWORD') || errorMessage.includes('REQUIRED'))"
               [class.is-valid]="user.password && user.password.length >= 4"
             ></p-password>
-            <div *ngIf="errorMessage && (errorMessage.includes('PASSWORD') || errorMessage.includes('REQUIRED'))" 
-                 class="invalid-feedback d-block">
-              {{ errorMessage | translate }}
-            </div>
           </div>
           <div class="login-options">
             <div class="keep-logged-in">

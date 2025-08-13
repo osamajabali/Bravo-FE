@@ -103,5 +103,5 @@
 </div>
 
 @if (showReader) {
-  <app-html-dialog [(ngModel)]="showReader" />
+  <app-html-dialog [(ngModel)]="showReader" [storyId]="storySummarry.storyId" />
 }

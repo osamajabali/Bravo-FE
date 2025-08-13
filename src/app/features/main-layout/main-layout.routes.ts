@@ -151,13 +151,13 @@ export const Main_Layout_Routes: Routes = [
             (m) => m.QuestionsComponent
           ),
       },
-      // {
-      //   path: 'assignments',
-      //   loadComponent: () =>
-      //     import('../teacher-dashboard/assignments/assignments.component').then(
-      //       (m) => m.AssignmentsComponent
-      //     ),
-      // },
+      {
+        path: 'group',
+        loadComponent: () =>
+          import('../teacher-dashboard/group-details/group-details.component').then(
+            (m) => m.GroupDetailsComponent
+          ),
+      },
       {
         path: 'assignmentsDetails',
         loadComponent: () =>

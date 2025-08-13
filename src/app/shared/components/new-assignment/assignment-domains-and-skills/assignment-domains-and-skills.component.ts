@@ -114,9 +114,9 @@ export class AssignmentDomainsAndSkillsComponent implements OnInit {
       let roles = JSON.parse(localStorage.getItem('loginRoles')) as Role[];
       debugger
       this.assignmentDomain = {
-        selectedGrades: this.assignmentData.selectedGroups || this.assignmentData.selectedSections || this.assignmentData.selectedStudents ? [] : this.assignmentData.selectedGrades,
+        selectedGrades: this.assignmentData.selectedGroups.length > 0 || this.assignmentData.selectedSections.length > 0 || this.assignmentData.selectedStudents.length > 0 ? [] : this.assignmentData.selectedGrades,
         selectedGroups: this.assignmentData.selectedGroups,
-        selectedCourseSections: !this.assignmentData.selectedStudents ? [] : this.assignmentData.selectedSections,
+        selectedCourseSections: this.assignmentData.selectedStudents.length > 0 ? [] : this.assignmentData.selectedSections,
         selectedStudents: this.assignmentData.selectedStudents,
         subjectId: this.sharedService.getSelectedItems().selectedSubjectId,
         roleId: roles[0].roleId,

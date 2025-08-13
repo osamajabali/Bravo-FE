@@ -9,10 +9,11 @@ import { HeaderService } from '../../../core/services/header-services/header.ser
 import { PasswordModule } from 'primeng/password';
 import { AlertService } from '../../../core/services/shared-services/alert.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { AutoFormErrorDirective } from '../../../shared/functions/directives/auto-form-error.directive';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule, RouterModule, PasswordModule, TranslateModule],
+  imports: [CommonModule, FormsModule, RouterModule, PasswordModule, TranslateModule, AutoFormErrorDirective],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -53,7 +54,6 @@ export class LoginComponent {
   onSubmit(loginForm: NgForm): void {
     // Check form validity first
     if (!this.isFormValid()) {
-      this.handleFormValidationErrors(loginForm);
       return;
     }
 
@@ -98,40 +98,6 @@ export class LoginComponent {
           this.alertService.error('ERROR.INVALID_CREDENTIALS', 'ERROR.AUTHENTICATION_FAILED');
         }
       });
-  }
-
-  private handleFormValidationErrors(loginForm: NgForm): void {
-    // Check for empty username
-    if (!this.user.username || this.user.username.trim() === '') {
-      this.errorMessage = 'ERROR.USERNAME_REQUIRED';
-      this.alertService.error('ERROR.USERNAME_REQUIRED', 'ERROR.VALIDATION_ERROR');
-      return;
-    }
-
-    // Check for empty password
-    if (!this.user.password || this.user.password.trim() === '') {
-      this.errorMessage = 'ERROR.PASSWORD_REQUIRED';
-      this.alertService.error('ERROR.PASSWORD_REQUIRED', 'ERROR.VALIDATION_ERROR');
-      return;
-    }
-
-    // Check if username is too short (optional validation)
-    if (this.user.username.trim().length < 2) {
-      this.errorMessage = 'ERROR.USERNAME_TOO_SHORT';
-      this.alertService.error('ERROR.USERNAME_TOO_SHORT', 'ERROR.VALIDATION_ERROR');
-      return;
-    }
-
-    // Check if password is too short (optional validation)
-    if (this.user.password.length < 4) {
-      this.errorMessage = 'ERROR.PASSWORD_TOO_SHORT';
-      this.alertService.error('ERROR.PASSWORD_TOO_SHORT', 'ERROR.VALIDATION_ERROR');
-      return;
-    }
-
-    // If we reach here, there might be other validation errors
-    this.errorMessage = 'ERROR.PLEASE_CHECK_INPUT';
-    this.alertService.error('ERROR.PLEASE_CHECK_INPUT', 'ERROR.VALIDATION_ERROR');
   }
 
   private handleLoginError(error: any): void {

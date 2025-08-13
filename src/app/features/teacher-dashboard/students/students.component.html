@@ -38,7 +38,7 @@
           class="p-button-outlined action-button"
           (click)="onSendCertificate()"
           size="small"
-          [disabled]="!hasSelectedRows()"
+          
         >
           <span>{{ "SEND_CERTIFICATE" | translate }}</span>
           <img src="icon-certificate-sml.svg" alt="send certificate" />
@@ -50,7 +50,7 @@
           class="p-button-outlined action-button"
           (click)="onCreateReport()"
           size="small"
-          [disabled]="!hasSelectedRows()"
+          
         >
           <span>{{ "CREATE_REPORT" | translate }}</span>
           <img src="icon-report-sml.svg" alt="create report" />
@@ -62,7 +62,7 @@
           class="p-button-outlined action-button"
           (click)="onCreateGroup()"
           size="small"
-          [disabled]="!hasSelectedRows()"
+          
         >
           <span>{{ "CREATE_GROUP" | translate }}</span>
           <img src="icon-plus-sml.svg" alt="add" />
@@ -90,194 +90,209 @@
 
   <div class="content">
     <!-- Homeroom Tab Content -->
-    <div *ngIf="selectedTab === 'homeroom'">
-      <div class="grid-header">
-        <div class="header-item checkbox-column custom-checkbox">
-          <input
-            type="checkbox"
-            id="allStudentsSelected"
-            name="allStudentsSelected"
-            [(ngModel)]="allStudentsSelected"
-            class="visually-hidden"
-            (change)="toggleAllStudents(allStudentsSelected)"
-          />
-          <label for="allStudentsSelected" class="checkbox-label">
-            <span class="checkbox-icon">
-              <img
-                *ngIf="allStudentsSelected"
-                src="icon-checkbox-checked.svg"
-                alt="Checked"
-                class="checkbox-checked"
-              />
-              <img
-                *ngIf="!allStudentsSelected"
-                src="icon-checkbox-unchecked.svg"
-                alt="Unchecked"
-                class="checkbox-unchecked"
-              />
-            </span>
-          </label>
-        </div>
-        <div class="header-item student-name">
-          <span>{{ "STUDENT_NAME" | translate }}</span>
-          <img
-            src="icon-sort.svg"
-            alt="sort"
-            (click)="onSort('name')"
-            [src]="
-              sortColumn === 'name'
-                ? sortDirection === 'asc'
-                  ? 'icon-sort-asc.svg'
-                  : 'icon-sort.svg'
-                : 'icon-sort.svg'
-            "
-          />
-        </div>
-        <div class="header-item practiced-questions">
-          <span>{{ "PRACTICED_QUESTIONS" | translate }}</span>
-          <img
-            src="icon-sort.svg"
-            alt="sort"
-            (click)="onSort('practicedQuestions')"
-            [src]="
-              sortColumn === 'practicedQuestions'
-                ? sortDirection === 'asc'
-                  ? 'icon-sort-asc.svg'
-                  : 'icon-sort.svg'
-                : 'icon-sort.svg'
-            "
-          />
-        </div>
-        <div class="header-item read-stories">
-          <span>{{ "READ_STORIES" | translate }}</span>
-          <img
-            src="icon-sort.svg"
-            alt="sort"
-            (click)="onSort('readStories')"
-            [src]="
-              sortColumn === 'readStories'
-                ? sortDirection === 'asc'
-                  ? 'icon-sort-asc.svg'
-                  : 'icon-sort.svg'
-                : 'icon-sort.svg'
-            "
-          />
-        </div>
-        <div class="header-item progressed-skills">
-          <span>{{ "PROGRESSED_SKILLS" | translate }}</span>
-          <img
-            src="icon-sort.svg"
-            alt="sort"
-            (click)="onSort('progressedSkills')"
-            [src]="
-              sortColumn === 'progressedSkills'
-                ? sortDirection === 'asc'
-                  ? 'icon-sort-asc.svg'
-                  : 'icon-sort.svg'
-                : 'icon-sort.svg'
-            "
-          />
-        </div>
-        <div class="header-item leveled-reading">
-          <span>{{ "LEVELED_READING" | translate }}</span>
-          <img
-            src="icon-sort.svg"
-            alt="sort"
-            (click)="onSort('leveledReading')"
-            [src]="
-              sortColumn === 'leveledReading'
-                ? sortDirection === 'asc'
-                  ? 'icon-sort-asc.svg'
-                  : 'icon-sort.svg'
-                : 'icon-sort.svg'
-            "
-          />
-        </div>
-        <div class="header-item last-login">
-          <span>{{ "LAST_LOGIN" | translate }}</span>
-          <img
-            src="icon-sort.svg"
-            alt="sort"
-            (click)="onSort('lastLogin')"
-            [src]="
-              sortColumn === 'lastLogin'
-                ? sortDirection === 'asc'
-                  ? 'icon-sort-asc.svg'
-                  : 'icon-sort.svg'
-                : 'icon-sort.svg'
-            "
-          />
-        </div>
-        <div class="header-item actions">
-          <span></span>
-        </div>
-      </div>
-
-      <div class="students-list">
-        <div class="student-row" *ngFor="let student of students">
-          <div class="item checkbox-column custom-checkbox">
+    @if (selectedTab === 'homeroom') {
+      <div>
+        <div class="grid-header">
+          <div class="header-item checkbox-column custom-checkbox">
             <input
               type="checkbox"
-              [id]="student.id"
-              [name]="student.id + 'student'"
-              [(ngModel)]="student.selected"
-              (onChange)="onStudentSelectionChange()"
+              id="allStudentsSelected"
+              name="allStudentsSelected"
+              [(ngModel)]="allStudentsSelected"
               class="visually-hidden"
+              (change)="toggleAllStudents(allStudentsSelected)"
             />
-            <label [for]="student.id" class="checkbox-label">
-              <span class="checkbox-icon">
-                <img
-                  *ngIf="student.selected"
-                  src="icon-checkbox-checked.svg"
-                  alt="Checked"
-                  class="checkbox-checked"
-                />
-                <img
-                  *ngIf="!student.selected"
-                  src="icon-checkbox-unchecked.svg"
-                  alt="Unchecked"
-                  class="checkbox-unchecked"
-                />
-              </span>
+            <label for="allStudentsSelected" class="checkbox-label">
+                           <span class="checkbox-icon">
+               @if (allStudentsSelected) {
+                 <img
+                   src="icon-checkbox-checked.svg"
+                   alt="Checked"
+                   class="checkbox-checked"
+                 />
+               } @else {
+                 <img
+                   src="icon-checkbox-unchecked.svg"
+                   alt="Unchecked"
+                   class="checkbox-unchecked"
+                 />
+               }
+             </span>
             </label>
           </div>
-          <div class="item student-name">
-            <div class="student-info">
-              <div class="student-avatar">
-                <span>{{ student.initials }}</span>
-              </div>
-              <span class="student-name-text">{{ student.name }}</span>
-            </div>
-          </div>
-          <div class="item practiced-questions">
-            {{ student.practicedQuestions }}
-          </div>
-          <div class="item read-stories">{{ student.readStories }}</div>
-          <div class="item progressed-skills">
-            {{ student.progressedSkills }}
-          </div>
-          <div class="item leveled-reading">{{ student.leveledReading }}</div>
-          <div class="item last-login">{{ student.lastLogin }}</div>
-          <div class="item actions d-flex gap-2">
+          <div class="header-item student-name">
+            <span>{{ "STUDENT_NAME" | translate }}</span>
             <img
-              src="icon-edit-square-sml.svg"
-              alt="edit"
-              class="action-icon"
-              (click)="onEditStudentProfile(student)"
+              src="icon-sort.svg"
+              alt="sort"
+              (click)="onSort('name')"
+              [src]="
+                sortColumn === 'name'
+                  ? sortDirection === 'asc'
+                    ? 'icon-sort-asc.svg'
+                    : 'icon-sort.svg'
+                  : 'icon-sort.svg'
+              "
             />
-            <img src="icon-bravo-square.svg" alt="bravo" class="action-icon" />
+          </div>
+          <div class="header-item practiced-questions">
+            <span>{{ "PRACTICED_QUESTIONS" | translate }}</span>
             <img
-              src="icon-arrow-right-square.svg"
-              alt="details"
-              class="action-icon"
+              src="icon-sort.svg"
+              alt="sort"
+              (click)="onSort('practicedQuestions')"
+              [src]="
+                sortColumn === 'practicedQuestions'
+                  ? sortDirection === 'asc'
+                    ? 'icon-sort-asc.svg'
+                    : 'icon-sort.svg'
+                  : 'icon-sort.svg'
+              "
             />
+          </div>
+          @if((sharedService.getSelectedItems().selectedSectionId != 1) || (sharedService.getSelectedItems().selectedSectionId != 4)){
+            <div class="header-item read-stories">
+            <span>{{ "READ_STORIES" | translate }}</span>
+            <img
+              src="icon-sort.svg"
+              alt="sort"
+              (click)="onSort('readStories')"
+              [src]="
+                sortColumn === 'readStories'
+                  ? sortDirection === 'asc'
+                    ? 'icon-sort-asc.svg'
+                    : 'icon-sort.svg'
+                  : 'icon-sort.svg'
+              "
+            />
+          </div>
+          }
+          <div class="header-item progressed-skills">
+            <span>{{ "PROGRESSED_SKILLS" | translate }}</span>
+            <img
+              src="icon-sort.svg"
+              alt="sort"
+              (click)="onSort('progressedSkills')"
+              [src]="
+                sortColumn === 'progressedSkills'
+                  ? sortDirection === 'asc'
+                    ? 'icon-sort-asc.svg'
+                    : 'icon-sort.svg'
+                  : 'icon-sort.svg'
+              "
+            />
+          </div>
+          @if((sharedService.getSelectedItems().selectedSectionId != 1) || (sharedService.getSelectedItems().selectedSectionId != 4)){
+            <div class="header-item leveled-reading">
+            <span>{{ "LEVELED_READING" | translate }}</span>
+            <img
+              src="icon-sort.svg"
+              alt="sort"
+              (click)="onSort('leveledReading')"
+              [src]="
+                sortColumn === 'leveledReading'
+                  ? sortDirection === 'asc'
+                    ? 'icon-sort-asc.svg'
+                    : 'icon-sort.svg'
+                  : 'icon-sort.svg'
+              "
+            />
+          </div>
+          }
+          <div class="header-item last-login">
+            <span>{{ "LAST_LOGIN" | translate }}</span>
+            <img
+              src="icon-sort.svg"
+              alt="sort"
+              (click)="onSort('lastLogin')"
+              [src]="
+                sortColumn === 'lastLogin'
+                  ? sortDirection === 'asc'
+                    ? 'icon-sort-asc.svg'
+                    : 'icon-sort.svg'
+                  : 'icon-sort.svg'
+              "
+            />
+          </div>
+          <div class="header-item actions">
+            <span></span>
           </div>
         </div>
-      </div>
-    </div>
+  
+                 <div class="students-list">
+           @for (student of students(); track student.fullName; let index = $index) {
+             <div class="student-row">
+               <div class="item checkbox-column custom-checkbox">
+                 <input
+                   type="checkbox"
+                   [id]="'student-' + index"
+                   [name]="'student-' + index"
+                   [(ngModel)]="student.isSelected"
+                   (change)="onStudentSelectionChange()"
+                   class="visually-hidden"
+                 />
+                 <label [for]="'student-' + index" class="checkbox-label">
+                   <span class="checkbox-icon">
+                     @if (student.isSelected) {
+                       <img
+                         src="icon-checkbox-checked.svg"
+                         alt="Checked"
+                         class="checkbox-checked"
+                       />
+                     } @else {
+                       <img
+                         src="icon-checkbox-unchecked.svg"
+                         alt="Unchecked"
+                         class="checkbox-unchecked"
+                       />
+                     }
+                   </span>
+                 </label>
+               </div>
+               <div class="item student-name">
+                 <div class="student-info">
+                   <div class="student-avatar">
+                     <span>{{ getInitials(student.fullName) }}</span>
+                   </div>
+                   <span class="student-name-text">{{ student.fullName }}</span>
+                 </div>
+               </div>
+               <div class="item practiced-questions">
+                 {{ getPracticedQuestions(student) }}
+               </div>
+              @if((sharedService.getSelectedItems().selectedSectionId != 1) || (sharedService.getSelectedItems().selectedSectionId != 4)){
 
-    <!-- Groups Tab Content -->
-    <div *ngIf="selectedTab === 'groups'">
+               <div class="item read-stories">{{ getReadStories(student) }}</div>
+              }
+               <div class="item progressed-skills">
+                 {{ getProgressedSkills(student) }}
+               </div>
+              @if((sharedService.getSelectedItems().selectedSectionId != 1) || (sharedService.getSelectedItems().selectedSectionId != 4)){
+
+               <div class="item leveled-reading">{{ getLeveledReading(student) }}</div>
+              }
+               <div class="item last-login">{{ getLastLogin(student) }}</div>
+               <div class="item actions d-flex gap-2">
+                 <img
+                   src="icon-edit-square-sml.svg"
+                   alt="edit"
+                   class="action-icon"
+                   (click)="onEditStudentProfile(student)"
+                 />
+                 <img src="icon-bravo-square.svg" alt="bravo" class="action-icon" />
+                 <img
+                   src="icon-arrow-right-square.svg"
+                   alt="details"
+                   class="action-icon"
+                 />
+               </div>
+             </div>
+           }
+         </div>
+      </div>
+    }@else {
+          <!-- Groups Tab Content -->
+    <div>
       <div class="grid-header">
         <div class="header-item checkbox-column custom-checkbox">
           <input
@@ -289,20 +304,21 @@
             (change)="toggleAllGroups(allGroupsSelected)"
           />
           <label for="allGroupsSelected" class="checkbox-label">
-            <span class="checkbox-icon">
-              <img
-                *ngIf="allGroupsSelected"
-                src="icon-checkbox-checked.svg"
-                alt="Checked"
-                class="checkbox-checked"
-              />
-              <img
-                *ngIf="!allGroupsSelected"
-                src="icon-checkbox-unchecked.svg"
-                alt="Unchecked"
-                class="checkbox-unchecked"
-              />
-            </span>
+                         <span class="checkbox-icon">
+               @if (allGroupsSelected) {
+                 <img
+                   src="icon-checkbox-checked.svg"
+                   alt="Checked"
+                   class="checkbox-checked"
+                 />
+               } @else {
+                 <img
+                   src="icon-checkbox-unchecked.svg"
+                   alt="Unchecked"
+                   class="checkbox-unchecked"
+                 />
+               }
+             </span>
           </label>
         </div>
         <div class="header-item group-name">
@@ -340,61 +356,67 @@
         </div>
       </div>
 
-      <div class="groups-list">
-        <div class="group-row" *ngFor="let group of groups">
-          <div class="item checkbox-column custom-checkbox">
-            <input
-              type="checkbox"
-              [id]="group.id"
-              [name]="group.id + 'group'"
-              [(ngModel)]="group.selected"
-              (onChange)="onGroupSelectionChange()"
-              class="visually-hidden"
-            />
-            <label [for]="group.id" class="checkbox-label">
-              <span class="checkbox-icon">
-                <img
-                  *ngIf="group.selected"
-                  src="icon-checkbox-checked.svg"
-                  alt="Checked"
-                  class="checkbox-checked"
-                />
-                <img
-                  *ngIf="!group.selected"
-                  src="icon-checkbox-unchecked.svg"
-                  alt="Unchecked"
-                  class="checkbox-unchecked"
-                />
-              </span>
-            </label>
-          </div>
-          <div class="item group-name">{{ group.groupName }}</div>
-          <div class="item number-of-students">
-            {{ group.numberOfStudents }}
-          </div>
-          <div class="item actions d-flex gap-2">
-            <img
-              src="icon-red-trash-square.svg"
-              alt="delete"
-              class="action-icon"
-              (click)="onDeleteGroupClick()"
-            />
-            <img
-              src="icon-edit-square-sml.svg"
-              alt="edit"
-              class="action-icon"
-              (click)="onEditGroup(group)"
-            />
-            <img
-              src="icon-arrow-right-square.svg"
-              alt="details"
-              class="action-icon"
-              (click)="goToGroupDetails(group.id)"
-            />
-          </div>
-        </div>
-      </div>
+             <div class="groups-list">
+         @for (group of groups; track group.id) {
+           <div class="group-row">
+             <div class="item checkbox-column custom-checkbox">
+               <input
+                 type="checkbox"
+                 [id]="group.id"
+                 [name]="group.id + 'group'"
+                 [(ngModel)]="group.selected"
+                 (change)="onGroupSelectionChange()"
+                 class="visually-hidden"
+               />
+               <label [for]="group.id" class="checkbox-label">
+                 <span class="checkbox-icon">
+                   @if (group.selected) {
+                     <img
+                       src="icon-checkbox-checked.svg"
+                       alt="Checked"
+                       class="checkbox-checked"
+                     />
+                   } @else {
+                     <img
+                       src="icon-checkbox-unchecked.svg"
+                       alt="Unchecked"
+                       class="checkbox-unchecked"
+                     />
+                   }
+                 </span>
+               </label>
+             </div>
+             <div class="item group-name">{{ group.groupName }}</div>
+             <div class="item number-of-students">
+               {{ group.numberOfStudents }}
+             </div>
+             <div class="item actions d-flex gap-2">
+               <img
+                 src="icon-red-trash-square.svg"
+                 alt="delete"
+                 class="action-icon"
+                 (click)="onDeleteGroupClick()"
+               />
+               <img
+                 src="icon-edit-square-sml.svg"
+                 alt="edit"
+                 class="action-icon"
+                 (click)="onEditGroup(group)"
+               />
+               <img
+                 src="icon-arrow-right-square.svg"
+                 alt="details"
+                 class="action-icon"
+                 (click)="goToGroupDetails(group.id)"
+               />
+             </div>
+           </div>
+         }
+       </div>
     </div>
+    }
+
+
   </div>
 </div>
 
@@ -477,25 +499,26 @@
             "SELECTED_STUDENTS" | translate : { default: "Selected Students" }
           }}
         </div>
-        <div class="students-rows">
-          <div
-            class="student-row selectable"
-            *ngFor="let student of selectedStudentsForGroup"
-          >
-            <div class="student-info">
-              <div class="student-avatar">
-                <span>{{ student.initials }}</span>
-              </div>
-              <span class="student-name-text">{{ student.name }}</span>
-            </div>
-            <img
-              class="trash-icon"
-              src="icon-trash-red-large.svg"
-              alt="remove"
-              (click)="onRemoveStudentFromNewGroup(student.id)"
-            />
-          </div>
-        </div>
+                 <div class="students-rows">
+           @for (student of selectedStudentsForGroup; track student.fullName; let index = $index) {
+             <div
+               class="student-row selectable"
+             >
+               <div class="student-info">
+                 <div class="student-avatar">
+                   <span>{{ getInitials(student.fullName) }}</span>
+                 </div>
+                 <span class="student-name-text">{{ student.fullName }}</span>
+               </div>
+               <img
+                 class="trash-icon"
+                 src="icon-trash-red-large.svg"
+                 alt="remove"
+                 (click)="onRemoveStudentFromNewGroup(index)"
+               />
+             </div>
+           }
+         </div>
 
         <button
           pButton
@@ -558,21 +581,23 @@
         <div class="section-title">
           {{ "SELECT_STUDENTS" | translate : { default: "Select Students" } }}
         </div>
-        <div class="students-rows">
-          <div class="student-row selectable" *ngFor="let student of students">
-            <div class="student-info">
-              <div class="student-avatar">
-                <span>{{ student.initials }}</span>
-              </div>
-              <span class="student-name-text">{{ student.name }}</span>
-            </div>
-            <p-checkbox
-              [binary]="true"
-              [ngModel]="isStudentSelectedForAdd(student.id)"
-              (ngModelChange)="toggleStudentAddSelection(student.id, $event)"
-            ></p-checkbox>
-          </div>
-        </div>
+                 <div class="students-rows">
+           @for (student of students(); track student.fullName; let index = $index) {
+             <div class="student-row selectable">
+               <div class="student-info">
+                 <div class="student-avatar">
+                   <span>{{ getInitials(student.fullName) }}</span>
+                 </div>
+                 <span class="student-name-text">{{ student.fullName }}</span>
+               </div>
+               <p-checkbox
+                 [binary]="true"
+                 [ngModel]="isStudentSelectedForAdd(index)"
+                 (ngModelChange)="toggleStudentAddSelection(index, $event)"
+               ></p-checkbox>
+             </div>
+           }
+         </div>
       </div>
     </div>
 
