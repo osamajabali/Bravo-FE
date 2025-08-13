@@ -234,5 +234,12 @@
     "TOP_3_STUDENTS": "أفضل 3 طلاب",
     "LOW_3_STUDENTS": "أقل 3 طلاب",
     "TOP_3_SKILLS": "أفضل 3 مهارات",
-    "LOW_3_SKILLS": "أقل 3 مهارات"
+    "LOW_3_SKILLS": "أقل 3 مهارات",
+    "QUICK_STATS": "الإحصائيات السريعة",
+    "TIME_PERIOD": "الفترة الزمنية",
+    "LAST_7_DAYS": "آخر 7 أيام",
+    "LAST_30_DAYS": "آخر 30 يوماً",
+    "LAST_3_MONTHS": "آخر 3 أشهر",
+    "LAST_6_MONTHS": "آخر 6 أشهر",
+    "LAST_YEAR": "السنة الماضية"
 }

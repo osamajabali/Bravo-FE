@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
 
 interface Summary {
   icon: string;
@@ -14,9 +16,14 @@ interface Tab {
   id: string;
 }
 
+interface TimePeriodOption {
+  label: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-quick-actions',
-  imports: [CommonModule, TranslateModule, ButtonModule],
+  imports: [CommonModule, TranslateModule, ButtonModule, DropdownModule, FormsModule],
   templateUrl: './quick-actions.component.html',
   styleUrl: './quick-actions.component.scss',
 })
@@ -70,7 +77,23 @@ export class QuickActionsComponent {
 
   selectedTab: string = this.tabs[0].id;
 
+  timePeriodOptions: TimePeriodOption[] = [
+    { label: 'LAST_7_DAYS', value: '7days' },
+    { label: 'LAST_30_DAYS', value: '30days' },
+    { label: 'LAST_3_MONTHS', value: '3months' },
+    { label: 'LAST_6_MONTHS', value: '6months' },
+    { label: 'LAST_YEAR', value: '1year' }
+  ];
+
+  selectedTimePeriod: TimePeriodOption = this.timePeriodOptions[1]; // Default to 30 days
+
   onTabClick(tab: string) {
     this.selectedTab = tab;
+  }
+
+  onTimePeriodChange(event: any) {
+    this.selectedTimePeriod = event.value;
+    // Handle time period change logic here
+    console.log('Time period changed to:', this.selectedTimePeriod);
   }
 }

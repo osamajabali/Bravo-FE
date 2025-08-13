@@ -233,5 +233,12 @@
     "TOP_3_STUDENTS": "Top 3 Students",
     "LOW_3_STUDENTS": "Low 3 Students",
     "TOP_3_SKILLS": "Top 3 Skills",
-    "LOW_3_SKILLS": "Low 3 Skills"
+    "LOW_3_SKILLS": "Low 3 Skills",
+    "QUICK_STATS": "Quick Stats",
+    "TIME_PERIOD": "Time Period",
+    "LAST_7_DAYS": "Last 7 days",
+    "LAST_30_DAYS": "Last 30 days",
+    "LAST_3_MONTHS": "Last 3 months",
+    "LAST_6_MONTHS": "Last 6 months",
+    "LAST_YEAR": "Last year"
 }
