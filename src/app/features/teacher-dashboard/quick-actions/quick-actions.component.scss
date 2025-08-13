@@ -195,7 +195,7 @@
           color: var(--primary-primary-900);
         }
 
-        .time-period-dropdown {
+        .filter-dropdown {
           display: flex;
           flex-direction: column;
           gap: var(--padding-xxs);
@@ -269,6 +269,13 @@
             height: 300px !important;
             display: block;
           }
+        }
+
+        .avg-score-label {
+          font-size: var(--font-size-l);
+          font-weight: var(--font-weight-bold);
+          color: var(--primary-primary-900);
+          padding-inline-start: var(--padding-4xl);
         }
       }
     }

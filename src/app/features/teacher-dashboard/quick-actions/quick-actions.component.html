@@ -104,24 +104,44 @@
     <div class="chart-filters">
       <div class="header">
         <div class="title">{{ "QUICK_STATS" | translate }}</div>
-        <div class="time-period-dropdown">
-          <label for="timePeriod">{{ "TIME_PERIOD" | translate }}</label>
-          <p-dropdown
-            id="timePeriod"
-            [options]="timePeriodOptions"
-            [(ngModel)]="selectedTimePeriod"
-            optionLabel="label"
-            (onChange)="onTimePeriodChange($event)"
-            [placeholder]="'TIME_PERIOD' | translate"
-            styleClass="time-period-select"
-          >
-            <ng-template pTemplate="selectedItem">
-              <span>{{ selectedTimePeriod.label | translate }}</span>
-            </ng-template>
-            <ng-template let-option pTemplate="item">
-              <span>{{ option.label | translate }}</span>
-            </ng-template>
-          </p-dropdown>
+        <div class="filter-dropdown">
+          @if (selectedTab === '3') {
+            <label for="module">{{ "MODULE" | translate }}</label>
+            <p-dropdown
+              id="module"
+              [options]="moduleOptions"
+              [(ngModel)]="selectedModule"
+              optionLabel="label"
+              (onChange)="onModuleChange($event)"
+              [placeholder]="'MODULE' | translate"
+              styleClass="time-period-select"
+            >
+              <ng-template pTemplate="selectedItem">
+                <span>{{ selectedModule.label | translate }}</span>
+              </ng-template>
+              <ng-template let-option pTemplate="item">
+                <span>{{ option.label | translate }}</span>
+              </ng-template>
+            </p-dropdown>
+          } @else {
+            <label for="timePeriod">{{ "TIME_PERIOD" | translate }}</label>
+            <p-dropdown
+              id="timePeriod"
+              [options]="timePeriodOptions"
+              [(ngModel)]="selectedTimePeriod"
+              optionLabel="label"
+              (onChange)="onTimePeriodChange($event)"
+              [placeholder]="'TIME_PERIOD' | translate"
+              styleClass="time-period-select"
+            >
+              <ng-template pTemplate="selectedItem">
+                <span>{{ selectedTimePeriod.label | translate }}</span>
+              </ng-template>
+              <ng-template let-option pTemplate="item">
+                <span>{{ option.label | translate }}</span>
+              </ng-template>
+            </p-dropdown>
+          }
         </div>
       </div>
     </div>
@@ -132,18 +152,27 @@
             Number of questions solved
           } @else if (selectedTab === '2') {
             Student Levels
+          } @else if (selectedTab === '3') {
+            No. of Assignments
           }
         </div>
         <div class="chart">
           <canvas #questionsChart width="400" height="300"></canvas>
         </div>
+        @if (selectedTab === '3') {
+          <div class="avg-score-label">
+            Avg. Score 67%
+          </div>
+        }
       </div>
-      <div class="chart-box">
-        <div class="title">Time Spent</div>
-        <div class="chart">
-          <canvas #timeChart width="400" height="300"></canvas>
+      @if (selectedTab !== '3') {
+        <div class="chart-box">
+          <div class="title">Time Spent</div>
+          <div class="chart">
+            <canvas #timeChart width="400" height="300"></canvas>
+          </div>
         </div>
-      </div>
+      }
     </div>
     <div class="stats">
       <div class="stat">

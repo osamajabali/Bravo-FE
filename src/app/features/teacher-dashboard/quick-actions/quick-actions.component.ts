@@ -10,10 +10,12 @@ import {
   timeChartData, 
   readingTimeChartData,
   readingPieChartData,
+  assignmentsChartData,
   createQuestionsChartConfig, 
   createTimeChartConfig,
   createReadingTimeChartConfig,
   createReadingPieChartConfig,
+  createAssignmentsChartConfig,
   ChartData 
 } from './chart-configs';
 
@@ -29,6 +31,11 @@ interface Tab {
 }
 
 interface TimePeriodOption {
+  label: string;
+  value: string;
+}
+
+interface ModuleOption {
   label: string;
   value: string;
 }
@@ -105,11 +112,20 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectedTimePeriod: TimePeriodOption = this.timePeriodOptions[1]; // Default to 30 days
 
+  moduleOptions: ModuleOption[] = [
+    { label: 'Learning', value: 'learning' },
+    { label: 'Assessment', value: 'assessment' },
+    { label: 'Practice', value: 'practice' }
+  ];
+
+  selectedModule: ModuleOption = this.moduleOptions[0]; // Default to Learning
+
   // Chart data imported from chart-configs.ts
   questionsData: ChartData = questionsChartData;
   timeData: ChartData = timeChartData;
   readingTimeData: ChartData = readingTimeChartData;
   readingPieData: ChartData = readingPieChartData;
+  assignmentsData: ChartData = assignmentsChartData;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
@@ -192,6 +208,20 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.questionsChartInstance = new Chart(ctx, config);
   }
 
+  private createAssignmentsChart(): void {
+    if (this.questionsChartInstance) {
+      this.questionsChartInstance.destroy();
+    }
+    
+    if (!this.questionsChart?.nativeElement) return;
+
+    const ctx = this.questionsChart.nativeElement.getContext('2d');
+    if (!ctx) return;
+
+    const config = createAssignmentsChartConfig(this.assignmentsData);
+    this.questionsChartInstance = new Chart(ctx, config);
+  }
+
   private renderChartsForCurrentTab(): void {
     // Destroy existing charts
     if (this.questionsChartInstance) {
@@ -212,6 +242,10 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
       // Reading Comprehension tab
       this.createReadingPieChart();
       this.createReadingTimeChart();
+    } else if (this.selectedTab === '3') {
+      // Assignments tab
+      this.createAssignmentsChart();
+      // No second chart for assignments tab
     }
     // Add more tabs as needed
   }
@@ -227,6 +261,11 @@ export class QuickActionsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onTimePeriodChange(event: any) {
     this.selectedTimePeriod = event.value;
+    this.updateChartData();
+  }
+
+  onModuleChange(event: any) {
+    this.selectedModule = event.value;
     this.updateChartData();
   }
 
