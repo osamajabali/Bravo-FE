@@ -1,0 +1,744 @@
+import { ChartConfiguration } from 'chart.js';
+
+export interface ChartDataset {
+  label: string;
+  data: number[];
+  borderColor: string | string[];
+  backgroundColor: string | CanvasGradient | string[];
+  borderWidth: number;
+  fill?: boolean;
+  tension?: number;
+  pointRadius?: number;
+  pointHoverRadius?: number;
+  pointBackgroundColor?: string;
+  pointBorderColor?: string;
+  borderRadius?: any;
+  borderSkipped?: boolean;
+  stack?: string;
+  barThickness?: number;
+}
+
+export interface ChartData {
+  labels: string[];
+  datasets: ChartDataset[];
+}
+
+// Learning Outcomes Tab Charts
+export const questionsChartData: ChartData = {
+  labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'],
+  datasets: [
+    {
+      label: 'Wrong',
+      data: [35, 28, 42, 25, 37],
+      backgroundColor: '#3b8fa7',
+      borderColor: '#3b8fa7',
+      borderWidth: 0,
+      borderRadius: {
+        topLeft: 0,
+        topRight: 0,
+        bottomLeft: 8,
+        bottomRight: 8
+      },
+      borderSkipped: false,
+      stack: 'stack1',
+      barThickness: 32
+    },
+    {
+      label: 'Right',
+      data: [85, 92, 78, 105, 88],
+      backgroundColor: '#54c8e8',
+      borderColor: '#54c8e8',
+      borderWidth: 0,
+      borderRadius: {
+        topLeft: 8,
+        topRight: 8,
+        bottomLeft: 0,
+        bottomRight: 0
+      },
+      borderSkipped: false,
+      stack: 'stack1',
+      barThickness: 32
+    }
+  ]
+};
+
+export const timeChartData: ChartData = {
+  labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'],
+  datasets: [
+    {
+      label: 'School Avg',
+      data: [2.5, 3.2, 2.8, 3.5, 3.0],
+      borderColor: '#3B8FA7',
+      backgroundColor: '#3B8FA7',
+      borderWidth: 4,
+      fill: true,
+      tension: 0.4,
+      pointRadius: 0,
+      pointHoverRadius: 0,
+      pointBackgroundColor: '#3B8FA7',
+      pointBorderColor: '#3B8FA7'
+    },
+    {
+      label: 'Class',
+      data: [1.8, 2.5, 2.2, 5.8, 2.3],
+      borderColor: '#54c8e8',
+      backgroundColor: '#54c8e8',
+      borderWidth: 4,
+      fill: false,
+      tension: 0.4,
+      pointRadius: 0,
+      pointHoverRadius: 0,
+      pointBackgroundColor: '#54c8e8',
+      pointBorderColor: '#54c8e8'
+    }
+  ]
+};
+
+// Reading Comprehension Tab Charts
+export const readingTimeChartData: ChartData = {
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  datasets: [
+    {
+      label: 'Class Avg.',
+      data: [15, 22, 18, 35, 28, 45, 38, 52, 41, 33, 29, 37],
+      borderColor: '#54c8e8',
+      backgroundColor: '#54c8e8',
+      borderWidth: 4,
+      fill: false,
+      tension: 0.4,
+      pointRadius: 0,
+      pointHoverRadius: 0,
+      pointBackgroundColor: '#54c8e8',
+      pointBorderColor: '#54c8e8'
+    }
+  ]
+};
+
+export const readingPieChartData: ChartData = {
+  labels: ['Percentage of students above level', 'Percentage of students below level'],
+  datasets: [
+    {
+      label: 'Student Levels',
+      data: [65, 35],
+      backgroundColor: ['#54c8e8', '#3B8FA7'],
+      borderColor: ['#54c8e8', '#3B8FA7'],
+      borderWidth: 2
+    }
+  ]
+};
+
+// Assignments Tab Charts
+export const assignmentsChartData: ChartData = {
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  datasets: [
+    {
+      label: 'No. of Assignments',
+      data: [25, 32, 28, 45, 38, 52, 41, 33, 47, 39, 29, 35],
+      backgroundColor: '#54c8e8',
+      borderColor: '#54c8e8',
+      borderWidth: 0,
+      borderRadius: 8,
+      borderSkipped: false,
+      barThickness: 32
+    }
+  ]
+};
+
+// Exams Tab Charts
+export const examsChartData: ChartData = {
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  datasets: [
+    {
+      label: 'No. of Exams',
+      data: [8, 12, 10, 15, 14, 18, 16, 11, 13, 9, 7, 12],
+      borderColor: '#54c8e8',
+      backgroundColor: '#54c8e8',
+      borderWidth: 4,
+      fill: false,
+      tension: 0.4,
+      pointRadius: 0,
+      pointHoverRadius: 0,
+      pointBackgroundColor: '#54c8e8',
+      pointBorderColor: '#54c8e8'
+    }
+  ]
+};
+
+// Chart configuration factory functions
+export function createQuestionsChartConfig(data: ChartData): ChartConfiguration {
+  return {
+    type: 'bar',
+    data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          left: 20,
+          right: 20
+        }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          grid: {
+            display: false
+          },
+          border: {
+            display: false,
+          },
+          ticks: {
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          }
+        },
+        y: {
+          stacked: true,
+          min: 0,
+          max: 150,
+          ticks: {
+            stepSize: 25,
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          },
+          grid: {
+            display: false
+          },
+          border: {
+            display: false
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'rectRot',
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#3B8FA7',
+            padding: 30,
+            boxWidth: 12,
+            boxHeight: 12,
+            generateLabels: (chart) => {
+              const datasets = chart.data.datasets;
+              return datasets.map((dataset, i) => ({
+                text: dataset.label,
+                fillStyle: dataset.borderColor as string,
+                strokeStyle: dataset.borderColor as string,
+                lineWidth: 0,
+                pointStyle: 'circle',
+                radius: 6,
+                hidden: !chart.isDatasetVisible(i),
+                datasetIndex: i
+              }));
+            }
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          borderColor: '#54c8e8',
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: true,
+          callbacks: {
+            title: (context) => {
+              return context[0].label;
+            },
+            label: (context) => {
+              return `${context.dataset.label}: ${context.parsed.y} questions`;
+            }
+          }
+        }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      }
+    }
+  };
+}
+
+export function createTimeChartConfig(data: ChartData): ChartConfiguration {
+  return {
+    type: 'line',
+    data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          grid: {
+            display: false
+          },
+          border: {
+            display: false,
+          },
+          offset: true,
+          ticks: {
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          }
+        },
+        y: {
+          min: 0,
+          max: 6,
+          ticks: {
+            stepSize: 1,
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656',
+            callback: function(value) {
+              return value + ':00';
+            }
+          },
+          grid: {
+            display: false
+          },
+          border: {
+            display: false
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'rectRot',
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#3B8FA7',
+            padding: 30,
+            boxWidth: 12,
+            boxHeight: 12,
+            generateLabels: (chart) => {
+              const datasets = chart.data.datasets;
+              return datasets.map((dataset, i) => ({
+                text: dataset.label,
+                fillStyle: dataset.borderColor as string,
+                strokeStyle: dataset.borderColor as string,
+                lineWidth: 0,
+                pointStyle: 'circle',
+                radius: 6,
+                hidden: !chart.isDatasetVisible(i),
+                datasetIndex: i
+              }));
+            }
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          borderColor: '#54c8e8',
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: true,
+          callbacks: {
+            title: (context) => {
+              return context[0].label;
+            },
+            label: (context) => {
+              const hours = Math.floor(context.parsed.y);
+              const minutes = Math.round((context.parsed.y - hours) * 60);
+              const timeString = `${hours}:${minutes.toString().padStart(2, '0')}`;
+              return `${context.dataset.label}: ${timeString}`;
+            }
+          }
+        }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      }
+    }
+  };
+}
+
+export function createReadingTimeChartConfig(data: ChartData): ChartConfiguration {
+  return {
+    type: 'line',
+    data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          grid: {
+            display: false
+          },
+          border: {
+            display: false,
+          },
+          offset: true,
+          ticks: {
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          }
+        },
+        y: {
+          min: 0,
+          max: 100,
+          ticks: {
+            stepSize: 5,
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          },
+          grid: {
+            display: false
+          },
+          border: {
+            display: false
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'rectRot',
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#3B8FA7',
+            padding: 30,
+            boxWidth: 12,
+            boxHeight: 12,
+            generateLabels: (chart) => {
+              const datasets = chart.data.datasets;
+              return datasets.map((dataset, i) => ({
+                text: dataset.label,
+                fillStyle: dataset.borderColor as string,
+                strokeStyle: dataset.borderColor as string,
+                lineWidth: 0,
+                pointStyle: 'circle',
+                radius: 6,
+                hidden: !chart.isDatasetVisible(i),
+                datasetIndex: i
+              }));
+            }
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          borderColor: '#54c8e8',
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: true,
+          callbacks: {
+            title: (context) => {
+              return context[0].label;
+            },
+            label: (context) => {
+              return `${context.dataset.label}: ${context.parsed.y} books`;
+            }
+          }
+        }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      }
+    }
+  };
+}
+
+export function createReadingPieChartConfig(data: ChartData): ChartConfiguration {
+  return {
+    type: 'pie',
+    data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'rectRot',
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#3B8FA7',
+            padding: 30,
+            boxWidth: 12,
+            boxHeight: 12,
+            generateLabels: (chart) => {
+              const datasets = chart.data.datasets;
+              const dataset = datasets[0];
+              return chart.data.labels?.map((label, i) => ({
+                text: label as string,
+                fillStyle: (dataset.backgroundColor as string[])[i],
+                strokeStyle: (dataset.borderColor as string[])[i],
+                lineWidth: 0,
+                pointStyle: 'circle',
+                radius: 6,
+                hidden: false,
+                datasetIndex: 0,
+                index: i
+              })) || [];
+            }
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          borderColor: '#54c8e8',
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: true,
+          callbacks: {
+            title: (context) => {
+              return context[0].label;
+            },
+            label: (context) => {
+              return `${context.label}: ${context.parsed}%`;
+            }
+          }
+        }
+      }
+    }
+  };
+}
+
+export function createAssignmentsChartConfig(data: ChartData): ChartConfiguration {
+  return {
+    type: 'bar',
+    data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          left: 20,
+          right: 20
+        }
+      },
+      scales: {
+        x: {
+          grid: {
+            display: false
+          },
+          border: {
+            display: false,
+          },
+          ticks: {
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          }
+        },
+        y: {
+          min: 0,
+          max: 100,
+          ticks: {
+            stepSize: 10,
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          },
+          grid: {
+            display: false
+          },
+          border: {
+            display: false
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'rectRot',
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#3B8FA7',
+            padding: 30,
+            boxWidth: 12,
+            boxHeight: 12,
+            generateLabels: (chart) => {
+              const datasets = chart.data.datasets;
+              return datasets.map((dataset, i) => ({
+                text: dataset.label,
+                fillStyle: dataset.borderColor as string,
+                strokeStyle: dataset.borderColor as string,
+                lineWidth: 0,
+                pointStyle: 'circle',
+                radius: 6,
+                hidden: !chart.isDatasetVisible(i),
+                datasetIndex: i
+              }));
+            }
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          borderColor: '#54c8e8',
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: true,
+          callbacks: {
+            title: (context) => {
+              return context[0].label;
+            },
+            label: (context) => {
+              return `${context.dataset.label}: ${context.parsed.y} assignments`;
+            }
+          }
+        }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      }
+    }
+  };
+}
+
+export function createExamsChartConfig(data: ChartData): ChartConfiguration {
+  return {
+    type: 'line',
+    data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          grid: {
+            display: false
+          },
+          border: {
+            display: false,
+          },
+          offset: true,
+          ticks: {
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          }
+        },
+        y: {
+          min: 0,
+          ticks: {
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#565656'
+          },
+          grid: {
+            display: false
+          },
+          border: {
+            display: false
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'rectRot',
+            font: {
+              size: 12,
+              family: 'Space Grotesk'
+            },
+            color: '#3B8FA7',
+            padding: 30,
+            boxWidth: 12,
+            boxHeight: 12,
+            generateLabels: (chart) => {
+              const datasets = chart.data.datasets;
+              return datasets.map((dataset, i) => ({
+                text: dataset.label,
+                fillStyle: dataset.borderColor as string,
+                strokeStyle: dataset.borderColor as string,
+                lineWidth: 0,
+                pointStyle: 'circle',
+                radius: 6,
+                hidden: !chart.isDatasetVisible(i),
+                datasetIndex: i
+              }));
+            }
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          borderColor: '#54c8e8',
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: true,
+          callbacks: {
+            title: (context) => {
+              return context[0].label;
+            },
+            label: (context) => {
+              return `${context.dataset.label}: ${context.parsed.y} exams`;
+            }
+          }
+        }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      }
+    }
+  };
+}

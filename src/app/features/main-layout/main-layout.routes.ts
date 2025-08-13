@@ -12,9 +12,16 @@ export const Main_Layout_Routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'semesters',
+        redirectTo: 'quick-actions',
         pathMatch: 'full',
-    },
+      },
+      {
+        path: 'quick-actions',
+        loadComponent: () =>
+          import(
+            '../teacher-dashboard/quick-actions/quick-actions.component'
+          ).then((m) => m.QuickActionsComponent),
+      },
       {
         path: 'skills',
         loadComponent: () =>
@@ -59,34 +66,38 @@ export const Main_Layout_Routes: Routes = [
       },
       {
         path: 'leveled-reading',
-        component : LeveledReadingComponent,
+        component: LeveledReadingComponent,
         children: [
           {
             path: '', // Default path when you visit /leveled-reading
             loadComponent: () =>
-              import('../reading/book-list-view/book-list-view.component').then((m) => m.BookListViewComponent),
+              import('../reading/book-list-view/book-list-view.component').then(
+                (m) => m.BookListViewComponent
+              ),
           },
           {
             path: 'leveled-reading-view', // Path for leveled-reading-view
             loadComponent: () =>
-              import('../reading/leveled-reading-view/leveled-reading-view.component').then((m) => m.LeveledReadingViewComponent),
+              import(
+                '../reading/leveled-reading-view/leveled-reading-view.component'
+              ).then((m) => m.LeveledReadingViewComponent),
           },
-        ]
+        ],
       },
-      
+
       {
         path: 'leveled-reading/books-grid',
         loadComponent: () =>
-          import(
-            '../reading/books-grid/books-grid.component'
-          ).then((m) => m.BooksGridComponent),
+          import('../reading/books-grid/books-grid.component').then(
+            (m) => m.BooksGridComponent
+          ),
       },
       {
         path: 'assignments',
         loadComponent: () =>
-          import(
-            '../teacher-dashboard/assignments/assignments.component'
-          ).then((m) => m.AssignmentsComponent),
+          import('../teacher-dashboard/assignments/assignments.component').then(
+            (m) => m.AssignmentsComponent
+          ),
       },
       {
         path: 'assignments/new',
@@ -133,9 +144,9 @@ export const Main_Layout_Routes: Routes = [
       {
         path: 'book-details',
         loadComponent: () =>
-          import(
-            '../reading/book-details/book-details.component'
-          ).then((m) => m.BookDetailsComponent),
+          import('../reading/book-details/book-details.component').then(
+            (m) => m.BookDetailsComponent
+          ),
       },
       {
         path: 'leveled-display',
@@ -161,30 +172,30 @@ export const Main_Layout_Routes: Routes = [
       {
         path: 'assignmentsDetails',
         loadComponent: () =>
-          import('../teacher-dashboard/assignment-details/assignment-details.component').then(
-            (m) => m.AssignmentDetailsComponent
-          ),
+          import(
+            '../teacher-dashboard/assignment-details/assignment-details.component'
+          ).then((m) => m.AssignmentDetailsComponent),
       },
       {
         path: 'assignments/assignment-submission',
         loadComponent: () =>
-          import('../teacher-dashboard/assignment-submission/assignment-submission.component').then(
-            (m) => m.AssignmentSubmissionComponent
-          ),
+          import(
+            '../teacher-dashboard/assignment-submission/assignment-submission.component'
+          ).then((m) => m.AssignmentSubmissionComponent),
       },
       {
         path: 'students',
         loadComponent: () =>
-          import(
-            '../teacher-dashboard/students/students.component'
-          ).then((m) => m.StudentsComponent),
+          import('../teacher-dashboard/students/students.component').then(
+            (m) => m.StudentsComponent
+          ),
       },
       {
         path: 'students/groups/:id',
         loadComponent: () =>
-          import('../teacher-dashboard/group-details/group-details.component').then(
-            (m) => m.GroupDetailsComponent
-          ),
+          import(
+            '../teacher-dashboard/group-details/group-details.component'
+          ).then((m) => m.GroupDetailsComponent),
       },
     ],
   },

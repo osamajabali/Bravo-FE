@@ -19,7 +19,7 @@ export class SidebarComponent {
   menuItems: MenuItem[] = [
     {
       label: 'QUICK_ACTIONS',
-      route: 'fd',
+      route: RouteNames.QUICK_ACTIONS,
       icon: 'quick-actions'
     },
     {

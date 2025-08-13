@@ -1,0 +1,393 @@
+<div class="quick-actions">
+  <div class="summary">
+    @for (item of summary; track $index) {
+    <div class="summary-box">
+      <div class="icon">
+        <img [src]="item.icon" alt="dashboard-students" />
+      </div>
+      <div class="desc">{{ item.desc | translate }}</div>
+      <div class="value">{{ item.value }}</div>
+    </div>
+    }
+  </div>
+  <div class="quick-actions-section">
+    <div class="main-title">
+      <div class="title-text">{{ "QUICK_ACTION" | translate }}</div>
+    </div>
+    <div class="section-container">
+      <div class="section-item">
+        <div class="upper-section">
+          <div class="title">{{ "ACTIVATE_SKILL" | translate }}</div>
+          <div class="description">
+            <div>{{ "SKILLS_READY_FOR_ACTIVATION" | translate }}</div>
+            <div class="link">{{ "VIEW_ALL_SKILLS" | translate }}</div>
+          </div>
+        </div>
+        <div class="item-container">
+          <div class="item">
+            <div class="item-content">
+              <div class="skill">{{ "READING" | translate }}</div>
+              <div class="title">
+                التّمييز بين حركات المَدّ القصيرة والطَّويلة
+              </div>
+            </div>
+            <div class="item-actions">
+              <button pButton type="button" class="p-button-primary">
+                {{ "ACTIVATE" | translate }}
+              </button>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-content">
+              <div class="skill">{{ "READING" | translate }}</div>
+              <div class="title">تمييز السُّكون</div>
+            </div>
+            <div class="item-actions">
+              <button pButton type="button" class="p-button-primary">
+                {{ "ACTIVATE" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section-item">
+        <div class="upper-section">
+          <div class="title">{{ "QUICK_ASSIGNMENTS" | translate }}</div>
+          <div class="description">
+            {{ "NEW_ASSIGNMENTS_DESCRIPTION" | translate }}
+          </div>
+        </div>
+        <div class="item-container">
+          <div class="item">
+            <div>
+              <div class="label">
+                {{ "LEARNING_OUTCOME_ASSIGNMENTS" | translate }}
+              </div>
+            </div>
+            <div>
+              <button pButton type="button" class="p-button-primary">
+                {{ "SEND_ASSIGNMENT" | translate }}
+              </button>
+            </div>
+          </div>
+          <div class="item">
+            <div>
+              <div class="label">
+                {{ "LEARNING_OUTCOME_ASSIGNMENTS" | translate }}
+              </div>
+            </div>
+            <div>
+              <button pButton type="button" class="p-button-primary">
+                {{ "SEND_ASSIGNMENT" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tabs">
+    @for (tab of tabs; track $index) {
+    <div
+      class="tab"
+      [class.selected]="tab.id === selectedTab"
+      (click)="onTabClick(tab.id)"
+    >
+      <div class="tab-title">
+        {{ tab.title | translate }}
+      </div>
+      <div class="line"></div>
+    </div>
+    }
+  </div>
+  <div class="tab-content">
+    <div class="chart-filters">
+      <div class="header">
+        <div class="title">{{ "QUICK_STATS" | translate }}</div>
+        <div class="filter-dropdown">
+          @if (selectedTab === '3' || selectedTab === '4') {
+            <label for="module">{{ "MODULE" | translate }}</label>
+            <p-dropdown
+              id="module"
+              [options]="moduleOptions"
+              [(ngModel)]="selectedModule"
+              optionLabel="label"
+              (onChange)="onModuleChange($event)"
+              [placeholder]="'MODULE' | translate"
+              styleClass="time-period-select"
+            >
+              <ng-template pTemplate="selectedItem">
+                <span>{{ selectedModule.label | translate }}</span>
+              </ng-template>
+              <ng-template let-option pTemplate="item">
+                <span>{{ option.label | translate }}</span>
+              </ng-template>
+            </p-dropdown>
+          } @else {
+            <label for="timePeriod">{{ "TIME_PERIOD" | translate }}</label>
+            <p-dropdown
+              id="timePeriod"
+              [options]="timePeriodOptions"
+              [(ngModel)]="selectedTimePeriod"
+              optionLabel="label"
+              (onChange)="onTimePeriodChange($event)"
+              [placeholder]="'TIME_PERIOD' | translate"
+              styleClass="time-period-select"
+            >
+              <ng-template pTemplate="selectedItem">
+                <span>{{ selectedTimePeriod.label | translate }}</span>
+              </ng-template>
+              <ng-template let-option pTemplate="item">
+                <span>{{ option.label | translate }}</span>
+              </ng-template>
+            </p-dropdown>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="charts">
+      <div class="chart-box">
+        <div class="title">
+          @if (selectedTab === '1') {
+            Number of questions solved
+          } @else if (selectedTab === '2') {
+            Student Levels
+          } @else if (selectedTab === '3') {
+            No. of Assignments
+          } @else if (selectedTab === '4') {
+            No. of Exams
+          }
+        </div>
+        <div class="chart">
+          <canvas #questionsChart width="400" height="300"></canvas>
+        </div>
+        @if (selectedTab === '3' || selectedTab === '4') {
+          <div class="avg-score-label">
+            Avg. Score 67%
+          </div>
+        }
+      </div>
+      @if (selectedTab !== '3' && selectedTab !== '4') {
+        <div class="chart-box">
+          <div class="title">Time Spent</div>
+          <div class="chart">
+            <canvas #timeChart width="400" height="300"></canvas>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="header">
+          <div class="stat-icon">
+            <img src="icon-green-indicator.svg" alt="" />
+          </div>
+          <div class="stat-title">{{ "TOP_3_STUDENTS" | translate }}</div>
+        </div>
+        <div class="items">
+          <div class="item">
+            <div class="left">
+              <div class="initials">
+                <span>A</span>
+              </div>
+              <div class="name">
+                <span>John Doe</span>
+              </div>
+            </div>
+            <div class="right">
+              <button pButton type="button" class="p-button-outlined">
+                {{ "SEND_CERTIFICATE" | translate }}
+                <img src="arrow-green-right.svg" alt="" />
+              </button>
+            </div>
+          </div>
+          <div class="item">
+            <div class="left">
+              <div class="initials">
+                <span>A</span>
+              </div>
+              <div class="name">
+                <span>John Doe</span>
+              </div>
+            </div>
+            <div class="right">
+              <button pButton type="button" class="p-button-outlined">
+                {{ "SEND_CERTIFICATE" | translate }}
+                <img src="arrow-green-right.svg" alt="" />
+              </button>
+            </div>
+          </div>
+          <div class="item">
+            <div class="left">
+              <div class="initials">
+                <span>A</span>
+              </div>
+              <div class="name">
+                <span>John Doe</span>
+              </div>
+            </div>
+            <div class="right">
+              <button pButton type="button" class="p-button-outlined">
+                {{ "SEND_CERTIFICATE" | translate }}
+                <img src="arrow-green-right.svg" alt="" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="header">
+          <div class="stat-icon">
+            <img src="icon-red-indicator.svg" alt="" />
+          </div>
+          <div class="stat-title">{{ "LOW_3_STUDENTS" | translate }}</div>
+        </div>
+        <div class="items">
+          <div class="item">
+            <div class="left">
+              <div class="initials">
+                <span>A</span>
+              </div>
+              <div class="name">
+                <span>John Doe</span>
+              </div>
+            </div>
+            <div class="right">
+              <button pButton type="button" class="p-button-outlined">
+                {{ "SEND_CERTIFICATE" | translate }}
+                <img src="arrow-green-right.svg" alt="" />
+              </button>
+            </div>
+          </div>
+          <div class="item">
+            <div class="left">
+              <div class="initials">
+                <span>A</span>
+              </div>
+              <div class="name">
+                <span>John Doe</span>
+              </div>
+            </div>
+            <div class="right">
+              <button pButton type="button" class="p-button-outlined">
+                {{ "SEND_CERTIFICATE" | translate }}
+                <img src="arrow-green-right.svg" alt="" />
+              </button>
+            </div>
+          </div>
+          <div class="item">
+            <div class="left">
+              <div class="initials">
+                <span>A</span>
+              </div>
+              <div class="name">
+                <span>John Doe</span>
+              </div>
+            </div>
+            <div class="right">
+              <button
+                pButton
+                type="button"
+                class="p-button-outlined"
+                size="small"
+              >
+                {{ "SEND_CERTIFICATE" | translate }}
+                <img src="arrow-green-right.svg" alt="" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="header">
+          <div class="stat-icon">
+            <img src="icon-green-indicator.svg" alt="" />
+          </div>
+          <div class="stat-title">{{ "TOP_3_SKILLS" | translate }}</div>
+        </div>
+        <div class="items">
+          <div class="item">
+            <div class="left">
+              <div class="name">
+                <span>John Doe</span>
+              </div>
+            </div>
+            <div class="right"></div>
+          </div>
+          <div class="item">
+            <div class="left">
+              <div class="name">
+                <span>John Doe</span>
+              </div>
+            </div>
+            <div class="right"></div>
+          </div>
+          <div class="item">
+            <div class="left">
+              <div class="name">
+                <span>John Doe</span>
+              </div>
+            </div>
+            <div class="right"></div>
+          </div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="header">
+          <div class="stat-icon">
+            <img src="icon-red-indicator.svg" alt="" />
+          </div>
+          <div class="stat-title">{{ "LOW_3_SKILLS" | translate }}</div>
+        </div>
+        <div class="items">
+          <div class="item">
+            <div class="left">
+              <div class="name">
+                <span>John Doe</span>
+              </div>
+            </div>
+            <div class="right">
+              <button pButton type="button" class="p-button-outlined">
+                {{ "SEND_ASSIGNMENT" | translate }}
+                <img src="arrow-green-right.svg" alt="" />
+              </button>
+            </div>
+          </div>
+          <div class="item">
+            <div class="left">
+              <div class="name">
+                <span>John Doe</span>
+              </div>
+            </div>
+            <div class="right">
+              <button pButton type="button" class="p-button-outlined">
+                {{ "SEND_ASSIGNMENT" | translate }}
+                <img src="arrow-green-right.svg" alt="" />
+              </button>
+            </div>
+          </div>
+          <div class="item">
+            <div class="left">
+              <div class="name">
+                <span>John Doe</span>
+              </div>
+            </div>
+            <div class="right">
+              <button
+                pButton
+                type="button"
+                class="p-button-outlined"
+                size="small"
+              >
+                {{ "SEND_ASSIGNMENT" | translate }}
+                <img src="arrow-green-right.svg" alt="" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
