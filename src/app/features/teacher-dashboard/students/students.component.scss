@@ -546,7 +546,7 @@
     font-size: var(--font-size-l) !important;
     min-width: 100px;
   }
-  
+
   .p-button-primary {
     min-width: 210px !important;
     font-weight: var(--font-weight-bold) !important;
@@ -592,5 +592,442 @@
   .user-information .p-password {
     margin-top: 0 !important;
     height: 50px !important;
+  }
+}
+
+/* Certificate Template Drawer Styles */
+.certificate-drawer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  .drawer-content {
+    padding: var(--padding-l);
+    overflow: auto;
+    flex: 1;
+
+    .stepper-container {
+      margin-bottom: var(--padding-2xl);
+      display: flex;
+      justify-content: center;
+
+      .stepper {
+        display: flex;
+        align-items: center;
+        gap: 0;
+
+        .step {
+          display: flex;
+          align-items: center;
+          position: relative;
+
+          .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--primary-primary-600);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-primary-600);
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-xs);
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
+          }
+
+          .step-line {
+            width: 80px;
+            height: 1px;
+            background-color: var(--primary-primary-900);
+            transition: all 0.3s ease;
+          }
+
+          &.active {
+            .step-circle {
+              background-color: var(--primary-primary-600);
+              border-color: var(--primary-primary-600);
+              color: var(--neutral-white);
+            }
+          }
+
+          &.completed {
+            .step-circle {
+              background-color: var(--primary-primary-400);
+              border-color: var(--primary-primary-400);
+              color: var(--neutral-white);
+            }
+
+            .step-line {
+              background-color: var(--primary-primary-500);
+            }
+          }
+        }
+      }
+    }
+
+    .step-content {
+      min-height: 400px;
+      display: flex;
+
+      .step-content-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: var(--padding-4xl);
+
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: var(--padding-m);
+
+          .control-title {
+            color: var(--primary-primary-900);
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-s);
+          }
+
+          .radio-options {
+            display: flex;
+            gap: var(--padding-xl);
+
+            .selection-box {
+              display: flex;
+              align-items: center;
+              gap: var(--padding-s);
+              padding: var(--padding-s) var(--padding-m);
+              background-color: var(--neutral-grey-25);
+              border: 1px solid var(--neutral-grey-100);
+              border-radius: var(--radius-m);
+              cursor: pointer;
+              transition: all 0.2s ease;
+              flex: 1;
+              max-width: 400px;
+
+              span {
+                color: var(--primary-primary-900);
+                font-size: var(--font-size-s);
+                font-weight: var(--font-weight-bold);
+              }
+
+              &.selected {
+                background-color: var(--primary-primary-50);
+                border-color: var(--primary-primary-200);
+              }
+
+              ::ng-deep {
+                .p-radiobutton {
+                  .p-radiobutton-box {
+                    border-color: var(--neutral-grey-200);
+                    background-color: var(--neutral-grey-25);
+                  }
+
+                  &.p-radiobutton-checked {
+                    .p-radiobutton-box {
+                      background-color: var(--neutral-white);
+                      border-color: var(--primary-primary-600);
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          .template-scroll-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .template-images {
+              display: flex;
+              gap: var(--padding-m);
+              overflow-x: auto;
+              padding: var(--padding-s) 0;
+              width: 100%;
+              scrollbar-width: none; /* Firefox */
+              -ms-overflow-style: none; /* IE and Edge */
+
+              /* Hide default scrollbar for webkit browsers */
+              &::-webkit-scrollbar {
+                display: none;
+              }
+
+              .template-item {
+                flex-shrink: 0;
+                cursor: pointer;
+                border: 3px solid transparent;
+                transition: all 0.3s ease;
+                position: relative;
+                margin: 20px 10px 0; /* Add margin to accommodate the check-circle */
+                
+                &.selected {
+                  border-color: var(--primary-primary-400);
+                  padding: 5px;
+                }
+
+                &:hover {
+                  transform: translateY(-2px);
+                  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                }
+
+                .check-circle {
+                  position: absolute;
+                  top: -15px;
+                  right: -15px;
+                  width: 37px;
+                  height: 37px;
+                  border-radius: 50%;
+                  background-color: var(--primary-primary-400);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  z-index: 2;
+                }
+
+                .template-image {
+                  width: 200px;
+                  height: 150px;
+                  object-fit: cover;
+                  border-radius: var(--radius-s);
+                  display: block;
+                }
+              }
+            }
+
+            /* Custom scrollbar below images */
+            .custom-scrollbar {
+              width: 100%;
+              max-width: 350px;
+              height: 8px;
+              background: var(--neutral-grey-100);
+              border-radius: 4px;
+              margin-top: var(--padding-s);
+              position: relative;
+              overflow: hidden;
+              cursor: pointer;
+              user-select: none;
+
+              .scrollbar-thumb {
+                height: 100%;
+                background: var(--primary-primary-400);
+                border-radius: 4px;
+                transition: background-color 0.2s ease;
+                cursor: grab;
+                position: absolute;
+                top: 0;
+                user-select: none;
+
+                &:hover {
+                  background: var(--primary-primary-500);
+                }
+
+                &:active {
+                  cursor: grabbing;
+                  background: var(--primary-primary-600);
+                }
+              }
+            }
+          }
+
+          .students-selection-container {
+            .students-rows {
+              display: flex;
+              flex-direction: column;
+              gap: var(--padding-s);
+
+              .student-row.selectable {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: var(--padding-s);
+                border: 1px solid var(--neutral-grey-200);
+                border-radius: var(--radius-xs);
+                background-color: var(--neutral-white);
+                transition: all 0.2s ease;
+
+                &:hover {
+                  background-color: var(--neutral-grey-50);
+                  border-color: var(--primary-primary-200);
+                }
+
+                .student-info {
+                  display: flex;
+                  align-items: center;
+                  gap: var(--padding-s);
+
+                  .student-avatar {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    background-color: var(--primary-primary-500);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--neutral-white);
+                    font-size: var(--font-size-xs);
+                    font-weight: var(--font-weight-bold);
+                    flex-shrink: 0;
+                  }
+
+                  .student-name-text {
+                    color: var(--primary-primary-900);
+                    font-size: var(--font-size-s);
+                    font-weight: var(--font-weight-bold);
+                  }
+                }
+              }
+            }
+          }
+
+          // Step 3 specific styles
+          .form-row {
+            display: flex;
+            gap: var(--padding-m);
+            margin-bottom: var(--padding-m);
+
+            &.single-field {
+              .form-field {
+                flex: 1;
+              }
+            }
+
+            &.two-fields {
+              .form-field {
+                flex: 1;
+              }
+            }
+
+            .form-field {
+              display: flex;
+              flex-direction: column;
+              gap: var(--padding-s);
+
+              .field-label {
+                color: var(--primary-primary-900);
+                font-weight: var(--font-weight-bold);
+                font-size: var(--font-size-s);
+              }
+
+              .full-width-input {
+                width: 100%;
+                border: 1px solid var(--neutral-grey-200);
+                border-radius: var(--radius-s);
+                padding: var(--padding-s);
+                font-size: var(--font-size-s);
+
+                &:focus {
+                  border-color: var(--primary-primary-500);
+                  box-shadow: 0 0 0 2px rgba(84, 200, 232, 0.2);
+                  outline: none;
+                }
+
+                &::placeholder {
+                  color: var(--neutral-grey-400);
+                }
+              }
+
+              .date-picker-wrapper {
+                position: relative;
+                width: 100%;
+
+                .datepicker-icon {
+                  position: absolute;
+                  top: 50%;
+                  right: 10px;
+                  transform: translateY(-50%);
+                  pointer-events: none;
+                  z-index: 1;
+                }
+
+                ::ng-deep {
+                  .p-datepicker {
+                    width: 100% !important;
+
+                    .p-inputtext {
+                      width: 100% !important;
+                      border: 1px solid var(--neutral-grey-200);
+                      border-radius: var(--radius-s);
+                      padding: var(--padding-s);
+                      font-size: var(--font-size-s);
+                      padding-right: 40px !important;
+
+                      &:focus {
+                        border-color: var(--primary-primary-500);
+                        box-shadow: 0 0 0 2px rgba(84, 200, 232, 0.2);
+                      }
+
+                      &::placeholder {
+                        color: var(--neutral-grey-400);
+                      }
+                    }
+                  }
+                }
+              }
+
+              ::ng-deep {
+                .p-dropdown {
+                  width: 100% !important;
+                  height: 50px !important;
+
+                  .p-dropdown-label {
+                    border: 1px solid var(--neutral-grey-200);
+                    border-radius: var(--radius-s);
+                    padding: var(--padding-s);
+                    font-size: var(--font-size-s);
+
+                    &.p-placeholder {
+                      color: var(--neutral-grey-400);
+                    }
+                  }
+
+                  &:not(.p-disabled).p-focus .p-dropdown-label {
+                    border-color: var(--primary-primary-500);
+                    box-shadow: 0 0 0 2px rgba(84, 200, 232, 0.2);
+                  }
+
+                  .p-dropdown-trigger {
+                    border: 1px solid var(--neutral-grey-200);
+                    border-left: none;
+                    border-radius: 0 var(--radius-s) var(--radius-s) 0;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .certificate-drawer-footer {
+    padding: var(--padding-l);
+    background-color: var(--primary-primary-50);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: -25px;
+    position: relative;
+    z-index: 10;
+
+    .p-button-primary,
+    .p-button-outlined {
+      font-size: var(--font-size-l) !important;
+      min-width: 120px;
+    }
+
+    .p-button-primary {
+      font-weight: var(--font-weight-bold) !important;
+    }
+
+    .p-button-outlined {
+      &:disabled {
+        border-color: var(--neutral-grey-300) !important;
+        color: var(--neutral-grey-400) !important;
+        background-color: transparent !important;
+      }
+    }
   }
 }

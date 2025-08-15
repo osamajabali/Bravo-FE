@@ -38,7 +38,6 @@
           class="p-button-outlined action-button"
           (click)="onSendCertificate()"
           size="small"
-          
         >
           <span>{{ "SEND_CERTIFICATE" | translate }}</span>
           <img src="icon-certificate-sml.svg" alt="send certificate" />
@@ -50,7 +49,6 @@
           class="p-button-outlined action-button"
           (click)="onCreateReport()"
           size="small"
-          
         >
           <span>{{ "CREATE_REPORT" | translate }}</span>
           <img src="icon-report-sml.svg" alt="create report" />
@@ -62,7 +60,6 @@
           class="p-button-outlined action-button"
           (click)="onCreateGroup()"
           size="small"
-          
         >
           <span>{{ "CREATE_GROUP" | translate }}</span>
           <img src="icon-plus-sml.svg" alt="add" />
@@ -91,207 +88,214 @@
   <div class="content">
     <!-- Homeroom Tab Content -->
     @if (selectedTab === 'homeroom') {
-      <div>
-        <div class="grid-header">
-          <div class="header-item checkbox-column custom-checkbox">
+    <div>
+      <div class="grid-header">
+        <div class="header-item checkbox-column custom-checkbox">
+          <input
+            type="checkbox"
+            id="allStudentsSelected"
+            name="allStudentsSelected"
+            [(ngModel)]="allStudentsSelected"
+            class="visually-hidden"
+            (change)="toggleAllStudents(allStudentsSelected)"
+          />
+          <label for="allStudentsSelected" class="checkbox-label">
+            <span class="checkbox-icon">
+              @if (allStudentsSelected) {
+              <img
+                src="icon-checkbox-checked.svg"
+                alt="Checked"
+                class="checkbox-checked"
+              />
+              } @else {
+              <img
+                src="icon-checkbox-unchecked.svg"
+                alt="Unchecked"
+                class="checkbox-unchecked"
+              />
+              }
+            </span>
+          </label>
+        </div>
+        <div class="header-item student-name">
+          <span>{{ "STUDENT_NAME" | translate }}</span>
+          <img
+            src="icon-sort.svg"
+            alt="sort"
+            (click)="onSort('name')"
+            [src]="
+              sortColumn === 'name'
+                ? sortDirection === 'asc'
+                  ? 'icon-sort-asc.svg'
+                  : 'icon-sort.svg'
+                : 'icon-sort.svg'
+            "
+          />
+        </div>
+        <div class="header-item practiced-questions">
+          <span>{{ "PRACTICED_QUESTIONS" | translate }}</span>
+          <img
+            src="icon-sort.svg"
+            alt="sort"
+            (click)="onSort('practicedQuestions')"
+            [src]="
+              sortColumn === 'practicedQuestions'
+                ? sortDirection === 'asc'
+                  ? 'icon-sort-asc.svg'
+                  : 'icon-sort.svg'
+                : 'icon-sort.svg'
+            "
+          />
+        </div>
+        @if((sharedService.getSelectedItems().selectedSectionId != 1) ||
+        (sharedService.getSelectedItems().selectedSectionId != 4)){
+        <div class="header-item read-stories">
+          <span>{{ "READ_STORIES" | translate }}</span>
+          <img
+            src="icon-sort.svg"
+            alt="sort"
+            (click)="onSort('readStories')"
+            [src]="
+              sortColumn === 'readStories'
+                ? sortDirection === 'asc'
+                  ? 'icon-sort-asc.svg'
+                  : 'icon-sort.svg'
+                : 'icon-sort.svg'
+            "
+          />
+        </div>
+        }
+        <div class="header-item progressed-skills">
+          <span>{{ "PROGRESSED_SKILLS" | translate }}</span>
+          <img
+            src="icon-sort.svg"
+            alt="sort"
+            (click)="onSort('progressedSkills')"
+            [src]="
+              sortColumn === 'progressedSkills'
+                ? sortDirection === 'asc'
+                  ? 'icon-sort-asc.svg'
+                  : 'icon-sort.svg'
+                : 'icon-sort.svg'
+            "
+          />
+        </div>
+        @if((sharedService.getSelectedItems().selectedSectionId != 1) ||
+        (sharedService.getSelectedItems().selectedSectionId != 4)){
+        <div class="header-item leveled-reading">
+          <span>{{ "LEVELED_READING" | translate }}</span>
+          <img
+            src="icon-sort.svg"
+            alt="sort"
+            (click)="onSort('leveledReading')"
+            [src]="
+              sortColumn === 'leveledReading'
+                ? sortDirection === 'asc'
+                  ? 'icon-sort-asc.svg'
+                  : 'icon-sort.svg'
+                : 'icon-sort.svg'
+            "
+          />
+        </div>
+        }
+        <div class="header-item last-login">
+          <span>{{ "LAST_LOGIN" | translate }}</span>
+          <img
+            src="icon-sort.svg"
+            alt="sort"
+            (click)="onSort('lastLogin')"
+            [src]="
+              sortColumn === 'lastLogin'
+                ? sortDirection === 'asc'
+                  ? 'icon-sort-asc.svg'
+                  : 'icon-sort.svg'
+                : 'icon-sort.svg'
+            "
+          />
+        </div>
+        <div class="header-item actions">
+          <span></span>
+        </div>
+      </div>
+
+      <div class="students-list">
+        @for (student of students(); track student.fullName; let index = $index)
+        {
+        <div class="student-row">
+          <div class="item checkbox-column custom-checkbox">
             <input
               type="checkbox"
-              id="allStudentsSelected"
-              name="allStudentsSelected"
-              [(ngModel)]="allStudentsSelected"
+              [id]="'student-' + index"
+              [name]="'student-' + index"
+              [(ngModel)]="student.isSelected"
+              (change)="onStudentSelectionChange()"
               class="visually-hidden"
-              (change)="toggleAllStudents(allStudentsSelected)"
             />
-            <label for="allStudentsSelected" class="checkbox-label">
-                           <span class="checkbox-icon">
-               @if (allStudentsSelected) {
-                 <img
-                   src="icon-checkbox-checked.svg"
-                   alt="Checked"
-                   class="checkbox-checked"
-                 />
-               } @else {
-                 <img
-                   src="icon-checkbox-unchecked.svg"
-                   alt="Unchecked"
-                   class="checkbox-unchecked"
-                 />
-               }
-             </span>
+            <label [for]="'student-' + index" class="checkbox-label">
+              <span class="checkbox-icon">
+                @if (student.isSelected) {
+                <img
+                  src="icon-checkbox-checked.svg"
+                  alt="Checked"
+                  class="checkbox-checked"
+                />
+                } @else {
+                <img
+                  src="icon-checkbox-unchecked.svg"
+                  alt="Unchecked"
+                  class="checkbox-unchecked"
+                />
+                }
+              </span>
             </label>
           </div>
-          <div class="header-item student-name">
-            <span>{{ "STUDENT_NAME" | translate }}</span>
-            <img
-              src="icon-sort.svg"
-              alt="sort"
-              (click)="onSort('name')"
-              [src]="
-                sortColumn === 'name'
-                  ? sortDirection === 'asc'
-                    ? 'icon-sort-asc.svg'
-                    : 'icon-sort.svg'
-                  : 'icon-sort.svg'
-              "
-            />
+          <div class="item student-name">
+            <div class="student-info">
+              <div class="student-avatar">
+                <span>{{ getInitials(student.fullName) }}</span>
+              </div>
+              <span class="student-name-text">{{ student.fullName }}</span>
+            </div>
           </div>
-          <div class="header-item practiced-questions">
-            <span>{{ "PRACTICED_QUESTIONS" | translate }}</span>
-            <img
-              src="icon-sort.svg"
-              alt="sort"
-              (click)="onSort('practicedQuestions')"
-              [src]="
-                sortColumn === 'practicedQuestions'
-                  ? sortDirection === 'asc'
-                    ? 'icon-sort-asc.svg'
-                    : 'icon-sort.svg'
-                  : 'icon-sort.svg'
-              "
-            />
+          <div class="item practiced-questions">
+            {{ getPracticedQuestions(student) }}
           </div>
-          @if((sharedService.getSelectedItems().selectedSectionId != 1) || (sharedService.getSelectedItems().selectedSectionId != 4)){
-            <div class="header-item read-stories">
-            <span>{{ "READ_STORIES" | translate }}</span>
-            <img
-              src="icon-sort.svg"
-              alt="sort"
-              (click)="onSort('readStories')"
-              [src]="
-                sortColumn === 'readStories'
-                  ? sortDirection === 'asc'
-                    ? 'icon-sort-asc.svg'
-                    : 'icon-sort.svg'
-                  : 'icon-sort.svg'
-              "
-            />
+          @if((sharedService.getSelectedItems().selectedSectionId != 1) ||
+          (sharedService.getSelectedItems().selectedSectionId != 4)){
+
+          <div class="item read-stories">{{ getReadStories(student) }}</div>
+          }
+          <div class="item progressed-skills">
+            {{ getProgressedSkills(student) }}
+          </div>
+          @if((sharedService.getSelectedItems().selectedSectionId != 1) ||
+          (sharedService.getSelectedItems().selectedSectionId != 4)){
+
+          <div class="item leveled-reading">
+            {{ getLeveledReading(student) }}
           </div>
           }
-          <div class="header-item progressed-skills">
-            <span>{{ "PROGRESSED_SKILLS" | translate }}</span>
+          <div class="item last-login">{{ getLastLogin(student) }}</div>
+          <div class="item actions d-flex gap-2">
             <img
-              src="icon-sort.svg"
-              alt="sort"
-              (click)="onSort('progressedSkills')"
-              [src]="
-                sortColumn === 'progressedSkills'
-                  ? sortDirection === 'asc'
-                    ? 'icon-sort-asc.svg'
-                    : 'icon-sort.svg'
-                  : 'icon-sort.svg'
-              "
+              src="icon-edit-square-sml.svg"
+              alt="edit"
+              class="action-icon"
+              (click)="onEditStudentProfile(student)"
             />
-          </div>
-          @if((sharedService.getSelectedItems().selectedSectionId != 1) || (sharedService.getSelectedItems().selectedSectionId != 4)){
-            <div class="header-item leveled-reading">
-            <span>{{ "LEVELED_READING" | translate }}</span>
+            <img src="icon-bravo-square.svg" alt="bravo" class="action-icon" />
             <img
-              src="icon-sort.svg"
-              alt="sort"
-              (click)="onSort('leveledReading')"
-              [src]="
-                sortColumn === 'leveledReading'
-                  ? sortDirection === 'asc'
-                    ? 'icon-sort-asc.svg'
-                    : 'icon-sort.svg'
-                  : 'icon-sort.svg'
-              "
+              src="icon-arrow-right-square.svg"
+              alt="details"
+              class="action-icon"
             />
-          </div>
-          }
-          <div class="header-item last-login">
-            <span>{{ "LAST_LOGIN" | translate }}</span>
-            <img
-              src="icon-sort.svg"
-              alt="sort"
-              (click)="onSort('lastLogin')"
-              [src]="
-                sortColumn === 'lastLogin'
-                  ? sortDirection === 'asc'
-                    ? 'icon-sort-asc.svg'
-                    : 'icon-sort.svg'
-                  : 'icon-sort.svg'
-              "
-            />
-          </div>
-          <div class="header-item actions">
-            <span></span>
           </div>
         </div>
-  
-                 <div class="students-list">
-           @for (student of students(); track student.fullName; let index = $index) {
-             <div class="student-row">
-               <div class="item checkbox-column custom-checkbox">
-                 <input
-                   type="checkbox"
-                   [id]="'student-' + index"
-                   [name]="'student-' + index"
-                   [(ngModel)]="student.isSelected"
-                   (change)="onStudentSelectionChange()"
-                   class="visually-hidden"
-                 />
-                 <label [for]="'student-' + index" class="checkbox-label">
-                   <span class="checkbox-icon">
-                     @if (student.isSelected) {
-                       <img
-                         src="icon-checkbox-checked.svg"
-                         alt="Checked"
-                         class="checkbox-checked"
-                       />
-                     } @else {
-                       <img
-                         src="icon-checkbox-unchecked.svg"
-                         alt="Unchecked"
-                         class="checkbox-unchecked"
-                       />
-                     }
-                   </span>
-                 </label>
-               </div>
-               <div class="item student-name">
-                 <div class="student-info">
-                   <div class="student-avatar">
-                     <span>{{ getInitials(student.fullName) }}</span>
-                   </div>
-                   <span class="student-name-text">{{ student.fullName }}</span>
-                 </div>
-               </div>
-               <div class="item practiced-questions">
-                 {{ getPracticedQuestions(student) }}
-               </div>
-              @if((sharedService.getSelectedItems().selectedSectionId != 1) || (sharedService.getSelectedItems().selectedSectionId != 4)){
-
-               <div class="item read-stories">{{ getReadStories(student) }}</div>
-              }
-               <div class="item progressed-skills">
-                 {{ getProgressedSkills(student) }}
-               </div>
-              @if((sharedService.getSelectedItems().selectedSectionId != 1) || (sharedService.getSelectedItems().selectedSectionId != 4)){
-
-               <div class="item leveled-reading">{{ getLeveledReading(student) }}</div>
-              }
-               <div class="item last-login">{{ getLastLogin(student) }}</div>
-               <div class="item actions d-flex gap-2">
-                 <img
-                   src="icon-edit-square-sml.svg"
-                   alt="edit"
-                   class="action-icon"
-                   (click)="onEditStudentProfile(student)"
-                 />
-                 <img src="icon-bravo-square.svg" alt="bravo" class="action-icon" />
-                 <img
-                   src="icon-arrow-right-square.svg"
-                   alt="details"
-                   class="action-icon"
-                 />
-               </div>
-             </div>
-           }
-         </div>
+        }
       </div>
+    </div>
     }@else {
-          <!-- Groups Tab Content -->
+    <!-- Groups Tab Content -->
     <div>
       <div class="grid-header">
         <div class="header-item checkbox-column custom-checkbox">
@@ -304,21 +308,21 @@
             (change)="toggleAllGroups(allGroupsSelected)"
           />
           <label for="allGroupsSelected" class="checkbox-label">
-                         <span class="checkbox-icon">
-               @if (allGroupsSelected) {
-                 <img
-                   src="icon-checkbox-checked.svg"
-                   alt="Checked"
-                   class="checkbox-checked"
-                 />
-               } @else {
-                 <img
-                   src="icon-checkbox-unchecked.svg"
-                   alt="Unchecked"
-                   class="checkbox-unchecked"
-                 />
-               }
-             </span>
+            <span class="checkbox-icon">
+              @if (allGroupsSelected) {
+              <img
+                src="icon-checkbox-checked.svg"
+                alt="Checked"
+                class="checkbox-checked"
+              />
+              } @else {
+              <img
+                src="icon-checkbox-unchecked.svg"
+                alt="Unchecked"
+                class="checkbox-unchecked"
+              />
+              }
+            </span>
           </label>
         </div>
         <div class="header-item group-name">
@@ -356,67 +360,65 @@
         </div>
       </div>
 
-             <div class="groups-list">
-         @for (group of groups; track group.id) {
-           <div class="group-row">
-             <div class="item checkbox-column custom-checkbox">
-               <input
-                 type="checkbox"
-                 [id]="group.id"
-                 [name]="group.id + 'group'"
-                 [(ngModel)]="group.selected"
-                 (change)="onGroupSelectionChange()"
-                 class="visually-hidden"
-               />
-               <label [for]="group.id" class="checkbox-label">
-                 <span class="checkbox-icon">
-                   @if (group.selected) {
-                     <img
-                       src="icon-checkbox-checked.svg"
-                       alt="Checked"
-                       class="checkbox-checked"
-                     />
-                   } @else {
-                     <img
-                       src="icon-checkbox-unchecked.svg"
-                       alt="Unchecked"
-                       class="checkbox-unchecked"
-                     />
-                   }
-                 </span>
-               </label>
-             </div>
-             <div class="item group-name">{{ group.groupName }}</div>
-             <div class="item number-of-students">
-               {{ group.numberOfStudents }}
-             </div>
-             <div class="item actions d-flex gap-2">
-               <img
-                 src="icon-red-trash-square.svg"
-                 alt="delete"
-                 class="action-icon"
-                 (click)="onDeleteGroupClick()"
-               />
-               <img
-                 src="icon-edit-square-sml.svg"
-                 alt="edit"
-                 class="action-icon"
-                 (click)="onEditGroup(group)"
-               />
-               <img
-                 src="icon-arrow-right-square.svg"
-                 alt="details"
-                 class="action-icon"
-                 (click)="goToGroupDetails(group.id)"
-               />
-             </div>
-           </div>
-         }
-       </div>
+      <div class="groups-list">
+        @for (group of groups; track group.id) {
+        <div class="group-row">
+          <div class="item checkbox-column custom-checkbox">
+            <input
+              type="checkbox"
+              [id]="group.id"
+              [name]="group.id + 'group'"
+              [(ngModel)]="group.selected"
+              (change)="onGroupSelectionChange()"
+              class="visually-hidden"
+            />
+            <label [for]="group.id" class="checkbox-label">
+              <span class="checkbox-icon">
+                @if (group.selected) {
+                <img
+                  src="icon-checkbox-checked.svg"
+                  alt="Checked"
+                  class="checkbox-checked"
+                />
+                } @else {
+                <img
+                  src="icon-checkbox-unchecked.svg"
+                  alt="Unchecked"
+                  class="checkbox-unchecked"
+                />
+                }
+              </span>
+            </label>
+          </div>
+          <div class="item group-name">{{ group.groupName }}</div>
+          <div class="item number-of-students">
+            {{ group.numberOfStudents }}
+          </div>
+          <div class="item actions d-flex gap-2">
+            <img
+              src="icon-red-trash-square.svg"
+              alt="delete"
+              class="action-icon"
+              (click)="onDeleteGroupClick()"
+            />
+            <img
+              src="icon-edit-square-sml.svg"
+              alt="edit"
+              class="action-icon"
+              (click)="onEditGroup(group)"
+            />
+            <img
+              src="icon-arrow-right-square.svg"
+              alt="details"
+              class="action-icon"
+              (click)="goToGroupDetails(group.id)"
+            />
+          </div>
+        </div>
+        }
+      </div>
     </div>
     }
-
-
   </div>
 </div>
 
@@ -499,26 +501,25 @@
             "SELECTED_STUDENTS" | translate : { default: "Selected Students" }
           }}
         </div>
-                 <div class="students-rows">
-           @for (student of selectedStudentsForGroup; track student.fullName; let index = $index) {
-             <div
-               class="student-row selectable"
-             >
-               <div class="student-info">
-                 <div class="student-avatar">
-                   <span>{{ getInitials(student.fullName) }}</span>
-                 </div>
-                 <span class="student-name-text">{{ student.fullName }}</span>
-               </div>
-               <img
-                 class="trash-icon"
-                 src="icon-trash-red-large.svg"
-                 alt="remove"
-                 (click)="onRemoveStudentFromNewGroup(index)"
-               />
-             </div>
-           }
-         </div>
+        <div class="students-rows">
+          @for (student of selectedStudentsForGroup; track student.fullName; let
+          index = $index) {
+          <div class="student-row selectable">
+            <div class="student-info">
+              <div class="student-avatar">
+                <span>{{ getInitials(student.fullName) }}</span>
+              </div>
+              <span class="student-name-text">{{ student.fullName }}</span>
+            </div>
+            <img
+              class="trash-icon"
+              src="icon-trash-red-large.svg"
+              alt="remove"
+              (click)="onRemoveStudentFromNewGroup(index)"
+            />
+          </div>
+          }
+        </div>
 
         <button
           pButton
@@ -581,23 +582,24 @@
         <div class="section-title">
           {{ "SELECT_STUDENTS" | translate : { default: "Select Students" } }}
         </div>
-                 <div class="students-rows">
-           @for (student of students(); track student.fullName; let index = $index) {
-             <div class="student-row selectable">
-               <div class="student-info">
-                 <div class="student-avatar">
-                   <span>{{ getInitials(student.fullName) }}</span>
-                 </div>
-                 <span class="student-name-text">{{ student.fullName }}</span>
-               </div>
-               <p-checkbox
-                 [binary]="true"
-                 [ngModel]="isStudentSelectedForAdd(index)"
-                 (ngModelChange)="toggleStudentAddSelection(index, $event)"
-               ></p-checkbox>
-             </div>
-           }
-         </div>
+        <div class="students-rows">
+          @for (student of students(); track student.fullName; let index =
+          $index) {
+          <div class="student-row selectable">
+            <div class="student-info">
+              <div class="student-avatar">
+                <span>{{ getInitials(student.fullName) }}</span>
+              </div>
+              <span class="student-name-text">{{ student.fullName }}</span>
+            </div>
+            <p-checkbox
+              [binary]="true"
+              [ngModel]="isStudentSelectedForAdd(index)"
+              (ngModelChange)="toggleStudentAddSelection(index, $event)"
+            ></p-checkbox>
+          </div>
+          }
+        </div>
       </div>
     </div>
 
@@ -780,7 +782,8 @@
             <div class="form-row">
               <div class="form-field">
                 <label class="field-label">{{
-                  "PARENT_FIRST_NAME_EN" | translate : { default: "Parent First Name (En)" }
+                  "PARENT_FIRST_NAME_EN"
+                    | translate : { default: "Parent First Name (En)" }
                 }}</label>
                 <input
                   pInputText
@@ -793,7 +796,8 @@
               </div>
               <div class="form-field">
                 <label class="field-label">{{
-                  "PARENT_LAST_NAME_EN" | translate : { default: "Parent Last Name (En)" }
+                  "PARENT_LAST_NAME_EN"
+                    | translate : { default: "Parent Last Name (En)" }
                 }}</label>
                 <input
                   pInputText
@@ -808,7 +812,8 @@
             <div class="form-row">
               <div class="form-field">
                 <label class="field-label">{{
-                  "PARENT_FIRST_NAME_AR" | translate : { default: "Parent First Name (Ar)" }
+                  "PARENT_FIRST_NAME_AR"
+                    | translate : { default: "Parent First Name (Ar)" }
                 }}</label>
                 <input
                   pInputText
@@ -821,7 +826,8 @@
               </div>
               <div class="form-field">
                 <label class="field-label">{{
-                  "PARENT_LAST_NAME_AR" | translate : { default: "Parent Last Name (Ar)" }
+                  "PARENT_LAST_NAME_AR"
+                    | translate : { default: "Parent Last Name (Ar)" }
                 }}</label>
                 <input
                   pInputText
@@ -860,8 +866,7 @@
             <div class="form-row">
               <div class="form-field">
                 <label class="field-label">{{
-                  "PARENT_USERNAME"
-                    | translate : { default: "Parent Username" }
+                  "PARENT_USERNAME" | translate : { default: "Parent Username" }
                 }}</label>
                 <input
                   pInputText
@@ -874,8 +879,7 @@
               </div>
               <div class="form-field">
                 <label class="field-label">{{
-                  "PARENT_PASSWORD"
-                    | translate : { default: "Parent Password" }
+                  "PARENT_PASSWORD" | translate : { default: "Parent Password" }
                 }}</label>
                 <p-password
                   type="password"
@@ -903,54 +907,53 @@
             | translate : { default: 'Modify Reading Level' }
         }}"
       >
-      <div class="tab-content">
-        <!-- Information Section -->
-        <div class="form-section information">
-          <h3 class="section-title">
-            {{ "CURRENT_LEVEL" | translate : { default: "Current Level" } }}
-          </h3>
-          <div class="form-row">
-            <div class="form-field">
-              <label class="field-label">{{
-                "LEVEL" | translate : { default: "Current Level" }
-              }}</label>
-              <input
-                pInputText
-                type="text"
-                [(ngModel)]="modifyReadingLevelForm.currentLevel"
-                [placeholder]="
-                  'SELECT_LEVEL' | translate : { default: 'Select Level' }
-                "
-              />
+        <div class="tab-content">
+          <!-- Information Section -->
+          <div class="form-section information">
+            <h3 class="section-title">
+              {{ "CURRENT_LEVEL" | translate : { default: "Current Level" } }}
+            </h3>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="field-label">{{
+                  "LEVEL" | translate : { default: "Current Level" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="modifyReadingLevelForm.currentLevel"
+                  [placeholder]="
+                    'SELECT_LEVEL' | translate : { default: 'Select Level' }
+                  "
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- User Information Section -->
-        <div class="form-section user-information">
-          <h3 class="section-title">
-            {{
-              "SELECT_NEW_LEVEL" | translate : { default: "Select New Level" }
-            }}
-          </h3>
-          <div class="form-row">
-            <div class="form-field">
-              <label class="field-label">{{
-                "LEVEL"
-                  | translate : { default: "Level" }
-              }}</label>
-              <input
-                pInputText
-                type="text"
-                [(ngModel)]="modifyReadingLevelForm.newLevel"
-                [placeholder]="
-                  'SELECT_LEVEL' | translate : { default: 'Select Level' }
-                "
-              />
+          <!-- User Information Section -->
+          <div class="form-section user-information">
+            <h3 class="section-title">
+              {{
+                "SELECT_NEW_LEVEL" | translate : { default: "Select New Level" }
+              }}
+            </h3>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="field-label">{{
+                  "LEVEL" | translate : { default: "Level" }
+                }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="modifyReadingLevelForm.newLevel"
+                  [placeholder]="
+                    'SELECT_LEVEL' | translate : { default: 'Select Level' }
+                  "
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </p-tabPanel>
     </p-tabView>
   </div>
@@ -976,3 +979,289 @@
     </div>
   </ng-template>
 </p-dialog>
+
+<!-- Certificate Template Drawer -->
+<p-drawer
+  [(visible)]="showCertificateDrawer"
+  position="right"
+  [dismissible]="true"
+  [showCloseIcon]="false"
+  [modal]="true"
+  [style]="{ width: '75vw' }"
+>
+  <ng-template pTemplate="header">
+    <div class="drawer-header">
+      <div class="title">
+        {{ "CERTIFICATE_TEMPLATE" | translate }}
+      </div>
+      <img
+        src="icon-green-close-large.svg"
+        alt="close"
+        class="pointer"
+        (click)="onCancelCertificate()"
+      />
+    </div>
+  </ng-template>
+
+  <div class="certificate-drawer">
+    <div class="drawer-content">
+      <!-- Stepper -->
+      <div class="stepper-container">
+        <div class="stepper">
+          @for (step of [1, 2, 3]; track step; let i = $index) {
+          <div
+            class="step"
+            [class.active]="currentStep === step"
+            [class.completed]="currentStep > step"
+          >
+            <div class="step-circle">
+              @if (currentStep > step) {
+              <img src="icon-checkmark.svg" alt="" />
+              } @else {
+              <span>{{ step }}</span>
+              }
+            </div>
+            @if (step < totalSteps) {
+            <div class="step-line"></div>
+            }
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Step Content -->
+      <div class="step-content">
+        @switch (currentStep) { @case (1) {
+        <div class="step-content-wrapper">
+          <!-- Language Selection -->
+          <div class="form-group">
+            <div class="control-title">{{ "SELECT_LANGUAGE" | translate }}</div>
+            <div class="radio-options">
+              <div
+                class="selection-box"
+                [class.selected]="selectedLanguage === 'arabic'"
+                (click)="selectedLanguage = 'arabic'"
+              >
+                <p-radioButton
+                  [(ngModel)]="selectedLanguage"
+                  value="arabic"
+                  inputId="arabic"
+                ></p-radioButton>
+                <span>{{ "ARABIC" | translate }}</span>
+              </div>
+              <div
+                class="selection-box"
+                [class.selected]="selectedLanguage === 'english'"
+                (click)="selectedLanguage = 'english'"
+              >
+                <p-radioButton
+                  [(ngModel)]="selectedLanguage"
+                  value="english"
+                  inputId="english"
+                ></p-radioButton>
+                <span>{{ "ENGLISH" | translate }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Color Selection -->
+          <div class="form-group">
+            <div class="control-title">{{ "SELECT_COLOR" | translate }}</div>
+            <div class="radio-options">
+              <div
+                class="selection-box"
+                [class.selected]="selectedColor === 'multicolor'"
+                (click)="selectedColor = 'multicolor'"
+              >
+                <p-radioButton
+                  [(ngModel)]="selectedColor"
+                  value="multicolor"
+                  inputId="multicolor"
+                ></p-radioButton>
+                <span>{{ "MULTICOLOR" | translate }}</span>
+              </div>
+              <div
+                class="selection-box"
+                [class.selected]="selectedColor === 'blackwhite'"
+                (click)="selectedColor = 'blackwhite'"
+              >
+                <p-radioButton
+                  [(ngModel)]="selectedColor"
+                  value="blackwhite"
+                  inputId="blackwhite"
+                ></p-radioButton>
+                <span>{{ "BLACK_WHITE" | translate }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Template Selection -->
+          <div class="form-group">
+            <div class="control-title">{{ "SELECT_TEMPLATE" | translate }}</div>
+            <div class="template-scroll-container">
+              <div
+                class="template-images"
+                #templateImages
+                (scroll)="onTemplateScroll($event)"
+              >
+                @for (template of certificateTemplates; track template.id) {
+                <div
+                  class="template-item"
+                  [class.selected]="selectedTemplate === template.id"
+                  (click)="selectedTemplate = template.id"
+                >
+                  @if (selectedTemplate === template.id) {
+                  <div class="check-circle">
+                    <img src="icon-checkmark.svg" alt="" />
+                  </div>
+                  }
+                  <img
+                    [src]="template.image"
+                    [alt]="template.name"
+                    class="template-image"
+                  />
+                </div>
+                }
+              </div>
+              <div class="custom-scrollbar" (click)="onScrollbarClick($event)">
+                <div
+                  class="scrollbar-thumb"
+                  [style.width.%]="scrollbarThumbWidth"
+                  [style.left.%]="scrollbarThumbPosition"
+                  (mousedown)="onScrollbarMouseDown($event)"
+                  (click)="$event.stopPropagation()"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        } @case (2) {
+        <div class="step-content-wrapper">
+          <div class="form-group">
+            <div class="control-title">
+              {{
+                "SELECT_STUDENTS" | translate : { default: "Select Students" }
+              }}
+            </div>
+            <div class="students-selection-container">
+              <div class="students-rows">
+                @for (student of students(); track student.fullName; let index =
+                $index) {
+                <div class="student-row selectable">
+                  <div class="student-info">
+                    <div class="student-avatar">
+                      <span>{{ getInitials(student.fullName) }}</span>
+                    </div>
+                    <span class="student-name-text">{{
+                      student.fullName
+                    }}</span>
+                  </div>
+                  <p-checkbox
+                    [binary]="true"
+                    [ngModel]="isStudentSelectedForCertificate(index)"
+                    (ngModelChange)="
+                      toggleStudentCertificateSelection(index, $event)
+                    "
+                  ></p-checkbox>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+        } @case (3) {
+        <div class="step-content-wrapper">
+          <!-- School Name Row -->
+          <div class="form-group">
+            <div class="control-title">
+              {{ "SCHOOL_NAME" | translate : { default: "School Name" } }}
+            </div>
+            <div class="form-row single-field">
+              <div class="form-field">
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="certificateForm.schoolName"
+                  [placeholder]="
+                    'WRITE_HERE' | translate : { default: 'Write here' }
+                  "
+                  class="full-width-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Certification Type and Date Row -->
+          <div class="form-group">
+            <div class="form-row two-fields">
+              <div class="form-field">
+                <label class="field-label">{{
+                  "CERTIFICATION_TYPE"
+                    | translate : { default: "Certification Type" }
+                }}</label>
+                <p-dropdown
+                  [(ngModel)]="certificateForm.certificationType"
+                  [options]="certificationTypes"
+                  optionLabel="label"
+                  optionValue="value"
+                  [placeholder]="
+                    'SELECT_TYPE' | translate : { default: 'Select Type' }
+                  "
+                  class="full-width-dropdown"
+                ></p-dropdown>
+              </div>
+              <div class="form-field">
+                <label class="field-label">{{
+                  "SELECT_DATE" | translate : { default: "Select Date" }
+                }}</label>
+                <div class="date-picker-wrapper">
+                  <p-datePicker
+                    [(ngModel)]="certificateForm.selectedDate"
+                    [placeholder]="
+                      'SELECT_DATE' | translate : { default: 'Select Date' }
+                    "
+                    [showClear]="false"
+                    dateFormat="yy-mm-dd"
+                    class="full-width-datepicker"
+                  ></p-datePicker>
+                  <img
+                    src="icon-datepicker.svg"
+                    alt="calendar"
+                    class="datepicker-icon"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="control-title">
+              {{ "REVIEW_DESIGN" | translate : { default: "Review Design" } }}
+            </div>
+          </div>
+        </div>
+        } }
+      </div>
+    </div>
+
+    <div class="certificate-drawer-footer">
+      <button
+        pButton
+        type="button"
+        class="p-button-outlined"
+        (click)="onPreviousStep()"
+        [disabled]="isFirstStep()"
+      >
+        {{ "PREVIOUS" | translate }}
+      </button>
+      <button
+        pButton
+        type="button"
+        class="p-button-primary"
+        (click)="onNextStep()"
+        [disabled]="isLastStep()"
+      >
+        {{ "NEXT" | translate }}
+      </button>
+    </div>
+  </div>
+</p-drawer>

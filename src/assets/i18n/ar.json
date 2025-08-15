@@ -253,5 +253,20 @@
     "LOGIN.KEEP_LOGGED_IN": "إبقائي مسجلاً للدخول",
     "LOGIN.FORGET_PASSWORD": "نسيت كلمة المرور؟",
     "LOGIN.BUTTON_LOGIN": "تسجيل الدخول",
-    "LOGIN.BUTTON_LOGGING_IN": "جاري تسجيل الدخول..."
+    "LOGIN.BUTTON_LOGGING_IN": "جاري تسجيل الدخول...",
+    "CERTIFICATE_TEMPLATE": "قالب الشهادة",
+    "SELECT_LANGUAGE": "اختر اللغة",
+    "ARABIC": "العربية",
+    "ENGLISH": "الإنجليزية",
+    "SELECT_COLOR": "اختر اللون",
+    "MULTICOLOR": "متعدد الألوان",
+    "BLACK_WHITE": "أبيض وأسود",
+    "SELECT_TEMPLATE": "اختر القالب",
+    "SCHOOL_NAME": "اسم المدرسة",
+    "CERTIFICATION_TYPE": "نوع الشهادة",
+    "SELECT_DATE": "اختر التاريخ",
+    "SELECT_TYPE": "اختر النوع",
+    "PREVIOUS": "السابق",
+    "NEXT": "التالي",
+    "REVIEW_DESIGN": "مراجعة التصميم"
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, signal, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -11,6 +11,8 @@ import { DrawerModule } from 'primeng/drawer';
 import { InputTextModule } from 'primeng/inputtext';
 import { TabViewModule } from 'primeng/tabview';
 import { PasswordModule } from 'primeng/password';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { DropdownModule } from 'primeng/dropdown';
 import { StudentsService } from '../../../core/services/students/students.service';
 import { HeaderService } from '../../../core/services/header-services/header.service';
 import { SharedService } from '../../../core/services/shared-services/shared.service';
@@ -39,12 +41,16 @@ interface Group {
     DrawerModule,
     InputTextModule,
     TabViewModule,
-    PasswordModule
+    PasswordModule,
+    RadioButtonModule,
+    DropdownModule
   ],
   templateUrl: './students.component.html',
   styleUrl: './students.component.scss'
 })
-export class StudentsComponent implements OnInit {
+export class StudentsComponent implements OnInit, AfterViewInit {
+  @ViewChild('templateImages') templateImagesRef!: ElementRef<HTMLDivElement>;
+  
   private router = inject(Router);
   public sharedService = inject(SharedService);
   private studentsService = inject(StudentsService);
@@ -61,6 +67,8 @@ export class StudentsComponent implements OnInit {
   // Add Students drawer state
   showAddStudentsDrawer: boolean = false;
   private addStudentsSelectedIds: Set<number> = new Set<number>();
+  // Certificate students selection state
+  private certificateStudentsSelectedIds: Set<number> = new Set<number>();
   // Edit Group state
   isEditGroupMode: boolean = false;
   editingGroupId: number | null = null;
@@ -71,6 +79,47 @@ export class StudentsComponent implements OnInit {
   // Edit Profile Dialog state
   showEditProfileDialog: boolean = false;
   editingStudent: Student | null = null;
+  
+  // Certificate Template Drawer state
+  showCertificateDrawer: boolean = false;
+  currentStep: number = 1;
+  totalSteps: number = 3;
+  selectedLanguage: string = 'arabic';
+  selectedColor: string = 'multicolor';
+  selectedTemplate: number = 1;
+  scrollbarThumbWidth: number = 50;
+  scrollbarThumbPosition: number = 0;
+  
+  // Sample template data
+  certificateTemplates = [
+    { id: 1, name: 'Template 1', image: '/assets/images/sample-certificate.png' },
+    { id: 2, name: 'Template 2', image: '/assets/images/sample-certificate.png' },
+    { id: 3, name: 'Template 3', image: '/assets/images/sample-certificate.png' },
+    { id: 4, name: 'Template 4', image: '/assets/images/sample-certificate.png' },
+    { id: 5, name: 'Template 5', image: '/assets/images/sample-certificate.png' },
+    { id: 6, name: 'Template 2', image: '/assets/images/sample-certificate.png' },
+    { id: 7, name: 'Template 3', image: '/assets/images/sample-certificate.png' },
+    { id: 8, name: 'Template 4', image: '/assets/images/sample-certificate.png' },
+    { id: 9, name: 'Template 5', image: '/assets/images/sample-certificate.png' },
+    { id: 44, name: 'Template 6', image: '/assets/images/sample-certificate.png' }
+  ];
+
+  // Certificate form data
+  certificateForm = {
+    schoolName: '',
+    certificationType: '',
+    selectedDate: null as Date | null
+  };
+
+  // Certification types dropdown options
+  certificationTypes = [
+    { label: 'Reading Achievement', value: 'reading' },
+    { label: 'Writing Excellence', value: 'writing' },
+    { label: 'Speaking Proficiency', value: 'speaking' },
+    { label: 'Listening Skills', value: 'listening' },
+    { label: 'Overall Performance', value: 'overall' },
+    { label: 'Participation Award', value: 'participation' }
+  ];
   editProfileForm = {
     firstNameEn: '',
     lastNameEn: '',
@@ -147,6 +196,36 @@ export class StudentsComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    // Initialize scrollbar position after view is ready
+    setTimeout(() => {
+      this.initializeScrollbar();
+    }, 0);
+  }
+
+  private initializeScrollbar(): void {
+    if (this.templateImagesRef?.nativeElement && this.showCertificateDrawer) {
+      const element = this.templateImagesRef.nativeElement;
+      
+      // Force a reflow to ensure dimensions are calculated
+      element.offsetWidth;
+      
+      // Check if content is loaded (images have dimensions)
+      const hasContent = element.scrollWidth > element.clientWidth;
+      
+      if (hasContent) {
+        this.updateScrollbarPosition(element);
+      } else {
+        // Retry after a short delay if content isn't ready
+        setTimeout(() => {
+          if (this.templateImagesRef?.nativeElement && this.showCertificateDrawer) {
+            this.updateScrollbarPosition(this.templateImagesRef.nativeElement);
+          }
+        }, 200);
+      }
+    }
+  }
+
   getStudents() {
     this.studentsService.getStudents(this.sharedService.getSelectedItems()?.selectedSectionId).subscribe((res) => {
       if(res){
@@ -204,7 +283,13 @@ export class StudentsComponent implements OnInit {
 
   // Button actions (placeholders)
   onSendCertificate(): void {
-    console.log('Send Certificate clicked');
+    this.showCertificateDrawer = true;
+    this.currentStep = 1;
+    
+    // Initialize scrollbar after drawer is rendered
+    setTimeout(() => {
+      this.initializeScrollbar();
+    }, 100);
   }
 
   onCreateReport(): void {
@@ -302,6 +387,19 @@ export class StudentsComponent implements OnInit {
   onConfirmAddStudents(): void {
     // this.selectedStudentsForGroup = this.students.filter(s => this.addStudentsSelectedIds.has(s.id));
     this.showAddStudentsDrawer = false;
+  }
+
+  // Certificate students selection helpers
+  isStudentSelectedForCertificate(studentIndex: number): boolean {
+    return this.certificateStudentsSelectedIds.has(studentIndex);
+  }
+
+  toggleStudentCertificateSelection(studentIndex: number, checked: boolean): void {
+    if (checked) {
+      this.certificateStudentsSelectedIds.add(studentIndex);
+    } else {
+      this.certificateStudentsSelectedIds.delete(studentIndex);
+    }
   }
 
   onEditGroup(group: Group): void {
@@ -411,5 +509,129 @@ export class StudentsComponent implements OnInit {
   getLastLogin(student: Student): string {
     // Mock data - replace with actual logic
     return '2 days ago';
+  }
+
+  // Certificate Template Drawer methods
+  onCancelCertificate(): void {
+    this.showCertificateDrawer = false;
+    this.currentStep = 1;
+    this.selectedLanguage = 'arabic';
+    this.selectedColor = 'multicolor';
+    this.selectedTemplate = 1;
+    this.certificateStudentsSelectedIds.clear();
+    this.certificateForm = {
+      schoolName: '',
+      certificationType: '',
+      selectedDate: null
+    };
+  }
+
+  onNextStep(): void {
+    if (this.currentStep < this.totalSteps) {
+      this.currentStep++;
+    }
+  }
+
+  onPreviousStep(): void {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+      
+      // Reinitialize scrollbar if going back to step 1
+      if (this.currentStep === 1) {
+        setTimeout(() => {
+          this.initializeScrollbar();
+        }, 50);
+      }
+    }
+  }
+
+  isFirstStep(): boolean {
+    return this.currentStep === 1;
+  }
+
+  isLastStep(): boolean {
+    return this.currentStep === this.totalSteps;
+  }
+
+  onTemplateScroll(event: Event): void {
+    const element = event.target as HTMLElement;
+    this.updateScrollbarPosition(element);
+  }
+
+  private updateScrollbarPosition(element: HTMLElement): void {
+    const scrollLeft = element.scrollLeft;
+    const scrollWidth = element.scrollWidth;
+    const clientWidth = element.clientWidth;
+    
+    // Calculate thumb width as percentage of visible area
+    if (scrollWidth > 0 && clientWidth > 0) {
+      this.scrollbarThumbWidth = Math.max((clientWidth / scrollWidth) * 100, 10);
+      
+      // Calculate thumb position as percentage
+      const maxScrollLeft = scrollWidth - clientWidth;
+      if (maxScrollLeft > 0) {
+        this.scrollbarThumbPosition = (scrollLeft / maxScrollLeft) * (100 - this.scrollbarThumbWidth);
+      } else {
+        this.scrollbarThumbPosition = 0;
+      }
+    } else {
+      // Default values when content isn't loaded yet
+      this.scrollbarThumbWidth = 50;
+      this.scrollbarThumbPosition = 0;
+    }
+  }
+
+  onScrollbarClick(event: MouseEvent): void {
+    if (!this.templateImagesRef?.nativeElement) return;
+    
+    const scrollbarElement = event.currentTarget as HTMLElement;
+    if (!scrollbarElement) return;
+    
+    const rect = scrollbarElement.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const scrollbarWidth = rect.width;
+    const clickPercentage = clickX / scrollbarWidth;
+    
+    const templateImages = this.templateImagesRef.nativeElement;
+    const maxScrollLeft = templateImages.scrollWidth - templateImages.clientWidth;
+    
+    if (maxScrollLeft > 0) {
+      templateImages.scrollLeft = clickPercentage * maxScrollLeft;
+    }
+  }
+
+  onScrollbarMouseDown(event: MouseEvent): void {
+    if (!this.templateImagesRef?.nativeElement) return;
+    
+    event.preventDefault();
+    const startX = event.clientX;
+    const startScrollLeft = this.templateImagesRef.nativeElement.scrollLeft || 0;
+    const scrollbarElement = event.currentTarget as HTMLElement;
+    
+    if (!scrollbarElement) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!this.templateImagesRef?.nativeElement) return;
+      
+      const deltaX = e.clientX - startX;
+      const templateImages = this.templateImagesRef.nativeElement;
+      const scrollbarWidth = scrollbarElement.getBoundingClientRect().width;
+      const maxScrollLeft = templateImages.scrollWidth - templateImages.clientWidth;
+      
+      if (maxScrollLeft > 0 && scrollbarWidth > 0) {
+        const scrollRatio = deltaX / scrollbarWidth;
+        const newScrollLeft = startScrollLeft + (scrollRatio * maxScrollLeft);
+        
+        templateImages.scrollLeft = Math.max(0, Math.min(newScrollLeft, maxScrollLeft));
+      }
+    };
+
+    const handleMouseUp = () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
   }
 }

@@ -251,5 +251,20 @@
     "LOGIN.KEEP_LOGGED_IN": "Keep me logged in",
     "LOGIN.FORGET_PASSWORD": "Forget password?",
     "LOGIN.BUTTON_LOGIN": "LOGIN",
-    "LOGIN.BUTTON_LOGGING_IN": "LOGGING IN..."
+    "LOGIN.BUTTON_LOGGING_IN": "LOGGING IN...",
+    "CERTIFICATE_TEMPLATE": "Certificate Template",
+    "SELECT_LANGUAGE": "Select Language",
+    "ARABIC": "Arabic",
+    "ENGLISH": "English",
+    "SELECT_COLOR": "Select Color",
+    "MULTICOLOR": "Multicolor",
+    "BLACK_WHITE": "Black & White",
+    "SELECT_TEMPLATE": "Select Template",
+    "SCHOOL_NAME": "School Name",
+    "CERTIFICATION_TYPE": "Certification Type",
+    "SELECT_DATE": "Select Date",
+    "SELECT_TYPE": "Select Type",
+    "PREVIOUS": "Previous",
+    "NEXT": "Next",
+    "REVIEW_DESIGN": "Review Design"
 }
