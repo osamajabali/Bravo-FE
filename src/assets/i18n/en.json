@@ -266,5 +266,14 @@
     "SELECT_TYPE": "Select Type",
     "PREVIOUS": "Previous",
     "NEXT": "Next",
-    "REVIEW_DESIGN": "Review Design"
+    "REVIEW_DESIGN": "Review Design",
+    "DETAILED_REPORT": "Detailed Report",
+    "SELECT_TEMPLATE_TYPE": "Select Template Type",
+    "SECTION": "Section",
+    "SELECT_TARGET": "Select Target",
+    "PICK_GRADE": "Pick Grade",
+    "PICK_HOMEROOM": "Pick Homeroom",
+    "PICK_STUDENT": "Pick Student",
+    "SELECT": "Select",
+    "DOWNLOAD_REPORT": "Download Report"
 }

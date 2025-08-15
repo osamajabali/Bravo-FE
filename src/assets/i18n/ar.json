@@ -268,5 +268,14 @@
     "SELECT_TYPE": "اختر النوع",
     "PREVIOUS": "السابق",
     "NEXT": "التالي",
-    "REVIEW_DESIGN": "مراجعة التصميم"
+    "REVIEW_DESIGN": "مراجعة التصميم",
+    "DETAILED_REPORT": "تقرير مفصل",
+    "SELECT_TEMPLATE_TYPE": "اختر نوع القالب",
+    "SECTION": "القسم",
+    "SELECT_TARGET": "اختر الهدف",
+    "PICK_GRADE": "اختر الصف",
+    "PICK_HOMEROOM": "اختر الفصل",
+    "PICK_STUDENT": "اختر الطالب",
+    "SELECT": "اختر",
+    "DOWNLOAD_REPORT": "تحميل التقرير"
 }

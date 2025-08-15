@@ -89,6 +89,25 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   selectedTemplate: number = 1;
   scrollbarThumbWidth: number = 50;
   scrollbarThumbPosition: number = 0;
+
+  // Detailed Report Drawer state
+  showDetailedReportDrawer: boolean = false;
+  selectedTemplateType: string = 'grade';
+  reportForm = {
+    selectedGrade: '',
+    selectedHomeroom: '',
+    selectedStudent: ''
+  };
+
+  cards = [
+    { id: 1, name: 'DETAILS', image: 'icon-report-details.svg' },
+    { id: 2, name: 'CARDS', image: 'icon-report-cards.svg' },
+    { id: 3, name: 'SUMMARY', image: 'icon-report-summary.svg' },
+    { id: 4, name: 'LEVELED_READING', image: 'icon-report-reading.svg' },
+    { id: 5, name: 'SKILLS', image: 'icon-report-skills.svg' }
+  ];
+
+  selectedTemplateCardId: number = 1;
   
   // Sample template data
   certificateTemplates = [
@@ -119,6 +138,29 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     { label: 'Listening Skills', value: 'listening' },
     { label: 'Overall Performance', value: 'overall' },
     { label: 'Participation Award', value: 'participation' }
+  ];
+
+  // Report dropdown options
+  gradeOptions = [
+    { label: 'Grade 1', value: 'grade1' },
+    { label: 'Grade 2', value: 'grade2' },
+    { label: 'Grade 3', value: 'grade3' },
+    { label: 'Grade 4', value: 'grade4' },
+    { label: 'Grade 5', value: 'grade5' }
+  ];
+
+  homeroomOptions = [
+    { label: 'Homeroom A', value: 'homeroom-a' },
+    { label: 'Homeroom B', value: 'homeroom-b' },
+    { label: 'Homeroom C', value: 'homeroom-c' },
+    { label: 'Homeroom D', value: 'homeroom-d' }
+  ];
+
+  studentOptions = [
+    { label: 'John Doe', value: 'john-doe' },
+    { label: 'Jane Smith', value: 'jane-smith' },
+    { label: 'Ahmed Ali', value: 'ahmed-ali' },
+    { label: 'Sara Mohamed', value: 'sara-mohamed' }
   ];
   editProfileForm = {
     firstNameEn: '',
@@ -293,7 +335,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   }
 
   onCreateReport(): void {
-    console.log('Create Report clicked');
+    this.showDetailedReportDrawer = true;
   }
 
   onCreateGroup(): void {
@@ -633,5 +675,25 @@ export class StudentsComponent implements OnInit, AfterViewInit {
 
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
+  }
+
+  // Detailed Report Drawer methods
+  onCancelReport(): void {
+    this.showDetailedReportDrawer = false;
+    this.selectedTemplateType = 'grade';
+    this.reportForm = {
+      selectedGrade: '',
+      selectedHomeroom: '',
+      selectedStudent: ''
+    };
+  }
+
+  onDownloadReport(): void {
+    console.log('Download Report clicked', {
+      templateType: this.selectedTemplateType,
+      reportForm: this.reportForm
+    });
+    // In real app, you would generate and download the report here
+    this.onCancelReport();
   }
 }

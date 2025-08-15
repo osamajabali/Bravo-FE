@@ -1258,9 +1258,176 @@
         type="button"
         class="p-button-primary"
         (click)="onNextStep()"
-        [disabled]="isLastStep()"
       >
-        {{ "NEXT" | translate }}
+        {{ isLastStep() ? "PRINT" : ("NEXT" | translate) }}
+      </button>
+    </div>
+  </div>
+</p-drawer>
+
+<!-- Detailed Report Drawer -->
+<p-drawer
+  [(visible)]="showDetailedReportDrawer"
+  position="right"
+  [dismissible]="true"
+  [showCloseIcon]="false"
+  [modal]="true"
+  [style]="{ width: '75vw' }"
+>
+  <ng-template pTemplate="header">
+    <div class="drawer-header">
+      <div class="title">
+        {{ "DETAILED_REPORT" | translate : { default: "Detailed Report" } }}
+      </div>
+      <img
+        src="icon-green-close-large.svg"
+        alt="close"
+        class="pointer"
+        (click)="onCancelReport()"
+      />
+    </div>
+  </ng-template>
+
+  <div class="detailed-report-drawer">
+    <div class="drawer-content">
+      <div class="template-type-cards">
+        <div class="cards-title">
+          {{ "SELECT_TEMPLATE_TYPE" | translate : { default: "Select Template Type" } }}
+        </div>
+        <div class="cards-container">
+          @for (card of cards; track card.id) {
+          <div class="card" [class.selected]="selectedTemplateCardId === card.id" (click)="selectedTemplateCardId = card.id">
+            <div class="card-image">
+              <img [src]="card.image" alt="grade" />
+            </div>
+            <div class="card-title">
+              {{ card.name | translate }}
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      <!-- Template Type Selection -->
+      <div class="form-group">
+        <div class="control-title">
+          {{
+            "SELECT_TEMPLATE_TYPE"
+              | translate : { default: "Select Template Type" }
+          }}
+        </div>
+        <div class="radio-options">
+          <div
+            class="selection-box"
+            [class.selected]="selectedTemplateType === 'grade'"
+            (click)="selectedTemplateType = 'grade'"
+          >
+            <p-radioButton
+              [(ngModel)]="selectedTemplateType"
+              value="grade"
+              inputId="template-grade"
+            ></p-radioButton>
+            <span>{{ "GRADE" | translate : { default: "Grade" } }}</span>
+          </div>
+          <div
+            class="selection-box"
+            [class.selected]="selectedTemplateType === 'section'"
+            (click)="selectedTemplateType = 'section'"
+          >
+            <p-radioButton
+              [(ngModel)]="selectedTemplateType"
+              value="section"
+              inputId="template-section"
+            ></p-radioButton>
+            <span>{{ "SECTION" | translate : { default: "Section" } }}</span>
+          </div>
+          <div
+            class="selection-box"
+            [class.selected]="selectedTemplateType === 'students'"
+            (click)="selectedTemplateType = 'students'"
+          >
+            <p-radioButton
+              [(ngModel)]="selectedTemplateType"
+              value="students"
+              inputId="template-students"
+            ></p-radioButton>
+            <span>{{ "STUDENTS" | translate : { default: "Students" } }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Select Target Section -->
+      <div class="form-group">
+        <div class="control-title">
+          {{ "SELECT_TARGET" | translate : { default: "Select Target" } }}
+        </div>
+        <div class="target-selection-form">
+          <!-- First Row: Grade and Homeroom -->
+          <div class="form-row two-fields">
+            <div class="form-field">
+              <label class="field-label">{{
+                "PICK_GRADE" | translate : { default: "Pick Grade" }
+              }}</label>
+              <p-dropdown
+                [(ngModel)]="reportForm.selectedGrade"
+                [options]="gradeOptions"
+                optionLabel="label"
+                optionValue="value"
+                [placeholder]="'SELECT' | translate : { default: 'Select' }"
+                class="full-width-dropdown"
+              ></p-dropdown>
+            </div>
+            <div class="form-field">
+              <label class="field-label">{{
+                "PICK_HOMEROOM" | translate : { default: "Pick Homeroom" }
+              }}</label>
+              <p-dropdown
+                [(ngModel)]="reportForm.selectedHomeroom"
+                [options]="homeroomOptions"
+                optionLabel="label"
+                optionValue="value"
+                [placeholder]="'SELECT' | translate : { default: 'Select' }"
+                class="full-width-dropdown"
+              ></p-dropdown>
+            </div>
+          </div>
+
+          <!-- Second Row: Student (centered) -->
+          <div class="form-row two-fields">
+            <div class="form-field">
+              <label class="field-label">{{
+                "PICK_STUDENT" | translate : { default: "Pick Student" }
+              }}</label>
+              <p-dropdown
+                [(ngModel)]="reportForm.selectedStudent"
+                [options]="studentOptions"
+                optionLabel="label"
+                optionValue="value"
+                [placeholder]="'SELECT' | translate : { default: 'Select' }"
+                class="full-width-dropdown"
+              ></p-dropdown>
+            </div>
+            <div class="form-field"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detailed-report-drawer-footer">
+      <button
+        pButton
+        type="button"
+        class="p-button-outlined"
+        (click)="onCancelReport()"
+      >
+        {{ "CANCEL" | translate }}
+      </button>
+      <button
+        pButton
+        type="button"
+        class="p-button-primary"
+        (click)="onDownloadReport()"
+      >
+        {{ "DOWNLOAD_REPORT" | translate : { default: "Download Report" } }}
       </button>
     </div>
   </div>
