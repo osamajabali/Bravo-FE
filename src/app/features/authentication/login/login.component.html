@@ -5,12 +5,12 @@
         class="w-50 d-flex flex-column justify-content-center"
       >
         <img src="bravo-logo-large.svg" alt="login-image" class="login-image" />
-        <div class="large-text">Zero Gravity. <br/> Full Impact.</div>
+        <div class="large-text">{{ 'LOGIN.TAGLINE_MAIN1' | translate }} <br/> {{ 'LOGIN.TAGLINE_MAIN2' | translate }}</div>
         <div class="small-text">
-            Where teaching lifts off &
+            {{ 'LOGIN.TAGLINE_SUB1' | translate }}
         </div>
         <div class="small-text">
-            learning has no limits.
+            {{ 'LOGIN.TAGLINE_SUB2' | translate }}
         </div>
       </div>
       <div class="w-50">
@@ -19,7 +19,7 @@
           (ngSubmit)="onSubmit(loginForm)"
           class="login-card"
         >
-          <div class="title">Login</div>
+          <div class="title">{{ 'LOGIN.TITLE' | translate }}</div>
           
           <!-- Error Message Display -->
           <div *ngIf="errorMessage" class="alert alert-danger error-message" role="alert">
@@ -29,7 +29,7 @@
 
           <div class="form-group">
             <label for="email" class="form-label my-2 font-bold"
-              >Username <span class="required-indicator">*</span></label
+              >{{ 'LOGIN.USERNAME_LABEL' | translate }} <span class="required-indicator">*</span></label
             >
             <input
               type="email"
@@ -40,13 +40,13 @@
               [(ngModel)]="user.username"
               (input)="onInputChange()"
               (blur)="onInputChange()"
-              placeholder="Enter your username"
+              [placeholder]="'LOGIN.USERNAME_PLACEHOLDER' | translate"
               [class.is-invalid]="errorMessage && (errorMessage.includes('USERNAME') || errorMessage.includes('REQUIRED'))"
             />
           </div>
           <div class="d-flex flex-column">
             <label for="password" class="form-label my-2 font-bold"
-              >Password <span class="required-indicator">*</span></label
+              >{{ 'LOGIN.PASSWORD_LABEL' | translate }} <span class="required-indicator">*</span></label
             >
             <p-password
               type="password"
@@ -57,7 +57,7 @@
               [(ngModel)]="user.password"
               (input)="onInputChange()"
               (blur)="onInputChange()"
-              placeholder="Enter your password"
+              [placeholder]="'LOGIN.PASSWORD_PLACEHOLDER' | translate"
               [feedback]="false"
               [toggleMask]="true"
               [class.is-invalid]="errorMessage && (errorMessage.includes('PASSWORD') || errorMessage.includes('REQUIRED'))"
@@ -91,7 +91,7 @@
                           class="checkbox-unchecked"
                         />
                       </span>
-                      <span class="filter-option-label">Keep me logged in</span>
+                      <span class="filter-option-label">{{ 'LOGIN.KEEP_LOGGED_IN' | translate }}</span>
                     </label>
                   </div>
                 </div>
@@ -103,7 +103,7 @@
                 (click)="onForgetPassword($event)"
                 class="forget-password-link"
               >
-                Forget password?
+                {{ 'LOGIN.FORGET_PASSWORD' | translate }}
               </a>
             </div>
           </div>
@@ -113,10 +113,10 @@
             class="p-button-primary w-100"
             [disabled]="isLoading"
           >
-            <span class="form-label" *ngIf="!isLoading">LOGIN</span>
+            <span class="form-label" *ngIf="!isLoading">{{ 'LOGIN.BUTTON_LOGIN' | translate }}</span>
             <span class="form-label" *ngIf="isLoading">
               <i class="pi pi-spin pi-spinner me-2"></i>
-              LOGGING IN...
+              {{ 'LOGIN.BUTTON_LOGGING_IN' | translate }}
             </span>
           </button>
         </form>

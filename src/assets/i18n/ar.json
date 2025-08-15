@@ -241,5 +241,17 @@
     "LAST_30_DAYS": "آخر 30 يوماً",
     "LAST_3_MONTHS": "آخر 3 أشهر",
     "LAST_6_MONTHS": "آخر 6 أشهر",
-    "LAST_YEAR": "السنة الماضية"
+    "LAST_YEAR": "السنة الماضية",
+    "LOGIN.TAGLINE_MAIN": "جاذبية صفر. تأثير كامل.",
+    "LOGIN.TAGLINE_SUB1": "حيث يرتفع التعليم و",
+    "LOGIN.TAGLINE_SUB2": "التعلم بلا حدود.",
+    "LOGIN.TITLE": "تسجيل الدخول",
+    "LOGIN.USERNAME_LABEL": "اسم المستخدم",
+    "LOGIN.USERNAME_PLACEHOLDER": "أدخل اسم المستخدم",
+    "LOGIN.PASSWORD_LABEL": "كلمة المرور",
+    "LOGIN.PASSWORD_PLACEHOLDER": "أدخل كلمة المرور",
+    "LOGIN.KEEP_LOGGED_IN": "إبقائي مسجلاً للدخول",
+    "LOGIN.FORGET_PASSWORD": "نسيت كلمة المرور؟",
+    "LOGIN.BUTTON_LOGIN": "تسجيل الدخول",
+    "LOGIN.BUTTON_LOGGING_IN": "جاري تسجيل الدخول..."
 }
