@@ -1,0 +1,162 @@
+// Skills Sections
+.skills-container {
+
+  .skill-section {
+    margin-bottom: var(--padding-l);
+    border-radius: var(--radius-m);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--padding-s) var(--padding-m);
+      background-color: var(--primary-primary-50);
+      color: white;
+      border-radius: var(--radius-m) var(--radius-m) 0 0;
+      cursor: pointer;
+
+      .skill-header-left {
+        display: flex;
+        align-items: center;
+        gap: var(--padding-s);
+
+        i {
+          color: var(--primary-primary-900);
+          background-color: var(--neutral-white);
+          padding: var(--padding-xxs);
+          border-radius: var(--radius-s);
+        }
+
+        .skill-name {
+          font-size: var(--font-size-m);
+          font-weight: var(--font-weight-bold);
+          color: var(--primary-primary-700);
+        }
+      }
+
+      .skill-header-right {
+        display: flex;
+        align-items: center;
+        gap: var(--padding-l);
+
+        .skill-stat {
+          font-size: var(--font-size-xs);
+          color: var(--primary-primary-900);
+          display: flex;
+          align-items: center;
+          gap: var(--padding-xxs);
+
+          img {
+            width: 16px;
+            height: 16px;
+          }
+        }
+
+        .difficulty-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: var(--padding-xxs);
+          padding: var(--padding-xxs) var(--padding-s);
+          border-radius: var(--radius-xxxl);
+          font-size: var(--font-size-xs);
+          font-weight: var(--font-weight-bold);
+
+          img {
+            width: 12px;
+            height: 12px;
+          }
+
+          &.beginner {
+            background-color: #FFE8DC;
+            color: #935317;
+          }
+
+          &.medium {
+            background-color: var(--colors-warning-orange-20);
+            color: var(--colors-warning-orange-80);
+          }
+
+          &.advanced {
+            background-color: var(--primary-primary-200);
+            color: var(--primary-primary-800);
+          }
+        }
+      }
+    }
+
+    .skill-content {
+      background-color: white;
+      border-radius: 0 0 var(--radius-m) var(--radius-m);
+      padding: var(--padding-m) var(--padding-2xl);
+
+      .questions-header {
+        display: grid;
+        grid-template-columns: 3fr 2fr 2fr;
+        gap: var(--padding-s);
+        padding: var(--padding-m);
+
+        .question-header-item {
+          font-size: var(--font-size-xxs);
+          color: var(--neutral-grey-500);
+        }
+      }
+
+      .question-row {
+        display: grid;
+        grid-template-columns: 3fr 2fr 2fr;
+        gap: var(--padding-s);
+        align-items: center;
+        padding: var(--padding-xs) var(--padding-m);
+        margin-bottom: var(--padding-m);
+        border-radius: var(--radius-m);
+        transition: all 0.2s ease;
+
+        &.wrong-answer {
+          border: 1px solid var(--colors-negative-red-20);
+          border-left: 6px solid var(--colors-negative-red-20);
+        }
+
+        &.correct-answer {
+          border: 1px solid #94c5a2;
+          border-left: 6px solid #94c5a2;
+        }
+
+        .question-item {
+          color: var(--primary-primary-900);
+          font-size: var(--font-size-xs);
+          font-weight: var(--font-weight-bold);
+
+          &.answer {
+            font-weight: var(--font-weight-regular);
+          }
+        }
+
+        .answer-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: var(--padding-xxs);
+          padding: var(--padding-xs) var(--padding-s);
+          border-radius: var(--radius-m);
+          font-size: var(--font-size-xxs);
+          margin-inline-end: var(--padding-s);
+
+          img {
+            width: 12px;
+            height: 12px;
+          }
+
+          &.correct {
+            background-color: var(--colors-success-green-10);
+            color: var(--colors-success-green-60);
+          }
+
+          &.wrong {
+            background-color: var(--colors-negative-red-10);
+            color: var(--colors-negative-red-60);
+          }
+        }
+      }
+    }
+  }
+}

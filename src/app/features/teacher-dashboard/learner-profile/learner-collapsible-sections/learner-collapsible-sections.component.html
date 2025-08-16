@@ -1,0 +1,82 @@
+<!-- Skills Sections -->
+<div class="skills-container">
+  @for (skill of skills; track skill.skillId) {
+  <div class="skill-section">
+    <div class="skill-header" (click)="expandSkill(skill.skillId)">
+      <div class="skill-header-left">
+        <i
+          class="pi"
+          [ngClass]="skill.expanded ? 'pi-chevron-down' : 'pi-chevron-right'"
+        ></i>
+        <span class="skill-name">{{ skill.name || skill.skillName }}</span>
+      </div>
+      <div class="skill-header-right">
+        <span
+          class="difficulty-badge"
+          [ngClass]="skill.difficulty.toLowerCase()"
+        >
+          <img
+            src="icon-difficulty-beginner.svg"
+            alt="difficulty"
+            *ngIf="skill.difficulty === 'Beginner'"
+          />
+          <img
+            src="icon-difficulty-medium.svg"
+            alt="difficulty"
+            *ngIf="skill.difficulty === 'Medium'"
+          />
+          <img
+            src="icon-difficulty-advanced.svg"
+            alt="difficulty"
+            *ngIf="skill.difficulty === 'Advanced'"
+          />
+          {{ skill.difficulty }}
+        </span>
+        @for (flag of skill.flags; track $index) {
+        <div class="skill-stat">
+          <img [src]="flag.iconUrl" alt="Stat icon" />
+          <span *ngIf="flag.title">{{ flag.title }}:</span>
+          <span class="fw-bold">{{ flag.value }}</span>
+        </div>
+        }
+      </div>
+    </div>
+
+    @if (skill.expanded) {
+    <div class="skill-content">
+      <div class="questions-header">
+        <div class="question-header-item question">Question</div>
+        <div class="question-header-item time-spent">Time Spent</div>
+        <div class="question-header-item answer">Student Answer</div>
+      </div>
+
+      @if (skill.questions) { @for (question of skill.questions; track $index) {
+      <div
+        class="question-row"
+        [ngClass]="{
+          'correct-answer': question.isCorrect,
+          'wrong-answer': !question.isCorrect
+        }"
+      >
+        <div class="question-item question">{{ question.text }}</div>
+        <div class="question-item time-spent">
+          <img src="icon-light-yellow-clock.svg" alt="time spent" />
+          {{ question.timeSpent }}
+        </div>
+        <div class="question-item answer">
+          <span
+            class="answer-badge pointer"
+            [style.background-color]="question.answerBtnColor"
+            [style.color]="question.answerBtnTextColor"
+          >
+            {{ question.answerBtnText }}
+            <img [src]="question.answerBtnIconUrl" alt="answer status" />
+          </span>
+        </div>
+      </div>
+      } }
+    </div>
+    }
+  </div>
+  }
+</div>
