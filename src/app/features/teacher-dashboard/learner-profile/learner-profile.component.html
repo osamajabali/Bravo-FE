@@ -1,0 +1,112 @@
+<div class="learner-profile">
+  <div class="header">
+    <div class="header-content">
+      <div class="learner-info">
+        <div class="learner-avatar">
+          <span>{{ getInitials(learnerName) }}</span>
+        </div>
+        <div class="learner-info-content">
+          <div class="learner-name">{{ learnerName }}</div>
+          <div class="learner-info-text">
+            {{ 'LAST_LOGIN' | translate }}: 21/08/2025 at 10:00 AM
+          </div>
+        </div>
+      </div>
+      
+      <div class="header-buttons">
+        <button
+          pButton
+          type="button"
+          label=""
+          class="p-button-outlined action-button"
+          (click)="onEditInformation()"
+          size="small"
+        >
+          <span>{{ "EDIT_INFORMATION" | translate }}</span>
+          <img src="icon-eye.svg" alt="edit information" />
+        </button>
+        <button
+          pButton
+          type="button"
+          label=""
+          class="p-button-primary action-button"
+          (click)="onSendAssignment()"
+          size="small"
+        >
+          <span>{{ "SEND_ASSIGNMENT" | translate }}</span>
+          <img src="icon-send-blue.svg" alt="send assignment" />
+        </button>
+      </div>
+    </div>
+    <div class="tabs">
+      <div
+        class="tab"
+        [class.selected]="selectedTab === 'overview'"
+        (click)="onTabClick('overview')"
+      >
+        {{ "OVERVIEW" | translate }}
+      </div>
+      <div
+        class="tab"
+        [class.selected]="selectedTab === 'skills'"
+        (click)="onTabClick('skills')"
+      >
+        {{ "SKILLS" | translate }}
+      </div>
+      <div
+        class="tab"
+        [class.selected]="selectedTab === 'leveled-reading'"
+        (click)="onTabClick('leveled-reading')"
+      >
+        {{ "LEVELED_READING" | translate }}
+      </div>
+      <div
+        class="tab"
+        [class.selected]="selectedTab === 'assignments'"
+        (click)="onTabClick('assignments')"
+      >
+        {{ "ASSIGNMENTS" | translate }}
+      </div>
+      <div
+        class="tab"
+        [class.selected]="selectedTab === 'exams'"
+        (click)="onTabClick('exams')"
+      >
+        {{ "EXAMS" | translate }}
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div class="tab-content">
+      @switch (selectedTab) {
+        @case ('overview') {
+          <div class="tab-panel">
+            <app-learner-overview></app-learner-overview>
+          </div>
+        }
+        @case ('skills') {
+          <div class="tab-panel">
+            <app-learner-skills></app-learner-skills>
+          </div>
+        }
+        @case ('leveled-reading') {
+          <div class="tab-panel">
+            <app-learner-leveled-reading></app-learner-leveled-reading>
+          </div>
+        }
+        @case ('assignments') {
+          <div class="tab-panel">
+            <app-learner-assignments></app-learner-assignments>
+          </div>
+        }
+        @case ('exams') {
+          <div class="tab-panel">
+            <app-learner-exams></app-learner-exams>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>

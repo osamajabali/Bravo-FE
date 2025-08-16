@@ -1,0 +1,204 @@
+<div class="overview-container">
+  <div class="summary-container">
+    <div class="summary-box">
+      <div class="item">
+        <div class="item-title">
+          <div>Correct Questions</div>
+        </div>
+        <div class="item-value">123</div>
+      </div>
+      <div class="item">
+        <div class="item-title">
+          <div>Wrong Questions</div>
+        </div>
+        <div class="item-value">34</div>
+      </div>
+    </div>
+    <div class="summary-box">
+      <div class="item">
+        <div class="item-icon">
+          <img src="icon-multi-books.svg" alt="multi-books" />
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-title">
+          <div>No. of books till next level</div>
+        </div>
+        <div class="item-value">2</div>
+      </div>
+    </div>
+    <div class="summary-box">
+      <div class="item">
+        <div class="item-icon">
+          <img src="icon-sand-clock.svg" alt="sand-watch" />
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-title">
+          <div>Total time spent</div>
+        </div>
+        <div class="item-value">2:56:09</div>
+      </div>
+    </div>
+  </div>
+  <div class="skill-progress">
+    <div class="skill-progress-title">
+      <div>Skill Progress</div>
+    </div>
+    <div class="summary-box-container">
+      <div class="summary-box">
+        <div class="item">
+          <div class="item-title">
+            <div>Mastered skills</div>
+          </div>
+          <div class="item-value">12%</div>
+        </div>
+      </div>
+      <div class="summary-box">
+        <div class="item">
+          <div class="item-title">
+            <div>Progressed skills</div>
+          </div>
+          <div class="item-value">13</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="assignment-overview">
+    <div class="assignment-overview-title">
+      <div>Assignment Overview</div>
+    </div>
+    <div class="summary-box-container">
+      <div class="summary-box">
+        <div class="item">
+          <div class="item-title">
+            <div>AVG. Score</div>
+          </div>
+          <div class="item-value">98%</div>
+        </div>
+      </div>
+      <div class="summary-box">
+        <div class="item">
+          <div class="item-title">
+            <div>Avg. Time Spent</div>
+          </div>
+          <div class="item-value">13 mins</div>
+        </div>
+      </div>
+    </div>
+    <div class="colored-boxes">
+      <div class="colored-box">
+        <div class="colored-box-title">Missed</div>
+        <div class="colored-box-value">13</div>
+      </div>
+      <div class="colored-box">
+        <div class="colored-box-title">Poor</div>
+        <div class="colored-box-value">13</div>
+      </div>
+      <div class="colored-box">
+        <div class="colored-box-title">Good</div>
+        <div class="colored-box-value">13</div>
+      </div>
+      <div class="colored-box">
+        <div class="colored-box-title">Very Good</div>
+        <div class="colored-box-value">13</div>
+      </div>
+      <div class="colored-box">
+        <div class="colored-box-title">Excellent</div>
+        <div class="colored-box-value">13</div>
+      </div>
+    </div>
+  </div>
+  <div class="leveled-reading">
+    <div class="leveled-reading-title">
+      <div>Leveled Reading</div>
+    </div>
+    <div class="summary-box-container">
+      <div class="summary-box">
+        <div class="item">
+          <div class="item-title">
+            <div>Total Questions</div>
+          </div>
+          <div class="item-value">123</div>
+        </div>
+      </div>
+      <div class="summary-box">
+        <div class="item">
+          <div class="item-title">
+            <div>Time Spent</div>
+          </div>
+          <div class="item-value">13 mins</div>
+        </div>
+      </div>
+    </div>
+    <div class="colored-boxes">
+      <div class="colored-box">
+        <div class="colored-box-title">Beginner</div>
+        <div class="colored-box-value">13</div>
+      </div>
+      <div class="colored-box">
+        <div class="colored-box-title">Medium</div>
+        <div class="colored-box-value">13</div>
+      </div>
+      <div class="colored-box">
+        <div class="colored-box-title">Advanced</div>
+        <div class="colored-box-value">13</div>
+      </div>
+      <div class="colored-box">
+        <div class="colored-box-title">Mastered</div>
+        <div class="colored-box-value">13</div>
+      </div>
+      <div class="colored-box">
+        <div class="colored-box-title">Outstanding</div>
+        <div class="colored-box-value">13</div>
+      </div>
+      <div class="colored-box">
+        <div class="colored-box-title">Distinct</div>
+        <div class="colored-box-value">13</div>
+      </div>
+    </div>
+  </div>
+  <div class="skills-container">
+    <div class="skills-list top">
+      <div class="skills-header">
+        <div class="skill-icon">
+          <img src="icon-green-indicator.svg" alt="" />
+        </div>
+        <div class="skill-title">Skills</div>
+      </div>
+      <div class="skills">
+        @for (skill of topSkills; track $index) {
+        <div class="skill">
+          <div class="skill-name">{{ skill.name }}</div>
+        </div>
+        }
+      </div>
+    </div>
+    <div class="skills-list low">
+      <div class="skills-header">
+        <div class="skill-icon">
+          <img src="icon-red-indicator.svg" alt="" />
+        </div>
+        <div class="skill-title">Skills</div>
+      </div>
+      <div class="skills">
+        @for (skill of lowSkills; track $index) {
+        <div class="skill">
+          <div class="skill-name">{{ skill.name }}</div>
+          <button
+            pButton
+            type="button"
+            label=""
+            class="p-button-primary action-button"
+            (click)="onSendAssignment()"
+            size="small"
+          >
+            <span>{{ "SEND_ASSIGNMENT" | translate }}</span>
+            <img src="icon-send-blue.svg" alt="send assignment" />
+          </button>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

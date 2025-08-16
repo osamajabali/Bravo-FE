@@ -277,5 +277,7 @@
     "PICK_HOMEROOM": "اختر الفصل",
     "PICK_STUDENT": "اختر الطالب",
     "SELECT": "اختر",
-    "DOWNLOAD_REPORT": "تحميل التقرير"
+    "DOWNLOAD_REPORT": "تحميل التقرير",
+    "OVERVIEW": "نظرة عامة",
+    "EDIT_INFORMATION": "تعديل المعلومات"
 }

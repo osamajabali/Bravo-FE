@@ -1,0 +1,152 @@
+.learner-profile {
+  margin: 0 -15px;
+
+  .header {
+    padding: var(--padding-2xl) var(--padding-2xl) 0;
+    background-color: var(--neutral-grey-50);
+    border-bottom: 1px solid var(--neutral-grey-200);
+    display: flex;
+    gap: var(--padding-s);
+    flex-direction: column;
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .learner-info {
+      display: flex;
+      align-items: center;
+      gap: var(--padding-m);
+
+      .learner-avatar {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background-color: var(--primary-primary-500);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--neutral-white);
+        font-size: var(--font-size-m);
+        font-weight: var(--font-weight-bold);
+        flex-shrink: 0;
+      }
+
+      .learner-info-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--padding-xxs);
+        color: var(--primary-primary-900);
+        font-weight: var(--font-weight-bold);
+
+        .learner-name {
+          font-size: var(--font-size-xxl);
+        }
+
+        .learner-info-text {
+          font-size: var(--font-size-xs);
+        }
+      }
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: var(--padding-s);
+
+      .action-button {
+        display: flex;
+        align-items: center;
+        gap: var(--padding-s);
+        border-radius: 6px;
+        border: 1px solid var(--primary-primary-900);
+        color: var(--primary-primary-900);
+        font-size: var(--font-size-xxs) !important;
+        font-weight: var(--font-weight-bold) !important;
+
+        &.p-button-outlined {
+          border: 1px solid var(--primary-primary-900);
+          color: var(--primary-primary-900);
+        }
+
+        &.p-button-primary {
+          background-color: var(--primary-primary-500);
+          border-color: var(--primary-primary-500);
+          color: var(--neutral-white);
+
+          &:hover {
+            background-color: var(--primary-primary-600);
+            border-color: var(--primary-primary-600);
+          }
+        }
+      }
+    }
+
+    .tabs {
+      display: flex;
+      gap: var(--padding-m);
+
+      .tab {
+        padding: var(--padding-xl) var(--padding-xs) var(--padding-xs);
+        text-align: center;
+        color: var(--neutral-grey-500);
+        font-size: var(--font-size-s);
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &.selected {
+          color: var(--primary-primary-900);
+          font-weight: var(--font-weight-bold);
+          border-bottom: 2px solid var(--primary-primary-900);
+        }
+      }
+    }
+  }
+
+  .content {
+    padding: 0 var(--padding-2xl);
+
+    .tab-content {
+      min-height: 400px;
+
+      .tab-panel {
+        padding: var(--padding-l) 0;
+
+        .empty-content {
+          text-align: center;
+          color: var(--neutral-grey-500);
+          font-style: italic;
+          padding: var(--padding-4xl);
+          font-size: var(--font-size-m);
+        }
+      }
+    }
+  }
+}
+
+// Global button styles matching the students component
+::ng-deep {
+  .p-button {
+    &.p-button-primary {
+      background-color: var(--primary-primary-500);
+      border-color: var(--primary-primary-500);
+      font-size: var(--font-size-s) !important;
+
+      &:hover {
+        background-color: var(--primary-primary-600);
+        border-color: var(--primary-primary-600);
+      }
+    }
+
+    &.p-button-outlined {
+      border-color: var(--primary-primary-900);
+      color: var(--primary-primary-900);
+      font-size: var(--font-size-s);
+
+      &:hover {
+        background-color: var(--primary-primary-50);
+      }
+    }
+  }
+}

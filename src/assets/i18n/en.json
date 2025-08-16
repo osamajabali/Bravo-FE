@@ -275,5 +275,7 @@
     "PICK_HOMEROOM": "Pick Homeroom",
     "PICK_STUDENT": "Pick Student",
     "SELECT": "Select",
-    "DOWNLOAD_REPORT": "Download Report"
+    "DOWNLOAD_REPORT": "Download Report",
+    "OVERVIEW": "Overview",
+    "EDIT_INFORMATION": "Edit Information"
 }

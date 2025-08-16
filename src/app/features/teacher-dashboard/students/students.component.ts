@@ -484,6 +484,11 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     this.showEditProfileDialog = true;
   }
 
+  onViewLearnerProfile(student: Student): void {
+    // Navigate to learner profile page with student ID and name
+    this.router.navigate(['/features/learner-profile', student.studentId]);
+  }
+
   onSaveEditProfile(): void {
     if (this.editingStudent) {
       console.log('Saving student profile:', {
